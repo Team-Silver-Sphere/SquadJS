@@ -10,7 +10,7 @@ async function main() {
     testMode: true
   });
 
-  await discordTeamkill(server, 'channelID');
+  await discordTeamkill(server, '667741905228136459');
   influxdbLog(server);
   mysqlLog(server);
 
