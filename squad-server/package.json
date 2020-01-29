@@ -1,0 +1,11 @@
+{
+  "name": "squad-server",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "log-parser": "1.0.0"
+  },
+  "exports": {
+    ".": "./index.js"
+  }
+}

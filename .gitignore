@@ -1,5 +1,6 @@
 # Project Files
-
+core/config.js
+test-data/
 
 # Dependencies
 node_modules/

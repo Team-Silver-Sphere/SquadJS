@@ -1,0 +1,15 @@
+{
+  "name": "connectors",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./discord": "./discord.js",
+    "./influxdb": "./influxdb.js",
+    "./mysql": "./mysql.js"
+  },
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "influx": "^5.5.1",
+    "mysql": "^2.18.1"
+  }
+}

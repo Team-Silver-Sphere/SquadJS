@@ -6,10 +6,21 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "assets"
+    "assets",
+    "connectors",
+    "core",
+    "log-parser",
+    "plugins",
+    "squad-server"
   ],
   "scripts": {
     "lint": "eslint --fix . && prettier --write \"./**/*.js\""
+  },
+  "type": "module",
+  "dependencies": {
+    "core": "1.0.0",
+    "plugins": "1.0.0",
+    "squad-server": "1.0.0"
   },
   "devDependencies": {
     "eslint": "5.12.0",
