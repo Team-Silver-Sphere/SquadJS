@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/squadjs-logo.png" alt="Logo" width="500"/>
+
 #### SquadJS
 
 [![GitHub issues](https://img.shields.io/github/issues/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/issues)
