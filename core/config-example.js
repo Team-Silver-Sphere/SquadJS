@@ -1,3 +1,6 @@
+/* As set out by terms of the license, the following should not be modified. */
+const COPYRIGHT_MESSAGE = 'SquadJS, Copyright (c) 2020 Thomas Smyth';
+
 const DISCORD_LOGIN_TOKEN = '';
 
 const INFLUXDB_HOST = 'localhost';
@@ -15,6 +18,7 @@ const MYSQL_DATABASE = 'squadjs';
 const MYSQL_CONNECTION_LIMIT = 10;
 
 export {
+  COPYRIGHT_MESSAGE,
   DISCORD_LOGIN_TOKEN,
   INFLUXDB_HOST,
   INFLUXDB_PORT,

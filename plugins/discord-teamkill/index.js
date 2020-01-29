@@ -1,5 +1,6 @@
 import DiscordConnector from 'connectors/discord';
 
+import { COPYRIGHT_MESSAGE } from 'core/config';
 import { LOG_PARSER_TEAMKILL } from 'core/events/log-parser';
 
 export default async function plugin(server, channelID, options = {}) {
@@ -40,7 +41,10 @@ export default async function plugin(server, channelID, options = {}) {
             name: 'Victim',
             value: info.victim || 'Unknown'
           }
-        ]
+        ],
+        footer: {
+          text: COPYRIGHT_MESSAGE
+        }
       }
     });
   });
