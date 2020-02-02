@@ -2,6 +2,8 @@
 core/config.js
 squad-server/log-parser/test-data/
 
+index-test.js
+
 # Dependencies
 node_modules/
 package-lock.json

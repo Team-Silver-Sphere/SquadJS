@@ -1,15 +1,17 @@
 import DiscordConnector from 'connectors/discord';
 
 import { COPYRIGHT_MESSAGE } from 'core/config';
-import { LOG_PARSER_TEAMKILL } from 'squad-server/events/log-parser';
+import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
 
 export default async function plugin(server, channelID, options = {}) {
   if (!server)
     throw new Error(
-      'DiscordTeamkill must be provided with a reference to the server'
+      'DiscordChat must be provided with a reference to the server'
     );
   if (!channelID)
-    throw new Error('DiscordTeamkill must be provided with a channel ID.');
+    throw new Error('DiscordChat must be provided with a channel ID.');
+
+  const ignoreChats = options.ignoreChats || ['ChatSquad', 'ChatAdmin'];
 
   options = {
     color: 16761867,
@@ -20,26 +22,27 @@ export default async function plugin(server, channelID, options = {}) {
     channelID
   );
 
-  server.logParser.on(LOG_PARSER_TEAMKILL, info => {
-    // ignore suicides
-    if (!info.attacker) return;
+  server.rcon.on(RCON_CHAT_MESSAGE, info => {
+    if (ignoreChats.includes(info.chat)) return;
 
     channel.send({
       embed: {
-        title: `Teamkill: ${info.attacker}`,
+        title: info.chat,
         color: options.color,
         fields: [
           {
-            name: 'Attacker',
-            value: info.attacker || 'Unknown'
+            name: 'Player',
+            value: info.player,
+            inline: true
           },
           {
-            name: 'Weapon',
-            value: info.weapon || 'Unknown'
+            name: 'SteamID',
+            value: info.steamID,
+            inline: true
           },
           {
-            name: 'Victim',
-            value: info.victim || 'Unknown'
+            name: 'Message',
+            value: `${info.message}`
           }
         ],
         timestamp: info.time.toISOString(),

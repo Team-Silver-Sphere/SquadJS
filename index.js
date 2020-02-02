@@ -1,20 +1,22 @@
 import Server from 'squad-server';
 
-import { discordTeamkill, influxdbLog, mysqlLog } from 'plugins';
+import { discordChat, discordTeamkill, influxdbLog, mysqlLog } from 'plugins';
 
 async function main() {
   const server = new Server({
     id: 0,
 
-    logDir: './squad-server/log-parser/test-data',
-    testMode: true
+    logParserEnabled: true,
+    logParserLogDir: './squad-server/log-parser/test-data',
+    logParserTestMode: true
   });
 
+  await discordChat(server, '667741905228136459');
   await discordTeamkill(server, '667741905228136459');
-  // influxdbLog(server);
-  // mysqlLog(server);
+  influxdbLog(server);
+  mysqlLog(server);
 
-  server.watch();
+  await server.watch();
 }
 
 main();

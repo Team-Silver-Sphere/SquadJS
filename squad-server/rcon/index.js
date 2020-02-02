@@ -6,12 +6,12 @@ import { RCON_ERROR, RCON_CHAT_MESSAGE } from '../events/rcon.js';
 import RCONProtocol from './protocol.js';
 
 export default class Index extends EventEmitter {
-  constructor(host, port, password, options = {}) {
+  constructor(options = {}) {
     super();
 
-    this.host = host;
-    this.port = port;
-    this.password = password;
+    this.host = options.host;
+    this.port = options.port;
+    this.password = options.password;
 
     this.maximumPacketSize = options.maximumPacketSize || 4096;
     this.timeout = options.timeout || 1000;
@@ -143,13 +143,23 @@ export default class Index extends EventEmitter {
         chat: message[1],
         steamID: message[2],
         player: message[3],
-        message: message[4]
+        message: message[4],
+        time: new Date()
       });
     });
 
     this.client.on('error', err => {
       this.emit(RCON_ERROR, err);
     });
+  }
+
+  async watch() {
+    await this.connect();
+    await this.authenticate();
+  }
+
+  async unwatch() {
+    await this.disconnect();
   }
 
   async execute(command) {
