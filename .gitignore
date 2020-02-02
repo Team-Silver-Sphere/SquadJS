@@ -1,6 +1,6 @@
 # Project Files
 core/config.js
-test-data/
+squad-server/log-parser/test-data/
 
 # Dependencies
 node_modules/

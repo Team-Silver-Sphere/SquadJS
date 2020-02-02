@@ -1,4 +1,4 @@
-import LogParser from 'log-parser';
+import LogParser from './log-parser/index.js';
 
 export default class Server {
   constructor(options = {}) {

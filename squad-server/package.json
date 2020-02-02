@@ -3,9 +3,17 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "log-parser": "1.0.0"
+    "core": "1.0.0",
+    "moment": "^2.24.0",
+    "tail": "^2.0.3"
   },
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+
+    "./events/log-parser": "./events/log-parser.js",
+    "./events/rcon": "./events/rcon.js",
+
+    "./log-parser": "./log-parser/index.js",
+    "./rcon": "./rcon/index.js"
   }
 }

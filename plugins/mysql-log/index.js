@@ -6,7 +6,7 @@ import {
   LOG_PARSER_PLAYER_WOUND,
   LOG_PARSER_REVIVE,
   LOG_PARSER_TICK_RATE
-} from 'core/events/log-parser';
+} from 'squad-server/events/log-parser';
 
 export default function mysqlLog(server) {
   server.logParser.on(LOG_PARSER_NEW_GAME, async info => {

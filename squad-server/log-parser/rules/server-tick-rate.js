@@ -1,4 +1,4 @@
-import { LOG_PARSER_TICK_RATE } from 'core/events/log-parser';
+import { LOG_PARSER_TICK_RATE } from '../../events/log-parser.js';
 
 export default {
   regex: /\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: USQGameState: Server Tick Rate: ([0-9.]+)/,

@@ -1,4 +1,4 @@
-import { LOG_PARSER_NEW_GAME } from 'core/events/log-parser';
+import { LOG_PARSER_NEW_GAME } from '../../events/log-parser.js';
 
 import InjuryManager from '../utils/injury-manager.js';
 

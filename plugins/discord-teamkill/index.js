@@ -1,7 +1,7 @@
 import DiscordConnector from 'connectors/discord';
 
 import { COPYRIGHT_MESSAGE } from 'core/config';
-import { LOG_PARSER_TEAMKILL } from 'core/events/log-parser';
+import { LOG_PARSER_TEAMKILL } from 'squad-server/events/log-parser';
 
 export default async function plugin(server, channelID, options = {}) {
   if (!server)

@@ -4,7 +4,7 @@ import {
   LOG_PARSER_PLAYER_DIE,
   LOG_PARSER_TEAMKILL,
   LOG_PARSER_REVIVE
-} from 'core/events/log-parser';
+} from '../../events/log-parser.js';
 
 class InjuryManager {
   constructor() {

@@ -9,7 +9,6 @@
     "assets",
     "connectors",
     "core",
-    "log-parser",
     "plugins",
     "squad-server"
   ],

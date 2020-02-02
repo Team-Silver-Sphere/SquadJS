@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    "./config": "./config.js",
-    "./events/log-parser": "./events/log-parser.js"
+    "./config": "./config.js"
   }
 }

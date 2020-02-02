@@ -6,13 +6,13 @@ async function main() {
   const server = new Server({
     id: 0,
 
-    logDir: './test-data',
+    logDir: './squad-server/log-parser/test-data',
     testMode: true
   });
 
   await discordTeamkill(server, '667741905228136459');
-  influxdbLog(server);
-  mysqlLog(server);
+  // influxdbLog(server);
+  // mysqlLog(server);
 
   server.watch();
 }
