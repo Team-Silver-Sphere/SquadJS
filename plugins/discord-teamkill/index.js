@@ -12,7 +12,7 @@ export default async function plugin(server, channelID, options = {}) {
     throw new Error('DiscordTeamkill must be provided with a channel ID.');
 
   options = {
-    color: 7102418,
+    color: 16761867,
     ...options
   };
 
