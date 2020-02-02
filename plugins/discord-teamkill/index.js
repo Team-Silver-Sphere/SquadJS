@@ -42,6 +42,7 @@ export default async function plugin(server, channelID, options = {}) {
             value: info.victim || 'Unknown'
           }
         ],
+        timestamp: info.time.toISOString(),
         footer: {
           text: COPYRIGHT_MESSAGE
         }
