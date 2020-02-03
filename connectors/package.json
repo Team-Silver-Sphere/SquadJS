@@ -5,10 +5,12 @@
   "exports": {
     "./discord": "./discord.js",
     "./influxdb": "./influxdb.js",
-    "./mysql": "./mysql.js"
+    "./mysql": "./mysql.js",
+    "./scbl": "./scbl.js"
   },
   "dependencies": {
     "discord.js": "^11.5.1",
+    "graphql-request": "^1.8.2",
     "influx": "^5.5.1",
     "mysql": "^2.18.1"
   }
