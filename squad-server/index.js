@@ -60,8 +60,6 @@ export default class Server extends EventEmitter {
     this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
 
     this.emit(SERVER_LAYER_CHANGE, outputInfo);
-
-    console.log(this.layerHistory);
   }
 
   async watch() {
