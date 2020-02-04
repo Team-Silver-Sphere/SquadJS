@@ -8,6 +8,10 @@ export default async function plugin(server, channelID, options = {}) {
     throw new Error(
       'DiscordTeamkill must be provided with a reference to the server'
     );
+  if (!('logParser' in server))
+    throw new Error(
+      'LogParser must be enabled in the server for this plugin to work.'
+    );
   if (!channelID)
     throw new Error('DiscordTeamkill must be provided with a channel ID.');
 

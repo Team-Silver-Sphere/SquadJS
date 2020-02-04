@@ -8,6 +8,7 @@
   "dependencies": {
     "connectors": "1.0.0",
     "core": "1.0.0",
+    "didyoumean": "^1.2.1",
     "squad-server": "1.0.0"
   }
 }

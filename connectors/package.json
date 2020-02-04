@@ -6,6 +6,7 @@
     "./discord": "./discord.js",
     "./influxdb": "./influxdb.js",
     "./mysql": "./mysql.js",
+    "./squad-layers": "./squad-layers/index.js",
     "./scbl": "./scbl.js"
   },
   "dependencies": {

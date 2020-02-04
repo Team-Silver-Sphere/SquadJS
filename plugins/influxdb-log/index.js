@@ -9,6 +9,15 @@ import {
 } from 'squad-server/events/log-parser';
 
 export default function influxdbLog(server) {
+  if (!server)
+    throw new Error(
+      'DiscordTeamkill must be provided with a reference to the server'
+    );
+  if (!('logParser' in server))
+    throw new Error(
+      'LogParser must be enabled in the server for this plugin to work.'
+    );
+
   server.logParser.on(LOG_PARSER_NEW_GAME, info => {
     InfluxDBConnector.writePoint({
       measurement: 'game',
