@@ -1,5 +1,7 @@
 import didYouMean from 'didyoumean';
 
+import { COPYRIGHT_MESSAGE } from 'core/config';
+
 import SquadLayers from 'connectors/squad-layers';
 
 import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
@@ -126,6 +128,9 @@ export default function(server, layerFilter = {}, options = {}) {
       // info them of their vote
       server.rcon.execute(
         `AdminWarn "${info.steamID}" You voted for ${layer}.`
+      );
+      server.rcon.execute(
+        `AdminWarn "${info.steamID} Powered by: ${COPYRIGHT_MESSAGE}`
       );
 
       // check for new winner
