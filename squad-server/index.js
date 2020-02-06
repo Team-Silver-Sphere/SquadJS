@@ -2,7 +2,6 @@ import EventEmitter from 'events';
 import LogParser from './log-parser/index.js';
 import Rcon from './rcon/index.js';
 
-import { LOG_PARSER_NEW_GAME } from './events/log-parser.js';
 import { SERVER_LAYER_CHANGE } from './events/server.js';
 
 export default class Server extends EventEmitter {
@@ -44,10 +43,7 @@ export default class Server extends EventEmitter {
     Those with multiple methods that have yet to be implemented should still be
     included below.
    */
-  bindListeners() {
-    // Bind layer change event
-    this.logParser.on(LOG_PARSER_NEW_GAME, this.onLayerChange.bind(this));
-  }
+  bindListeners() {}
 
   onLayerChange(info) {
     const outputInfo = {
