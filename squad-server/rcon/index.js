@@ -13,7 +13,6 @@ export default class Rcon extends EventEmitter {
     this.password = options.password;
 
     this.maximumPacketSize = options.maximumPacketSize || 4096;
-    this.timeout = options.timeout || 1000;
     this.reconnectInterval = options.reconnectInterval || 1000;
 
     this.client = null;
@@ -176,7 +175,6 @@ export default class Rcon extends EventEmitter {
 
       // setup socket
       this.client = new net.Socket();
-      this.client.setTimeout(this.timeout);
 
       this.client.on('data', this.onData.bind(this));
       this.client.on('error', err => this.emit(RCON_ERROR, err));
