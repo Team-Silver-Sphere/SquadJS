@@ -11,39 +11,36 @@ export default class Server extends EventEmitter {
     if (!('id' in options)) throw new Error('Server must have an ID.');
     this.id = options.id;
 
-    this.layerHistory = options.layerHistory || [];
-    this.layerHistoryMaxLength = options.layerHistoryMaxLength || 20;
+    this.host = options.host;
 
-    if (options.logParserEnabled) {
-      this.logParser = new LogParser({
-        logDir: options.logParserLogDir,
-        testMode: options.logParserTestMode
-      });
-    }
+    this.rconPort = options.rconPort;
+    this.rconPassword = options.rconPassword;
+    this.rconAutoReconnectInterval = options.rconAutoReconnectInterval || 1000;
+
+    this.logParserLogDir = options.logParserLogDir;
+    this.logParserTestMode = options.logParserTestMode;
 
     if (options.rconEnabled) {
-      this.rcon = new Rcon({
-        host: options.host,
-        port: options.rconPort,
-        password: options.rconPassword
-      });
+      if (this.host === undefined)
+        throw new Error('Host must be specified when RCON is enabled');
+      if (this.rconPort === undefined)
+        throw new Error('RCON Port must be specified when RCON is enabled');
+      if (this.rconPassword === undefined)
+        throw new Error('RCON Password must be specified when RCON is enabled');
+      this.rcon = new Rcon(this);
     }
 
-    this.bindListeners();
+    if (options.logParserEnabled) {
+      if (this.logParserLogDir === undefined)
+        throw new Error(
+          'Log Directory must be specified when LogParser is enabled.'
+        );
+      this.logParser = new LogParser(this);
+    }
+
+    this.layerHistory = options.layerHistory || [];
+    this.layerHistoryMaxLength = options.layerHistoryMaxLength || 20;
   }
-
-  /*
-    Here we bind events related to the server's data that is available from
-    multiple sources, i.e. layer change, prioritising those with better reliability
-    and speed of updating.
-
-    All must produce the same input to the related class method to ensure plugins
-    relying on them are supported equally.
-
-    Those with multiple methods that have yet to be implemented should still be
-    included below.
-   */
-  bindListeners() {}
 
   onLayerChange(info) {
     const outputInfo = {

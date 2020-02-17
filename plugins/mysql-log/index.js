@@ -18,7 +18,7 @@ export default function mysqlLog(server) {
       'LogParser must be enabled in the server for this plugin to work.'
     );
 
-  server.logParser.on(LOG_PARSER_NEW_GAME, async info => {
+  server.on(LOG_PARSER_NEW_GAME, async info => {
     await MySQLConnector.getPool().query(
       'UPDATE game SET endTime = ? WHERE server = ? AND endTime IS NULL',
       [info.time, server.id]
@@ -30,7 +30,7 @@ export default function mysqlLog(server) {
     );
   });
 
-  server.logParser.on(LOG_PARSER_PLAYER_DIE, async info => {
+  server.on(LOG_PARSER_PLAYER_DIE, async info => {
     await MySQLConnector.getPool().query(
       'INSERT INTO player_die(time, server, victim, damage, attacker, weapon, teamkill) VALUES (?,?,?,?,?,?,?)',
       [
@@ -45,7 +45,7 @@ export default function mysqlLog(server) {
     );
   });
 
-  server.logParser.on(LOG_PARSER_PLAYER_WOUND, async info => {
+  server.on(LOG_PARSER_PLAYER_WOUND, async info => {
     await MySQLConnector.getPool().query(
       'INSERT INTO player_wound(time, server, victim, damage, attacker, weapon, teamkill) VALUES (?,?,?,?,?,?,?)',
       [
@@ -60,7 +60,7 @@ export default function mysqlLog(server) {
     );
   });
 
-  server.logParser.on(LOG_PARSER_REVIVE, async info => {
+  server.on(LOG_PARSER_REVIVE, async info => {
     await MySQLConnector.getPool().query(
       'INSERT INTO revive(time, server, victim, damage, attacker, weapon, reviver) VALUES (?,?,?,?,?,?,?)',
       [
@@ -75,7 +75,7 @@ export default function mysqlLog(server) {
     );
   });
 
-  server.logParser.on(LOG_PARSER_TICK_RATE, async info => {
+  server.on(LOG_PARSER_TICK_RATE, async info => {
     await MySQLConnector.getPool().query(
       'INSERT INTO tick_rate(time, server, tick_rate) VALUES (?,?,?)',
       [info.time, server.id, info.tickRate]

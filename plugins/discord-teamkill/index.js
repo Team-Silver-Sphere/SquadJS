@@ -24,7 +24,7 @@ export default async function plugin(server, channelID, options = {}) {
     channelID
   );
 
-  server.logParser.on(LOG_PARSER_TEAMKILL, info => {
+  server.on(LOG_PARSER_TEAMKILL, info => {
     // ignore suicides
     if (!info.attacker) return;
 

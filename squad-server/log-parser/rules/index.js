@@ -1,3 +1,5 @@
+import ConnectionName from './connection-name.js';
+import ConnectionSteamID from './connection-steam-id.js';
 import NewGame from './new-game.js';
 import PlayerDamage from './player-damage.js';
 import PlayerDie from './player-die.js';
@@ -13,6 +15,8 @@ export default [
   'END_NO_MATCH_ACTION',
 
   // rest
+  ConnectionName,
+  ConnectionSteamID,
   NewGame,
   PlayerDamage,
   PlayerWound,

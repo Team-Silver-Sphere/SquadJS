@@ -6,7 +6,7 @@ import {
   LOG_PARSER_REVIVE
 } from '../../events/log-parser.js';
 
-class InjuryManager {
+class InjuryHandler {
   constructor() {
     this.lastDamage = null;
     this.lastWoundDieEvent = null;
@@ -18,21 +18,21 @@ class InjuryManager {
       raw: args[0],
       time: args[1],
       chainID: args[2],
-      victim: args[3],
+      victim: logParser.connectionHandler.players[args[3]],
       damage: parseFloat(args[4]),
-      attacker: args[5],
+      attacker: logParser.connectionHandler.players[args[5]],
       weapon: args[6]
     };
 
-    logParser.emit(LOG_PARSER_PLAYER_DAMAGE, this.lastDamage);
+    logParser.server.emit(LOG_PARSER_PLAYER_DAMAGE, this.lastDamage);
   }
 
-  newWound(args) {
+  newWound(args, logParser) {
     let wound = {
       raw: args[0],
       time: args[1],
       chainID: args[2],
-      victim: args[3],
+      victim: logParser.connectionHandler.players[args[3]],
       damage: parseFloat(args[4]),
       attackerPlayerObj: args[5],
       weapon: args[6]
@@ -50,12 +50,12 @@ class InjuryManager {
     this.lastWoundDieEvent = [LOG_PARSER_PLAYER_WOUND, wound];
   }
 
-  newDie(args) {
+  newDie(args, logParser) {
     let die = {
       raw: args[0],
       time: args[1],
       chainID: args[2],
-      victim: args[3],
+      victim: logParser.connectionHandler.players[args[3]],
       damage: parseFloat(args[4]),
       attackerObj: args[5],
       weapon: args[6]
@@ -83,10 +83,10 @@ class InjuryManager {
     if (this.lastWoundDieEvent === null) return;
 
     this.lastWoundDieEvent[1].teamkill = true;
-    logParser.emit(...this.lastWoundDieEvent);
+    logParser.server.emit(...this.lastWoundDieEvent);
 
     this.lastWoundDieEvent[0] = LOG_PARSER_TEAMKILL;
-    logParser.emit(...this.lastWoundDieEvent);
+    logParser.server.emit(...this.lastWoundDieEvent);
 
     this.lastWoundDieEvent = null;
   }
@@ -94,7 +94,7 @@ class InjuryManager {
   onNonTeamKilled(logParser) {
     if (this.lastWoundDieEvent) {
       this.lastWoundDieEvent[1].teamkill = false;
-      logParser.emit(...this.lastWoundDieEvent);
+      logParser.server.emit(...this.lastWoundDieEvent);
     }
     this.lastWoundDieEvent = null;
   }
@@ -104,8 +104,8 @@ class InjuryManager {
       raw: args[0],
       time: args[1],
       chainID: args[2],
-      reviver: args[3],
-      victim: args[4]
+      reviver: logParser.connectionHandler.players[args[3]],
+      victim: logParser.connectionHandler.players[args[4]]
     };
 
     /* Add the information of wound event if we have it */
@@ -118,7 +118,7 @@ class InjuryManager {
       delete this.wounds[revive.victim];
     }
 
-    logParser.emit(LOG_PARSER_REVIVE, revive);
+    logParser.server.emit(LOG_PARSER_REVIVE, revive);
   }
 
   woundMatchesLastDamage(wound) {
@@ -130,4 +130,4 @@ class InjuryManager {
   }
 }
 
-export default InjuryManager;
+export default InjuryHandler;

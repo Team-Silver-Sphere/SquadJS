@@ -27,7 +27,7 @@ export default async function plugin(server, channelID, options = {}) {
     channelID
   );
 
-  server.rcon.on(RCON_CHAT_MESSAGE, info => {
+  server.on(RCON_CHAT_MESSAGE, info => {
     if (ignoreChats.includes(info.chat)) return;
 
     channel.send({

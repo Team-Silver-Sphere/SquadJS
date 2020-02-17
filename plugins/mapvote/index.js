@@ -50,7 +50,7 @@ export default function(server, layerFilter = {}, options = {}) {
     currentWinner = null;
   });
 
-  server.rcon.on(RCON_CHAT_MESSAGE, info => {
+  server.on(RCON_CHAT_MESSAGE, info => {
     const match = info.message.match(commandRegex);
     if (!match) return;
 

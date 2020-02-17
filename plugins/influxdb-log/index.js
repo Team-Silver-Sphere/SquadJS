@@ -18,7 +18,7 @@ export default function influxdbLog(server) {
       'LogParser must be enabled in the server for this plugin to work.'
     );
 
-  server.logParser.on(LOG_PARSER_NEW_GAME, info => {
+  server.on(LOG_PARSER_NEW_GAME, info => {
     InfluxDBConnector.writePoint({
       measurement: 'game',
       tags: { server: server.id },
@@ -27,7 +27,7 @@ export default function influxdbLog(server) {
     });
   });
 
-  server.logParser.on(LOG_PARSER_PLAYER_DIE, info => {
+  server.on(LOG_PARSER_PLAYER_DIE, info => {
     InfluxDBConnector.writePoint({
       measurement: 'player_die',
       tags: { server: server.id },
@@ -42,7 +42,7 @@ export default function influxdbLog(server) {
     });
   });
 
-  server.logParser.on(LOG_PARSER_PLAYER_WOUND, info => {
+  server.on(LOG_PARSER_PLAYER_WOUND, info => {
     InfluxDBConnector.writePoint({
       measurement: 'player_wound',
       tags: { server: server.id },
@@ -57,7 +57,7 @@ export default function influxdbLog(server) {
     });
   });
 
-  server.logParser.on(LOG_PARSER_REVIVE, info => {
+  server.on(LOG_PARSER_REVIVE, info => {
     InfluxDBConnector.writePoint({
       measurement: 'revive',
       tags: { server: server.id },
@@ -72,7 +72,7 @@ export default function influxdbLog(server) {
     });
   });
 
-  server.logParser.on(LOG_PARSER_TICK_RATE, info => {
+  server.on(LOG_PARSER_TICK_RATE, info => {
     InfluxDBConnector.writePoint({
       measurement: 'tick_rate',
       tags: { server: server.id },

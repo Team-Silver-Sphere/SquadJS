@@ -1,4 +1,3 @@
-import EventEmitter from 'events';
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
@@ -6,43 +5,45 @@ import readline from 'readline';
 import moment from 'moment';
 import TailModule from 'tail';
 
-import InjuryManager from './utils/injury-manager.js';
+import ConnectionHandler from './utils/connection-handler.js';
+import InjuryHandler from './utils/injury-handler.js';
 import rules from './rules/index.js';
 
 const { Tail } = TailModule;
 
-export default class LogParser extends EventEmitter {
-  constructor(options = {}) {
-    super();
+export default class LogParser {
+  constructor(server) {
+    this.server = server;
 
-    if (!options.logDir) throw new Error('Log Folder not specified');
-    this.logFile = path.join(options.logDir, 'SquadGame.log');
-
-    this.testMode = options.testMode || false;
-
-    this.injuryManager = new InjuryManager();
+    this.connectionHandler = new ConnectionHandler();
+    this.injuryHandler = new InjuryHandler();
 
     this.setup();
   }
 
   setup() {
-    if (this.testMode) {
+    if (this.server.logParserTestMode) {
       /* In test mode, we stream a log file line by line to simulate tail */
       this.reader = readline.createInterface({
-        input: fs.createReadStream(this.logFile)
+        input: fs.createReadStream(
+          path.join(this.server.logParserLogDir, 'SquadGame.log')
+        )
       });
       this.reader.pause();
     } else {
       /* In normal mode, we tail the file to get new lines as and when they are added */
-      this.reader = new Tail(this.logFile, {
-        useWatchFile: true
-      });
+      this.reader = new Tail(
+        path.join(this.server.logParserLogDir, 'SquadGame.log'),
+        {
+          useWatchFile: true
+        }
+      );
     }
     this.reader.on('line', this.handleLine.bind(this));
   }
 
   watch() {
-    if (this.testMode) {
+    if (this.server.logParserTestMode) {
       this.reader.resume();
     } else {
       this.reader.watch();
@@ -50,7 +51,7 @@ export default class LogParser extends EventEmitter {
   }
 
   unwatch() {
-    if (this.testMode) {
+    if (this.server.logParserTestMode) {
       this.reader.pause();
     } else {
       this.reader.unwatch();

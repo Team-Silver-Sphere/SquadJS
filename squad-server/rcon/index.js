@@ -1,19 +1,14 @@
-import EventEmitter from 'events';
 import net from 'net';
 
 import RCONProtocol from './protocol.js';
 
 import { RCON_CHAT_MESSAGE, RCON_ERROR } from '../events/rcon.js';
 
-export default class Rcon extends EventEmitter {
-  constructor(options = {}) {
-    super();
-    this.host = options.host;
-    this.port = options.port;
-    this.password = options.password;
+export default class Rcon {
+  constructor(server) {
+    this.server = server;
 
-    this.maximumPacketSize = options.maximumPacketSize || 4096;
-    this.reconnectInterval = options.reconnectInterval || 1000;
+    this.maximumPacketSize = 4096;
 
     this.client = null;
     this.connected = false;
@@ -42,7 +37,7 @@ export default class Rcon extends EventEmitter {
 
   async authenticate() {
     if (this.authenticated) throw new Error('Already authenticated');
-    return this.write(RCONProtocol.SERVERDATA_AUTH, this.password);
+    return this.write(RCONProtocol.SERVERDATA_AUTH, this.server.rconPassword);
   }
 
   write(type, body) {
@@ -120,7 +115,7 @@ export default class Rcon extends EventEmitter {
           /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[SteamID:([0-9]{17})] (.+?) : (.*)/
         );
 
-        this.emit(RCON_CHAT_MESSAGE, {
+        this.server.emit(RCON_CHAT_MESSAGE, {
           raw: decodedPacket.body,
           chat: message[1],
           steamID: message[2],
@@ -177,7 +172,7 @@ export default class Rcon extends EventEmitter {
       this.client = new net.Socket();
 
       this.client.on('data', this.onData.bind(this));
-      this.client.on('error', err => this.emit(RCON_ERROR, err));
+      this.client.on('error', err => this.server.emit(RCON_ERROR, err));
       this.client.on('close', async hadError => {
         this.connected = false;
         this.authenticated = false;
@@ -189,7 +184,7 @@ export default class Rcon extends EventEmitter {
             await this.authenticate();
             clearInterval(reconnectInterval);
           } catch (err) {}
-        }, this.reconnectInterval);
+        }, this.server.rconAutoReconnectInterval);
       });
 
       const onConnect = () => {
@@ -207,7 +202,7 @@ export default class Rcon extends EventEmitter {
       this.client.once('error', onError);
 
       // run action
-      this.client.connect(this.port, this.host);
+      this.client.connect(this.server.rconPort, this.server.host);
     });
   }
 
