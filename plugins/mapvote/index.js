@@ -81,6 +81,8 @@ export default function(server, layerFilter = {}, options = {}) {
           `AdminWarn "${info.steamID}" The current vote counts are as follows:`
         );
         for (const result of results) {
+          if (result.voteCount === 0) continue;
+
           server.rcon.execute(
             `AdminWarn "${info.steamID}" ${result.layer} - ${
               result.voteCount
