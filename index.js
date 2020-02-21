@@ -1,6 +1,11 @@
 import Server from 'squad-server';
 
-import { discordChat, discordTeamkill, influxdbLog, mysqlLog } from 'plugins';
+import {
+  discordChat,
+  discordTeamkill,
+  influxdbLog,
+  mysqlLog
+} from 'squad-server/plugins';
 
 async function main() {
   const server = new Server({

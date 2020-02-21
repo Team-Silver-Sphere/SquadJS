@@ -4,8 +4,8 @@ import { COPYRIGHT_MESSAGE } from 'core/config';
 
 import SquadLayers from 'connectors/squad-layers';
 
-import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
-import { SERVER_LAYER_CHANGE } from 'squad-server/events/server';
+import { RCON_CHAT_MESSAGE } from '../../events/rcon.js';
+import { SERVER_LAYER_CHANGE } from '../../events/server.js';
 
 export default function(server, layerFilter = {}, options = {}) {
   if (!server)

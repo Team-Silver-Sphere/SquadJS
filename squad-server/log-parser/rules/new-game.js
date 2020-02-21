@@ -13,7 +13,7 @@ export default {
     const layer = SquadLayers.getLayerByLayerClassname(args[4]);
 
     /* Emit new game event */
-    logParser.server.emit(LOG_PARSER_NEW_GAME, {
+    logParser.emitter.emit(LOG_PARSER_NEW_GAME, {
       raw: args[0],
       time: args[1],
       chainID: args[2],

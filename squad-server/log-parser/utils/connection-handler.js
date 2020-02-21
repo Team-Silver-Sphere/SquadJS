@@ -23,7 +23,7 @@ class ConnectionHandler {
 
     this.steamIDs[args[2]] = connection;
 
-    logParser.server.emit(LOG_PARSER_STEAM_ID_CONNECTED, connection);
+    logParser.emitter.emit(LOG_PARSER_STEAM_ID_CONNECTED, connection);
   }
 
   newName(args, logParser) {
@@ -34,7 +34,7 @@ class ConnectionHandler {
 
     this.players[args[3]] = connection;
 
-    logParser.server.emit(LOG_PARSER_PLAYER_CONNECTED, connection);
+    logParser.emitter.emit(LOG_PARSER_PLAYER_CONNECTED, connection);
   }
 }
 

@@ -13,29 +13,25 @@ export default class Server extends EventEmitter {
 
     this.host = options.host;
 
-    this.rconPort = options.rconPort;
-    this.rconPassword = options.rconPassword;
-    this.rconAutoReconnectInterval = options.rconAutoReconnectInterval || 1000;
-
-    this.logParserLogDir = options.logParserLogDir;
-    this.logParserTestMode = options.logParserTestMode;
-
-    if (options.rconEnabled) {
-      if (this.host === undefined)
-        throw new Error('Host must be specified when RCON is enabled');
-      if (this.rconPort === undefined)
-        throw new Error('RCON Port must be specified when RCON is enabled');
-      if (this.rconPassword === undefined)
-        throw new Error('RCON Password must be specified when RCON is enabled');
-      this.rcon = new Rcon(this);
+    if (!options.debugDisableRcon) {
+      this.rcon = new Rcon(
+        {
+          host: options.host,
+          port: options.rconPort,
+          password: options.rconPassword
+        },
+        this
+      );
     }
 
-    if (options.logParserEnabled) {
-      if (this.logParserLogDir === undefined)
-        throw new Error(
-          'Log Directory must be specified when LogParser is enabled.'
-        );
-      this.logParser = new LogParser(this);
+    if (!options.debugDisableLogParser) {
+      this.logParser = new LogParser(
+        {
+          logDir: options.logDir,
+          testMode: options.logParserTestMode
+        },
+        this
+      );
     }
 
     this.layerHistory = options.layerHistory || [];

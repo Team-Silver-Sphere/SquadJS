@@ -24,7 +24,7 @@ class InjuryHandler {
       weapon: args[6]
     };
 
-    logParser.server.emit(LOG_PARSER_PLAYER_DAMAGE, this.lastDamage);
+    logParser.emitter.emit(LOG_PARSER_PLAYER_DAMAGE, this.lastDamage);
   }
 
   newWound(args, logParser) {
@@ -83,10 +83,10 @@ class InjuryHandler {
     if (this.lastWoundDieEvent === null) return;
 
     this.lastWoundDieEvent[1].teamkill = true;
-    logParser.server.emit(...this.lastWoundDieEvent);
+    logParser.emitter.emit(...this.lastWoundDieEvent);
 
     this.lastWoundDieEvent[0] = LOG_PARSER_TEAMKILL;
-    logParser.server.emit(...this.lastWoundDieEvent);
+    logParser.emitter.emit(...this.lastWoundDieEvent);
 
     this.lastWoundDieEvent = null;
   }
@@ -94,7 +94,7 @@ class InjuryHandler {
   onNonTeamKilled(logParser) {
     if (this.lastWoundDieEvent) {
       this.lastWoundDieEvent[1].teamkill = false;
-      logParser.server.emit(...this.lastWoundDieEvent);
+      logParser.emitter.emit(...this.lastWoundDieEvent);
     }
     this.lastWoundDieEvent = null;
   }
@@ -118,7 +118,7 @@ class InjuryHandler {
       delete this.wounds[revive.victim];
     }
 
-    logParser.server.emit(LOG_PARSER_REVIVE, revive);
+    logParser.emitter.emit(LOG_PARSER_REVIVE, revive);
   }
 
   woundMatchesLastDamage(wound) {

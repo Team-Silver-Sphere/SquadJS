@@ -8,42 +8,42 @@ import TailModule from 'tail';
 import ConnectionHandler from './utils/connection-handler.js';
 import InjuryHandler from './utils/injury-handler.js';
 import rules from './rules/index.js';
+import EventEmitter from 'events';
 
 const { Tail } = TailModule;
 
 export default class LogParser {
-  constructor(server) {
-    this.server = server;
+  constructor(options = {}, emitter) {
+    if (!options.logDir) throw new Error('Log Directory must be specified.');
+    this.logDir = options.logDir;
+    this.testMode = options.testMode || false;
 
     this.connectionHandler = new ConnectionHandler();
     this.injuryHandler = new InjuryHandler();
+
+    this.emitter = emitter || new EventEmitter();
 
     this.setup();
   }
 
   setup() {
-    if (this.server.logParserTestMode) {
+    if (this.testMode) {
       /* In test mode, we stream a log file line by line to simulate tail */
       this.reader = readline.createInterface({
-        input: fs.createReadStream(
-          path.join(this.server.logParserLogDir, 'SquadGame.log')
-        )
+        input: fs.createReadStream(path.join(this.logDir, 'SquadGame.log'))
       });
       this.reader.pause();
     } else {
       /* In normal mode, we tail the file to get new lines as and when they are added */
-      this.reader = new Tail(
-        path.join(this.server.logParserLogDir, 'SquadGame.log'),
-        {
-          useWatchFile: true
-        }
-      );
+      this.reader = new Tail(path.join(this.logDir, 'SquadGame.log'), {
+        useWatchFile: true
+      });
     }
     this.reader.on('line', this.handleLine.bind(this));
   }
 
   watch() {
-    if (this.server.logParserTestMode) {
+    if (this.testMode) {
       this.reader.resume();
     } else {
       this.reader.watch();
@@ -51,7 +51,7 @@ export default class LogParser {
   }
 
   unwatch() {
-    if (this.server.logParserTestMode) {
+    if (this.testMode) {
       this.reader.pause();
     } else {
       this.reader.unwatch();

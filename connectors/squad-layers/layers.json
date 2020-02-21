@@ -1378,7 +1378,7 @@
     {
         "layer": "Jensen's Range Training v1",
         "map": "Jensen's Range",
-        "layerClassname": "Jensens_Range_Training_v1",
+        "layerClassname": "Jensens_Range_v1",
         "mapClassname": "Jensens_Range",
         "mapSize": "4x4 km",
         "gamemode": "Training",
@@ -1406,7 +1406,7 @@
     {
         "layer": "Jensen's Range Training v2",
         "map": "Jensen's Range",
-        "layerClassname": "Jensens_Range_Training_v2",
+        "layerClassname": "Jensens_Range_v2",
         "mapClassname": "Jensens_Range",
         "mapSize": "4x4 km",
         "gamemode": "Training",
@@ -1434,7 +1434,7 @@
     {
         "layer": "Jensen's Range Training v3",
         "map": "Jensen's Range",
-        "layerClassname": "Jensens_Range_Training_v3",
+        "layerClassname": "Jensens_Range_v3",
         "mapClassname": "Jensens_Range",
         "mapSize": "4x4 km",
         "gamemode": "Training",
@@ -4480,9 +4480,9 @@
         "newForVersion": false
     },
     {
-        "layer": "CAF_Jensens_Range_Training_v4",
+        "layer": "CAF_Jensens_Range_v4",
         "map": "CAF_Jensens_Range",
-        "layerClassname": "CAF_Jensens_Range_Training_v4",
+        "layerClassname": "CAF_Jensens_Range_v4",
         "mapClassname": "CAF_Jensens_Range",
         "gamemode": "Training",
         "version": "v4",

@@ -1,14 +1,25 @@
-import net from 'net';
+import EventEmitter from 'events';
 
+import net from 'net';
 import RCONProtocol from './protocol.js';
 
 import { RCON_CHAT_MESSAGE, RCON_ERROR } from '../events/rcon.js';
 
 export default class Rcon {
-  constructor(server) {
-    this.server = server;
+  constructor(options = {}, emitter) {
+    if (!options.host) throw new Error('Host must be specified.');
+    this.host = options.host;
 
+    if (!options.port) throw new Error('RCON port must be specified.');
+    this.port = options.port;
+
+    if (!options.password) throw new Error('RCON password must be specified.');
+    this.password = options.password;
+
+    this.rconAutoReconnectInterval = options.rconAutoReconnectInterval || 1000;
     this.maximumPacketSize = 4096;
+
+    this.emitter = emitter || new EventEmitter();
 
     this.client = null;
     this.connected = false;
@@ -37,7 +48,7 @@ export default class Rcon {
 
   async authenticate() {
     if (this.authenticated) throw new Error('Already authenticated');
-    return this.write(RCONProtocol.SERVERDATA_AUTH, this.server.rconPassword);
+    return this.write(RCONProtocol.SERVERDATA_AUTH, this.password);
   }
 
   write(type, body) {
@@ -115,7 +126,7 @@ export default class Rcon {
           /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[SteamID:([0-9]{17})] (.+?) : (.*)/
         );
 
-        this.server.emit(RCON_CHAT_MESSAGE, {
+        this.emitter.emit(RCON_CHAT_MESSAGE, {
           raw: decodedPacket.body,
           chat: message[1],
           steamID: message[2],
@@ -172,7 +183,7 @@ export default class Rcon {
       this.client = new net.Socket();
 
       this.client.on('data', this.onData.bind(this));
-      this.client.on('error', err => this.server.emit(RCON_ERROR, err));
+      this.client.on('error', err => this.emitter.emit(RCON_ERROR, err));
       this.client.on('close', async hadError => {
         this.connected = false;
         this.authenticated = false;
@@ -184,7 +195,7 @@ export default class Rcon {
             await this.authenticate();
             clearInterval(reconnectInterval);
           } catch (err) {}
-        }, this.server.rconAutoReconnectInterval);
+        }, this.rconAutoReconnectInterval);
       });
 
       const onConnect = () => {
@@ -202,7 +213,7 @@ export default class Rcon {
       this.client.once('error', onError);
 
       // run action
-      this.client.connect(this.server.rconPort, this.server.host);
+      this.client.connect(this.port, this.host);
     });
   }
 
