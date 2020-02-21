@@ -17,6 +17,7 @@ export default class LogParser {
     if (!options.logDir) throw new Error('Log Directory must be specified.');
     this.logDir = options.logDir;
     this.testMode = options.testMode || false;
+    this.fileName = options.testModeFileName || 'SquadGame.log';
 
     this.connectionHandler = new ConnectionHandler();
     this.injuryHandler = new InjuryHandler();
@@ -30,12 +31,12 @@ export default class LogParser {
     if (this.testMode) {
       /* In test mode, we stream a log file line by line to simulate tail */
       this.reader = readline.createInterface({
-        input: fs.createReadStream(path.join(this.logDir, 'SquadGame.log'))
+        input: fs.createReadStream(path.join(this.logDir, this.fileName))
       });
       this.reader.pause();
     } else {
       /* In normal mode, we tail the file to get new lines as and when they are added */
-      this.reader = new Tail(path.join(this.logDir, 'SquadGame.log'), {
+      this.reader = new Tail(path.join(this.logDir, this.fileName), {
         useWatchFile: true
       });
     }
