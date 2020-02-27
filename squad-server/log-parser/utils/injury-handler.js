@@ -18,9 +18,15 @@ class InjuryHandler {
       raw: args[0],
       time: args[1],
       chainID: args[2],
-      victim: logParser.connectionHandler.players[args[3]],
+      victim: {
+        name: args[3],
+        ...logParser.server.getPlayerByName(args[3])
+      },
       damage: parseFloat(args[4]),
-      attacker: logParser.connectionHandler.players[args[5]],
+      attacker: {
+        name: args[5],
+        ...logParser.server.getPlayerByName(args[3])
+      },
       weapon: args[6]
     };
 
@@ -32,7 +38,10 @@ class InjuryHandler {
       raw: args[0],
       time: args[1],
       chainID: args[2],
-      victim: logParser.connectionHandler.players[args[3]],
+      victim: {
+        name: args[3],
+        ...logParser.server.getPlayerByName(args[3])
+      },
       damage: parseFloat(args[4]),
       attackerPlayerObj: args[5],
       weapon: args[6]
@@ -46,7 +55,7 @@ class InjuryHandler {
       };
     }
 
-    this.wounds[wound.victim] = wound;
+    this.wounds[wound.victim.name] = wound;
     this.lastWoundDieEvent = [LOG_PARSER_PLAYER_WOUND, wound];
   }
 
@@ -55,7 +64,10 @@ class InjuryHandler {
       raw: args[0],
       time: args[1],
       chainID: args[2],
-      victim: logParser.connectionHandler.players[args[3]],
+      victim: {
+        name: args[3],
+        ...logParser.server.getPlayerByName(args[3])
+      },
       damage: parseFloat(args[4]),
       attackerObj: args[5],
       weapon: args[6]
@@ -67,12 +79,12 @@ class InjuryHandler {
         ...this.lastDamage,
         ...die
       };
-    } else if (this.wounds[die.victim]) {
+    } else if (this.wounds[die.victim.name]) {
       /* Otherwise, the player should have been wounded first, so add wound info */
       die = {
-        ...this.wounds[die.victim],
+        ...this.wounds[die.victim.name],
         ...die,
-        woundTime: this.wounds[die.victim].time
+        woundTime: this.wounds[die.victim.name].time
       };
     }
 
@@ -104,29 +116,35 @@ class InjuryHandler {
       raw: args[0],
       time: args[1],
       chainID: args[2],
-      reviver: logParser.connectionHandler.players[args[3]],
-      victim: logParser.connectionHandler.players[args[4]]
+      reviver: {
+        name: args[3],
+        ...logParser.server.getPlayerByName(args[3])
+      },
+      victim: {
+        name: args[4],
+        ...logParser.server.getPlayerByName(args[3])
+      }
     };
 
     /* Add the information of wound event if we have it */
-    if (this.wounds[revive.victim]) {
+    if (this.wounds[revive.victim.name]) {
       revive = {
-        ...this.wounds[revive.victim],
+        ...this.wounds[revive.victim.name],
         ...revive
       };
 
-      delete this.wounds[revive.victim];
+      delete this.wounds[revive.victim.name];
     }
 
     logParser.emitter.emit(LOG_PARSER_REVIVE, revive);
   }
 
   woundMatchesLastDamage(wound) {
-    return this.lastDamage && wound.victim === this.lastDamage.victim;
+    return this.lastDamage && wound.victim.name === this.lastDamage.victim.name;
   }
 
   dieMatchesLastDamage(die) {
-    return this.lastDamage && die.victim === this.lastDamage.victim;
+    return this.lastDamage && die.victim.name === this.lastDamage.victim.name;
   }
 }
 

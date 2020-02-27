@@ -11,11 +11,7 @@ import {
 export default function mysqlLog(server) {
   if (!server)
     throw new Error(
-      'DiscordTeamkill must be provided with a reference to the server'
-    );
-  if (!('logParser' in server))
-    throw new Error(
-      'LogParser must be enabled in the server for this plugin to work.'
+      'MySQLLog must be provided with a reference to the server.'
     );
 
   server.on(LOG_PARSER_NEW_GAME, async info => {

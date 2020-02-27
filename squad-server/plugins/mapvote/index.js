@@ -9,13 +9,7 @@ import { SERVER_LAYER_CHANGE } from '../../events/server.js';
 
 export default function(server, layerFilter = {}, options = {}) {
   if (!server)
-    throw new Error(
-      'DiscordChat must be provided with a reference to the server'
-    );
-  if (!('rcon' in server))
-    throw new Error(
-      'Rcon must be enabled in the server for this plugin to work.'
-    );
+    throw new Error('Mapvote must be provided with a reference to the server.');
 
   const command = options.command || '!mapvote';
   const commandRegex = new RegExp(`${command} ([A-z0-9'_ ]*)`);

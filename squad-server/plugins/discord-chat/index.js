@@ -6,11 +6,7 @@ import { RCON_CHAT_MESSAGE } from '../../events/rcon.js';
 export default async function plugin(server, channelID, options = {}) {
   if (!server)
     throw new Error(
-      'DiscordChat must be provided with a reference to the server'
-    );
-  if (!('rcon' in server))
-    throw new Error(
-      'Rcon must be enabled in the server for this plugin to work.'
+      'DiscordChat must be provided with a reference to the server.'
     );
 
   if (!channelID)

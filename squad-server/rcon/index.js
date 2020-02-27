@@ -32,6 +32,7 @@ export default class Rcon {
     this.ignoreNextEndPacket = false;
   }
 
+  /* RCON functionality */
   async watch() {
     await this.connect();
     await this.authenticate();
@@ -41,16 +42,40 @@ export default class Rcon {
     await this.disconnect();
   }
 
-  async execute(command) {
-    if (!this.authenticated) throw new Error('Not authenticated');
-    return this.write(RCONProtocol.SERVERDATA_EXECCOMMAND, command);
-  }
-
   async authenticate() {
     if (this.authenticated) throw new Error('Already authenticated');
     return this.write(RCONProtocol.SERVERDATA_AUTH, this.password);
   }
 
+  async execute(command) {
+    if (!this.authenticated) throw new Error('Not authenticated');
+    return this.write(RCONProtocol.SERVERDATA_EXECCOMMAND, command);
+  }
+
+  async listPlayers() {
+    const response = await this.execute('ListPlayers');
+
+    const players = [];
+
+    for (const line of response.split('\n')) {
+      const match = line.match(
+        /ID: ([0-9]+) \| SteamID: ([0-9]{17}) \| Name: (.+) \| Team ID: ([0-9]+) \| Squad ID: ([0-9]+|N\/A)/
+      );
+      if (!match) continue;
+
+      players.push({
+        playerID: match[1],
+        steamID: match[2],
+        name: match[3],
+        teamID: match[4],
+        squadID: match[5]
+      });
+    }
+
+    return players;
+  }
+
+  /* Core socket functionality */
   write(type, body) {
     return new Promise((resolve, reject) => {
       if (!this.client.writable) reject(new Error('Unable to write to socket'));

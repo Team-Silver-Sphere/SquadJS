@@ -13,42 +13,40 @@ export default class Server extends EventEmitter {
     if (!('id' in options)) throw new Error('Server must have an ID.');
     this.id = options.id;
     this.host = options.host;
+    this.updateInterval = options.updateInterval || 30 * 1000;
 
     // setup additional classes
-    if (!options.debugDisableRcon) {
-      this.rcon = new Rcon(
-        {
-          host: options.host,
-          port: options.rconPort,
-          password: options.rconPassword
-        },
-        this
-      );
-    }
+    this.rcon = new Rcon(
+      {
+        host: options.host,
+        port: options.rconPort,
+        password: options.rconPassword
+      },
+      this
+    );
 
-    if (!options.debugDisableLogParser) {
-      this.logParser = new LogParser(
-        {
-          logDir: options.logDir,
-          testMode: options.logParserTestMode,
-          testModeFileName: options.logParserTestModeFileName
-        },
-        this
-      );
-    }
+    this.logParser = new LogParser(
+      {
+        logDir: options.logDir,
+        testMode: options.logParserTestMode,
+        testModeFileName: options.logParserTestModeFileName
+      },
+      this
+    );
 
     // setup internal data storage
     this.layerHistory = options.layerHistory || [];
     this.layerHistoryMaxLength = options.layerHistoryMaxLength || 20;
 
+    this.players = [];
+
     // setup internal listeners
     this.on(LOG_PARSER_NEW_GAME, this.onLayerChange.bind(this));
-  }
 
-  onLayerChange(info) {
-    this.layerHistory.unshift(info);
-    this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
-    this.emit(SERVER_LAYER_CHANGE, info);
+    // setup period updaters
+    setTimeout(async () => {
+      this.players = await this.rcon.listPlayers();
+    }, this.updateInterval);
   }
 
   async watch() {
@@ -59,5 +57,23 @@ export default class Server extends EventEmitter {
   async unwatch() {
     if (this.logParser) this.logParser.unwatch();
     if (this.rcon) await this.rcon.unwatch();
+  }
+
+  getPlayerByName(name) {
+    const matchingPlayers = [];
+
+    for (const player of this.players) {
+      if (player.name !== name) continue;
+      matchingPlayers.push(player);
+    }
+
+    if (matchingPlayers.length !== 1) return matchingPlayers[0];
+    else return null;
+  }
+
+  onLayerChange(info) {
+    this.layerHistory.unshift(info);
+    this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
+    this.emit(SERVER_LAYER_CHANGE, info);
   }
 }
