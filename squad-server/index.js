@@ -67,7 +67,7 @@ export default class Server extends EventEmitter {
       matchingPlayers.push(player);
     }
 
-    if (matchingPlayers.length !== 1) return matchingPlayers[0];
+    if (matchingPlayers.length === 1) return matchingPlayers[0];
     else return null;
   }
 
