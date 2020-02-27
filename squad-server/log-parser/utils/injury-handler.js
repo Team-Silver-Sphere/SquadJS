@@ -20,12 +20,12 @@ class InjuryHandler {
       chainID: args[2],
       victim: {
         name: args[3],
-        ...logParser.server.getPlayerByName(args[3])
+        ...logParser.emitter.getPlayerByName(args[3])
       },
       damage: parseFloat(args[4]),
       attacker: {
         name: args[5],
-        ...logParser.server.getPlayerByName(args[3])
+        ...logParser.emitter.getPlayerByName(args[3])
       },
       weapon: args[6]
     };
@@ -40,7 +40,7 @@ class InjuryHandler {
       chainID: args[2],
       victim: {
         name: args[3],
-        ...logParser.server.getPlayerByName(args[3])
+        ...logParser.emitter.getPlayerByName(args[3])
       },
       damage: parseFloat(args[4]),
       attackerPlayerObj: args[5],
@@ -66,7 +66,7 @@ class InjuryHandler {
       chainID: args[2],
       victim: {
         name: args[3],
-        ...logParser.server.getPlayerByName(args[3])
+        ...logParser.emitter.getPlayerByName(args[3])
       },
       damage: parseFloat(args[4]),
       attackerObj: args[5],
@@ -118,11 +118,11 @@ class InjuryHandler {
       chainID: args[2],
       reviver: {
         name: args[3],
-        ...logParser.server.getPlayerByName(args[3])
+        ...logParser.emitter.getPlayerByName(args[3])
       },
       victim: {
         name: args[4],
-        ...logParser.server.getPlayerByName(args[3])
+        ...logParser.emitter.getPlayerByName(args[3])
       }
     };
 
