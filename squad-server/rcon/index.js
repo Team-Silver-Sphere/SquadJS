@@ -68,7 +68,7 @@ export default class Rcon {
         steamID: match[2],
         name: match[3],
         teamID: match[4],
-        squadID: match[5]
+        squadID: match[5] === 'N/A' ? match[5] : null
       });
     }
 
