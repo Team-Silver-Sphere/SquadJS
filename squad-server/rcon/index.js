@@ -20,7 +20,7 @@ export default class Rcon {
 
     this.emitter = emitter || new EventEmitter();
 
-    this.rconAutoReconnectInterval = options.rconAutoReconnectInterval || 1000;
+    this.rconAutoReconnectInterval = options.rconAutoReconnectInterval || 5000;
     this.maximumPacketSize = 4096;
 
     this.client = null;
