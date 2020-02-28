@@ -16,16 +16,16 @@ export default class Rcon {
     if (!options.password) throw new Error('RCON password must be specified.');
     this.password = options.password;
 
-    this.rconAutoReconnectInterval = options.rconAutoReconnectInterval || 1000;
-    this.maximumPacketSize = 4096;
+    this.verbose = options.verbose || false;
 
     this.emitter = emitter || new EventEmitter();
+
+    this.rconAutoReconnectInterval = options.rconAutoReconnectInterval || 1000;
+    this.maximumPacketSize = 4096;
 
     this.client = null;
     this.connected = false;
     this.autoReconnect = true;
-
-    this.authenticated = false;
 
     this.requestQueue = [];
     this.currentMultiPacket = [];
@@ -33,22 +33,18 @@ export default class Rcon {
   }
 
   /* RCON functionality */
-  async watch() {
-    await this.connect();
-    await this.authenticate();
+  watch() {
+    this.verbose('Method Exec: watch()');
+    return this.connect();
   }
 
-  async unwatch() {
-    await this.disconnect();
+  unwatch() {
+    this.verbose('Method Exec: unwatch()');
+    return this.disconnect();
   }
 
-  async authenticate() {
-    if (this.authenticated) throw new Error('Already authenticated');
-    return this.write(RCONProtocol.SERVERDATA_AUTH, this.password);
-  }
-
-  async execute(command) {
-    if (!this.authenticated) throw new Error('Not authenticated');
+  execute(command) {
+    this.verbose('Method Exec: execute()');
     return this.write(RCONProtocol.SERVERDATA_EXECCOMMAND, command);
   }
 
@@ -76,20 +72,112 @@ export default class Rcon {
   }
 
   /* Core socket functionality */
+  connect() {
+    this.verbose('Method Exec: connect()');
+    return new Promise((resolve, reject) => {
+      this.autoReconnect = true;
+
+      // setup socket
+      this.client = new net.Socket();
+
+      this.client.on('data', this.onData.bind(this));
+
+      this.client.on('error', err => {
+        this.verbose(`Socket Error: ${err.message}`);
+        this.emitter.emit(RCON_ERROR, err);
+      });
+
+      this.client.on('close', async hadError => {
+        this.verbose('Socket Closed.');
+        this.connected = false;
+        if (!this.autoReconnect) return;
+        const reconnectInterval = setInterval(async () => {
+          this.verbose('Attempting AutoReconnect.');
+          try {
+            await this.connect();
+            clearInterval(reconnectInterval);
+          } catch (err) {
+            this.verbose('AutoReconnect Failed.');
+          }
+        }, this.rconAutoReconnectInterval);
+      });
+
+      const onConnect = async () => {
+        this.verbose('Socket Opened.');
+        this.client.removeListener('error', onError);
+        this.connected = true;
+        await this.write(RCONProtocol.SERVERDATA_AUTH, this.password);
+        resolve();
+      };
+
+      const onError = err => {
+        this.verbose(`Error Opening Socket: ${err.message}`);
+        this.client.removeListener('connect', onConnect);
+        reject(err);
+      };
+
+      this.client.once('connect', onConnect);
+      this.client.once('error', onError);
+
+      this.client.connect(this.port, this.host);
+    });
+  }
+
+  async disconnect(disableAutoReconnect = true) {
+    this.verbose(`Method Exec: disconnect(${disableAutoReconnect})`);
+    return new Promise((resolve, reject) => {
+      if (disableAutoReconnect) this.autoReconnect = false;
+
+      const onClose = () => {
+        this.verbose('Disconnect successful.');
+        this.client.removeListener('error', onError);
+        resolve();
+      };
+
+      const onError = err => {
+        this.verbose(`Error disconnecting: ${err.message}`);
+        this.client.removeListener('close', onClose);
+        reject(err);
+      };
+
+      this.client.once('close', onClose);
+      this.client.once('error', onError);
+
+      this.client.disconnect();
+    });
+  }
+
   write(type, body) {
     return new Promise((resolve, reject) => {
       if (!this.client.writable) reject(new Error('Unable to write to socket'));
-      if (!this.connected) reject(new Error('Not connected'));
+      if (!this.connected) reject(new Error('Not connected.'));
 
-      const handleAuthMultiPacket = () => {
+      // prepare packets to send
+      const encodedPacket = this.encodePacket(type, RCONProtocol.ID_MID, body);
+      const encodedEmptyPacket = this.encodePacket(
+        RCONProtocol.SERVERDATA_EXECCOMMAND,
+        RCONProtocol.ID_END,
+        ''
+      );
+
+      if (
+        this.maximumPacketSize > 0 &&
+        encodedPacket.length > this.maximumPacketSize
+      )
+        reject(new Error('Packet too long.'));
+
+      // prepare to handle response.
+      const handleAuthMultiPacket = async () => {
         this.client.removeListener('error', reject);
 
         for (const packet of this.currentMultiPacket) {
           if (packet.type === RCONProtocol.SERVERDATA_RESPONSE_VALUE) continue;
-          if (packet.id !== RCONProtocol.ID_MID)
+          if (packet.id !== RCONProtocol.ID_MID) {
+            this.verbose('Unable to authenticate.');
+            await this.disconnect(false);
             reject(new Error('Unable to authenticate.'));
+          }
 
-          this.authenticated = true;
           this.currentMultiPacket = [];
 
           resolve();
@@ -114,20 +202,6 @@ export default class Rcon {
       else this.requestQueue.push(handleMultiPacket);
 
       this.client.on('error', reject);
-
-      // prepare packets to send
-      const encodedPacket = this.encodePacket(type, RCONProtocol.ID_MID, body);
-      const encodedEmptyPacket = this.encodePacket(
-        RCONProtocol.SERVERDATA_EXECCOMMAND,
-        RCONProtocol.ID_END,
-        ''
-      );
-
-      if (
-        this.maximumPacketSize > 0 &&
-        encodedPacket.length > this.maximumPacketSize
-      )
-        reject(new Error('Packet too long'));
 
       // send packets
       this.client.write(encodedPacket);
@@ -200,66 +274,7 @@ export default class Rcon {
     };
   }
 
-  async connect() {
-    return new Promise((resolve, reject) => {
-      this.autoReconnect = true;
-
-      // setup socket
-      this.client = new net.Socket();
-
-      this.client.on('data', this.onData.bind(this));
-      this.client.on('error', err => this.emitter.emit(RCON_ERROR, err));
-      this.client.on('close', async hadError => {
-        this.connected = false;
-        this.authenticated = false;
-
-        const reconnectInterval = setInterval(async () => {
-          if (!this.autoReconnect) return;
-          try {
-            await this.connect();
-            await this.authenticate();
-            clearInterval(reconnectInterval);
-          } catch (err) {}
-        }, this.rconAutoReconnectInterval);
-      });
-
-      const onConnect = () => {
-        this.client.removeListener('error', onError);
-        this.connected = true;
-        resolve();
-      };
-
-      const onError = err => {
-        this.client.removeListener('connect', onConnect);
-        reject(err);
-      };
-
-      this.client.once('connect', onConnect);
-      this.client.once('error', onError);
-
-      // run action
-      this.client.connect(this.port, this.host);
-    });
-  }
-
-  async disconnect() {
-    return new Promise((resolve, reject) => {
-      this.autoReconnect = false;
-
-      const onClose = () => {
-        this.client.removeListener('error', onError);
-        resolve();
-      };
-
-      const onError = err => {
-        this.client.removeListener('close', onClose);
-        reject(err);
-      };
-
-      this.client.once('close', onClose);
-      this.client.once('error', onError);
-
-      this.client.disconnect();
-    });
+  verbose(msg) {
+    if (this.verbose) console.log(`RCON (Verbose): ${msg}`);
   }
 }
