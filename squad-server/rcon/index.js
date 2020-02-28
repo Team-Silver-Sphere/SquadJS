@@ -90,7 +90,7 @@ export default class Rcon {
       });
 
       this.client.on('close', async hadError => {
-        this.verbose('Socket Closed.');
+        this.verbose(`Socket Closed. AutoReconnect: ${this.autoReconnect}`);
         this.connected = false;
         if (!this.autoReconnect) return;
         if (this.reconnectInterval !== null) return;
@@ -100,6 +100,7 @@ export default class Rcon {
             await this.connect();
             clearInterval(this.reconnectInterval);
             this.reconnectInterval = null;
+            this.verbose('Cleaned AutoReconnect.');
           } catch (err) {
             this.verbose('AutoReconnect Failed.');
           }
@@ -153,8 +154,14 @@ export default class Rcon {
 
   write(type, body) {
     return new Promise((resolve, reject) => {
-      if (!this.client.writable) reject(new Error('Unable to write to socket'));
-      if (!this.connected) reject(new Error('Not connected.'));
+      if (!this.client.writable) {
+        reject(new Error('Unable to write to socket'));
+        return;
+      }
+      if (!this.connected) {
+        reject(new Error('Not connected.'));
+        return;
+      }
 
       // prepare packets to send
       const encodedPacket = this.encodePacket(type, RCONProtocol.ID_MID, body);
