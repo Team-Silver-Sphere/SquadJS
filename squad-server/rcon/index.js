@@ -16,7 +16,7 @@ export default class Rcon {
     if (!options.password) throw new Error('RCON password must be specified.');
     this.password = options.password;
 
-    this.verbose = options.verbose || false;
+    this.verboseEnabled = options.verbose || false;
 
     this.emitter = emitter || new EventEmitter();
 
@@ -275,6 +275,6 @@ export default class Rcon {
   }
 
   verbose(msg) {
-    if (this.verbose) console.log(`RCON (Verbose): ${msg}`);
+    if (this.verboseEnabled) console.log(`RCON (Verbose): ${msg}`);
   }
 }
