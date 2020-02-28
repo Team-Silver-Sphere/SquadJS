@@ -20,7 +20,8 @@ export default class Server extends EventEmitter {
       {
         host: options.host,
         port: options.rconPort,
-        password: options.rconPassword
+        password: options.rconPassword,
+        verbose: options.rconVerbose
       },
       this
     );
