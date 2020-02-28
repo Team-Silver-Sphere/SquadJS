@@ -32,14 +32,18 @@ export default function mysqlLog(server) {
 
   server.on(LOG_PARSER_PLAYER_WOUND, info => {
     MySQLConnector.getPool().query(
-      'call InsertPlayerWound(?,?,?,?,?,?,?,?,?)',
+      'call InsertPlayerWound(?,?,?,?,?,?,?,?,?,?,?,?,?)',
       [
         server.id,
         info.time,
         info.victim.steamID,
         info.victim.name,
+        info.victim.teamID,
+        info.victim.squadID,
         info.attacker.steamID,
         info.attacker.name,
+        info.attacker.teamID,
+        info.attacker.squadID,
         info.damage,
         info.weapon,
         info.teamkill
@@ -49,15 +53,19 @@ export default function mysqlLog(server) {
 
   server.on(LOG_PARSER_PLAYER_DIE, info => {
     MySQLConnector.getPool().query(
-      'call InsertPlayerDie(?,?,?,?,?,?,?,?,?,?)',
+      'call InsertPlayerDie(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
       [
         server.id,
         info.time,
         info.woundTime,
         info.victim.steamID,
         info.victim.name,
+        info.victim.teamID,
+        info.victim.squadID,
         info.attacker.steamID,
         info.attacker.name,
+        info.attacker.teamID,
+        info.attacker.squadID,
         info.damage,
         info.weapon,
         info.teamkill
@@ -67,20 +75,26 @@ export default function mysqlLog(server) {
 
   server.on(LOG_PARSER_REVIVE, info => {
     MySQLConnector.getPool().query(
-      'call InsertPlayerRevive(?,?,?,?,?,?,?,?,?,?,?,?)',
+      'call InsertPlayerRevive(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
       [
         server.id,
         info.time,
         info.woundTime,
         info.victim.steamID,
         info.victim.name,
+        info.victim.teamID,
+        info.victim.squadID,
         info.attacker.steamID,
         info.attacker.name,
+        info.attacker.teamID,
+        info.attacker.squadID,
         info.damage,
         info.weapon,
         info.teamkill,
         info.reviver.steamID,
-        info.reviver.name
+        info.reviver.name,
+        info.reviver.teamID,
+        info.reviver.squadID
       ]
     );
   });
