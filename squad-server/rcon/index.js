@@ -275,6 +275,7 @@ export default class Rcon {
   }
 
   verbose(msg) {
-    if (this.verboseEnabled) console.log(`RCON (Verbose): ${msg}`);
+    if (this.verboseEnabled)
+      console.log(`[${Date.now()}] RCON (Verbose): ${msg}`);
   }
 }
