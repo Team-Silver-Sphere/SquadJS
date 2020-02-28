@@ -91,11 +91,13 @@ export default class Rcon {
         this.verbose('Socket Closed.');
         this.connected = false;
         if (!this.autoReconnect) return;
-        const reconnectInterval = setInterval(async () => {
+        if (this.reconnectInterval !== null) return;
+        this.reconnectInterval = setInterval(async () => {
           this.verbose('Attempting AutoReconnect.');
           try {
             await this.connect();
-            clearInterval(reconnectInterval);
+            clearInterval(this.reconnectInterval);
+            this.reconnectInterval = null;
           } catch (err) {
             this.verbose('AutoReconnect Failed.');
           }
