@@ -130,7 +130,8 @@ class InjuryHandler {
     if (this.wounds[revive.victim.name]) {
       revive = {
         ...this.wounds[revive.victim.name],
-        ...revive
+        ...revive,
+        woundTime: this.wounds[revive.victim.name].time
       };
 
       delete this.wounds[revive.victim.name];
