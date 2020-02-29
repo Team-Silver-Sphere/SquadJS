@@ -4,6 +4,7 @@ import {
   discordChat,
   discordTeamkill,
   influxdbLog,
+  mapvote,
   mysqlLog
 } from 'squad-server/plugins';
 
@@ -11,15 +12,22 @@ async function main() {
   const server = new Server({
     id: 0,
 
-    logParserEnabled: true,
-    logParserLogDir: './squad-server/log-parser/test-data',
-    logParserTestMode: true
+    host: 'localhost',
+    rconPort: 21114,
+    rconPassword: 'password',
+    logDir: 'C:/path/to/squad/log/folder'
   });
 
-  await discordChat(server, '667741905228136459');
-  await discordTeamkill(server, '667741905228136459');
-  influxdbLog(server);
+  // discord logging
+  await discordChat(server, 'discordChannelID');
+  await discordTeamkill(server, 'discordChannelID');
+
+  // database logging
   mysqlLog(server);
+  influxdbLog(server);
+
+  // in game features
+  mapvote(server);
 
   await server.watch();
 }
