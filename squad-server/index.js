@@ -45,7 +45,7 @@ export default class Server extends EventEmitter {
     this.on(LOG_PARSER_NEW_GAME, this.onLayerChange.bind(this));
 
     // setup period updaters
-    setTimeout(async () => {
+    setInterval(async () => {
       this.players = await this.rcon.listPlayers();
     }, this.updateInterval);
   }
