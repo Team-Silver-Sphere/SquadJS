@@ -6,7 +6,7 @@ import {
   influxdbLog,
   mapvote,
   mysqlLog
-} from 'squad-server/plugins';
+} from 'plugins';
 
 async function main() {
   const server = new Server({

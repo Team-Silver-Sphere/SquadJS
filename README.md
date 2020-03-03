@@ -61,11 +61,11 @@ yarn install
 4. Start SquadJS: `node index.js`.
 
 ## Plugins
- * [Discord Chat](https://github.com/Thomas-Smyth/SquadJS/tree/master/squad-server/plugins/discord-chat) - Log in game chat to Discord.
- * [Discord Teamkill](https://github.com/Thomas-Smyth/SquadJS/tree/master/squad-server/plugins/discord-teamkill) - Lo teamkills to Discord.
- * [Map Vote](https://github.com/Thomas-Smyth/SquadJS/tree/master/squad-server/plugins/mapvote) - In-game chat map voting system.
- * [InfluxDB Log](https://github.com/Thomas-Smyth/SquadJS/tree/master/squad-server/plugins/influxdb-log) - Log information to InfluxDB.
- * [MySQL Log](https://github.com/Thomas-Smyth/SquadJS/tree/master/squad-server/plugins/mysql-log) - Log more in-depth information to MySQL.
+ * [Discord Chat](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-chat) - Log in game chat to Discord.
+ * [Discord Teamkill](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-teamkill) - Lo teamkills to Discord.
+ * [Map Vote](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/mapvote) - In-game chat map voting system.
+ * [InfluxDB Log](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/influxdb-log) - Log information to InfluxDB.
+ * [MySQL Log](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/mysql-log) - Log more in-depth information to MySQL.
  
  ## License
  ```

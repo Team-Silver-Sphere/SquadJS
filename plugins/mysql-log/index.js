@@ -6,7 +6,7 @@ import {
   LOG_PARSER_PLAYER_DIE,
   LOG_PARSER_REVIVE,
   LOG_PARSER_TICK_RATE
-} from '../../events/log-parser.js';
+} from 'squad-server/events/log-parser';
 
 export default function mysqlLog(server) {
   if (!server)
