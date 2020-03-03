@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `Match` (
     `map` VARCHAR(255),
     `layer` VARCHAR(255),
     `startTime` TIMESTAMP NOT NULL,
-    `endTime` TIMESTAMP,
+    `endTime` TIMESTAMP NULL DEFAULT NULL,
 
     FOREIGN KEY (`server`) REFERENCES `Server`(`id`)
         ON DELETE CASCADE
@@ -136,7 +136,7 @@ CREATE PROCEDURE `NewMatch` (
     IN `p_layer` VARCHAR(255)
 )
 BEGIN
-    UPDATE `Match` SET `endTime` = `p_time` WHERE server = `p_server` AND `endTime` IS NULL;
+    UPDATE `Match` SET `endTime` = `p_time` WHERE `server` = `p_server` AND `endTime` IS NULL;
     INSERT INTO `Match` (`server`, `startTime`, `map`, `layer`) VALUES (`p_server`, `p_time`, `p_map`, `p_layer`);
 END#
 DELIMITER ;
