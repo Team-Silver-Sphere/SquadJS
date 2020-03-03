@@ -14,23 +14,38 @@ export default function influxdbLog(server) {
       'InfluxDBLog must be provided with a reference to the server.'
     );
 
+  server.on(LOG_PARSER_TICK_RATE, info => {
+    InfluxDBConnector.writePoint({
+      measurement: 'ServerTickRate',
+      tags: { server: server.id },
+      fields: { tick_rate: info.tickRate },
+      timestamp: info.time
+    });
+  });
+
   server.on(LOG_PARSER_NEW_GAME, info => {
     InfluxDBConnector.writePoint({
-      measurement: 'game',
+      measurement: 'Match',
       tags: { server: server.id },
       fields: { map: info.map, layer: info.layer },
       timestamp: info.time
     });
   });
 
-  server.on(LOG_PARSER_PLAYER_DIE, info => {
+  server.on(LOG_PARSER_PLAYER_WOUND, info => {
     InfluxDBConnector.writePoint({
-      measurement: 'player_die',
+      measurement: 'PlayerWound',
       tags: { server: server.id },
       fields: {
-        victim: info.victim,
+        victim: info.victim.steamID,
+        victimName: info.victim.name,
+        victimTeamID: info.victim.teamID,
+        victimSquadID: info.victim.squadID,
+        attacker: info.attacker.steamID,
+        attackerName: info.attacker.name,
+        attackerTeamID: info.attacker.teamID,
+        attackerSquadID: info.attacker.squadID,
         damage: info.damage,
-        attacker: info.attacker,
         weapon: info.weapon,
         teamkill: info.teamkill
       },
@@ -38,14 +53,20 @@ export default function influxdbLog(server) {
     });
   });
 
-  server.on(LOG_PARSER_PLAYER_WOUND, info => {
+  server.on(LOG_PARSER_PLAYER_DIE, info => {
     InfluxDBConnector.writePoint({
-      measurement: 'player_wound',
+      measurement: 'PlayerDie',
       tags: { server: server.id },
       fields: {
-        victim: info.victim,
+        victim: info.victim.steamID,
+        victimName: info.victim.name,
+        victimTeamID: info.victim.teamID,
+        victimSquadID: info.victim.squadID,
+        attacker: info.attacker.steamID,
+        attackerName: info.attacker.name,
+        attackerTeamID: info.attacker.teamID,
+        attackerSquadID: info.attacker.squadID,
         damage: info.damage,
-        attacker: info.attacker,
         weapon: info.weapon,
         teamkill: info.teamkill
       },
@@ -55,24 +76,25 @@ export default function influxdbLog(server) {
 
   server.on(LOG_PARSER_REVIVE, info => {
     InfluxDBConnector.writePoint({
-      measurement: 'revive',
+      measurement: 'Revive',
       tags: { server: server.id },
       fields: {
-        victim: info.victim,
+        victim: info.victim.steamID,
+        victimName: info.victim.name,
+        victimTeamID: info.victim.teamID,
+        victimSquadID: info.victim.squadID,
+        attacker: info.attacker.steamID,
+        attackerName: info.attacker.name,
+        attackerTeamID: info.attacker.teamID,
+        attackerSquadID: info.attacker.squadID,
         damage: info.damage,
-        attacker: info.attacker,
         weapon: info.weapon,
-        reviver: info.reviver
+        teamkill: info.teamkill,
+        reviver: info.reviver.steamID,
+        reviverName: info.reviver.name,
+        reviverTeamID: info.reviver.teamID,
+        reviverSquadID: info.reviver.squadID
       },
-      timestamp: info.time
-    });
-  });
-
-  server.on(LOG_PARSER_TICK_RATE, info => {
-    InfluxDBConnector.writePoint({
-      measurement: 'tick_rate',
-      tags: { server: server.id },
-      fields: { tick_rate: info.tickRate },
       timestamp: info.time
     });
   });

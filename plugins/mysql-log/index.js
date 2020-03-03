@@ -16,7 +16,7 @@ export default function mysqlLog(server) {
 
   server.on(LOG_PARSER_TICK_RATE, info => {
     MySQLConnector.getPool().query(
-      'INSERT INTO tick_rate(time, server, tick_rate) VALUES (?,?,?)',
+      'INSERT INTO ServerTickRate(time, server, tick_rate) VALUES (?,?,?)',
       [info.time, server.id, info.tickRate]
     );
   });

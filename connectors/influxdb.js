@@ -19,14 +19,14 @@ class InfluxDBConnector {
       database: INFLUXDB_DATABASE,
       schema: [
         {
-          measurement: 'tick_rate',
+          measurement: 'ServerTickRate',
           fields: {
             tick_rate: Influx.FieldType.FLOAT
           },
           tags: ['server']
         },
         {
-          measurement: 'game',
+          measurement: 'Match',
           fields: {
             map: Influx.FieldType.STRING,
             layer: Influx.FieldType.STRING
@@ -34,35 +34,57 @@ class InfluxDBConnector {
           tags: ['server']
         },
         {
-          measurement: 'player_wound',
+          measurement: 'PlayerWound',
           fields: {
             victim: Influx.FieldType.STRING,
-            damage: Influx.FieldType.FLOAT,
+            victimName: Influx.FieldType.STRING,
+            victimTeamID: Influx.FieldType.INTEGER,
+            victimSquadID: Influx.FieldType.INTEGER,
             attacker: Influx.FieldType.STRING,
+            attackerName: Influx.FieldType.STRING,
+            attackerTeamID: Influx.FieldType.INTEGER,
+            attackerSquadID: Influx.FieldType.INTEGER,
+            damage: Influx.FieldType.STRING,
             weapon: Influx.FieldType.STRING,
             teamkill: Influx.FieldType.BOOLEAN
           },
           tags: ['server']
         },
         {
-          measurement: 'player_die',
+          measurement: 'PlayerDie',
           fields: {
             victim: Influx.FieldType.STRING,
-            damage: Influx.FieldType.FLOAT,
+            victimName: Influx.FieldType.STRING,
+            victimTeamID: Influx.FieldType.INTEGER,
+            victimSquadID: Influx.FieldType.INTEGER,
             attacker: Influx.FieldType.STRING,
+            attackerName: Influx.FieldType.STRING,
+            attackerTeamID: Influx.FieldType.INTEGER,
+            attackerSquadID: Influx.FieldType.INTEGER,
+            damage: Influx.FieldType.STRING,
             weapon: Influx.FieldType.STRING,
             teamkill: Influx.FieldType.BOOLEAN
           },
           tags: ['server']
         },
         {
-          measurement: 'revive',
+          measurement: 'Revive',
           fields: {
             victim: Influx.FieldType.STRING,
-            damage: Influx.FieldType.FLOAT,
+            victimName: Influx.FieldType.STRING,
+            victimTeamID: Influx.FieldType.INTEGER,
+            victimSquadID: Influx.FieldType.INTEGER,
             attacker: Influx.FieldType.STRING,
+            attackerName: Influx.FieldType.STRING,
+            attackerTeamID: Influx.FieldType.INTEGER,
+            attackerSquadID: Influx.FieldType.INTEGER,
+            damage: Influx.FieldType.STRING,
             weapon: Influx.FieldType.STRING,
-            reviver: Influx.FieldType.STRING
+            teamkill: Influx.FieldType.BOOLEAN,
+            reviver: Influx.FieldType.STRING,
+            reviverName: Influx.FieldType.STRING,
+            reviverTeamID: Influx.FieldType.INTEGER,
+            reviverSquadID: Influx.FieldType.INTEGER
           },
           tags: ['server']
         }
