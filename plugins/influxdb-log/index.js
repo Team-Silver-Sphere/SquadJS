@@ -8,6 +8,8 @@ import {
   LOG_PARSER_TICK_RATE
 } from 'squad-server/events/log-parser';
 
+import { SERVER_PLAYERS_UPDATED } from 'squad-server/events/server';
+
 export default function influxdbLog(server) {
   if (!server)
     throw new Error(
@@ -20,6 +22,15 @@ export default function influxdbLog(server) {
       tags: { server: server.id },
       fields: { tick_rate: info.tickRate },
       timestamp: info.time
+    });
+  });
+
+  server.on(SERVER_PLAYERS_UPDATED, players => {
+    InfluxDBConnector.writePoint({
+      measurement: 'PlayerCount',
+      tags: { server: server.id },
+      fields: { player_count: players.length },
+      timestamp: Date.now()
     });
   });
 

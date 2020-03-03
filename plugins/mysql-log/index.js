@@ -7,6 +7,7 @@ import {
   LOG_PARSER_REVIVE,
   LOG_PARSER_TICK_RATE
 } from 'squad-server/events/log-parser';
+import { SERVER_PLAYERS_UPDATED } from 'squad-server/events/server';
 
 export default function mysqlLog(server) {
   if (!server)
@@ -18,6 +19,13 @@ export default function mysqlLog(server) {
     MySQLConnector.getPool().query(
       'INSERT INTO ServerTickRate(time, server, tick_rate) VALUES (?,?,?)',
       [info.time, server.id, info.tickRate]
+    );
+  });
+
+  server.on(SERVER_PLAYERS_UPDATED, players => {
+    MySQLConnector.getPool().query(
+      'INSERT INTO PlayerCount(time, server, tick_rate) VALUES (NOW(),?,?)',
+      [server.id, players.length]
     );
   });
 

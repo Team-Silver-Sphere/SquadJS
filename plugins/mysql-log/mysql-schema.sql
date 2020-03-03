@@ -20,6 +20,15 @@ CREATE TABLE IF NOT EXISTS `ServerTickRate` (
         ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS `PlayerCount` (
+    `id` INT PRIMARY KEY AUTO_INCREMENT,
+    `server` INT NOT NULL,
+    `player_count` FLOAT NOT NULL,
+
+    FOREIGN KEY (`server`) REFERENCES `Server`(`id`)
+        ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS `Match` (
     `id` INT PRIMARY KEY AUTO_INCREMENT,
     `server` INT NOT NULL,

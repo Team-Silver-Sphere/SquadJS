@@ -2,7 +2,10 @@ import EventEmitter from 'events';
 import LogParser from './log-parser/index.js';
 import Rcon from './rcon/index.js';
 
-import { SERVER_LAYER_CHANGE } from './events/server.js';
+import {
+  SERVER_LAYER_CHANGE,
+  SERVER_PLAYERS_UPDATED
+} from './events/server.js';
 import { LOG_PARSER_NEW_GAME } from './events/log-parser.js';
 
 export default class Server extends EventEmitter {
@@ -47,6 +50,7 @@ export default class Server extends EventEmitter {
     // setup period updaters
     setInterval(async () => {
       this.players = await this.rcon.listPlayers();
+      this.emit(SERVER_PLAYERS_UPDATED, this.players);
     }, this.updateInterval);
   }
 

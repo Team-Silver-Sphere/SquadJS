@@ -26,6 +26,13 @@ class InfluxDBConnector {
           tags: ['server']
         },
         {
+          measurement: 'PlayerCount',
+          fields: {
+            player_count: Influx.FieldType.INTEGER
+          },
+          tags: ['server']
+        },
+        {
           measurement: 'Match',
           fields: {
             map: Influx.FieldType.STRING,
