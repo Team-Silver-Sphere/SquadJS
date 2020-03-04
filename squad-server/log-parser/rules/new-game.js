@@ -5,7 +5,7 @@ import { LOG_PARSER_NEW_GAME } from '../../events/log-parser.js';
 import InjuryHandler from '../utils/injury-handler.js';
 
 export default {
-  regex: /\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer]ASQGameMode::StartNewGame\(\): ServerTravel to \/[A-z]+\/Maps\/([A-z_]+)\/([A-z0-9_]+)/,
+  regex: /\[([0-9.:-]+)]\[([ 0-9]*)]LogWorld: Bringing World \/[A-z]+\/Maps\/([A-z_]+)\/([A-z0-9_]+)/,
   action: async (args, logParser) => {
     /* Reset injury manager */
     logParser.injuryHandler = new InjuryHandler();
