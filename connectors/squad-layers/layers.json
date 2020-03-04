@@ -2286,7 +2286,7 @@
     {
         "layer": "Logar Valley AAS v1",
         "map": "Logar Valley",
-        "layerClassname": "Logar_Valley_AAS_v1",
+        "layerClassname": "LogarValley_AAS_v1",
         "mapClassname": "Logar_Valley",
         "mapSize": "1x1 km",
         "gamemode": "AAS",
@@ -2314,7 +2314,7 @@
     {
         "layer": "Logar Valley AAS v2",
         "map": "Logar Valley",
-        "layerClassname": "Logar_Valley_AAS_v2",
+        "layerClassname": "LogarValley_AAS_v2",
         "mapClassname": "Logar_Valley",
         "mapSize": "1x1 km",
         "gamemode": "AAS",
@@ -2342,7 +2342,7 @@
     {
         "layer": "Logar Valley Insurgency v1",
         "map": "Logar Valley",
-        "layerClassname": "Logar_Valley_Insurgency_v1",
+        "layerClassname": "LogarValley_Insurgency_v1",
         "mapClassname": "Logar_Valley",
         "mapSize": "1x1 km",
         "gamemode": "Insurgency",
@@ -2370,7 +2370,7 @@
     {
         "layer": "Logar Valley RAAS v1",
         "map": "Logar Valley",
-        "layerClassname": "Logar_Valley_RAAS_v1",
+        "layerClassname": "LogarValley_RAAS_v1",
         "mapClassname": "Logar_Valley",
         "mapSize": "1x1 km",
         "gamemode": "RAAS",
@@ -2398,7 +2398,7 @@
     {
         "layer": "Logar Valley Skirmish v1",
         "map": "Logar Valley",
-        "layerClassname": "Logar_Valley_Skirmish_v1",
+        "layerClassname": "LogarValley_Skirmish_v1",
         "mapClassname": "Logar_Valley",
         "mapSize": "1x1 km",
         "gamemode": "Skirmish",
@@ -2426,7 +2426,7 @@
     {
         "layer": "Logar Valley TC v1",
         "map": "Logar Valley",
-        "layerClassname": "Logar_Valley_TC_v1",
+        "layerClassname": "LogarValley_TC_v1",
         "mapClassname": "Logar_Valley",
         "mapSize": "1x1 km",
         "gamemode": "TC",
