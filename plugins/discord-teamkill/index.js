@@ -32,7 +32,7 @@ export default async function plugin(server, channelID, options = {}) {
         fields: [
           {
             name: 'Attacker',
-            value: info.attacker || 'Unknown'
+            value: info.attacker.name || 'Unknown'
           },
           {
             name: 'Weapon',
@@ -40,7 +40,7 @@ export default async function plugin(server, channelID, options = {}) {
           },
           {
             name: 'Victim',
-            value: info.victim || 'Unknown'
+            value: info.victim.name || 'Unknown'
           }
         ],
         timestamp: info.time.toISOString(),
