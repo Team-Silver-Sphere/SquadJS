@@ -27,7 +27,7 @@ export default async function plugin(server, channelID, options = {}) {
 
     channel.send({
       embed: {
-        title: `Teamkill: ${info.attacker}`,
+        title: `Teamkill: ${info.attacker.name}`,
         color: options.color,
         fields: [
           {
