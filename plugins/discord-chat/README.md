@@ -18,7 +18,7 @@ await discordChat(
   server, 
   'discordChannelID', 
   { // options
-    ignoreChat: ['ChatSquad', 'ChatAdmin'], // an array of chats to not display
+    ignoreChats: ['ChatSquad', 'ChatAdmin'], // an array of chats to not display
     color: 16761867 // color of embed
   }
 ); 
