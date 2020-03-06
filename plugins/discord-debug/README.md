@@ -14,7 +14,7 @@ The Discord Debug plugin logs all server events in a raw format for monitoring/d
 ## Installation
 Place the following into your `index.js` file.
 ```js
-await discordChat(
+await discordDebug(
   server, 
   'discordChannelID', 
   [EVENTS] // an array of events to log
