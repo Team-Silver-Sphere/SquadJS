@@ -55,8 +55,9 @@ git clone https://github.com/Thomas-Smyth/SquadJS
 ```
 yarn install
 ```
-3. Configure the `index.js` file with your server information and the required plugins.
-4. Start SquadJS: `node index.js`.
+3. Copy the [`core/config-example.js`](https://github.com/Thomas-Smyth/SquadJS/blob/master/core/config-example.js) to `core/config.js` and fill in the information inside the file. Note, if you do not use any plugins that rely on the associated config values then they can be left blank.
+4. Configure the `index.js` file with your server information and the required plugins.
+5. Start SquadJS: `node index.js`.
 
 ## Plugins
  * [Discord Chat](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-chat) - Log in game chat to Discord.
