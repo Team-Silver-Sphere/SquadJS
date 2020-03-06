@@ -24,7 +24,7 @@ mapvote(
     flagCountMax: 7, // the maximum number of flags the layer must have
     hasCommander: true, // has commander enabled
     hasTanks: true, // has tanks
-    hasHelicopters: true // has tanks
+    hasHelicopters: true // has helicopters
   },
   { // options - remove or edit the below options. The defaults are shown.
     command: '!mapvote', // the command name used to access the vote
