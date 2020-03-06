@@ -6,7 +6,7 @@
 </div>
 
 ## About
-The InfluxDB log plugin logs event information into InfluxDB to allow it to be queried for analysis or monitoring. Works well with Grafana.
+The InfluxDB log plugin logs event information into InfluxDB to allow it to be queried for analysis, monitoring, or stat tracking.. Works well with Grafana.
 
 ## Requirements
  * InfluxDB setup & connection information placed in `core/config.js` file.
