@@ -9,7 +9,7 @@
 The mapvote plugin uses a "did you mean?" system to allow for players to vote for a wide range of layers. Command information for using the plugin in-game can be accessed by typing `!mapvote help` into in-game chat.
 
 ## Installation
-Place the following into your `index.js` file. The filters / options below are optional and can be removed without affecting functionality, however, the default options are shown below for reference.
+Place the following into your `index.js` file. The filters / options below are optional and can be removed without affecting functionality, however, the default options are shown for reference.
 ```js
 mapvote(
   server,

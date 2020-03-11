@@ -12,7 +12,7 @@ export default function(server, layerFilter = {}, options = {}) {
     throw new Error('Mapvote must be provided with a reference to the server.');
 
   const command = options.command || '!mapvote';
-  const commandRegex = new RegExp(`${command} ([A-z0-9'_ ]*)`);
+  const commandRegex = new RegExp(`${command} ([A-z0-9'_ ]*)`, 'i');
   const rotation = SquadLayers.getFilteredLayers(layerFilter);
 
   let voteCounts = {};
