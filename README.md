@@ -44,6 +44,11 @@ SquadJS relies on being able to access the Squad server log directory in order t
 ### Prerequisites
  * [Node.js](https://nodejs.org/en/) (Current) - [Download](https://nodejs.org/en/)
  * [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
+ * Teamkill logging enabled in the Squad server `Engine.ini` file:
+```
+[Core.Log]
+LogSquadScorePoints=verbose
+```
  * Some plugins may have additional requirements.
  
 ### Installation
