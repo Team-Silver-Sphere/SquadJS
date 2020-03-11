@@ -41,7 +41,7 @@ export default function(server, options = {}) {
     throw new Error('Mapvote must be provided with a reference to the server.');
 
   const command = options.command || '!randomize';
-  const commandRegex = new RegExp(`${command} (on|off|now)`, 'i');
+  const commandRegex = new RegExp(`^${command} (on|off|now)`, 'i');
 
   let on = false;
 
