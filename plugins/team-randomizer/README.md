@@ -6,12 +6,7 @@
 </div>
 
 ## About
-The team randomizer randomly moves players to a team either immediately or upon map change.
-
-Commands (in admin chat):
- * `!randomize on` - Turn it on for next map change.
- * `!randomize off` - Turn it off for next map change.
- * `!randomize now` - Run now.
+The team randomizer randomly moves players to a team when `!randomize` is called in admin chat.
 
 ## Installation
 Place the following into your `index.js` file. The options below are optional and can be removed without affecting functionality, however, the default options are shown for reference.
