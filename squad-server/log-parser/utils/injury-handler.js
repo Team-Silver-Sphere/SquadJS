@@ -25,7 +25,7 @@ class InjuryHandler {
       damage: parseFloat(args[4]),
       attacker: {
         name: args[5],
-        ...logParser.emitter.getPlayerByName(args[3])
+        ...logParser.emitter.getPlayerByName(args[5])
       },
       weapon: args[6]
     };
