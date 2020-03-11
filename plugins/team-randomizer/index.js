@@ -21,21 +21,6 @@ function shuffle(array) {
   return array;
 }
 
-async function randomize(server) {
-  const players = server.players.slice(0);
-  shuffle(players);
-
-  let team = '1';
-
-  for (const player of players) {
-    if (player.teamID !== team) {
-      await server.rcon.execute(`AdminForceTeamChange "${player.steamID}"`);
-    }
-
-    team = team === '1' ? '2' : '1';
-  }
-}
-
 export default function(server, options = {}) {
   if (!server)
     throw new Error('Mapvote must be provided with a reference to the server.');
@@ -45,6 +30,21 @@ export default function(server, options = {}) {
 
   let on = false;
 
+  function randomize() {
+    const players = server.players.slice(0);
+    shuffle(players);
+
+    let team = '1';
+
+    for (const player of players) {
+      if (player.teamID !== team) {
+        server.rcon.execute(`AdminForceTeamChange "${player.steamID}"`);
+      }
+
+      team = team === '1' ? '2' : '1';
+    }
+  }
+
   server.on(RCON_CHAT_MESSAGE, info => {
     if (info.chat !== 'ChatAdmin') return;
 
@@ -52,15 +52,21 @@ export default function(server, options = {}) {
     if (!match) return;
 
     if (match[1] === 'now') {
-      randomize();
+      randomize(server);
       on = false;
+
+      server.rcon.execute(`AdminWarn "${info.steamID}" Randomized.`);
     } else {
       on = match[1] === 'on';
+
+      server.rcon.execute(
+        `AdminWarn "${info.steamID}" Randomizer ${match[1]}.`
+      );
     }
   });
 
   server.on(SERVER_LAYER_CHANGE, () => {
-    if (on === true) randomize();
+    if (on === true) randomize(server);
     on = false;
   });
 }
