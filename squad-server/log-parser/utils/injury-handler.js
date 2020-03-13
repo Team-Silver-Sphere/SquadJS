@@ -122,7 +122,7 @@ class InjuryHandler {
       },
       victim: {
         name: args[4],
-        ...logParser.emitter.getPlayerByName(args[3])
+        ...logParser.emitter.getPlayerByName(args[4])
       }
     };
 
