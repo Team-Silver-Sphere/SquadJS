@@ -11,6 +11,7 @@ The MySQL log plugin logs event information into a MySQL database to allow it to
 ## Requirements
  * MySQL database setup
  * Execute the [`mysql-schema.sql`](https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/mysql-schema.sql) in the database to setup the tables, etc.
+ * Add your server to the database... `INSERT INTO Server (name) VALUES ("[EU] The Coalition");` Please make sure the inserted ID is the same as that in the `index.js` file.
  * Place connection information in the `core/config.js` file.
 
 ## Installation
