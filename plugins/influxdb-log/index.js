@@ -30,7 +30,7 @@ export default function influxdbLog(server) {
       measurement: 'PlayerCount',
       tags: { server: server.id },
       fields: { player_count: players.length },
-      timestamp: Date.now()
+      timestamp: new Date()
     });
   });
 
