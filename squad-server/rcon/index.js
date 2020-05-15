@@ -56,7 +56,7 @@ export default class Rcon {
   async getMapInfo() {
     const response = await this.execute('ShowNextMap');
     const match = response.match(
-      /^Current map is ([A-z0-9 ]+), Next map is ([A-z0-9 ]*)/
+      /^Current map is (.+), Next map is (.*)/
     );
     return {
       currentLayer: match[1],
