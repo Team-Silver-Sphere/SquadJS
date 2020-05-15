@@ -1,11 +1,3 @@
-/** Occurs when an admin enters admin camera.
- *
- * Data:
- *  - time - Date object of when the event occurred.
- *  - player - PlayerObject of the admin.
- */
-const LOG_PARSER_ADMIN_POSSESS_CAMERA = 'LOG_PARSER_ADMIN_POSSESS_CAMERA';
-
 /** Occurs when a new layer is loaded.
  *
  * Data:
@@ -75,6 +67,15 @@ const LOG_PARSER_PLAYER_POSSESS = 'LOG_PARSER_PLAYER_POSSESS';
  */
 const LOG_PARSER_PLAYER_REVIVED = 'LOG_PARSER_PLAYER_REVIVED';
 
+/** Occurs when a player unpossess an object.
+ *
+ * Data:
+ *  - time - Date object of when the event occurred.
+ *  - player - PlayerObject of the admin.
+ *  - switchPossess - True if switching a possess.
+ */
+const LOG_PARSER_PLAYER_UNPOSSESS = 'LOG_PARSER_PLAYER_UNPOSSESS';
+
 /** Occurs when a player is teamkilled.
  *
  * Data:
@@ -110,13 +111,13 @@ const LOG_PARSER_PLAYER_WOUNDED = 'LOG_PARSER_PLAYER_WOUNDED';
 const LOG_PARSER_SERVER_TICK_RATE = 'LOG_PARSER_SERVER_TICK_RATE';
 
 export {
-  LOG_PARSER_ADMIN_POSSESS_CAMERA,
   LOG_PARSER_NEW_GAME,
   LOG_PARSER_PLAYER_CONNECTED,
   LOG_PARSER_PLAYER_DAMAGED,
   LOG_PARSER_PLAYER_DIED,
   LOG_PARSER_PLAYER_POSSESS,
   LOG_PARSER_PLAYER_REVIVED,
+  LOG_PARSER_PLAYER_UNPOSSESS,
   LOG_PARSER_TEAMKILL,
   LOG_PARSER_PLAYER_WOUNDED,
   LOG_PARSER_SERVER_TICK_RATE

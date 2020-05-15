@@ -1,5 +1,5 @@
 import { COPYRIGHT_MESSAGE } from 'core/config';
-import { LOG_PARSER_PLAYER_POSSESS } from 'squad-server/events/log-parser';
+import { LOG_PARSER_PLAYER_POSSESS, LOG_PARSER_PLAYER_UNPOSSESS } from 'squad-server/events/log-parser';
 
 export default async function plugin(
   server,
@@ -30,68 +30,68 @@ export default async function plugin(
   const adminsInCam = {};
 
   server.on(LOG_PARSER_PLAYER_POSSESS, info => {
-    if (info.player === null) return;
+    if (info.player === null || info.possessClassname !== 'CameraMan') return;
 
-    if (info.possessClassname === 'CameraMan') {
-      adminsInCam[info.player.steamID] = info.time;
+    adminsInCam[info.player.steamID] = info.time;
 
-      channel.send({
-        embed: {
-          title: `Admin Entered Admin Camera`,
-          color: options.color,
-          fields: [
-            {
-              name: "Admin's Name",
-              value: info.player.name,
-              inline: true
-            },
-            {
-              name: "Admin's SteamID",
-              value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
-              inline: true
-            }
-          ],
-          timestamp: info.time.toISOString(),
-          footer: {
-            text: COPYRIGHT_MESSAGE
+    channel.send({
+      embed: {
+        title: `Admin Entered Admin Camera`,
+        color: options.color,
+        fields: [
+          {
+            name: "Admin's Name",
+            value: info.player.name,
+            inline: true
+          },
+          {
+            name: "Admin's SteamID",
+            value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+            inline: true
           }
+        ],
+        timestamp: info.time.toISOString(),
+        footer: {
+          text: COPYRIGHT_MESSAGE
         }
-      });
-    } else {
-      if (!(info.player.steamID in adminsInCam)) return;
+      }
+    });
+  });
 
-      channel.send({
-        embed: {
-          title: `Admin Left Admin Camera`,
-          color: options.color,
-          fields: [
-            {
-              name: "Admin's Name",
-              value: info.player.name,
-              inline: true
-            },
-            {
-              name: "Admin's SteamID",
-              value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
-              inline: true
-            },
-            {
-              name: 'Time in Admin Camera',
-              value: `${Math.round(
-                (info.time.getTime() -
-                  adminsInCam[info.player.steamID].getTime()) /
-                  60000
-              )} mins`
-            }
-          ],
-          timestamp: info.time.toISOString(),
-          footer: {
-            text: COPYRIGHT_MESSAGE
+  server.on(LOG_PARSER_PLAYER_UNPOSSESS, info => {
+    if (info.switchPossess === true || !(info.player.steamID in adminsInCam)) return;
+
+    channel.send({
+      embed: {
+        title: `Admin Left Admin Camera`,
+        color: options.color,
+        fields: [
+          {
+            name: "Admin's Name",
+            value: info.player.name,
+            inline: true
+          },
+          {
+            name: "Admin's SteamID",
+            value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+            inline: true
+          },
+          {
+            name: 'Time in Admin Camera',
+            value: `${Math.round(
+              (info.time.getTime() -
+                adminsInCam[info.player.steamID].getTime()) /
+              60000
+            )} mins`
           }
+        ],
+        timestamp: info.time.toISOString(),
+        footer: {
+          text: COPYRIGHT_MESSAGE
         }
-      });
+      }
+    });
 
-      delete adminsInCam[info.player.steamID];
-    }
+    delete adminsInCam[info.player.steamID];
   });
 }
