@@ -32,7 +32,7 @@ export default async function plugin(
 
     channel.send({
       embed: {
-        title: `Teamkill: ${info.attacker.name}`,
+        title: `${info.attacker.steamID === info.victim.steamID ? 'Suicide' : 'Teamkill'}: ${info.attacker.name}`,
         color: options.color,
         fields: [
           {
