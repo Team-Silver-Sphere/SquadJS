@@ -1,6 +1,5 @@
 import {
-  LOG_PARSER_PLAYER_POSSESS,
-  LOG_PARSER_ADMIN_POSSESS_CAMERA
+  LOG_PARSER_PLAYER_POSSESS
 } from '../../events/log-parser.js';
 
 export default {
@@ -14,9 +13,8 @@ export default {
       possessClassname: args[4]
     };
 
-    logParser.server.emit(LOG_PARSER_PLAYER_POSSESS, data);
+    logParser.eventStore[args[3]] = args[2];
 
-    if (data.possessClassname === 'CameraMan')
-      logParser.server.emit(LOG_PARSER_ADMIN_POSSESS_CAMERA, data);
+    logParser.server.emit(LOG_PARSER_PLAYER_POSSESS, data);
   }
 };

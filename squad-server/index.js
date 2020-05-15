@@ -56,14 +56,14 @@ export default class Server extends EventEmitter {
       this.updateInterval
     );
 
-    setTimeout(async () => {
+    setInterval(async () => {
       const data = await this.rcon.getMapInfo();
       this.currentLayer = data.currentLayer;
       this.nextLayer = data.nextLayer;
       this.emit(SERVER_LAYERS_UPDATED, data);
     }, this.updateInterval);
 
-    setTimeout(async () => {
+    setInterval(async () => {
       const data = await Gamedig.query({
         type: 'squad',
         host: this.host,
