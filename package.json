@@ -1,0 +1,39 @@
+{
+  "name": "SquadJS",
+  "version": "0.0.1",
+  "repository": "https://github.com/Thomas-Smyth/SquadJS.git",
+  "author": "Thomas Smyth <https://github.com/Thomas-Smyth>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "assets",
+    "connectors",
+    "core",
+    "plugins",
+    "squad-server"
+  ],
+  "scripts": {
+    "lint": "eslint --fix . && prettier --write \"./**/*.js\"",
+    "test-log-parser-coverage": "node squad-server/log-parser/test-coverage.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "influx": "^5.5.1",
+    "mysql": "^2.18.1",
+    "plugins": "1.0.0",
+    "squad-server": "1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "5.12.0",
+    "eslint-config-prettier": "^6.6.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.4.3",
+    "prettier": "^1.19.1"
+  }
+}

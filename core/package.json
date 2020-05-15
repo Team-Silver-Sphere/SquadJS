@@ -1,0 +1,10 @@
+{
+  "name": "core",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./config": "./config.js",
+    "./utils/print-logo": "./utils/print-logo.js",
+    "./utils/sleep": "./utils/sleep.js"
+  }
+}

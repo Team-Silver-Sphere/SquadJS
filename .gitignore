@@ -1,0 +1,12 @@
+# Project Files
+squad-server/log-parser/test-data/
+
+index-test.js
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# IDEs
+.idea/
