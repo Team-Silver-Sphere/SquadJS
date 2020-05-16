@@ -100,7 +100,7 @@ export default function influxdbLog(server, influxDB, options = {}) {
 
   server.on(LOG_PARSER_PLAYER_REVIVED, info => {
     points.push({
-      measurement: 'Revived',
+      measurement: 'PlayerRevived',
       tags: { server: server.id },
       fields: {
         victim: info.victim ? info.victim.steamID : null,
