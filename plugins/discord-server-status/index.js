@@ -49,6 +49,7 @@ export default async function plugin(server, discordClient, options = {}) {
   options = {
     color: 16761867,
     command: '!server',
+    disableStatus: false,
     ...options
   };
 
@@ -81,6 +82,6 @@ export default async function plugin(server, discordClient, options = {}) {
   });
 
   server.on(SERVER_A2S_UPDATED, () => {
-    discordClient.user.setActivity(`(${server.a2sPlayerCount}/${server.publicSlots}) ${server.currentLayer}`, { type: 'WATCHING' });
+    if(!options.disableStatus) discordClient.user.setActivity(`(${server.a2sPlayerCount}/${server.publicSlots}) ${server.currentLayer}`, { type: 'WATCHING' });
   });
 }
