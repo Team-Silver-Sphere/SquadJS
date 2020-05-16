@@ -24,7 +24,8 @@ await discordServerStatus(
   discordClient,
     { // options - the options included below display the defaults and can be removed for simplicity.
       color: 16761867, // color of embed
-      command: '!server' // command used to send message
+      command: '!server', // command used to send message
+      disableStatus: false // disable bot status as server status
     }
 ); 
 ```
