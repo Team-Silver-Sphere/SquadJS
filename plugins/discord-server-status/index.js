@@ -81,6 +81,6 @@ export default async function plugin(server, discordClient, options = {}) {
   });
 
   server.on(SERVER_A2S_UPDATED, () => {
-    discordClient.user.setActivity(`${server.a2sPlayerCount} / ${server.publicSlots} on ${server.currentLayer}`, { type: 'WATCHING' });
+    discordClient.user.setActivity(`(${server.a2sPlayerCount}/${server.publicSlots}) ${server.currentLayer}`, { type: 'WATCHING' });
   });
 }
