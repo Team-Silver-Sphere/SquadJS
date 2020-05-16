@@ -1,5 +1,7 @@
 import { COPYRIGHT_MESSAGE } from 'core/config';
 
+import { SERVER_A2S_UPDATED } from 'squad-server/events/server';
+
 function makeEmbed(server, options) {
   let players = `${server.a2sPlayerCount}`;
   if (server.publicQueue + server.reserveQueue > 0)
@@ -76,5 +78,9 @@ export default async function plugin(server, discordClient, options = {}) {
 
     // update the message
     await reaction.message.edit(makeEmbed(server, options));
+  });
+
+  server.on(SERVER_A2S_UPDATED, () => {
+    discordClient.user.setActivity(`(${server.a2sPlayerCount}/${server.publicSlots}) ${server.currentLayer}`, { type: 'WATCHING' });
   });
 }
