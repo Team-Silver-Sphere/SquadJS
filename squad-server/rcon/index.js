@@ -35,6 +35,8 @@ export default class Rcon {
     this.requestQueue = [];
     this.currentMultiPacket = [];
     this.ignoreNextEndPacket = false;
+
+    this.onData = this.onData.bind(this);
   }
 
   /* RCON functionality */
@@ -96,7 +98,7 @@ export default class Rcon {
       // setup socket
       this.client = new net.Socket();
 
-      this.client.on('data', this.onData.bind(this));
+      this.client.on('data', this.onData);
 
       this.client.on('error', err => {
         this.verbose(`Socket Error: ${err.message}`);
@@ -106,6 +108,7 @@ export default class Rcon {
       this.client.on('close', async hadError => {
         this.verbose(`Socket Closed. AutoReconnect: ${this.autoReconnect}`);
         this.connected = false;
+        this.client.removeListener('data', this.onData);
         if (!this.autoReconnect) return;
         if (this.reconnectInterval !== null) return;
         this.reconnectInterval = setInterval(async () => {
@@ -228,7 +231,7 @@ export default class Rcon {
         this.requestQueue.push(handleAuthMultiPacket);
       else this.requestQueue.push(handleMultiPacket);
 
-      this.client.on('error', reject);
+      this.client.once('error', reject);
 
       // send packets
       this.client.write(encodedPacket);
