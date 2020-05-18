@@ -16,6 +16,8 @@ export default function influxdbLog(server, influxDB, options = {}) {
 
   if (!influxDB)
     throw new Error('InfluxDBLog must be provided with a InfluxDB connection.');
+  
+  const serverID = options.overrideServerID || server.id;
 
   let points = [];
   setInterval(() => {
@@ -26,7 +28,7 @@ export default function influxdbLog(server, influxDB, options = {}) {
   server.on(LOG_PARSER_SERVER_TICK_RATE, info => {
     points.push({
       measurement: 'ServerTickRate',
-      tags: { server: server.id },
+      tags: { server: serverID },
       fields: { tick_rate: info.tickRate },
       timestamp: info.time
     });
@@ -35,7 +37,7 @@ export default function influxdbLog(server, influxDB, options = {}) {
   server.on(SERVER_PLAYERS_UPDATED, players => {
     points.push({
       measurement: 'PlayerCount',
-      tags: { server: server.id },
+      tags: { server: serverID },
       fields: { player_count: players.length },
       timestamp: new Date()
     });
@@ -44,7 +46,7 @@ export default function influxdbLog(server, influxDB, options = {}) {
   server.on(LOG_PARSER_NEW_GAME, info => {
     points.push({
       measurement: 'Match',
-      tags: { server: server.id },
+      tags: { server: serverID },
       fields: {
         dlc: info.dlc,
         mapClassname: info.mapClassname,
@@ -59,7 +61,7 @@ export default function influxdbLog(server, influxDB, options = {}) {
   server.on(LOG_PARSER_PLAYER_WOUNDED, info => {
     points.push({
       measurement: 'PlayerWounded',
-      tags: { server: server.id },
+      tags: { server: serverID },
       fields: {
         victim: info.victim ? info.victim.steamID : null,
         victimName: info.victim ? info.victim.name : null,
@@ -80,7 +82,7 @@ export default function influxdbLog(server, influxDB, options = {}) {
   server.on(LOG_PARSER_PLAYER_DIED, info => {
     points.push({
       measurement: 'PlayerDied',
-      tags: { server: server.id },
+      tags: { server: serverID },
       fields: {
         victim: info.victim ? info.victim.steamID : null,
         victimName: info.victim ? info.victim.name : null,
@@ -101,7 +103,7 @@ export default function influxdbLog(server, influxDB, options = {}) {
   server.on(LOG_PARSER_PLAYER_REVIVED, info => {
     points.push({
       measurement: 'PlayerRevived',
-      tags: { server: server.id },
+      tags: { server: serverID },
       fields: {
         victim: info.victim ? info.victim.steamID : null,
         victimName: info.victim ? info.victim.name : null,
