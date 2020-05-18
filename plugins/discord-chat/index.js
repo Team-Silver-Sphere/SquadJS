@@ -1,7 +1,7 @@
 import { COPYRIGHT_MESSAGE } from 'core/config';
 import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
 
-export default async function plugin(
+export default async function(
   server,
   discordClient,
   channelID,
