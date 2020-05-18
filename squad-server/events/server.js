@@ -32,6 +32,7 @@ const SERVER_LAYERS_UPDATED = 'SERVER_LAYERS_UPDATED';
  *  - maxPlayers - Maximum number of players on the server.
  *  - publicSlots - Maximum number of public slots.
  *  - reserveSlots - Maximum number of reserved slots.
+ *  - playerCount - Player count as per A2S query.
  *  - publicQueue - Length of the public queue.
  *  - reserveQueue - Length of the reserved queue.
  *  - matchTimeout - Time until match ends?

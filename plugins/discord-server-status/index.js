@@ -3,7 +3,7 @@ import { COPYRIGHT_MESSAGE } from 'core/config';
 import { SERVER_A2S_UPDATED } from 'squad-server/events/server';
 
 function makeEmbed(server, options) {
-  let players = `${server.a2sPlayerCount}`;
+  let players = `${server.playerCount}`;
   if (server.publicQueue + server.reserveQueue > 0)
     players += ` (+${server.publicQueue + server.reserveQueue})`;
   players += ` / ${server.publicSlots}`;
@@ -82,6 +82,6 @@ export default async function plugin(server, discordClient, options = {}) {
   });
 
   server.on(SERVER_A2S_UPDATED, () => {
-    if(!options.disableStatus) discordClient.user.setActivity(`(${server.a2sPlayerCount}/${server.publicSlots}) ${server.currentLayer}`, { type: 'WATCHING' });
+    if(!options.disableStatus) discordClient.user.setActivity(`(${server.playerCount}/${server.publicSlots}) ${server.currentLayer}`, { type: 'WATCHING' });
   });
 }

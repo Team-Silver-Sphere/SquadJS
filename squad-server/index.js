@@ -76,7 +76,7 @@ export default class Server extends EventEmitter {
       this.publicSlots = parseInt(data.raw.rules.NUMPUBCONN);
       this.reserveSlots = parseInt(data.raw.rules.NUMPRIVCONN);
 
-      this.a2sPlayerCount = Math.min(data.players.length, this.maxPlayers);
+      this.playerCount = parseInt(data.raw.rules.PlayerCount_i);
       this.publicQueue = parseInt(data.raw.rules.PublicQueue_i);
       this.reserveQueue = parseInt(data.raw.rules.ReservedQueue_i);
 
@@ -88,6 +88,7 @@ export default class Server extends EventEmitter {
         maxPlayers: this.maxPlayers,
         publicSlots: this.publicSlots,
         reserveSlots: this.reserveSlots,
+        playerCount: this.playerCount,
         publicQueue: this.publicQueue,
         reserveQueue: this.reserveQueue,
         matchTimeout: this.matchTimeout,
