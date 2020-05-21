@@ -8,7 +8,7 @@ import {
 
 import { SERVER_PLAYERS_UPDATED } from 'squad-server/events/server';
 
-export default function influxdbLog(server, influxDB, options = {}) {
+export default function(server, influxDB, options = {}) {
   if (!server)
     throw new Error(
       'InfluxDBLog must be provided with a reference to the server.'

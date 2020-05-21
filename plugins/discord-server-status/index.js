@@ -37,7 +37,7 @@ function makeEmbed(server, options) {
   };
 }
 
-export default async function plugin(server, discordClient, options = {}) {
+export default async function(server, discordClient, options = {}) {
   if (!server)
     throw new Error(
       'DiscordDebug must be provided with a reference to the server.'

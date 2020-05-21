@@ -1,4 +1,4 @@
-export default async function plugin(
+export default async function(
   server,
   discordClient,
   channelID,

@@ -1,3 +1,4 @@
+import autoTKWarn from './auto-tk-warn/index.js';
 import discordAdminCamLogs from './discord-admin-cam-logs/index.js';
 import discordChat from './discord-chat/index.js';
 import discordDebug from './discord-debug/index.js';
@@ -11,6 +12,7 @@ import seedingMessage from './seeding-message/index.js';
 import teamRandomizer from './team-randomizer/index.js';
 
 export {
+  autoTKWarn,
   discordAdminCamLogs,
   discordChat,
   discordDebug,

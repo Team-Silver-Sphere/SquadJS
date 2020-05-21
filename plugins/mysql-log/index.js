@@ -7,7 +7,7 @@ import {
 } from 'squad-server/events/log-parser';
 import { SERVER_PLAYERS_UPDATED } from 'squad-server/events/server';
 
-export default function mysqlLog(server, mysqlPool, options = {}) {
+export default function(server, mysqlPool, options = {}) {
   if (!server)
     throw new Error(
       'MySQLLog must be provided with a reference to the server.'

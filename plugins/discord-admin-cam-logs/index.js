@@ -1,7 +1,7 @@
 import { COPYRIGHT_MESSAGE } from 'core/config';
 import { LOG_PARSER_PLAYER_POSSESS, LOG_PARSER_PLAYER_UNPOSSESS } from 'squad-server/events/log-parser';
 
-export default async function plugin(
+export default async function(
   server,
   discordClient,
   channelID,
