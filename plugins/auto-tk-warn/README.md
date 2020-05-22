@@ -14,7 +14,7 @@ Automatically sends a warning to players who teamkill to remind them to apologis
 import { autoTKWarn } from 'plugins';
 
 // Place the following lines after all of the above.
-await discordAdminCamLogs(
+await autoTKWarn(
   server,
   { // options - the options included below display the defaults and can be removed for simplicity.
     message: 'Please apologise for ALL TKs in ALL chat!' // warning to send
