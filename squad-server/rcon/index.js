@@ -166,7 +166,7 @@ export default class Rcon {
       this.client.once('close', onClose);
       this.client.once('error', onError);
 
-      this.client.disconnect();
+      this.client.end();
     });
   }
 
