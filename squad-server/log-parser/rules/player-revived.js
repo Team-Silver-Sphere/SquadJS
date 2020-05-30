@@ -9,7 +9,7 @@ export default {
       raw: args[0],
       time: args[1],
       chainID: args[2],
-      victim: await logParser.server.getPlayerByName(args[5]),
+      victim: await logParser.server.getPlayerByName(args[4]),
       reviver: await logParser.server.getPlayerByName(args[3])
     };
 
