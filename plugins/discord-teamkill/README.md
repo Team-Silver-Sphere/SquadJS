@@ -24,7 +24,9 @@ await discordTeamkill(
   discordClient,
   'discordChannelID', 
   { // options - the options included below display the defaults and can be removed for simplicity.
-    color: 16761867 // color of embed
+    teamkillColor: 16761867, // colour of TK embed
+    suicideColor: 16761867, // colour of suicide embed
+    ignoreSuicides: false, // ignore suicide events
   }
 ); 
 ```

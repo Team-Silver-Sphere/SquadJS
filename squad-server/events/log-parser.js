@@ -40,6 +40,7 @@ const LOG_PARSER_PLAYER_DAMAGED = 'LOG_PARSER_PLAYER_DAMAGED';
  *  - attackerPlayerController - PlayerController of the attacking player.
  *  - weapon - The classname of the weapon used.
  *  - teamkill - Whether the kill was a teamkill.
+ *  - suicide - Was the kill a suicide.
  */
 const LOG_PARSER_PLAYER_DIED = 'LOG_PARSER_PLAYER_DIED';
 
@@ -63,6 +64,7 @@ const LOG_PARSER_PLAYER_POSSESS = 'LOG_PARSER_PLAYER_POSSESS';
  *  - attackerPlayerController - PlayerController of the attacking player.
  *  - weapon - The classname of the weapon used.
  *  - teamkill - Whether the kill was a teamkill.
+ *  - suicide - Was the kill a suicide.
  *  - reviver - PlayerObject of the reviving player.
  */
 const LOG_PARSER_PLAYER_REVIVED = 'LOG_PARSER_PLAYER_REVIVED';
@@ -86,6 +88,7 @@ const LOG_PARSER_PLAYER_UNPOSSESS = 'LOG_PARSER_PLAYER_UNPOSSESS';
  *  - attackerPlayerController - PlayerController of the attacking player.
  *  - weapon - The classname of the weapon used.
  *  - teamkill - Whether the kill was a teamkill.
+ *  - suicide - Was the kill a suicide.
  */
 const LOG_PARSER_TEAMKILL = 'LOG_PARSER_TEAMKILL';
 
@@ -99,6 +102,7 @@ const LOG_PARSER_TEAMKILL = 'LOG_PARSER_TEAMKILL';
  *  - attackerPlayerController - PlayerController of the attacking player.
  *  - weapon - The classname of the weapon used.
  *  - teamkill - Whether the kill was a teamkill.
+ *  - suicide - Was the kill a suicide.
  */
 const LOG_PARSER_PLAYER_WOUNDED = 'LOG_PARSER_PLAYER_WOUNDED';
 

@@ -14,6 +14,7 @@ export default {
     };
 
     data.teamkill = data.victim.teamID === data.attacker.teamID;
+    data.suicide = data.victim.steamID === data.attacker.steamID;
 
     logParser.eventStore[args[3]] = data;
 
