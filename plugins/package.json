@@ -9,6 +9,7 @@
     "connectors": "1.0.0",
     "didyoumean": "^1.2.1",
     "influx": "^5.5.1",
-    "squad-server": "1.0.0"
+    "squad-server": "1.0.0",
+    "tinygradient": "^1.1.2"
   }
 }

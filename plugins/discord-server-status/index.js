@@ -1,6 +1,13 @@
-import { COPYRIGHT_MESSAGE } from 'core/config';
+import tinygradient from 'tinygradient';
 
+import { COPYRIGHT_MESSAGE } from 'core/config';
 import { SERVER_A2S_UPDATED } from 'squad-server/events/server';
+
+const gradient = tinygradient([
+  { color: '#ff0000', pos: 0 },
+  { color: '#ffff00', pos: 0.5 },
+  { color: '#00ff00', pos: 1 }
+]);
 
 function makeEmbed(server, options) {
   let players = `${server.playerCount}`;
@@ -12,7 +19,7 @@ function makeEmbed(server, options) {
   return {
     embed: {
       title: server.serverName,
-      color: options.color,
+      color: options.colorGradient ? parseInt(gradient.rgbAt(server.playerCount / server.publicSlots).toHex(), 16) : options.color,
       fields: [
         {
           name: 'Players',
@@ -48,6 +55,7 @@ export default async function(server, discordClient, options = {}) {
 
   options = {
     color: 16761867,
+    colorGradient: true,
     command: '!server',
     disableStatus: false,
     ...options
