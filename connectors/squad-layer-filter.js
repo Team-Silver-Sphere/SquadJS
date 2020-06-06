@@ -1,29 +1,41 @@
 import fs from 'fs';
+import SquadLayers, {
+  SquadLayers as SquadLayersClass
+} from './squad-layers.js';
 
-class SquadLayers {
-  constructor() {
-    this.layers = JSON.parse(
-      fs.readFileSync('./connectors/squad-layers/layers.json', 'utf8')
-    );
+export default class SquadLayerFilter extends SquadLayersClass {
+  static buildFromList(layerNames) {
+    return new SquadLayerFilter(layerNames);
   }
 
-  getLayerByLayerName(layerName) {
-    const layer = this.layers.filter(layer => layer.layer === layerName);
-    return layer.length === 1 ? layer[0] : null;
+  static buildFromDidYouMeanList(layerNames) {
+    const layers = [];
+    for (const layerName of layerNames) {
+      const layer = SquadLayers.getLayerByDidYouMean(
+        layerName,
+        SquadLayers.getLayerNames()
+      );
+      if (layer) layers.push(layer);
+    }
+    return new SquadLayerFilter(layers);
   }
 
-  getLayerByLayerClassname(layerClassname) {
-    const layer = this.layers.filter(
-      layer => layer.layerClassname === layerClassname
-    );
-    return layer.length === 1 ? layer[0] : null;
+  static buildFromFile(filename, delimiter = '\n') {
+    const lines = fs
+      .readFileSync('./connectors/data/layers.json', 'utf8')
+      .split(delimiter);
+    const layers = [];
+
+    const validLayerNames = SquadLayers.getLayerNames();
+
+    for (const line of lines) {
+      if (validLayerNames.contains(line))
+        layers.push(SquadLayers.getLayerByLayerName(line));
+    }
+    return new SquadLayerFilter(layers);
   }
 
-  getLayerNames() {
-    return this.layers.map(layer => layer.layer);
-  }
-
-  getFilteredLayers(filter = {}) {
+  static buildFromFilter(filter = {}) {
     const whitelistedLayers = filter.whitelistedLayers || null;
     const blacklistedLayers = filter.blacklistedLayers || null;
     const whitelistedMaps = filter.whitelistedMaps || null;
@@ -38,7 +50,7 @@ class SquadLayers {
 
     const layers = [];
 
-    for (const layer of this.layers) {
+    for (const layer of SquadLayers.getLayers()) {
       // Whitelist / Blacklist Layers
       if (
         whitelistedLayers !== null &&
@@ -79,39 +91,13 @@ class SquadLayers {
       )
         continue;
 
-      layers.push(layer.layer);
+      layers.push(layer);
     }
 
-    return layers;
+    return new SquadLayerFilter(layers);
   }
 
-  isHistoryCompliant(layerHistory, layer, options = {}) {
-    const layerTolerance = options.layerTolerance || 4;
-    const mapTolerance = options.mapTolerance || 2;
-    const timeTolerance = options.timeTolerance || 5 * 60 * 60 * 1000;
-
-    for (let i = 0; i < layerHistory.length; i++) {
-      if (i >= Math.max(layerHistory, mapTolerance)) return true;
-      if (new Date() - layerHistory[i].time > timeTolerance) return true;
-
-      if (
-        i < layerTolerance &&
-        layerHistory[i].map === this.getLayerByLayerName(layer).map
-      )
-        return false;
-      if (i < layerTolerance && layerHistory[i].layer === layer) return false;
-    }
-    return true;
-  }
-
-  isPlayerCountCompliant(playerCount, layer) {
-    return !(
-      playerCount >
-        this.getLayerByLayerName(layer).estimatedSuitablePlayerCount.max ||
-      playerCount <
-        this.getLayerByLayerName(layer).estimatedSuitablePlayerCount.min
-    );
+  inLayerPool(layerName) {
+    return super.getLayerNames().includes(layerName);
   }
 }
-
-export default new SquadLayers();

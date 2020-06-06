@@ -1,6 +1,4 @@
-import {
-  LOG_PARSER_PLAYER_UNPOSSESS
-} from '../../events/log-parser.js';
+import { LOG_PARSER_PLAYER_UNPOSSESS } from '../../events/log-parser.js';
 
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQPlayerController::)?OnUnPossess\(\): PC=(.+)/,
@@ -13,7 +11,11 @@ export default {
       switchPossess: false
     };
 
-    if(args[3] in logParser.eventStore && logParser.eventStore[args[3]] === args[2]) data.switchPossess = true;
+    if (
+      args[3] in logParser.eventStore &&
+      logParser.eventStore[args[3]] === args[2]
+    )
+      data.switchPossess = true;
     delete logParser.eventStore[args[3]];
 
     logParser.server.emit(LOG_PARSER_PLAYER_UNPOSSESS, data);

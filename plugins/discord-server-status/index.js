@@ -33,15 +33,21 @@ function makeEmbed(server, options) {
     }
   ];
 
-  if(options.connectLink) fields.push({
-    name: 'Join Server',
-    value: `steam://connect/${server.host}:${server.queryPort}`
-  });
+  if (options.connectLink)
+    fields.push({
+      name: 'Join Server',
+      value: `steam://connect/${server.host}:${server.queryPort}`
+    });
 
   return {
     embed: {
       title: server.serverName,
-      color: options.colorGradient ? parseInt(gradient.rgbAt(server.playerCount / server.publicSlots).toHex(), 16) : options.color,
+      color: options.colorGradient
+        ? parseInt(
+            gradient.rgbAt(server.playerCount / server.publicSlots).toHex(),
+            16
+          )
+        : options.color,
       fields: fields,
       timestamp: new Date().toISOString(),
       footer: {
@@ -98,6 +104,10 @@ export default async function(server, discordClient, options = {}) {
   });
 
   server.on(SERVER_A2S_UPDATED, () => {
-    if(!options.disableStatus) discordClient.user.setActivity(`(${server.playerCount}/${server.publicSlots}) ${server.currentLayer}`, { type: 'WATCHING' });
+    if (!options.disableStatus)
+      discordClient.user.setActivity(
+        `(${server.playerCount}/${server.publicSlots}) ${server.currentLayer}`,
+        { type: 'WATCHING' }
+      );
   });
 }

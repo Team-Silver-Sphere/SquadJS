@@ -57,9 +57,7 @@ export default class Rcon {
 
   async getMapInfo() {
     const response = await this.execute('ShowNextMap');
-    const match = response.match(
-      /^Current map is (.+), Next map is (.*)/
-    );
+    const match = response.match(/^Current map is (.+), Next map is (.*)/);
     return {
       currentLayer: match[1],
       nextLayer: match[2].length === 0 ? null : match[2]
@@ -87,6 +85,14 @@ export default class Rcon {
     }
 
     return players;
+  }
+
+  async broadcast(message) {
+    await this.execute(`AdminBroadcast ${message}`);
+  }
+
+  async warn(steamID, message) {
+    await this.execute(`AdminWarn "${steamID}" ${message}`);
   }
 
   /* Core socket functionality */
