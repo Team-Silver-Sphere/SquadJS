@@ -1,6 +1,6 @@
 {
   "name": "SquadJS",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "repository": "https://github.com/Thomas-Smyth/SquadJS.git",
   "author": "Thomas Smyth <https://github.com/Thomas-Smyth>",
   "license": "MIT",
@@ -18,6 +18,7 @@
   },
   "type": "module",
   "dependencies": {
+    "connectors": "1.0.0",
     "discord.js": "^12.2.0",
     "influx": "^5.5.1",
     "mysql": "^2.18.1",

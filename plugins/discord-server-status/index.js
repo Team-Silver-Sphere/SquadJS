@@ -1,6 +1,13 @@
-import { COPYRIGHT_MESSAGE } from 'core/config';
+import tinygradient from 'tinygradient';
 
+import { COPYRIGHT_MESSAGE } from 'core/config';
 import { SERVER_A2S_UPDATED } from 'squad-server/events/server';
+
+const gradient = tinygradient([
+  { color: '#ff0000', pos: 0 },
+  { color: '#ffff00', pos: 0.5 },
+  { color: '#00ff00', pos: 1 }
+]);
 
 function makeEmbed(server, options) {
   let players = `${server.playerCount}`;
@@ -9,26 +16,39 @@ function makeEmbed(server, options) {
   players += ` / ${server.publicSlots}`;
   if (server.reserveSlots > 0) players += ` (+${server.reserveSlots})`;
 
+  const fields = [
+    {
+      name: 'Players',
+      value: `\`\`\`${players}\`\`\``
+    },
+    {
+      name: 'Current Layer',
+      value: `\`\`\`${server.currentLayer}\`\`\``,
+      inline: true
+    },
+    {
+      name: 'Next Layer',
+      value: `\`\`\`${server.nextLayer || 'Unknown'}\`\`\``,
+      inline: true
+    }
+  ];
+
+  if (options.connectLink)
+    fields.push({
+      name: 'Join Server',
+      value: `steam://connect/${server.host}:${server.queryPort}`
+    });
+
   return {
     embed: {
       title: server.serverName,
-      color: options.color,
-      fields: [
-        {
-          name: 'Players',
-          value: `\`\`\`${players}\`\`\``
-        },
-        {
-          name: 'Current Layer',
-          value: `\`\`\`${server.currentLayer}\`\`\``,
-          inline: true
-        },
-        {
-          name: 'Next Layer',
-          value: `\`\`\`${server.nextLayer || 'Unknown'}\`\`\``,
-          inline: true
-        }
-      ],
+      color: options.colorGradient
+        ? parseInt(
+            gradient.rgbAt(server.playerCount / server.publicSlots).toHex(),
+            16
+          )
+        : options.color,
+      fields: fields,
       timestamp: new Date().toISOString(),
       footer: {
         text: `Server Status by ${COPYRIGHT_MESSAGE}`
@@ -48,6 +68,8 @@ export default async function(server, discordClient, options = {}) {
 
   options = {
     color: 16761867,
+    colorGradient: true,
+    connectLink: true,
     command: '!server',
     disableStatus: false,
     ...options
@@ -82,6 +104,10 @@ export default async function(server, discordClient, options = {}) {
   });
 
   server.on(SERVER_A2S_UPDATED, () => {
-    if(!options.disableStatus) discordClient.user.setActivity(`(${server.playerCount}/${server.publicSlots}) ${server.currentLayer}`, { type: 'WATCHING' });
+    if (!options.disableStatus)
+      discordClient.user.setActivity(
+        `(${server.playerCount}/${server.publicSlots}) ${server.currentLayer}`,
+        { type: 'WATCHING' }
+      );
   });
 }
