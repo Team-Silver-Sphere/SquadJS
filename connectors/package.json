@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    "./squad-layers": "./squad-layers/index.js",
-    "./scbl": "./scbl.js"
+    "./scbl": "./scbl.js",
+    "./squad-layer-filter": "./squad-layer-filter.js",
+    "./squad-layers": "./squad-layers.js"
   },
   "dependencies": {
+    "didyoumean": "^1.2.1",
     "graphql-request": "^1.8.2"
   }
 }

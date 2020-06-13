@@ -1,9 +1,4 @@
-export default async function(
-  server,
-  discordClient,
-  channelID,
-  events = []
-) {
+export default async function(server, discordClient, channelID, events = []) {
   if (!server)
     throw new Error(
       'DiscordDebug must be provided with a reference to the server.'

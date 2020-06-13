@@ -3,6 +3,7 @@ import mysql from 'mysql';
 import Influx from 'influx';
 
 import Server from 'squad-server';
+import SquadLayerFilter from 'connectors/squad-layer-filter';
 
 import {
   discordAdminCamLogs,
@@ -36,7 +37,9 @@ async function main() {
   await discordTeamkill(server, discordClient, 'discordChannelID');
 
   // in game features
-  mapvote(server);
+  const squadLayerFilter = SquadLayerFilter.buildFromFilter({});
+  mapvote(server, 'didyoumean', squadLayerFilter, {});
+
   teamRandomizer(server);
 
   // MySQL Plugins

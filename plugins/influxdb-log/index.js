@@ -16,7 +16,7 @@ export default function(server, influxDB, options = {}) {
 
   if (!influxDB)
     throw new Error('InfluxDBLog must be provided with a InfluxDB connection.');
-  
+
   const serverID = options.overrideServerID || server.id;
 
   let points = [];

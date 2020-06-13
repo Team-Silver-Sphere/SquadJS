@@ -18,6 +18,7 @@
   },
   "type": "module",
   "dependencies": {
+    "connectors": "1.0.0",
     "discord.js": "^12.2.0",
     "influx": "^5.5.1",
     "mysql": "^2.18.1",
