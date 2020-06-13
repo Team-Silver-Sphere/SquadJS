@@ -2,16 +2,11 @@ import { COPYRIGHT_MESSAGE } from 'core/config';
 import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
 
 export default async function(server, discordClient, channelID, options = {}) {
-  if (!server)
-    throw new Error(
-      'DiscordChat must be provided with a reference to the server.'
-    );
+  if (!server) throw new Error('DiscordChat must be provided with a reference to the server.');
 
-  if (!discordClient)
-    throw new Error('DiscordChat must be provided with a Discord.js client.');
+  if (!discordClient) throw new Error('DiscordChat must be provided with a Discord.js client.');
 
-  if (!channelID)
-    throw new Error('DiscordChat must be provided with a channel ID.');
+  if (!channelID) throw new Error('DiscordChat must be provided with a channel ID.');
 
   const ignoreChats = options.ignoreChats || ['ChatSquad', 'ChatAdmin'];
 
@@ -44,8 +39,7 @@ export default async function(server, discordClient, channelID, options = {}) {
           },
           {
             name: 'Team & Squad',
-            value: `Team: ${playerInfo.teamID}, Squad: ${playerInfo.squadID ||
-              'Unassigned'}`
+            value: `Team: ${playerInfo.teamID}, Squad: ${playerInfo.squadID || 'Unassigned'}`
           },
           {
             name: 'Message',

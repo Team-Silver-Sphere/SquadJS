@@ -7,9 +7,7 @@ class SquadLayers {
     if (Array.isArray(layers)) {
       this.layers = layers;
     } else {
-      this.layers = JSON.parse(
-        fs.readFileSync('./connectors/data/layers.json', 'utf8')
-      );
+      this.layers = JSON.parse(fs.readFileSync('./connectors/data/layers.json', 'utf8'));
     }
 
     for (let i = 0; i < this.layers.length; i++) {
@@ -34,9 +32,7 @@ class SquadLayers {
   }
 
   getLayerByLayerClassname(layerClassname) {
-    const layer = this.layers.filter(
-      layer => layer.layerClassname === layerClassname
-    );
+    const layer = this.layers.filter(layer => layer.layerClassname === layerClassname);
     return layer.length === 1 ? layer[0] : null;
   }
 

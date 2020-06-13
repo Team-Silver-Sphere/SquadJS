@@ -1,7 +1,5 @@
 import fs from 'fs';
-import SquadLayers, {
-  SquadLayers as SquadLayersClass
-} from './squad-layers.js';
+import SquadLayers, { SquadLayers as SquadLayersClass } from './squad-layers.js';
 
 export default class SquadLayerFilter extends SquadLayersClass {
   constructor(layers, activeLayerFilter = null) {
@@ -31,26 +29,20 @@ export default class SquadLayerFilter extends SquadLayersClass {
   static buildFromDidYouMeanList(layerNames, activeLayerFilter) {
     const layers = [];
     for (const layerName of layerNames) {
-      const layer = SquadLayers.getLayerByDidYouMean(
-        layerName,
-        SquadLayers.getLayerNames()
-      );
+      const layer = SquadLayers.getLayerByDidYouMean(layerName, SquadLayers.getLayerNames());
       if (layer) layers.push(layer);
     }
     return new SquadLayerFilter(layers, activeLayerFilter);
   }
 
   static buildFromFile(filename, activeLayerFilter, delimiter = '\n') {
-    const lines = fs
-      .readFileSync('./connectors/data/layers.json', 'utf8')
-      .split(delimiter);
+    const lines = fs.readFileSync('./connectors/data/layers.json', 'utf8').split(delimiter);
     const layers = [];
 
     const validLayerNames = SquadLayers.getLayerNames();
 
     for (const line of lines) {
-      if (validLayerNames.contains(line))
-        layers.push(SquadLayers.getLayerByLayerName(line));
+      if (validLayerNames.contains(line)) layers.push(SquadLayers.getLayerByLayerName(line));
     }
     return new SquadLayerFilter(layers, activeLayerFilter);
   }
@@ -72,31 +64,16 @@ export default class SquadLayerFilter extends SquadLayersClass {
 
     for (const layer of SquadLayers.getLayers()) {
       // Whitelist / Blacklist Layers
-      if (
-        whitelistedLayers !== null &&
-        !whitelistedLayers.includes(layer.layer)
-      )
-        continue;
-      if (blacklistedLayers !== null && blacklistedLayers.includes(layer.layer))
-        continue;
+      if (whitelistedLayers !== null && !whitelistedLayers.includes(layer.layer)) continue;
+      if (blacklistedLayers !== null && blacklistedLayers.includes(layer.layer)) continue;
 
       // Whitelist / Blacklist Maps
-      if (whitelistedMaps !== null && !whitelistedMaps.includes(layer.map))
-        continue;
-      if (blacklistedMaps !== null && blacklistedMaps.includes(layer.map))
-        continue;
+      if (whitelistedMaps !== null && !whitelistedMaps.includes(layer.map)) continue;
+      if (blacklistedMaps !== null && blacklistedMaps.includes(layer.map)) continue;
 
       // Whitelist / Blacklist Gamemodes
-      if (
-        whitelistedGamemodes !== null &&
-        !whitelistedGamemodes.includes(layer.gamemode)
-      )
-        continue;
-      if (
-        blacklistedGamemodes !== null &&
-        blacklistedGamemodes.includes(layer.gamemode)
-      )
-        continue;
+      if (whitelistedGamemodes !== null && !whitelistedGamemodes.includes(layer.gamemode)) continue;
+      if (blacklistedGamemodes !== null && blacklistedGamemodes.includes(layer.gamemode)) continue;
 
       // Flag Count
       if (flagCountMin !== null && layer.flagCount < flagCountMin) continue;
@@ -105,11 +82,7 @@ export default class SquadLayerFilter extends SquadLayersClass {
       // Other Properties
       if (hasCommander !== null && layer.commander !== hasCommander) continue;
       if (hasTanks !== null && (layer.tanks !== 'N/A') !== hasTanks) continue;
-      if (
-        hasHelicopters !== null &&
-        (layer.helicopters !== 'N/A') !== hasHelicopters
-      )
-        continue;
+      if (hasHelicopters !== null && (layer.helicopters !== 'N/A') !== hasHelicopters) continue;
 
       layers.push(layer);
     }
@@ -129,17 +102,10 @@ export default class SquadLayerFilter extends SquadLayersClass {
 
     for (
       let i = 0;
-      i <
-      Math.min(
-        server.layerHistory.length,
-        this.activeLayerFilter.layerHistoryTolerance
-      );
+      i < Math.min(server.layerHistory.length, this.activeLayerFilter.layerHistoryTolerance);
       i++
     ) {
-      if (
-        new Date() - server.layerHistory[i].time >
-        this.activeLayerFilter.historyResetTime
-      )
+      if (new Date() - server.layerHistory[i].time > this.activeLayerFilter.historyResetTime)
         return true;
       if (server.layerHistory[i].layer === layer) return false;
     }
@@ -149,22 +115,14 @@ export default class SquadLayerFilter extends SquadLayersClass {
   isMapHistoryCompliant(server, layer) {
     if (this.activeLayerFilter === null) return true;
 
-    if (typeof layer === 'string')
-      layer = SquadLayers.getLayerByLayerName(layer);
+    if (typeof layer === 'string') layer = SquadLayers.getLayerByLayerName(layer);
 
     for (
       let i = 0;
-      i <
-      Math.min(
-        server.layerHistory.length,
-        this.activeLayerFilter.mapHistoryTolerance
-      );
+      i < Math.min(server.layerHistory.length, this.activeLayerFilter.mapHistoryTolerance);
       i++
     ) {
-      if (
-        new Date() - server.layerHistory[i].time >
-        this.activeLayerFilter.historyResetTime
-      )
+      if (new Date() - server.layerHistory[i].time > this.activeLayerFilter.historyResetTime)
         return true;
       if (server.layerHistory[i].map === layer.map) return false;
     }
@@ -174,42 +132,27 @@ export default class SquadLayerFilter extends SquadLayersClass {
   isGamemodeHistoryCompliant(server, layer) {
     if (this.activeLayerFilter === null) return true;
 
-    if (typeof layer === 'string')
-      layer = SquadLayers.getLayerByLayerName(layer);
+    if (typeof layer === 'string') layer = SquadLayers.getLayerByLayerName(layer);
 
-    const gamemodeHistoryTolerance = this.activeLayerFilter
-      .gamemodeHistoryTolerance[layer.gamemode];
+    const gamemodeHistoryTolerance = this.activeLayerFilter.gamemodeHistoryTolerance[
+      layer.gamemode
+    ];
     if (!gamemodeHistoryTolerance) return true;
 
-    for (
-      let i = 0;
-      i < Math.min(server.layerHistory.length, gamemodeHistoryTolerance);
-      i++
-    ) {
-      if (
-        new Date() - server.layerHistory[i].time >
-        this.activeLayerFilter.historyResetTime
-      )
+    for (let i = 0; i < Math.min(server.layerHistory.length, gamemodeHistoryTolerance); i++) {
+      if (new Date() - server.layerHistory[i].time > this.activeLayerFilter.historyResetTime)
         return true;
 
-      const historyLayer = SquadLayers.getLayerByLayerName(
-        server.layerHistory[i].layer
-      );
-      if (historyLayer && historyLayer.gamemode === layer.gamemode)
-        return false;
+      const historyLayer = SquadLayers.getLayerByLayerName(server.layerHistory[i].layer);
+      if (historyLayer && historyLayer.gamemode === layer.gamemode) return false;
     }
     return true;
   }
 
   isPlayerCountCompliant(server, layer) {
-    if (
-      this.activeLayerFilter === null ||
-      this.playerCountComplianceEnabled === false
-    )
-      return true;
+    if (this.activeLayerFilter === null || this.playerCountComplianceEnabled === false) return true;
 
-    if (typeof layer === 'string')
-      layer = SquadLayers.getLayerByLayerName(layer);
+    if (typeof layer === 'string') layer = SquadLayers.getLayerByLayerName(layer);
 
     return !(
       server.players.length > layer.estimatedSuitablePlayerCount.max ||

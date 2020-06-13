@@ -11,10 +11,7 @@ export default {
       switchPossess: false
     };
 
-    if (
-      args[3] in logParser.eventStore &&
-      logParser.eventStore[args[3]] === args[2]
-    )
+    if (args[3] in logParser.eventStore && logParser.eventStore[args[3]] === args[2])
       data.switchPossess = true;
     delete logParser.eventStore[args[3]];
 

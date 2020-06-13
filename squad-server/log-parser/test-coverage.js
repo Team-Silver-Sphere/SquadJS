@@ -48,9 +48,7 @@ async function main() {
 
   console.log('Done.');
   console.log();
-  console.log(
-    `Matched ${matched} / ${total} (${(matched / total) * 100}%) log lines.`
-  );
+  console.log(`Matched ${matched} / ${total} (${(matched / total) * 100}%) log lines.`);
   console.log();
 }
 

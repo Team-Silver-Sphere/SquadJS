@@ -78,9 +78,7 @@ export default class MapVote extends EventEmitter {
 
     if (results.length > 0) {
       if (results[0] !== this.currentWinner) {
-        await this.server.rcon.execute(
-          `AdminSetNextMap ${results[0].layer.layer}`
-        );
+        await this.server.rcon.execute(`AdminSetNextMap ${results[0].layer.layer}`);
         this.emit('NEW_WINNER', results);
         this.currentWinner = results[0];
       }

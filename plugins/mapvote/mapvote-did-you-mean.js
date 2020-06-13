@@ -49,18 +49,9 @@ export default function(server, squadLayerFilter, options = {}) {
     if (!match) return;
 
     if (match[1] === 'help') {
-      await server.rcon.warn(
-        info.steamID,
-        'You may use any of the following commands in chat:'
-      );
-      await server.rcon.warn(
-        info.steamID,
-        '!mapvote results - View the current vote counts.'
-      );
-      await server.rcon.warn(
-        info.steamID,
-        '!mapvote <layer name> - Vote for the specified layer.'
-      );
+      await server.rcon.warn(info.steamID, 'You may use any of the following commands in chat:');
+      await server.rcon.warn(info.steamID, '!mapvote results - View the current vote counts.');
+      await server.rcon.warn(info.steamID, '!mapvote <layer name> - Vote for the specified layer.');
       await server.rcon.warn(
         info.steamID,
         'When inputting a layer name, we autocorrect any miss spelling.'
@@ -102,12 +93,8 @@ export default function(server, squadLayerFilter, options = {}) {
 
       const results = mapvote.getResults(true);
 
-      if (results.length === 0)
-        await server.rcon.broadcast(`No layer gained enough votes to win.`);
-      else
-        await server.rcon.broadcast(
-          `${mapvote.getResults()[0].layer.layer} won the mapvote!`
-        );
+      if (results.length === 0) await server.rcon.broadcast(`No layer gained enough votes to win.`);
+      else await server.rcon.broadcast(`${mapvote.getResults()[0].layer.layer} won the mapvote!`);
 
       mapvote = null;
       return;
@@ -125,16 +112,11 @@ export default function(server, squadLayerFilter, options = {}) {
       if (results.length === 0) {
         await server.rcon.warn(info.steamID, 'No one has voted yet.');
       } else {
-        await server.rcon.warn(
-          info.steamID,
-          'The current vote counts are as follows:'
-        );
+        await server.rcon.warn(info.steamID, 'The current vote counts are as follows:');
         for (const result of results) {
           await server.rcon.warn(
             info.steamID,
-            `${result.layer.layer} - ${result.votes} vote${
-              result.votes > 1 ? 's' : ''
-            }`
+            `${result.layer.layer} - ${result.votes} vote${result.votes > 1 ? 's' : ''}`
           );
         }
         return;
@@ -142,18 +124,12 @@ export default function(server, squadLayerFilter, options = {}) {
     }
 
     if (!manuallyCreated && server.players.length < options.minPlayerCount) {
-      await server.rcon.warn(
-        info.steamID,
-        'Not enough players online to vote.'
-      );
+      await server.rcon.warn(info.steamID, 'Not enough players online to vote.');
       return;
     }
 
     try {
-      const layerName = await mapvote.makeVoteByDidYouMean(
-        info.steamID,
-        match[1]
-      );
+      const layerName = await mapvote.makeVoteByDidYouMean(info.steamID, match[1]);
       await server.rcon.warn(info.steamID, `You voted for ${layerName}.`);
     } catch (err) {
       await server.rcon.warn(info.steamID, err.message);

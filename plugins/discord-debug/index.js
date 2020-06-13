@@ -1,14 +1,9 @@
 export default async function(server, discordClient, channelID, events = []) {
-  if (!server)
-    throw new Error(
-      'DiscordDebug must be provided with a reference to the server.'
-    );
+  if (!server) throw new Error('DiscordDebug must be provided with a reference to the server.');
 
-  if (!discordClient)
-    throw new Error('DiscordDebug must be provided with a Discord.js client.');
+  if (!discordClient) throw new Error('DiscordDebug must be provided with a Discord.js client.');
 
-  if (!channelID)
-    throw new Error('DicordDebug must be provided with a channel ID.');
+  if (!channelID) throw new Error('DicordDebug must be provided with a channel ID.');
 
   const channel = await discordClient.channels.fetch(channelID);
 

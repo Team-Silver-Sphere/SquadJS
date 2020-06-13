@@ -43,10 +43,7 @@ function makeEmbed(server, options) {
     embed: {
       title: server.serverName,
       color: options.colorGradient
-        ? parseInt(
-            gradient.rgbAt(server.playerCount / server.publicSlots).toHex(),
-            16
-          )
+        ? parseInt(gradient.rgbAt(server.playerCount / server.publicSlots).toHex(), 16)
         : options.color,
       fields: fields,
       timestamp: new Date().toISOString(),
@@ -58,13 +55,9 @@ function makeEmbed(server, options) {
 }
 
 export default async function(server, discordClient, options = {}) {
-  if (!server)
-    throw new Error(
-      'DiscordDebug must be provided with a reference to the server.'
-    );
+  if (!server) throw new Error('DiscordDebug must be provided with a reference to the server.');
 
-  if (!discordClient)
-    throw new Error('DiscordDebug must be provided with a Discord.js client.');
+  if (!discordClient) throw new Error('DiscordDebug must be provided with a Discord.js client.');
 
   options = {
     color: 16761867,
@@ -87,8 +80,7 @@ export default async function(server, discordClient, options = {}) {
     // confirm it's a status message
     if (
       reaction.message.embeds.length !== 1 ||
-      reaction.message.embeds[0].footer.text !==
-        `Server Status by ${COPYRIGHT_MESSAGE}`
+      reaction.message.embeds[0].footer.text !== `Server Status by ${COPYRIGHT_MESSAGE}`
     )
       return;
 
