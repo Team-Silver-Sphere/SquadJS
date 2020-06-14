@@ -1,10 +1,7 @@
 import { LOG_PARSER_PLAYER_CONNECTED } from 'squad-server/events/log-parser';
 
 export default function(server, options = {}) {
-  if (!server)
-    throw new Error(
-      'SeedingMessage must be provided with a reference to the server.'
-    );
+  if (!server) throw new Error('SeedingMessage must be provided with a reference to the server.');
 
   const mode = options.mode || 'interval';
   const interval = options.interval || 150 * 1000;

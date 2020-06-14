@@ -22,10 +22,7 @@ export default function(server, options = {}) {
     if (voteMatch) {
       if (!mapvote) return;
       try {
-        const layerName = await mapvote.makeVoteByNumber(
-          info.steamID,
-          parseInt(voteMatch[1])
-        );
+        const layerName = await mapvote.makeVoteByNumber(info.steamID, parseInt(voteMatch[1]));
         await server.rcon.warn(info.steamID, `You voted for ${layerName}.`);
       } catch (err) {
         await server.rcon.warn(info.steamID, err.message);
@@ -93,10 +90,7 @@ export default function(server, options = {}) {
 
         if (results.length === 0)
           await server.rcon.broadcast(`No layer gained enough votes to win.`);
-        else
-          await server.rcon.broadcast(
-            `${mapvote.getResults()[0].layer.layer} won the mapvote!`
-          );
+        else await server.rcon.broadcast(`${mapvote.getResults()[0].layer.layer} won the mapvote!`);
 
         mapvote = null;
         return;
@@ -109,15 +103,9 @@ export default function(server, options = {}) {
       }
 
       if (commandMatch[1] === 'help') {
-        await server.rcon.warn(
-          info.steamID,
-          'To vote type the layer number into chat:'
-        );
+        await server.rcon.warn(info.steamID, 'To vote type the layer number into chat:');
         for (const layer of mapvote.squadLayerFilter.getLayers()) {
-          await server.rcon.warn(
-            info.steamID,
-            `${layer.layerNumber} - ${layer.layer}`
-          );
+          await server.rcon.warn(info.steamID, `${layer.layerNumber} - ${layer.layer}`);
         }
 
         if (options.minVoteCount !== null)
@@ -138,16 +126,13 @@ export default function(server, options = {}) {
         if (results.length === 0) {
           await server.rcon.warn(info.steamID, 'No one has voted yet.');
         } else {
-          await server.rcon.warn(
-            info.steamID,
-            'The current vote counts are as follows:'
-          );
+          await server.rcon.warn(info.steamID, 'The current vote counts are as follows:');
           for (const result of results) {
             await server.rcon.warn(
               info.steamID,
-              `${result.layer.layerNumber} - ${result.layer.layer} (${
-                result.votes
-              } vote${result.votes > 1 ? 's' : ''})`
+              `${result.layer.layerNumber} - ${result.layer.layer} (${result.votes} vote${
+                result.votes > 1 ? 's' : ''
+              })`
             );
           }
         }

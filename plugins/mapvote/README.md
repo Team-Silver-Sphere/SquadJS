@@ -37,7 +37,20 @@ const activeLayerFilter = {
       Invasion: 4 // invasion can only be played once every x layers
       // if not specified they will default to off
     },
-    playerCountComplianceEnabled: true // filter layers based on suggested player counts if true
+    gamemodeRepetitiveTolerance: {
+      Invasion: 4 // invasion can only be played up to x times in a row
+      // if not specified they will default to off
+    },
+    playerCountComplianceEnabled: true, // filter layers based on suggested player counts if true
+    factionComplianceEnabled: true, // a team cannot play the same faction twice in a row
+    factionHistoryTolerance: {
+      RUS: 4 // rus can only be played once every x layers
+      // if not specified they will default to off
+    },
+    factionRepetitiveTolerance: {
+      RUS: 4 // rus can only be played up to x times in a row
+      // if not specified they will default to off
+    },
 };
 ```
 

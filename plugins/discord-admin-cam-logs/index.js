@@ -6,17 +6,12 @@ import {
 
 export default async function(server, discordClient, channelID, options = {}) {
   if (!server)
-    throw new Error(
-      'DiscordAdminCamLogs must be provided with a reference to the server.'
-    );
+    throw new Error('DiscordAdminCamLogs must be provided with a reference to the server.');
 
   if (!discordClient)
-    throw new Error(
-      'DiscordAdminCamLogs must be provided with a Discord.js client.'
-    );
+    throw new Error('DiscordAdminCamLogs must be provided with a Discord.js client.');
 
-  if (!channelID)
-    throw new Error('DiscordAdminCamLogs must be provided with a channel ID.');
+  if (!channelID) throw new Error('DiscordAdminCamLogs must be provided with a channel ID.');
 
   options = {
     color: 16761867,
@@ -57,8 +52,7 @@ export default async function(server, discordClient, channelID, options = {}) {
   });
 
   server.on(LOG_PARSER_PLAYER_UNPOSSESS, info => {
-    if (info.switchPossess === true || !(info.player.steamID in adminsInCam))
-      return;
+    if (info.switchPossess === true || !(info.player.steamID in adminsInCam)) return;
 
     channel.send({
       embed: {
@@ -78,9 +72,7 @@ export default async function(server, discordClient, channelID, options = {}) {
           {
             name: 'Time in Admin Camera',
             value: `${Math.round(
-              (info.time.getTime() -
-                adminsInCam[info.player.steamID].getTime()) /
-                60000
+              (info.time.getTime() - adminsInCam[info.player.steamID].getTime()) / 60000
             )} mins`
           }
         ],

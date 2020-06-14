@@ -10,8 +10,7 @@ import rules from './rules/index.js';
 
 export default class LogParser {
   constructor(options = {}, server) {
-    if (!(server instanceof Server))
-      throw new Error('Server not an instance of a SquadJS server.');
+    if (!(server instanceof Server)) throw new Error('Server not an instance of a SquadJS server.');
     this.server = server;
     this.eventStore = {};
 

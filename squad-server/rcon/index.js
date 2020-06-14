@@ -15,8 +15,7 @@ export default class Rcon {
     if (!options.rconPort) throw new Error('RCON port must be specified.');
     this.port = options.rconPort;
 
-    if (!options.rconPassword)
-      throw new Error('RCON password must be specified.');
+    if (!options.rconPassword) throw new Error('RCON password must be specified.');
     this.password = options.rconPassword;
 
     this.verboseEnabled = options.rconVerbose || false;
@@ -195,10 +194,7 @@ export default class Rcon {
         ''
       );
 
-      if (
-        this.maximumPacketSize > 0 &&
-        encodedPacket.length > this.maximumPacketSize
-      )
+      if (this.maximumPacketSize > 0 && encodedPacket.length > this.maximumPacketSize)
         reject(new Error('Packet too long.'));
 
       // prepare to handle response.
@@ -233,8 +229,7 @@ export default class Rcon {
         resolve(response);
       };
 
-      if (type === RCONProtocol.SERVERDATA_AUTH)
-        this.requestQueue.push(handleAuthMultiPacket);
+      if (type === RCONProtocol.SERVERDATA_AUTH) this.requestQueue.push(handleAuthMultiPacket);
       else this.requestQueue.push(handleMultiPacket);
 
       this.client.once('error', reject);
@@ -311,7 +306,6 @@ export default class Rcon {
   }
 
   verbose(msg) {
-    if (this.verboseEnabled)
-      console.log(`[${Date.now()}] RCON (Verbose): ${msg}`);
+    if (this.verboseEnabled) console.log(`[${Date.now()}] RCON (Verbose): ${msg}`);
   }
 }

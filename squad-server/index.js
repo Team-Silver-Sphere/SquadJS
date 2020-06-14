@@ -27,8 +27,7 @@ export default class Server extends EventEmitter {
     if (!('host' in options)) throw new Error('Server must have a host.');
     this.host = options.host;
 
-    if (!('queryPort' in options))
-      throw new Error('Server must have a queryPort.');
+    if (!('queryPort' in options)) throw new Error('Server must have a queryPort.');
     this.queryPort = options.queryPort;
 
     this.updateInterval = options.updateInterval || 30 * 1000;
@@ -51,10 +50,7 @@ export default class Server extends EventEmitter {
 
     // setup period updaters
     this.updatePlayers = this.updatePlayers.bind(this);
-    this.updatePlayerTimeout = setTimeout(
-      this.updatePlayers,
-      this.updateInterval
-    );
+    this.updatePlayerTimeout = setTimeout(this.updatePlayers, this.updateInterval);
 
     setInterval(async () => {
       const data = await this.rcon.getMapInfo();
@@ -121,10 +117,7 @@ export default class Server extends EventEmitter {
     }
 
     // delay another update
-    this.updatePlayerTimeout = setTimeout(
-      this.updatePlayers,
-      this.updateInterval
-    );
+    this.updatePlayerTimeout = setTimeout(this.updatePlayers, this.updateInterval);
 
     this.emit(SERVER_PLAYERS_UPDATED, this.players);
   }

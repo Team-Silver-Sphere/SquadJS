@@ -10,13 +10,10 @@ import sleep from 'core/utils/sleep';
 export default class FTPLogReader {
   constructor(queueLine, options = {}) {
     if (typeof queueLine !== 'function')
-      throw new Error(
-        'queueLine argument must be specified and be a function.'
-      );
+      throw new Error('queueLine argument must be specified and be a function.');
     if (!options.host) throw new Error('Host must be specified.');
     if (!options.ftpUser) throw new Error('FTP user must be specified.');
-    if (!options.ftpPassword)
-      throw new Error('FTP password must be specified.');
+    if (!options.ftpPassword) throw new Error('FTP password must be specified.');
     if (!options.remotePath) throw new Error('Remote path must be specified.');
 
     this.queueLine = queueLine;
@@ -79,8 +76,7 @@ export default class FTPLogReader {
       if (this.lastByteReceived == null) {
         const fileSize = await this.client.size(this.remotePath);
         this.lastByteReceived =
-          fileSize -
-          (this.tailLastBytes < fileSize ? this.tailLastBytes : fileSize);
+          fileSize - (this.tailLastBytes < fileSize ? this.tailLastBytes : fileSize);
       }
 
       // Download the data to a temp file, overwrite any previous data
