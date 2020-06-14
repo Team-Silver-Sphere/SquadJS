@@ -4547,7 +4547,7 @@
         }
     },
     {
-        "layer": "CAF_Manic_AAS_v1",
+        "layer": "CAF_Manic-5_AAS_v1",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_AAS_v1",
         "gamemode": "AAS",
@@ -4574,7 +4574,7 @@
         }
     },
     {
-        "layer": "CAF_Manic_Invasion_v1",
+        "layer": "CAF_Manic-5_Invasion_v1",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_Invasion_v1",
         "gamemode": "Invasion",
@@ -4601,7 +4601,7 @@
         }
     },
     {
-        "layer": "CAF_Manic_Invasion_v2",
+        "layer": "CAF_Manic-5_Invasion_v2",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_Invasion_v2",
         "gamemode": "Invasion",
@@ -4628,7 +4628,7 @@
         }
     },
     {
-        "layer": "CAF_Manic_RAAS_v1",
+        "layer": "CAF_Manic-5_RAAS_v1",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_RAAS_v1",
         "gamemode": "RAAS",
@@ -4655,7 +4655,7 @@
         }
     },
     {
-        "layer": "CAF_Manic_RAAS_v2",
+        "layer": "CAF_Manic-5_RAAS_v2",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_RAAS_v2",
         "gamemode": "RAAS",
@@ -4682,7 +4682,7 @@
         }
     },
     {
-        "layer": "CAF_Manic_RAAS_v3",
+        "layer": "CAF_Manic-5_RAAS_v3",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_RAAS_v3",
         "gamemode": "RAAS",
@@ -4709,7 +4709,7 @@
         }
     },
     {
-        "layer": "CAF_Manic_RAAS_v4",
+        "layer": "CAF_Manic-5_RAAS_v4",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_RAAS_v4",
         "gamemode": "RAAS",
@@ -4736,7 +4736,7 @@
         }
     },
     {
-        "layer": "CAF_Manic_Skirmish_v1",
+        "layer": "CAF_Manic-5_Skirmish_v1",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_Skirmish_v1",
         "gamemode": "Skirmish",
@@ -4763,7 +4763,7 @@
         }
     },
     {
-        "layer": "CAF_Manic_Skirmish_v2",
+        "layer": "CAF_Manic-5_Skirmish_v2",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_Skirmish_v2",
         "gamemode": "Skirmish",
@@ -4790,7 +4790,7 @@
         }
     },
     {
-        "layer": "CAF_Manic_TC_v1",
+        "layer": "CAF_Manic-5_TC_v1",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_TC_v1",
         "gamemode": "TC",
