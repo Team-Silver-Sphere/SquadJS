@@ -16,7 +16,20 @@ export default class SquadLayerFilter extends SquadLayersClass {
           // defaults as off
           ...activeLayerFilter.gamemodeHistoryTolerance
         },
+        gamemodeRepetitiveTolerance: {
+          // defaults as off
+          ...activeLayerFilter.gamemodeRepetitiveTolerance
+        },
         playerCountComplianceEnabled: true,
+        factionComplianceEnabled: true,
+        factionHistoryTolerance: {
+          // defaults as off
+          ...activeLayerFilter.factionHistoryTolerance
+        },
+        factionRepetitiveTolerance: {
+          // defaults as off
+          ...activeLayerFilter.factionRepetitiveTolerance
+        },
         ...activeLayerFilter
       };
     }
@@ -124,6 +137,7 @@ export default class SquadLayerFilter extends SquadLayersClass {
     ) {
       if (new Date() - server.layerHistory[i].time > this.activeLayerFilter.historyResetTime)
         return true;
+
       if (server.layerHistory[i].map === layer.map) return false;
     }
     return true;
@@ -144,13 +158,120 @@ export default class SquadLayerFilter extends SquadLayersClass {
         return true;
 
       const historyLayer = SquadLayers.getLayerByLayerName(server.layerHistory[i].layer);
-      if (historyLayer && historyLayer.gamemode === layer.gamemode) return false;
+      if (!historyLayer) continue;
+
+      if (historyLayer.gamemode === layer.gamemode) return false;
     }
     return true;
   }
 
+  isGamemodeRepetitiveCompliant(server, layer) {
+    if (this.activeLayerFilter === null) return true;
+
+    if (typeof layer === 'string') layer = SquadLayers.getLayerByLayerName(layer);
+
+    const gamemodeRepetitiveTolerance = this.activeLayerFilter.gamemodeRepetitiveTolerance[
+      layer.gamemode
+    ];
+    if (!gamemodeRepetitiveTolerance) return true;
+
+    for (let i = 0; i < Math.min(server.layerHistory.length, gamemodeRepetitiveTolerance); i++) {
+      if (new Date() - server.layerHistory[i].time > this.activeLayerFilter.historyResetTime)
+        return true;
+
+      const historyLayer = SquadLayers.getLayerByLayerName(server.layerHistory[i].layer);
+      if (!historyLayer) return true;
+
+      if (historyLayer.gamemode !== layer.gamemode) return true;
+    }
+    return false;
+  }
+
+  isFactionCompliant(server, layer) {
+    if (
+      this.activeLayerFilter === null ||
+      this.activeLayerFilter.factionComplianceEnabled === false
+    )
+      return true;
+    if (server.layerHistory.length === 0) return true;
+
+    if (typeof layer === 'string') layer = SquadLayers.getLayerByLayerName(layer);
+
+    const historyLayer = SquadLayers.getLayerByLayerName(server.layerHistory[0].layer);
+
+    return (
+      !historyLayer ||
+      (
+        historyLayer.teamOne.faction !== layer.teamTwo.faction &&
+        historyLayer.teamTwo.faction !== layer.teamOne.faction
+      )
+    );
+  }
+
+  isFactionHistoryCompliant(server, layer, faction = null) {
+    if (this.activeLayerFilter === null) return true;
+
+    if (typeof layer === 'string') layer = SquadLayers.getLayerByLayerName(layer);
+
+    if (faction === null) {
+      return (
+        this.isFactionHistoryCompliant(server, layer, layer.teamOne.faction) &&
+        this.isFactionHistoryCompliant(server, layer, layer.teamTwo.faction)
+      );
+    } else {
+      const factionThreshold = this.activeLayerFilter.factionHistoryTolerance[faction];
+      if (!factionThreshold) return true;
+
+      for (let i = 0; i < Math.min(server.layerHistory.length, factionThreshold); i++) {
+        if (new Date() - server.layerHistory[i].time > this.activeLayerFilter.historyResetTime)
+          return true;
+
+        const historyLayer = SquadLayers.getLayerByLayerName(server.layerHistory[i].layer);
+        if (!historyLayer) continue;
+
+        if (historyLayer.teamOne.faction === faction || historyLayer.teamTwo.faction === faction)
+          return false;
+      }
+
+      return true;
+    }
+  }
+
+  isFactionRepetitiveCompliant(server, layer, faction = null) {
+    if (this.activeLayerFilter === null) return true;
+
+    if (typeof layer === 'string') layer = SquadLayers.getLayerByLayerName(layer);
+
+    if (faction === null) {
+      return (
+        this.isFactionRepetitiveCompliant(server, layer, layer.teamOne.faction) &&
+        this.isFactionRepetitiveCompliant(server, layer, layer.teamTwo.faction)
+      );
+    } else {
+      const factionThreshold = this.activeLayerFilter.factionRepetitiveTolerance[faction];
+      if (!factionThreshold) return true;
+
+      for (let i = 0; i < Math.min(server.layerHistory.length, factionThreshold); i++) {
+        if (new Date() - server.layerHistory[i].time > this.activeLayerFilter.historyResetTime)
+          return true;
+
+        const historyLayer = SquadLayers.getLayerByLayerName(server.layerHistory[i].layer);
+        if (!historyLayer) return true;
+
+        if (historyLayer.teamOne.faction !== faction && historyLayer.teamTwo.faction !== faction)
+          return true;
+      }
+
+      return false;
+    }
+  }
+
   isPlayerCountCompliant(server, layer) {
-    if (this.activeLayerFilter === null || this.playerCountComplianceEnabled === false) return true;
+    if (
+      this.activeLayerFilter === null ||
+      this.activeLayerFilter.playerCountComplianceEnabled === false
+    )
+      return true;
 
     if (typeof layer === 'string') layer = SquadLayers.getLayerByLayerName(layer);
 

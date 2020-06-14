@@ -209,7 +209,11 @@
         },
         "tanks": "x1 for INS, 30 min delay",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     },
     {
         "layer": "Al Basrah TC v2",
@@ -232,7 +236,11 @@
         },
         "tanks": "x1 for INS, 20 min delay",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     },
     {
         "layer": "Belaya AAS v1",
@@ -471,7 +479,11 @@
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     },
     {
         "layer": "Chora AAS v1",
@@ -710,12 +722,16 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 36,
+            "max": 80
+        }
     },
     {
         "layer": "Fool's Road AAS v1",
         "map": "Fool's Road",
-        "layerClassname": "FoolsRoad_AAS_v1",
+        "layerClassname": "Fools_Road_AAS_v1",
         "mapSize": "2x2 km",
         "gamemode": "AAS",
         "version": "v1",
@@ -742,7 +758,7 @@
     {
         "layer": "Fool's Road AAS v2",
         "map": "Fool's Road",
-        "layerClassname": "FoolsRoad_AAS_v2",
+        "layerClassname": "Fools_Road_AAS_v2",
         "mapSize": "2x2 km",
         "gamemode": "AAS",
         "version": "v2",
@@ -769,7 +785,7 @@
     {
         "layer": "Fool's Road Destruction v1",
         "map": "Fool's Road",
-        "layerClassname": "FoolsRoad_Destruction_v1",
+        "layerClassname": "Fools_Road_Destruction_v1",
         "mapSize": "2x2 km",
         "gamemode": "Destruction",
         "version": "v1",
@@ -796,7 +812,7 @@
     {
         "layer": "Fool's Road Invasion v1",
         "map": "Fool's Road",
-        "layerClassname": "FoolsRoad_Invasion_v1",
+        "layerClassname": "Fools_Road_Invasion_v1",
         "mapSize": "2x2 km",
         "gamemode": "Invasion",
         "version": "v1",
@@ -823,7 +839,7 @@
     {
         "layer": "Fool's Road RAAS v1",
         "map": "Fool's Road",
-        "layerClassname": "FoolsRoad_RAAS_v1",
+        "layerClassname": "Fools_Road_RAAS_v1",
         "mapSize": "2x2 km",
         "gamemode": "RAAS",
         "version": "v1",
@@ -850,7 +866,7 @@
     {
         "layer": "Fool's Road RAAS v2",
         "map": "Fool's Road",
-        "layerClassname": "FoolsRoad_RAAS_v2",
+        "layerClassname": "Fools_Road_RAAS_v2",
         "mapSize": "2x2 km",
         "gamemode": "RAAS",
         "version": "v2",
@@ -877,7 +893,7 @@
     {
         "layer": "Fool's Road RAAS v3",
         "map": "Fool's Road",
-        "layerClassname": "FoolsRoad_RAAS_v3",
+        "layerClassname": "Fools_Road_RAAS_v3",
         "mapSize": "2x2 km",
         "gamemode": "RAAS",
         "version": "v3",
@@ -904,7 +920,7 @@
     {
         "layer": "Fool's Road Skirmish v1",
         "map": "Fool's Road",
-        "layerClassname": "FoolsRoad_Skirmish_v1",
+        "layerClassname": "Fools_Road_Skirmish_v1",
         "mapSize": "2x2 km",
         "gamemode": "Skirmish",
         "version": "v1",
@@ -931,7 +947,7 @@
     {
         "layer": "Fool's Road Skirmish v2",
         "map": "Fool's Road",
-        "layerClassname": "FoolsRoad_Skirmish_v2",
+        "layerClassname": "Fools_Road_Skirmish_v2",
         "mapSize": "2x2 km",
         "gamemode": "Skirmish",
         "version": "v2",
@@ -958,7 +974,7 @@
     {
         "layer": "Fool's Road TC v1",
         "map": "Fool's Road",
-        "layerClassname": "FoolsRoad_TC_v1",
+        "layerClassname": "Fools_Road_TC_v1",
         "mapSize": "2x2 km",
         "gamemode": "TC",
         "version": "v1",
@@ -976,7 +992,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 36,
+            "max": 80
+        }
     },
     {
         "layer": "Gorodok AAS v1",
@@ -1296,7 +1316,11 @@
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     },
     {
         "layer": "Jensen's Range Training v1",
@@ -1697,7 +1721,11 @@
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     },
     {
         "layer": "Kamdesh TC v2",
@@ -1720,7 +1748,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
     },
     {
         "layer": "Kohat AAS v1",
@@ -1986,7 +2018,11 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     },
     {
         "layer": "Kokan AAS v1",
@@ -2171,7 +2207,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 36,
+            "max": 80
+        }
     },
     {
         "layer": "Logar Valley AAS v1",
@@ -2329,7 +2369,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 36,
+            "max": 80
+        }
     },
     {
         "layer": "Mestia AAS v1",
@@ -2487,7 +2531,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 36,
+            "max": 80
+        }
     },
     {
         "layer": "Mutaha AAS v1",
@@ -2618,7 +2666,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 36,
+            "max": 80
+        }
     },
     {
         "layer": "Mutaha TC v2",
@@ -2641,7 +2693,11 @@
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 per team",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
     },
     {
         "layer": "Narva AAS v1",
@@ -2880,7 +2936,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 36,
+            "max": 80
+        }
     },
     {
         "layer": "Narva TC v2",
@@ -2903,7 +2963,11 @@
         },
         "tanks": "x1 per team, 30min delay",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     },
     {
         "layer": "Skorpo AAS v1",
@@ -3142,7 +3206,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
     },
     {
         "layer": "Skorpo TC v2",
@@ -3165,7 +3233,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
     },
     {
         "layer": "Skorpo TC v3",
@@ -3188,7 +3260,11 @@
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     },
     {
         "layer": "Sumari AAS v1",
@@ -3373,7 +3449,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 36,
+            "max": 80
+        }
     },
     {
         "layer": "Tallil Outskirts AAS v1",
@@ -3739,7 +3819,11 @@
         },
         "tanks": "x2 per team, 20min delay",
         "helicopters": "x2 per team",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
     },
     {
         "layer": "Tutorials Infantry Training Tutorial",
@@ -4159,7 +4243,11 @@
         },
         "tanks": "x2 per team, 20min delay",
         "helicopters": "x1 per team",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
     },
     {
         "layer": "Yehorivka TC v2",
@@ -4182,7 +4270,11 @@
         },
         "tanks": "x1 per team",
         "helicopters": "x1 per team",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
     },
     {
         "layer": "CAF_Albasrah_Invasion_v1",
@@ -4313,7 +4405,11 @@
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     },
     {
         "layer": "CAF_Jensens_Range_v4",
@@ -4417,7 +4513,11 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 40,
+            "max": 80
+        }
     },
     {
         "layer": "CAF_Kohat_Invasion_v1",
@@ -4710,7 +4810,11 @@
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     },
     {
         "layer": "CAF_Mestia_RAAS_v1",
@@ -4949,6 +5053,10 @@
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
     }
 ]
