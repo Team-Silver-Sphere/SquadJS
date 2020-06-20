@@ -3,7 +3,7 @@
   "version": "1.0.11",
   "repository": "https://github.com/Thomas-Smyth/SquadJS.git",
   "author": "Thomas Smyth <https://github.com/Thomas-Smyth>",
-  "license": "MIT",
+  "license": "BSL-1.0",
   "private": true,
   "workspaces": [
     "assets",
