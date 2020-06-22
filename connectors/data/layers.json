@@ -3773,7 +3773,11 @@
         },
         "tanks": "x6 per team",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
     },
     {
         "layer": "Tallil Outskirts Tanks v2",
@@ -3796,7 +3800,11 @@
         },
         "tanks": "x6 per team",
         "helicopters": "N/A",
-        "newForVersion": false
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
     },
     {
         "layer": "Tallil Outskirts TC v1",
