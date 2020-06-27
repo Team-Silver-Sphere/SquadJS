@@ -1,5 +1,5 @@
 # Project Files
-squad-server/log-parser/test-data/
+*.tmp
 
 index-test.js
 

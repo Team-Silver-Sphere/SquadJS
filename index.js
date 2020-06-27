@@ -25,6 +25,13 @@ async function main() {
     queryPort: 27165,
     rconPort: 21114,
     rconPassword: 'password',
+
+    // Uncomment the following lines to read logs over FTP.
+    // ftpPort: 21,
+    // ftpUser: 'FTP Username',
+    // ftpPassword: 'FTP Password',
+    // logReaderMode: 'ftp',
+
     logDir: 'C:/path/to/squad/log/folder'
   });
 

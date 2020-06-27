@@ -4,9 +4,9 @@
   "type": "module",
   "dependencies": {
     "async": "^3.2.0",
-    "basic-ftp": "^4.5.4",
     "cli-progress": "^3.8.2",
     "core": "1.0.0",
+    "ftp-tail": "^1.0.1",
     "gamedig": "^2.0.20",
     "moment": "^2.24.0",
     "tail": "^2.0.3"
