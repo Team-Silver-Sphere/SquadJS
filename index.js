@@ -14,7 +14,8 @@ import {
   influxdbLogDefaultSchema,
   mapvote,
   mysqlLog,
-  teamRandomizer
+  teamRandomizer,
+  seedingMessage
 } from 'plugins';
 
 async function main() {
