@@ -49,6 +49,7 @@ async function main() {
   mapvote(server, 'didyoumean', squadLayerFilter, {});
 
   teamRandomizer(server);
+  seedingMessage(server);
 
   // MySQL Plugins
   const mysqlPool = mysql.createPool({

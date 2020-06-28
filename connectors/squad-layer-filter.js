@@ -201,10 +201,8 @@ export default class SquadLayerFilter extends SquadLayersClass {
 
     return (
       !historyLayer ||
-      (
-        historyLayer.teamOne.faction !== layer.teamTwo.faction &&
-        historyLayer.teamTwo.faction !== layer.teamOne.faction
-      )
+      (historyLayer.teamOne.faction !== layer.teamTwo.faction &&
+        historyLayer.teamTwo.faction !== layer.teamOne.faction)
     );
   }
 
