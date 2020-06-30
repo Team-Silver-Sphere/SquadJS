@@ -18,9 +18,36 @@
             "faction": "INS",
             "tickets": "250"
         },
-        "tanks": "x1 for INS",
+        "tanks": "x1 for INS, 30min delay",
         "helicopters": "N/A",
         "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Al Basrah AAS v2",
+        "map": "Al Basrah",
+        "layerClassname": "Albasrah_AAS_v2",
+        "mapSize": "2x2 km",
+        "gamemode": "AAS",
+        "version": "v2",
+        "lighting": "Sunny Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "250"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "250"
+        },
+        "tanks": "N/A",
+        "helicopters": "x3 for USA",
+        "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -46,7 +73,7 @@
             "tickets": "600"
         },
         "tanks": "N/A",
-        "helicopters": "N/A",
+        "helicopters": "x1 for GB, 20min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
@@ -73,7 +100,7 @@
             "tickets": "900"
         },
         "tanks": "N/A",
-        "helicopters": "N/A",
+        "helicopters": "x1 for GB, 20min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
@@ -100,7 +127,7 @@
             "tickets": "900"
         },
         "tanks": "x1 per team",
-        "helicopters": "N/A",
+        "helicopters": "x1 for GB, 20min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
@@ -207,11 +234,11 @@
             "faction": "INS",
             "tickets": "400"
         },
-        "tanks": "x1 for INS, 30 min delay",
-        "helicopters": "N/A",
+        "tanks": "x1 for INS, 20 min delay",
+        "helicopters": "x1 for GB, 20min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 45,
+            "min": 54,
             "max": 80
         }
     },
@@ -270,6 +297,33 @@
         }
     },
     {
+        "layer": "Belaya AAS v2",
+        "map": "Belaya",
+        "layerClassname": "Belaya_AAS_v2",
+        "mapSize": "2x4 km",
+        "gamemode": "AAS",
+        "version": "v2",
+        "lighting": "Sunny Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "GB",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
         "layer": "Belaya Invasion v1",
         "map": "Belaya",
         "layerClassname": "Belaya_Invasion_v1",
@@ -289,7 +343,7 @@
             "tickets": "800"
         },
         "tanks": "N/A",
-        "helicopters": "N/A",
+        "helicopters": "x1 RUS, 30min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
@@ -316,7 +370,7 @@
             "tickets": "900"
         },
         "tanks": "x1 per team, 20min delay",
-        "helicopters": "N/A",
+        "helicopters": "x1 per team, 10min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
@@ -343,7 +397,7 @@
             "tickets": "700"
         },
         "tanks": "x1 per team, 20min delay",
-        "helicopters": "N/A",
+        "helicopters": "x1 per team, 10min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
@@ -370,10 +424,10 @@
             "tickets": "300"
         },
         "tanks": "x1 per team, 20min delay",
-        "helicopters": "N/A",
+        "helicopters": "x1 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 45,
+            "min": 54,
             "max": 80
         }
     },
@@ -397,7 +451,7 @@
             "tickets": "300"
         },
         "tanks": "N/A",
-        "helicopters": "N/A",
+        "helicopters": "x1 USA, 10min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
@@ -424,10 +478,10 @@
             "tickets": "300"
         },
         "tanks": "x1 per team, 20min delay",
-        "helicopters": "N/A",
+        "helicopters": "x1 GB, 10min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 45,
+            "min": 54,
             "max": 80
         }
     },
@@ -478,10 +532,10 @@
             "tickets": "400"
         },
         "tanks": "x1 per team, 20min delay",
-        "helicopters": "N/A",
+        "helicopters": "x1 per team, 6min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 45,
+            "min": 54,
             "max": 80
         }
     },
@@ -794,7 +848,7 @@
         "commander": true,
         "flagCount": 0,
         "teamOne": {
-            "faction": "RU",
+            "faction": "RUS",
             "tickets": "200"
         },
         "teamTwo": {
@@ -1002,7 +1056,7 @@
         "layer": "Gorodok AAS v1",
         "map": "Gorodok",
         "layerClassname": "Gorodok_AAS_v1",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "AAS",
         "version": "v1",
         "lighting": "Sunny Mid Day",
@@ -1026,10 +1080,37 @@
         }
     },
     {
+        "layer": "Gorodok AAS v2",
+        "map": "Gorodok",
+        "layerClassname": "Gorodok_AAS_v2",
+        "mapSize": "4x4 km",
+        "gamemode": "AAS",
+        "version": "v2",
+        "lighting": "Sunny Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "GB",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS",
+            "tickets": "300"
+        },
+        "tanks": "x1 per team, 20min delay",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
         "layer": "Gorodok Destruction v1",
         "map": "Gorodok",
         "layerClassname": "Gorodok_Destruction_v1",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "Destruction",
         "version": "v1",
         "lighting": "Sunny Mid Day",
@@ -1056,7 +1137,7 @@
         "layer": "Gorodok Insurgency v1",
         "map": "Gorodok",
         "layerClassname": "Gorodok_Insurgency_v1",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "Insurgency",
         "version": "v1",
         "lighting": "Sunset",
@@ -1083,7 +1164,7 @@
         "layer": "Gorodok Invasion v1",
         "map": "Gorodok",
         "layerClassname": "Gorodok_Invasion_v1",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "Invasion",
         "version": "v1",
         "lighting": "Sunset",
@@ -1110,7 +1191,7 @@
         "layer": "Gorodok Invasion v2",
         "map": "Gorodok",
         "layerClassname": "Gorodok_Invasion_v2",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "Invasion",
         "version": "v2",
         "lighting": "Sunset",
@@ -1137,7 +1218,7 @@
         "layer": "Gorodok RAAS v1",
         "map": "Gorodok",
         "layerClassname": "Gorodok_RAAS_v1",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "RAAS",
         "version": "v1",
         "lighting": "Sunny Mid Day",
@@ -1164,7 +1245,7 @@
         "layer": "Gorodok RAAS v2",
         "map": "Gorodok",
         "layerClassname": "Gorodok_RAAS_v2",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "RAAS",
         "version": "v2",
         "lighting": "Sunny Mid Day",
@@ -1191,7 +1272,7 @@
         "layer": "Gorodok RAAS v3",
         "map": "Gorodok",
         "layerClassname": "Gorodok_RAAS_v3",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "RAAS",
         "version": "v3",
         "lighting": "Sunset",
@@ -1218,7 +1299,7 @@
         "layer": "Gorodok RAAS v4",
         "map": "Gorodok",
         "layerClassname": "Gorodok_RAAS_v4",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "RAAS",
         "version": "v4",
         "lighting": "Sunset",
@@ -1245,7 +1326,7 @@
         "layer": "Gorodok RAAS v5",
         "map": "Gorodok",
         "layerClassname": "Gorodok_RAAS_v5",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "RAAS",
         "version": "v5",
         "lighting": "Sunset",
@@ -1272,7 +1353,7 @@
         "layer": "Gorodok Skirmish v1",
         "map": "Gorodok",
         "layerClassname": "Gorodok_Skirmish_v1",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "Skirmish",
         "version": "v1",
         "lighting": "Overcast",
@@ -1299,7 +1380,7 @@
         "layer": "Gorodok TC v1",
         "map": "Gorodok",
         "layerClassname": "Gorodok_TC_v1",
-        "mapSize": "",
+        "mapSize": "4x4 km",
         "gamemode": "TC",
         "version": "v1",
         "lighting": "Sunset",
@@ -1782,6 +1863,33 @@
         }
     },
     {
+        "layer": "Kohat AAS v2",
+        "map": "Kohat",
+        "layerClassname": "Kohat_AAS_v2",
+        "mapSize": "4x4 km",
+        "gamemode": "AAS",
+        "version": "v2",
+        "lighting": "Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS_DE",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
         "layer": "Kohat Insurgency v1",
         "map": "Kohat",
         "layerClassname": "Kohat_Insurgency_v1",
@@ -2210,6 +2318,222 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Lashkar Valley AAS v1",
+        "map": "Lashkar Valley",
+        "layerClassname": "Lashkar_Valley_AAS_v1",
+        "mapSize": "2x2 km",
+        "gamemode": "AAS",
+        "version": "v1",
+        "lighting": "Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "GB",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS_DE",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Lashkar Valley AAS v2",
+        "map": "Lashkar Valley",
+        "layerClassname": "Lashkar_Valley_AAS_v2",
+        "mapSize": "2x2 km",
+        "gamemode": "AAS",
+        "version": "v2",
+        "lighting": "Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS_DE",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Lashkar Valley Insurgency v1",
+        "map": "Lashkar Valley",
+        "layerClassname": "Lashkar_Valley_Insurgency_v1",
+        "mapSize": "2x2 km",
+        "gamemode": "Insurgency",
+        "version": "v1",
+        "lighting": "Early Morning",
+        "info": null,
+        "commander": true,
+        "flagCount": 0,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "200"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "800"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 for USA",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Lashkar Valley Invasion v1",
+        "map": "Lashkar Valley",
+        "layerClassname": "Lashkar_Valley_Invasion_v1",
+        "mapSize": "2x2 km",
+        "gamemode": "Invasion",
+        "version": "v1",
+        "lighting": "Mid Day",
+        "info": "Random",
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "150"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "900"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 for USA",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Lashkar Valley RAAS v1",
+        "map": "Lashkar Valley",
+        "layerClassname": "Lashkar_Valley_RAAS_v1",
+        "mapSize": "2x2 km",
+        "gamemode": "RAAS",
+        "version": "v1",
+        "lighting": "Early Morning",
+        "info": "Lanes",
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS_DE",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Lashkar Valley Skirmish v1",
+        "map": "Lashkar Valley",
+        "layerClassname": "Lashkar_Valley_Skirmish_v1",
+        "mapSize": "2x2 km",
+        "gamemode": "Skirmish",
+        "version": "v1",
+        "lighting": "Mid Day",
+        "info": null,
+        "commander": false,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "MIL",
+            "tickets": "200"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "200"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "mix": 0,
+            "max": 40
+        }
+    },
+    {
+        "layer": "Lashkar Valley TC v1",
+        "map": "Lashkar Valley",
+        "layerClassname": "Lashkar_Valley_TC_v1",
+        "mapSize": "2x2 km",
+        "gamemode": "TC",
+        "version": "v1",
+        "lighting": "Rain Storm",
+        "info": null,
+        "commander": true,
+        "flagCount": 98,
+        "teamOne": {
+            "faction": "GB",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS_DE",
+            "tickets": "300"
+        },
+        "tanks": "x1 per team, 20min delay",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Lashkar Valley TC v2",
+        "map": "Lashkar Valley",
+        "layerClassname": "Lashkar_Valley_TC_v2",
+        "mapSize": "2x2 km",
+        "gamemode": "TC",
+        "version": "v2",
+        "lighting": "Rain Storm",
+        "info": null,
+        "commander": true,
+        "flagCount": 67,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS_DE",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
             "max": 80
         }
     },
@@ -2989,10 +3313,10 @@
             "tickets": "300"
         },
         "tanks": "N/A",
-        "helicopters": "N/A",
+        "helicopters": "x1 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 54,
+            "min": 45,
             "max": 80
         }
     },
@@ -3070,10 +3394,10 @@
             "tickets": "350"
         },
         "tanks": "x1 per team, 20min delay",
-        "helicopters": "N/A",
+        "helicopters": "x2 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 45,
+            "min": 54,
             "max": 80
         }
     },
@@ -3096,11 +3420,11 @@
             "faction": "RUS",
             "tickets": "350"
         },
-        "tanks": "x1 per team, 30min delay",
-        "helicopters": "N/A",
+        "tanks": "x1 per team, 20min delay",
+        "helicopters": "x2 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 45,
+            "min": 54,
             "max": 80
         }
     },
@@ -3123,7 +3447,7 @@
             "faction": "MIL",
             "tickets": "350"
         },
-        "tanks": "x1 per team, 30min delay",
+        "tanks": "x1 per team, 20min delay",
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
@@ -3151,10 +3475,10 @@
             "tickets": "350"
         },
         "tanks": "x1 per team, 20min delay",
-        "helicopters": "N/A",
+        "helicopters": "x2 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 45,
+            "min": 54,
             "max": 80
         }
     },
@@ -3205,10 +3529,10 @@
             "tickets": "400"
         },
         "tanks": "N/A",
-        "helicopters": "N/A",
+        "helicopters": "x1 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 54,
+            "min": 45,
             "max": 80
         }
     },
@@ -3232,10 +3556,10 @@
             "tickets": "400"
         },
         "tanks": "N/A",
-        "helicopters": "N/A",
+        "helicopters": "x2 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 54,
+            "min": 45,
             "max": 80
         }
     },
@@ -3259,10 +3583,10 @@
             "tickets": "500"
         },
         "tanks": "x1 per team, 20min delay",
-        "helicopters": "N/A",
+        "helicopters": "x2 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 45,
+            "min": 54,
             "max": 80
         }
     },
@@ -4304,7 +4628,142 @@
             "tickets": "800"
         },
         "tanks": "x1 per team",
+        "helicopters": "1x CAF, 20min delay",
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Belaya_AAS_v1",
+        "map": "CAF Belaya",
+        "layerClassname": "CAF_Belaya_AAS_v1",
+        "gamemode": "AAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Overcast",
+        "info": null,
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "CAF",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "MIL",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "1x CAF, 40min delay",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Belaya_RAAS_v1",
+        "map": "CAF Belaya",
+        "layerClassname": "CAF_Belaya_RAAS_v1",
+        "gamemode": "RAAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Sunny Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "CAF",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS_DE",
+            "tickets": "300"
+        },
+        "tanks": "x1 per team, 20min delay",
+        "helicopters": "x1 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Belaya_RAAS_v2",
+        "map": "CAF Belaya",
+        "layerClassname": "CAF_Belaya_RAAS_v2",
+        "gamemode": "RAAS",
+        "version": "v2",
+        "dlc": "CAF",
+        "lighting": "Overcast",
+        "info": null,
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "CAF",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "MIL",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "1x CAF, 20min delay",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Chora_AAS_v1",
+        "map": "CAF Chora",
+        "layerClassname": "CAF_Chora_AAS_v1",
+        "gamemode": "AAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Sunny Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 6,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS_DE",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
         "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 40,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Gorodok_AAS_v1",
+        "map": "CAF Gorodok",
+        "layerClassname": "CAF_Gorodok_AAS_v1",
+        "gamemode": "AAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Overcast Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 6,
+        "teamOne": {
+            "faction": "CAF",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "MIL",
+            "tickets": "300"
+        },
+        "tanks": "1x MIl, 1x CAF 30min delay",
+        "helicopters": "1x CAF, 20min delay",
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
@@ -4555,6 +5014,60 @@
         }
     },
     {
+        "layer": "CAF_Lashkar_Invasion_v1",
+        "map": "CAF Lashkar",
+        "layerClassname": "CAF_Lashkar_Invasion_v1",
+        "gamemode": "Invasion",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Early Morning",
+        "info": "Random",
+        "commander": false,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "200"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "800"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 for CAF",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Lashkar_RAAS_v1",
+        "map": "CAF Lashkar",
+        "layerClassname": "CAF_Lashkar_RAAS_v1",
+        "gamemode": "RAAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Rainstorm",
+        "info": "Lanes",
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS_DE",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
         "layer": "CAF_Manic-5_AAS_v1",
         "map": "CAF Manic-5",
         "layerClassname": "CAF_Manic_AAS_v1",
@@ -4573,11 +5086,38 @@
             "faction": "RUS",
             "tickets": "300"
         },
-        "tanks": "x1 per team, 10min delay",
+        "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Manic-5_AAS_v2",
+        "map": "CAF Manic-5",
+        "layerClassname": "CAF_Manic_AAS_v2",
+        "gamemode": "AAS",
+        "version": "v2",
+        "dlc": "CAF",
+        "lighting": "Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "CAF",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "x3 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
             "max": 80
         }
     },
@@ -4600,7 +5140,7 @@
             "faction": "RUS",
             "tickets": "700"
         },
-        "tanks": "x1 per team",
+        "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
@@ -4654,7 +5194,7 @@
             "faction": "RUS",
             "tickets": "350"
         },
-        "tanks": "x1 per team, 10min delay",
+        "tanks": "x1 per team, 20min delay",
         "helicopters": "x2 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
@@ -4696,7 +5236,7 @@
         "gamemode": "RAAS",
         "version": "v3",
         "dlc": "CAF",
-        "lighting": "Mid Day",
+        "lighting": "Afternoon",
         "info": "Lanes",
         "commander": true,
         "flagCount": 5,
@@ -4845,9 +5385,36 @@
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 40,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Mutaha_AAS_v1",
+        "map": "CAF Mutaha",
+        "layerClassname": "CAF_Mutaha_AAS_v1",
+        "gamemode": "AAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Sunset",
+        "info": null,
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "CAF",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS_DE",
+            "tickets": "300"
+        },
+        "tanks": "x1 per team (10min delay)",
+        "helicopters": "1x per team, 20min delay",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
             "max": 80
         }
     },
@@ -4872,9 +5439,36 @@
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Nanisivik_AAS_v1",
+        "map": "CAF Nanisivik",
+        "layerClassname": "CAF_Nanisivik_AAS_v1",
+        "gamemode": "AAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Snowstorm",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "CAF",
+            "tickets": "350"
+        },
+        "teamTwo": {
+            "faction": "RUS",
+            "tickets": "350"
+        },
+        "tanks": "x1 per team, 20min delay",
+        "helicopters": "x1 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
             "max": 80
         }
     },
