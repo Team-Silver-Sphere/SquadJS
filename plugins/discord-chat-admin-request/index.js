@@ -33,6 +33,7 @@ export default async function(server, discordClient, channelID, options = {}) {
     const trimmedMessage = info.message.replace(adminPrefix, '').trim();
 
     channel.send({
+      content: pingGroups.length ? pingGroups.map(groupID => `<@&${groupID}>`).join(' ') : '',
       embed: {
         title: `${playerInfo.name} has requested admin support!`,
         color: options.color,
@@ -50,10 +51,6 @@ export default async function(server, discordClient, channelID, options = {}) {
           {
             name: 'Team & Squad',
             value: `Team: ${playerInfo.teamID}, Squad: ${playerInfo.squadID || 'Unassigned'}`
-          },
-          {
-            name: 'Admin Groups',
-            value: pingGroups.length ? pingGroups.map(groupID => `<@&${groupID}>`).join(',') : 'Any'
           },
           {
             name: 'Message',
