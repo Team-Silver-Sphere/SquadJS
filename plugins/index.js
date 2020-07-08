@@ -1,6 +1,7 @@
 import autoTKWarn from './auto-tk-warn/index.js';
 import discordAdminCamLogs from './discord-admin-cam-logs/index.js';
 import discordChat from './discord-chat/index.js';
+import discordChatAdminRequest from './discord-chat-admin-request/index.js';
 import discordDebug from './discord-debug/index.js';
 import discordServerStatus from './discord-server-status/index.js';
 import discordTeamkill from './discord-teamkill/index.js';
@@ -15,6 +16,7 @@ export {
   autoTKWarn,
   discordAdminCamLogs,
   discordChat,
+  discordChatAdminRequest,
   discordDebug,
   discordServerStatus,
   discordTeamkill,

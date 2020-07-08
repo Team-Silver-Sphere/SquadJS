@@ -38,6 +38,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 ## Plugins
  * [Discord Admin Cam Logs](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-admin-cam-logs) - Log admin cam usage to Discord.
  * [Discord Chat](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-chat) - Log in game chat to Discord.
+ * [Discord Chat Admin Request](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-chat-admin-request) - Log `!admin` alerts to Discord.
  * [Discord Teamkill](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-teamkill) - Log teamkills to Discord.
  * [Discord Server Status](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-server-status) - Add a server status embed to Discord.
  * [Map Vote](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/mapvote) - In-game chat map voting system.

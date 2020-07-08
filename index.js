@@ -8,13 +8,15 @@ import SquadLayerFilter from 'connectors/squad-layer-filter';
 import {
   discordAdminCamLogs,
   discordChat,
+  discordChatAdminRequest,
   discordServerStatus,
   discordTeamkill,
   influxdbLog,
   influxdbLogDefaultSchema,
   mapvote,
   mysqlLog,
-  teamRandomizer
+  teamRandomizer,
+  seedingMessage
 } from 'plugins';
 
 async function main() {
@@ -25,6 +27,13 @@ async function main() {
     queryPort: 27165,
     rconPort: 21114,
     rconPassword: 'password',
+
+    // Uncomment the following lines to read logs over FTP.
+    // ftpPort: 21,
+    // ftpUser: 'FTP Username',
+    // ftpPassword: 'FTP Password',
+    // logReaderMode: 'ftp',
+
     logDir: 'C:/path/to/squad/log/folder'
   });
 
@@ -33,6 +42,7 @@ async function main() {
   await discordClient.login('Discord Login Token');
   await discordAdminCamLogs(server, discordClient, 'discordChannelID');
   await discordChat(server, discordClient, 'discordChannelID');
+  await discordChatAdminRequest(server, discordClient, 'discordChannelID', { pingGroups: ['discordGroupID'] });
   await discordServerStatus(server, discordClient);
   await discordTeamkill(server, discordClient, 'discordChannelID');
 
@@ -41,6 +51,7 @@ async function main() {
   mapvote(server, 'didyoumean', squadLayerFilter, {});
 
   teamRandomizer(server);
+  seedingMessage(server);
 
   // MySQL Plugins
   const mysqlPool = mysql.createPool({
