@@ -19,7 +19,7 @@ export default async function(server, discordClient, channelID, options = {}) {
   const pingGroups = options.pingGroups || [];
 
   options = {
-    color: '#f44336',
+    color: 16761867,
     ...options
   };
 
@@ -27,10 +27,15 @@ export default async function(server, discordClient, channelID, options = {}) {
 
   server.on(RCON_CHAT_MESSAGE, async info => {
     if (ignoreChats.includes(info.chat)) return;
-    if (!info.message.startsWith(`${adminPrefix} `)) return;
+    if (!info.message.startsWith(`${adminPrefix}`)) return;
 
     const playerInfo = await server.getPlayerBySteamID(info.steamID);
     const trimmedMessage = info.message.replace(adminPrefix, '').trim();
+
+    if (trimmedMessage.length === 0) {
+      await server.rcon.warn(info.steamID, `Please specify what you would like help with when requesting an admin.`);
+      return;
+    }
 
     channel.send({
       content: pingGroups.length ? pingGroups.map(groupID => `<@&${groupID}>`).join(' ') : '',
