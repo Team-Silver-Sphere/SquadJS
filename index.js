@@ -42,9 +42,7 @@ async function main() {
   await discordClient.login('Discord Login Token');
   await discordAdminCamLogs(server, discordClient, 'discordChannelID');
   await discordChat(server, discordClient, 'discordChannelID');
-  await discordChatAdminRequest(server, discordClient, 'discordChannelID', {
-    pingGroups: ['discordGroupID']
-  });
+  await discordChatAdminRequest(server, discordClient, 'discordChannelID', { pingGroups: ['discordGroupID'] });
   await discordServerStatus(server, discordClient);
   await discordTeamkill(server, discordClient, 'discordChannelID');
 

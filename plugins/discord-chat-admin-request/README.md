@@ -22,11 +22,15 @@ const discordClient = new Discord.Client();
 await discordClient.login('Discord Login Token'); // insert your Discord bot's login token here.
 
 // Place the following lines after all of the above.
-await discordChatAdminRequest(server, discordClient, 'discordChannelID', {
-  // options - the options included below display the defaults and can be removed for simplicity.
-  adminPrefix: '!admin', // prefix for an admin request.
-  pingGroups: ['729853701308678154'], // Groups to ping on a request, leave empty for no ping.
-  ignoreChats: ['ChatSquad', 'ChatAdmin'], // an array of chats to not display.
-  color: '#f44336' // color of embed
-});
+await discordChatAdminRequest(
+  server, 
+  discordClient, 
+  'discordChannelID', 
+  { // options - the options included below display the defaults and can be removed for simplicity.
+    adminPrefix: '!admin', // prefix for an admin request.
+    pingGroups: ['729853701308678154'], // Groups to ping on a request, leave empty for no ping.
+    ignoreChats: ['ChatSquad', 'ChatAdmin'], // an array of chats to not display.
+    color: '#f44336' // color of embed
+  }
+);
 ```

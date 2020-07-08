@@ -22,12 +22,12 @@ await discordClient.login('Discord Login Token'); // insert your Discord bot's l
 await discordServerStatus(
   server,
   discordClient,
-    { // options - the options included below display the defaults and can be removed for simplicity.
-      color: 16761867, // color of embed
-      colorGradient: true, // gradient color based on player count
-      connectLink: true, // show Steam connect link
-      command: '!server', // command used to send message
-      disableStatus: false // disable bot status as server status
-    }
+  { // options - the options included below display the defaults and can be removed for simplicity.
+    color: 16761867, // color of embed
+    colorGradient: true, // gradient color based on player count
+    connectLink: true, // show Steam connect link
+    command: '!server', // command used to send message
+    disableStatus: false // disable bot status as server status
+  }
 ); 
 ```
