@@ -14,26 +14,25 @@ export default async function(server, discordClient, channelID, options = {}) {
     throw new Error('DiscordChatAdminRequest must be provided with a channel ID.');
   }
 
-  const ignoreChats = options.ignoreChats || [];
-  const adminPrefix = options.adminPrefix || '!admin';
-  const pingGroups = options.pingGroups || [];
-  const pingDelay = options.pingDelay || 60 * 1000;
-
-  let lastPing = null;
-
   options = {
     color: 16761867,
+    ignoreChats: [],
+    adminPrefix: '!admin',
+    pingGroups: [],
+    pingDelay: 60 * 1000,
     ...options
   };
+
+  let lastPing = null;
 
   const channel = await discordClient.channels.fetch(channelID);
 
   server.on(RCON_CHAT_MESSAGE, async info => {
-    if (ignoreChats.includes(info.chat)) return;
-    if (!info.message.startsWith(`${adminPrefix}`)) return;
+    if (options.ignoreChats.includes(info.chat)) return;
+    if (!info.message.startsWith(`${options.adminPrefix}`)) return;
 
     const playerInfo = await server.getPlayerBySteamID(info.steamID);
-    const trimmedMessage = info.message.replace(adminPrefix, '').trim();
+    const trimmedMessage = info.message.replace(options.adminPrefix, '').trim();
 
     if (trimmedMessage.length === 0) {
       await server.rcon.warn(
@@ -74,8 +73,8 @@ export default async function(server, discordClient, channelID, options = {}) {
       }
     };
 
-    if (pingGroups.length > 0 && (lastPing === null || Date.now() - pingDelay > lastPing)) {
-      message.content = pingGroups.map(groupID => `<@&${groupID}>`).join(' ');
+    if (options.pingGroups.length > 0 && (lastPing === null || Date.now() - options.pingDelay > lastPing)) {
+      message.content = options.pingGroups.map(groupID => `<@&${groupID}>`).join(' ');
       lastPing = Date.now();
     }
 
