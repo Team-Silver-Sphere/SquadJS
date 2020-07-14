@@ -25,7 +25,8 @@ await discordChat(
   'discordChannelID', 
   { // options - the options included below display the defaults and can be removed for simplicity.
     ignoreChats: ['ChatSquad', 'ChatAdmin'], // an array of chats to not display.
-    color: 16761867 // color of embed
+    color: 16761867, // color of embed
+    chatColors: { 'ChatAll': 16761867 } // change the color of chat types individually. Defaults to color above if not specified.
   }
 ); 
 ```

@@ -11,6 +11,9 @@ export default async function(server, discordClient, channelID, options = {}) {
   const ignoreChats = options.ignoreChats || ['ChatSquad', 'ChatAdmin'];
 
   options = {
+    chatColors: {
+      ...options.chatColors
+    },
     color: 16761867,
     ...options
   };
@@ -25,7 +28,7 @@ export default async function(server, discordClient, channelID, options = {}) {
     channel.send({
       embed: {
         title: info.chat,
-        color: options.color,
+        color: options.chatColors[info.chat] || options.color,
         fields: [
           {
             name: 'Player',
