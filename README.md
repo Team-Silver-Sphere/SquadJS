@@ -36,6 +36,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 4. Start SquadJS: `node index.js`.
 
 ## Plugins
+ * [Discord Admin Broadcast](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-admin-broadcast) - Log admin broadcasts to Discord.
  * [Discord Admin Cam Logs](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-admin-cam-logs) - Log admin cam usage to Discord.
  * [Discord Chat](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-chat) - Log in game chat to Discord.
  * [Discord Chat Admin Request](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/discord-chat-admin-request) - Log `!admin` alerts to Discord.

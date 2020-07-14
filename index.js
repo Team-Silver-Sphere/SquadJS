@@ -6,6 +6,7 @@ import Server from 'squad-server';
 import SquadLayerFilter from 'connectors/squad-layer-filter';
 
 import {
+  discordAdminBroadcast,
   discordAdminCamLogs,
   discordChat,
   discordChatAdminRequest,
@@ -40,6 +41,7 @@ async function main() {
   // Discord Plugins
   const discordClient = new Discord.Client();
   await discordClient.login('Discord Login Token');
+  await discordAdminBroadcast(server, discordClient, 'discordChannelID');
   await discordAdminCamLogs(server, discordClient, 'discordChannelID');
   await discordChat(server, discordClient, 'discordChannelID');
   await discordChatAdminRequest(server, discordClient, 'discordChannelID', {

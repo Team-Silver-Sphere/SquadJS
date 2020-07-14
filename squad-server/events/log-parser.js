@@ -1,3 +1,12 @@
+/** Occurs when an admin broadcast is made.
+ *
+ * Data:
+ *  - time - Date object of when the event occurred.
+ *  - message - The message that was broadcasted.
+ *  - from - Apparently who broadcasted it, but this is broken in Squad logs.
+ */
+const LOG_PARSER_ADMIN_BROADCAST = 'LOG_PARSER_ADMIN_BROADCAST';
+
 /** Occurs when a new layer is loaded.
  *
  * Data:
@@ -115,6 +124,7 @@ const LOG_PARSER_PLAYER_WOUNDED = 'LOG_PARSER_PLAYER_WOUNDED';
 const LOG_PARSER_SERVER_TICK_RATE = 'LOG_PARSER_SERVER_TICK_RATE';
 
 export {
+  LOG_PARSER_ADMIN_BROADCAST,
   LOG_PARSER_NEW_GAME,
   LOG_PARSER_PLAYER_CONNECTED,
   LOG_PARSER_PLAYER_DAMAGED,
