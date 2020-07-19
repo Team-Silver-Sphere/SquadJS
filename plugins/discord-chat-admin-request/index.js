@@ -14,31 +14,35 @@ export default async function(server, discordClient, channelID, options = {}) {
     throw new Error('DiscordChatAdminRequest must be provided with a channel ID.');
   }
 
-  const ignoreChats = options.ignoreChats || [];
-  const adminPrefix = options.adminPrefix || '!admin';
-  const pingGroups = options.pingGroups || [];
-
   options = {
     color: 16761867,
+    ignoreChats: [],
+    adminPrefix: '!admin',
+    pingGroups: [],
+    pingDelay: 60 * 1000,
     ...options
   };
+
+  let lastPing = null;
 
   const channel = await discordClient.channels.fetch(channelID);
 
   server.on(RCON_CHAT_MESSAGE, async info => {
-    if (ignoreChats.includes(info.chat)) return;
-    if (!info.message.startsWith(`${adminPrefix}`)) return;
+    if (options.ignoreChats.includes(info.chat)) return;
+    if (!info.message.startsWith(`${options.adminPrefix}`)) return;
 
     const playerInfo = await server.getPlayerBySteamID(info.steamID);
-    const trimmedMessage = info.message.replace(adminPrefix, '').trim();
+    const trimmedMessage = info.message.replace(options.adminPrefix, '').trim();
 
     if (trimmedMessage.length === 0) {
-      await server.rcon.warn(info.steamID, `Please specify what you would like help with when requesting an admin.`);
+      await server.rcon.warn(
+        info.steamID,
+        `Please specify what you would like help with when requesting an admin.`
+      );
       return;
     }
 
-    channel.send({
-      content: pingGroups.length ? pingGroups.map(groupID => `<@&${groupID}>`).join(' ') : '',
+    const message = {
       embed: {
         title: `${playerInfo.name} has requested admin support!`,
         color: options.color,
@@ -67,6 +71,18 @@ export default async function(server, discordClient, channelID, options = {}) {
           text: COPYRIGHT_MESSAGE
         }
       }
-    });
+    };
+
+    if (options.pingGroups.length > 0 && (lastPing === null || Date.now() - options.pingDelay > lastPing)) {
+      message.content = options.pingGroups.map(groupID => `<@&${groupID}>`).join(' ');
+      lastPing = Date.now();
+    }
+
+    channel.send(message);
+
+    await server.rcon.warn(
+      info.steamID,
+      `An admin has been notified, please wait for us to get back to you.`
+    );
   });
 }

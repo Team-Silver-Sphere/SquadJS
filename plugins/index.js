@@ -1,4 +1,5 @@
 import autoTKWarn from './auto-tk-warn/index.js';
+import discordAdminBroadcast from './discord-admin-broadcast/index.js';
 import discordAdminCamLogs from './discord-admin-cam-logs/index.js';
 import discordChat from './discord-chat/index.js';
 import discordChatAdminRequest from './discord-chat-admin-request/index.js';
@@ -14,6 +15,7 @@ import teamRandomizer from './team-randomizer/index.js';
 
 export {
   autoTKWarn,
+  discordAdminBroadcast,
   discordAdminCamLogs,
   discordChat,
   discordChatAdminRequest,

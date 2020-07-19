@@ -1,3 +1,4 @@
+import AdminBroadcast from './admin-broadcast.js';
 import NewGame from './new-game.js';
 import PlayerConnected from './player-connected.js';
 import PlayerDamaged from './player-damaged.js';
@@ -10,6 +11,7 @@ import ServerTickRate from './server-tick-rate.js';
 import SteamIDConnected from './steamid-connected.js';
 
 export default [
+  AdminBroadcast,
   NewGame,
   PlayerConnected,
   PlayerDamaged,
