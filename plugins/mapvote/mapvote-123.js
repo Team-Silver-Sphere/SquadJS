@@ -55,7 +55,12 @@ export default function(server, options = {}) {
           await server.rcon.broadcast(
             `A new map vote has started. Participate in the map vote by typing "!mapvote help" in chat. Map options to follow...`
           );
-          await server.rcon.broadcast(mapvote.squadLayerFilter.getLayerNames().map((layerName, key) => `${key+1} - ${layerName}`).join(', '));
+          await server.rcon.broadcast(
+            mapvote.squadLayerFilter
+              .getLayerNames()
+              .map((layerName, key) => `${key + 1} - ${layerName}`)
+              .join(', ')
+          );
         }
         return;
       }
@@ -81,7 +86,12 @@ export default function(server, options = {}) {
         await server.rcon.broadcast(
           `A new map vote has started. Participate in the map vote by typing "!mapvote help" in chat. Map options to follow...`
         );
-        await server.rcon.broadcast(mapvote.squadLayerFilter.getLayerNames().map((layerName, key) => `${key+1} - ${layerName}`).join(', '));
+        await server.rcon.broadcast(
+          mapvote.squadLayerFilter
+            .getLayerNames()
+            .map((layerName, key) => `${key + 1} - ${layerName}`)
+            .join(', ')
+        );
         return;
       }
 

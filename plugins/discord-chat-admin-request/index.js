@@ -73,7 +73,10 @@ export default async function(server, discordClient, channelID, options = {}) {
       }
     };
 
-    if (options.pingGroups.length > 0 && (lastPing === null || Date.now() - options.pingDelay > lastPing)) {
+    if (
+      options.pingGroups.length > 0 &&
+      (lastPing === null || Date.now() - options.pingDelay > lastPing)
+    ) {
       message.content = options.pingGroups.map(groupID => `<@&${groupID}>`).join(' ');
       lastPing = Date.now();
     }

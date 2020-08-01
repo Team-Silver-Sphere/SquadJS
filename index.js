@@ -10,6 +10,7 @@ import {
   discordAdminCamLogs,
   discordChat,
   discordChatAdminRequest,
+  discordRCON,
   discordServerStatus,
   discordTeamkill,
   influxdbLog,
@@ -41,14 +42,15 @@ async function main() {
   // Discord Plugins
   const discordClient = new Discord.Client();
   await discordClient.login('Discord Login Token');
-  await discordAdminBroadcast(server, discordClient, 'discordChannelID');
-  await discordAdminCamLogs(server, discordClient, 'discordChannelID');
-  await discordChat(server, discordClient, 'discordChannelID');
-  await discordChatAdminRequest(server, discordClient, 'discordChannelID', {
+  await discordAdminBroadcast(server, discordClient, 'Discord Channel ID');
+  await discordAdminCamLogs(server, discordClient, 'Discord Channel ID');
+  await discordChat(server, discordClient, 'Discord Channel ID');
+  await discordChatAdminRequest(server, discordClient, 'Discord Channel ID', {
     pingGroups: ['discordGroupID']
   });
+  await discordRCON(server, discordClient, 'Discord Channel ID');
   await discordServerStatus(server, discordClient);
-  await discordTeamkill(server, discordClient, 'discordChannelID');
+  await discordTeamkill(server, discordClient, 'Discord Channel ID');
 
   // in game features
   const squadLayerFilter = SquadLayerFilter.buildFromFilter({});
