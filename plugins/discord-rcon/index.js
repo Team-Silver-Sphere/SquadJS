@@ -13,8 +13,8 @@ export default async function(server, discordClient, channelID, options = {}) {
 
     let command = message.content;
 
-    if(options.prependAdminNameInBroadcast && command.startsWith('AdminBroadcast'))
-      command = command.replace(/^AdminBroadcast /, `AdminBroadcast ${message.member.displayName}: `);
+    if(options.prependAdminNameInBroadcast && command.toLowerCase().startsWith('adminbroadcast'))
+      command = command.replace(/^AdminBroadcast /i, `AdminBroadcast ${message.member.displayName}: `);
 
     const response = await server.rcon.execute(command);
 
