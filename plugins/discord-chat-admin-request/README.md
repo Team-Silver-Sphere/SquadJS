@@ -31,6 +31,7 @@ await discordChatAdminRequest(
     pingGroups: ['729853701308678154'], // Groups to ping on a request, leave empty for no ping.
     pingDelay: 60 * 1000, // number of ms between pings. other messages will still be logged just without pings.
     ignoreChats: ['ChatSquad', 'ChatAdmin'], // an array of chats to not display.
+    ignorePhrases: [], // add any phrases you do not want pings for, e.g. "switch me".
     color: '#f44336' // color of embed
   }
 );

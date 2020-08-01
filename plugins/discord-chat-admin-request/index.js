@@ -2,21 +2,16 @@ import { COPYRIGHT_MESSAGE } from 'core/config';
 import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
 
 export default async function(server, discordClient, channelID, options = {}) {
-  if (!server) {
+  if (!server)
     throw new Error('DiscordChatAdminRequest must be provided with a reference to the server.');
-  }
-
-  if (!discordClient) {
+  if (!discordClient)
     throw new Error('DiscordChatAdminRequest must be provided with a Discord.js client.');
-  }
-
-  if (!channelID) {
-    throw new Error('DiscordChatAdminRequest must be provided with a channel ID.');
-  }
+  if (!channelID) throw new Error('DiscordChatAdminRequest must be provided with a channel ID.');
 
   options = {
     color: 16761867,
     ignoreChats: [],
+    ignorePhrases: [],
     adminPrefix: '!admin',
     pingGroups: [],
     pingDelay: 60 * 1000,
@@ -30,6 +25,10 @@ export default async function(server, discordClient, channelID, options = {}) {
   server.on(RCON_CHAT_MESSAGE, async info => {
     if (options.ignoreChats.includes(info.chat)) return;
     if (!info.message.startsWith(`${options.adminPrefix}`)) return;
+
+    for (const ignorePhrase of options.ignorePhrases) {
+      if (info.message.includes(ignorePhrase)) return;
+    }
 
     const playerInfo = await server.getPlayerBySteamID(info.steamID);
     const trimmedMessage = info.message.replace(options.adminPrefix, '').trim();
