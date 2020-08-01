@@ -22,6 +22,9 @@ await discordClient.login('Discord Login Token'); // insert your Discord bot's l
 await discordRCON(
   server,
   discordClient,
-  'discordChannelID'
+  'discordChannelID',
+  { // options - the options included below display the defaults and can be removed for simplicity.
+    prependAdminNameInBroadcast: false // prepend admin names to broadcasts
+  }
 ); 
 ```
