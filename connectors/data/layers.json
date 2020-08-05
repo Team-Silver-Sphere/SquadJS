@@ -47,7 +47,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x3 for USA",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -317,7 +317,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -370,7 +370,7 @@
             "tickets": "900"
         },
         "tanks": "x1 per team, 20min delay",
-        "helicopters": "x1 per team, 10min delay",
+        "helicopters": "x1 per team, 6min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
@@ -1100,7 +1100,7 @@
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x2 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
             "max": 80
@@ -1883,7 +1883,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -2342,7 +2342,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -2369,7 +2369,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -2396,7 +2396,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 for USA",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
             "max": 80
@@ -2423,7 +2423,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 for USA",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
             "max": 80
@@ -2450,7 +2450,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -2477,7 +2477,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "mix": 0,
             "max": 40
@@ -2504,7 +2504,7 @@
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x2 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
             "max": 80
@@ -2531,7 +2531,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -3313,7 +3313,7 @@
             "tickets": "300"
         },
         "tanks": "N/A",
-        "helicopters": "x1 per team",
+        "helicopters": "x2 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
@@ -4656,7 +4656,7 @@
         },
         "tanks": "N/A",
         "helicopters": "1x CAF, 40min delay",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -4670,7 +4670,7 @@
         "version": "v1",
         "dlc": "CAF",
         "lighting": "Sunny Mid Day",
-        "info": null,
+        "info": "Highly Randomized",
         "commander": true,
         "flagCount": 5,
         "teamOne": {
@@ -4683,7 +4683,7 @@
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
             "max": 80
@@ -4697,7 +4697,7 @@
         "version": "v2",
         "dlc": "CAF",
         "lighting": "Overcast",
-        "info": null,
+        "info": "Highly Randomized",
         "commander": true,
         "flagCount": 5,
         "teamOne": {
@@ -4710,7 +4710,7 @@
         },
         "tanks": "N/A",
         "helicopters": "1x CAF, 20min delay",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -4734,6 +4734,33 @@
         "teamTwo": {
             "faction": "RUS_DE",
             "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 40,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Fools_Road_RAAS_v1",
+        "map": "CAF Fool's Road",
+        "layerClassname": "CAF_Fools_Road_RAAS_v1",
+        "gamemode": "RAAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "",
+        "info": null,
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "CAF",
+            "tickets": "250"
+        },
+        "teamTwo": {
+            "faction": "MIL",
+            "tickets": "250"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -4764,7 +4791,7 @@
         },
         "tanks": "1x MIl, 1x CAF 30min delay",
         "helicopters": "1x CAF, 20min delay",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
             "max": 80
@@ -4840,7 +4867,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS",
+            "faction": "USA",
             "tickets": "300"
         },
         "tanks": "x1 per team, 20min delay",
@@ -4940,7 +4967,7 @@
         "version": "v1",
         "dlc": "CAF",
         "lighting": "Stormy",
-        "info": null,
+        "info": "Highly Randomized",
         "commander": true,
         "flagCount": 5,
         "teamOne": {
@@ -5022,7 +5049,7 @@
         "dlc": "CAF",
         "lighting": "Early Morning",
         "info": "Random",
-        "commander": false,
+        "commander": true,
         "flagCount": 5,
         "teamOne": {
             "faction": "CAF_AR",
@@ -5034,7 +5061,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 for CAF",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
             "max": 80
@@ -5048,7 +5075,7 @@
         "version": "v1",
         "dlc": "CAF",
         "lighting": "Rainstorm",
-        "info": "Lanes",
+        "info": "Highly Randomized",
         "commander": true,
         "flagCount": 7,
         "teamOne": {
@@ -5061,9 +5088,36 @@
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Lashkar_TC_v1",
+        "map": "CAF Lashkar",
+        "layerClassname": "CAF_Lashkar_TC_v1",
+        "gamemode": "TC",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Rainstorm",
+        "info": null,
+        "commander": true,
+        "flagCount": 64,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "300"
+        },
+        "tanks": "x2 for INS, 5min delay, x1 for CAF, 20min delay",
+        "helicopters": "x1 for CAF, 20min delay",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
             "max": 80
         }
     },
@@ -5115,7 +5169,7 @@
         },
         "tanks": "N/A",
         "helicopters": "x3 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
@@ -5131,14 +5185,14 @@
         "lighting": "Afternoon",
         "info": "Random",
         "commander": true,
-        "flagCount": 4,
+        "flagCount": 5,
         "teamOne": {
             "faction": "CAF",
             "tickets": "150"
         },
         "teamTwo": {
-            "faction": "RUS",
-            "tickets": "700"
+            "faction": "MIL",
+            "tickets": "800"
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 per team",
@@ -5158,14 +5212,14 @@
         "lighting": "Sunset",
         "info": "Random",
         "commander": true,
-        "flagCount": 4,
+        "flagCount": 5,
         "teamOne": {
             "faction": "CAF",
             "tickets": "150"
         },
         "teamTwo": {
             "faction": "USA",
-            "tickets": "700"
+            "tickets": "800"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -5185,7 +5239,7 @@
         "lighting": "Mid Day",
         "info": "Lanes",
         "commander": true,
-        "flagCount": 5,
+        "flagCount": 7,
         "teamOne": {
             "faction": "CAF",
             "tickets": "350"
@@ -5209,7 +5263,7 @@
         "gamemode": "RAAS",
         "version": "v2",
         "dlc": "CAF",
-        "lighting": "Afternoon",
+        "lighting": "Sunset",
         "info": "Lanes ",
         "commander": true,
         "flagCount": 5,
@@ -5222,7 +5276,7 @@
             "tickets": "350"
         },
         "tanks": "N/A",
-        "helicopters": "x1 for CAF",
+        "helicopters": "x1 for CAF, 20min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
@@ -5236,10 +5290,10 @@
         "gamemode": "RAAS",
         "version": "v3",
         "dlc": "CAF",
-        "lighting": "Afternoon",
+        "lighting": "Mid Day",
         "info": "Lanes",
         "commander": true,
-        "flagCount": 5,
+        "flagCount": 7,
         "teamOne": {
             "faction": "CAF",
             "tickets": "350"
@@ -5264,9 +5318,9 @@
         "version": "v4",
         "dlc": "CAF",
         "lighting": "Sunset",
-        "info": "Lanes",
+        "info": "Highly Randomized",
         "commander": true,
-        "flagCount": 5,
+        "flagCount": 6,
         "teamOne": {
             "faction": "CAF",
             "tickets": "300"
@@ -5412,7 +5466,7 @@
         },
         "tanks": "x1 per team (10min delay)",
         "helicopters": "1x per team, 20min delay",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
             "max": 80
@@ -5426,7 +5480,7 @@
         "version": "v1",
         "dlc": "CAF",
         "lighting": "Mixed Clouds Mid Day",
-        "info": "Lanes",
+        "info": null,
         "commander": true,
         "flagCount": 5,
         "teamOne": {
@@ -5466,7 +5520,7 @@
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
             "max": 80
@@ -5548,6 +5602,33 @@
         "tanks": "x1 per team, 6min delay",
         "helicopters": "N/A",
         "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Skorpo_RAAS_v1",
+        "map": "CAF Skorpo",
+        "layerClassname": "CAF_Skorpo_RAAS_v1",
+        "gamemode": "RAAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 8,
+        "teamOne": {
+            "faction": "CAF",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "RUS",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "x3 per team",
+        "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 45,
             "max": 80
