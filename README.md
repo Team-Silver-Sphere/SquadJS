@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="core/assets/squadjs-logo.png" alt="Logo" width="500"/>
+<img src="assets/squadjs-logo.png" alt="Logo" width="500"/>
 
 #### SquadJS
 
@@ -263,8 +263,8 @@ Log in game chat to Discord.
   <tbody>
       <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
 <tr><td>channelID</td><td>Discord Channel ID</td><td>true</td><td>Discord Channel ID</td><td>The ID of the channel to log admin broadcasts to.</td></tr>
-<tr><td>ignoreChats</td><td>Array</td><td>false</td><td>ChatSquad</td><td>A list of chat names to ignore.</td></tr>
-<tr><td>chatColors</td><td>Object</td><td>false</td><td>[object Object]</td><td>The color of the embed for each chat. Example: `{ ChatAll: 16761867 }`.</td></tr>
+<tr><td>ignoreChats</td><td>Array</td><td>false</td><td>["ChatSquad"]</td><td>A list of chat names to ignore.</td></tr>
+<tr><td>chatColors</td><td>Object</td><td>false</td><td>{}</td><td>The color of the embed for each chat. Example: `{ ChatAll: 16761867 }`.</td></tr>
 <tr><td>color</td><td>Discord Color Code</td><td>false</td><td>16761867</td><td>The color of the embed.</td></tr>
   </tbody>
 </table>
@@ -286,10 +286,10 @@ Ping admins in Discord with the in game !admin command.
   <tbody>
       <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
 <tr><td>channelID</td><td>Discord Channel ID</td><td>true</td><td>Discord Channel ID</td><td>The ID of the channel to log admin broadcasts to.</td></tr>
-<tr><td>ignoreChats</td><td>Array</td><td>false</td><td>ChatSquad</td><td>A list of chat names to ignore.</td></tr>
-<tr><td>ignorePhrases</td><td>Array</td><td>false</td><td></td><td>A list of phrases to ignore.</td></tr>
+<tr><td>ignoreChats</td><td>Array</td><td>false</td><td>["ChatSquad"]</td><td>A list of chat names to ignore.</td></tr>
+<tr><td>ignorePhrases</td><td>Array</td><td>false</td><td>[]</td><td>A list of phrases to ignore.</td></tr>
 <tr><td>adminPrefix</td><td>String</td><td>false</td><td>!admin</td><td>The command that calls an admin.</td></tr>
-<tr><td>pingGroups</td><td>Array</td><td>false</td><td></td><td>A list of Discord role IDs to ping.</td></tr>
+<tr><td>pingGroups</td><td>Array</td><td>false</td><td>[]</td><td>A list of Discord role IDs to ping.</td></tr>
 <tr><td>pingDelay</td><td>Number</td><td>false</td><td>60000</td><td>Cooldown for pings.</td></tr>
 <tr><td>color</td><td>Discord Color Code</td><td>false</td><td>16761867</td><td>The color of the embed.</td></tr>
   </tbody>
@@ -312,7 +312,7 @@ Dump SquadJS events to Discord.
   <tbody>
       <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
 <tr><td>channelID</td><td>Discord Channel ID</td><td>true</td><td>Discord Channel ID</td><td>The ID of the channel to log admin broadcasts to.</td></tr>
-<tr><td>events</td><td>Array</td><td>true</td><td></td><td>A list of events to dump.</td></tr>
+<tr><td>events</td><td>Array</td><td>true</td><td>[]</td><td>A list of events to dump.</td></tr>
   </tbody>
 </table>
 

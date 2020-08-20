@@ -18,7 +18,9 @@ for (const pluginName of sortedPluginNames) {
   for (const optionName of Object.keys(plugin.optionsSpec)) {
     const option = plugin.optionsSpec[optionName];
     optionTable.push(
-      `<tr><td>${optionName}</td><td>${option.type}</td><td>${option.required}</td><td>${option.default}</td><td>${option.description}</td></tr>`
+      `<tr><td>${optionName}</td><td>${option.type}</td><td>${option.required}</td><td>${
+        typeof option.default === 'object' ? JSON.stringify(option.default) : option.default
+      }</td><td>${option.description}</td></tr>`
     );
   }
 
