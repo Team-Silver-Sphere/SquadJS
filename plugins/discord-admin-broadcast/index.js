@@ -1,36 +1,52 @@
-import { COPYRIGHT_MESSAGE } from 'core/config';
+import { COPYRIGHT_MESSAGE } from 'core/constants';
 import { LOG_PARSER_ADMIN_BROADCAST } from 'squad-server/events/log-parser';
 
-export default async function(server, discordClient, channelID, options = {}) {
-  if (!server) throw new Error('DiscordChat must be provided with a reference to the server.');
+export default {
+  name: 'discord-admin-broadcast',
+  description: 'Log admin broadcasts to Discord.',
+  defaultDisabled: false,
 
-  if (!discordClient) throw new Error('DiscordChat must be provided with a Discord.js client.');
+  optionsSpec: {
+    discordClient: {
+      type: 'DiscordConnector',
+      required: true,
+      default: 'discord',
+      description: 'The name of the Discord Connector to use.'
+    },
+    channelID: {
+      type: 'Discord Channel ID',
+      required: true,
+      default: 'Discord Channel ID',
+      description: 'The ID of the channel to log admin broadcasts to.'
+    },
+    color: {
+      type: 'Discord Color Code',
+      required: false,
+      default: 16761867,
+      description: 'The color of the embed.'
+    }
+  },
 
-  if (!channelID) throw new Error('DiscordChat must be provided with a channel ID.');
+  init: async (server, options) => {
+    const channel = await options.discordClient.channels.fetch(options.channelID);
 
-  options = {
-    color: 16761867,
-    ...options
-  };
-
-  const channel = await discordClient.channels.fetch(channelID);
-
-  server.on(LOG_PARSER_ADMIN_BROADCAST, async info => {
-    channel.send({
-      embed: {
-        title: 'Admin Broadcast',
-        color: options.color,
-        fields: [
-          {
-            name: 'Message',
-            value: `${info.message}`
+    server.on(LOG_PARSER_ADMIN_BROADCAST, async (info) => {
+      channel.send({
+        embed: {
+          title: 'Admin Broadcast',
+          color: options.color,
+          fields: [
+            {
+              name: 'Message',
+              value: `${info.message}`
+            }
+          ],
+          timestamp: info.time.toISOString(),
+          footer: {
+            text: COPYRIGHT_MESSAGE
           }
-        ],
-        timestamp: info.time.toISOString(),
-        footer: {
-          text: COPYRIGHT_MESSAGE
         }
-      }
+      });
     });
-  });
-}
+  }
+};

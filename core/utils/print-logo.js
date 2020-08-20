@@ -1,4 +1,4 @@
-import { COPYRIGHT_MESSAGE } from '../config.js';
+import { SQUADJS_VERSION, COPYRIGHT_MESSAGE } from '../constants.js';
 
 const LOGO = `
    _____  ____  _    _         _____   _     
@@ -11,8 +11,9 @@ const LOGO = `
                                     |__/     
 ${COPYRIGHT_MESSAGE}
 GitHub: https://github.com/Thomas-Smyth/SquadJS
+Version: ${SQUADJS_VERSION}
 `;
 
-export default function() {
+export default function () {
   console.log(LOGO);
 }

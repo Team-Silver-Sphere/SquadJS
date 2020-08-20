@@ -3,8 +3,16 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    "./config": "./config.js",
+    "./squad-layers": "./squad-layers/index.js",
+
     "./utils/print-logo": "./utils/print-logo.js",
-    "./utils/sleep": "./utils/sleep.js"
+    "./utils/scbl": "./utils/scbl.js",
+    "./utils/sleep": "./utils/sleep.js",
+
+    "./constants": "./constants.js"
+  },
+  "dependencies": {
+    "didyoumean": "^1.2.1",
+    "graphql-request": "^1.8.2"
   }
 }
