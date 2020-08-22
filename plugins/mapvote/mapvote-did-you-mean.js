@@ -7,9 +7,22 @@ import MapVote from './mapvote.js';
 export default {
   name: 'mapvote-did-you-mean',
   description:
-    'A map voting system that uses a "Did you mean?" algorithm to allow players to vote on layers.',
-  defaultDisabled: true,
+    'The `mapvote-did-you-mean` plugin provides map voting functionality. This variant of map voting uses a "Did you ' +
+    'mean?" algorithm to allow players to easily select one of a large pool of layers by typing it\'s name into ' +
+    'the in-game chat.' +
+    '\n\n' +
+    'Player Commands:\n' +
+    ' * `!mapvote help` - Show other commands players can use.\n' +
+    ' * `!mapvote results` - Show the results of the current map vote.\n' +
+    ' * `!mapvote <layer name>` - Vote for the specified layer. Misspelling will be corrected where possible.\n' +
+    '\n\n' +
+    'Admin Commands (Admin Chat Only):\n' +
+    ' * `!mapvote start` - Start a new map vote\n' +
+    ' * `!mapvote restart` - Restarts the map vote.\n' +
+    ' * `!mapvote end` - End the map vote and announce the winner.\n' +
+    ' * `!mapvote destroy` - End the map vote without announcing the winner.\n',
 
+  defaultDisabled: true,
   optionsSpec: {
     layerFilter: {
       type: 'SquadLayerFilterConnector',

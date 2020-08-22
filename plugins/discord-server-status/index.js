@@ -3,62 +3,13 @@ import tinygradient from 'tinygradient';
 import { COPYRIGHT_MESSAGE } from 'core/constants';
 import { SERVER_A2S_UPDATED } from 'squad-server/events/server';
 
-const gradient = tinygradient([
-  { color: '#ff0000', pos: 0 },
-  { color: '#ffff00', pos: 0.5 },
-  { color: '#00ff00', pos: 1 }
-]);
-
-function makeEmbed(server, options) {
-  let players = `${server.playerCount}`;
-  if (server.publicQueue + server.reserveQueue > 0)
-    players += ` (+${server.publicQueue + server.reserveQueue})`;
-  players += ` / ${server.publicSlots}`;
-  if (server.reserveSlots > 0) players += ` (+${server.reserveSlots})`;
-
-  const fields = [
-    {
-      name: 'Players',
-      value: `\`\`\`${players}\`\`\``
-    },
-    {
-      name: 'Current Layer',
-      value: `\`\`\`${server.currentLayer}\`\`\``,
-      inline: true
-    },
-    {
-      name: 'Next Layer',
-      value: `\`\`\`${server.nextLayer || 'Unknown'}\`\`\``,
-      inline: true
-    }
-  ];
-
-  if (options.connectLink)
-    fields.push({
-      name: 'Join Server',
-      value: `steam://connect/${server.host}:${server.queryPort}`
-    });
-
-  return {
-    embed: {
-      title: server.serverName,
-      color: options.colorGradient
-        ? parseInt(gradient.rgbAt(server.playerCount / server.publicSlots).toHex(), 16)
-        : options.color,
-      fields: fields,
-      timestamp: new Date().toISOString(),
-      footer: {
-        text: `Server Status by ${COPYRIGHT_MESSAGE}`
-      }
-    }
-  };
-}
-
 export default {
   name: 'discord-server-status',
-  description: 'This plugin displays server status embeds in Discord.',
-  defaultDisabled: false,
+  description:
+    'The `discord-server-status` plugin displays a server status embed to Discord when someone uses the `!server` ' +
+    'command in a Discord channel.',
 
+  defaultDisabled: false,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',
@@ -135,3 +86,54 @@ export default {
     });
   }
 };
+
+const gradient = tinygradient([
+  { color: '#ff0000', pos: 0 },
+  { color: '#ffff00', pos: 0.5 },
+  { color: '#00ff00', pos: 1 }
+]);
+
+function makeEmbed(server, options) {
+  let players = `${server.playerCount}`;
+  if (server.publicQueue + server.reserveQueue > 0)
+    players += ` (+${server.publicQueue + server.reserveQueue})`;
+  players += ` / ${server.publicSlots}`;
+  if (server.reserveSlots > 0) players += ` (+${server.reserveSlots})`;
+
+  const fields = [
+    {
+      name: 'Players',
+      value: `\`\`\`${players}\`\`\``
+    },
+    {
+      name: 'Current Layer',
+      value: `\`\`\`${server.currentLayer}\`\`\``,
+      inline: true
+    },
+    {
+      name: 'Next Layer',
+      value: `\`\`\`${server.nextLayer || 'Unknown'}\`\`\``,
+      inline: true
+    }
+  ];
+
+  if (options.connectLink)
+    fields.push({
+      name: 'Join Server',
+      value: `steam://connect/${server.host}:${server.queryPort}`
+    });
+
+  return {
+    embed: {
+      title: server.serverName,
+      color: options.colorGradient
+        ? parseInt(gradient.rgbAt(server.playerCount / server.publicSlots).toHex(), 16)
+        : options.color,
+      fields: fields,
+      timestamp: new Date().toISOString(),
+      footer: {
+        text: `Server Status by ${COPYRIGHT_MESSAGE}`
+      }
+    }
+  };
+}

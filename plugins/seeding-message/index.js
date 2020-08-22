@@ -2,9 +2,11 @@ import { LOG_PARSER_PLAYER_CONNECTED } from 'squad-server/events/log-parser';
 
 export default {
   name: 'seeding-message',
-  description: 'Display seeding messages in admin broadcasts.',
-  defaultDisabled: false,
+  description:
+    'The `seeding-message` plugin broadcasts seeding rule messages to players at regular intervals or after a new' +
+    'player has connected to the server. It can also be configured to display live messages when the server goes live.',
 
+  defaultDisabled: false,
   optionsSpec: {
     mode: {
       type: '`interval` or `onjoin`',

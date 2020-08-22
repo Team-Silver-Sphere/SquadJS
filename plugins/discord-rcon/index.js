@@ -1,8 +1,9 @@
 export default {
   name: 'discord-rcon',
-  description: 'This plugin turns a Discord channel into a RCON console.',
-  defaultDisabled: false,
+  description:
+    'The `discord-rcon` plugin allows a specified Discord channel to be used as a RCON console to run RCON commands.',
 
+  defaultDisabled: false,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',

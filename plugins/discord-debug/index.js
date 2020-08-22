@@ -1,8 +1,9 @@
 export default {
   name: 'discord-debug',
-  description: 'Dump SquadJS events to Discord.',
-  defaultDisabled: true,
+  description:
+    'The `discord-debug` plugin can be used to help debug SquadJS by dumping SquadJS events to a Discord channel.',
 
+  defaultDisabled: true,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',

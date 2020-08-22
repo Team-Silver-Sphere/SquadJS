@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="core/assets/squadjs-logo.png" alt="Logo" width="500"/>
+<img src="assets/squadjs-logo.png" alt="Logo" width="500"/>
 
 #### SquadJS
 
@@ -25,6 +25,7 @@ SquadJS is a scripting framework, designed for Squad servers, that aims to handl
 SquadJS relies on being able to access the Squad server log directory in order to parse logs live to collect information. Thus, SquadJS must be hosted on the same server box as your Squad server.
 
 ### Prerequisites
+ * Git
  * [Node.js](https://nodejs.org/en/) (Current) - [Download](https://nodejs.org/en/)
  * [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
  * Some plugins may have additional requirements.
@@ -186,9 +187,9 @@ Plugin options are also specified. A full list of plugin options can be seen bel
 The following is a list of plugins built into SquadJS:
 
 ### auto-tk-warn
-Automatically warn players who teamkill.
+The `auto-tk-warn` plugin will automatically warn players in game to apologise for teamkills when they teamkill another player.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -205,9 +206,9 @@ Automatically warn players who teamkill.
 </table>
 
 ### discord-admin-broadcast
-Log admin broadcasts to Discord.
+The `discord-admin-broadcast` plugin will send a copy of admin broadcasts made in game to a Discord channel.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -226,9 +227,9 @@ Log admin broadcasts to Discord.
 </table>
 
 ### discord-admin-cam-logs
-Log admin cam usage to Discord.
+The `discord-admin-cam-logs` plugin will log in game admin camera usage to a Discord channel.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -247,9 +248,9 @@ Log admin cam usage to Discord.
 </table>
 
 ### discord-chat
-Log in game chat to Discord.
+The `discord-chat` plugin will log in-game chat to a Discord channel.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -270,9 +271,9 @@ Log in game chat to Discord.
 </table>
 
 ### discord-admin-request
-Ping admins in Discord with the in game !admin command.
+The `discord-admin-request` plugin will ping admins in a Discord channel when a player requests an admin via the `!admin` command in in-game chat.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -296,9 +297,9 @@ Ping admins in Discord with the in game !admin command.
 </table>
 
 ### discord-debug
-Dump SquadJS events to Discord.
+The `discord-debug` plugin can be used to help debug SquadJS by dumping SquadJS events to a Discord channel.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -317,9 +318,9 @@ Dump SquadJS events to Discord.
 </table>
 
 ### discord-rcon
-This plugin turns a Discord channel into a RCON console.
+The `discord-rcon` plugin allows a specified Discord channel to be used as a RCON console to run RCON commands.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -338,9 +339,9 @@ This plugin turns a Discord channel into a RCON console.
 </table>
 
 ### discord-server-status
-This plugin displays server status embeds in Discord.
+The `discord-server-status` plugin displays a server status embed to Discord when someone uses the `!server` command in a Discord channel.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -362,9 +363,9 @@ This plugin displays server status embeds in Discord.
 </table>
 
 ### discord-teamkill
-Log teamkills to Discord.
+The `discord-teamkill` plugin logs teamkills and related information to a Discord channel for admin to review.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -386,9 +387,22 @@ Log teamkills to Discord.
 </table>
 
 ### mapvote-123
-A map voting system that uses numbers to allow players to vote on layers.
+The `mapvote-123` plugin provides map voting functionality. This variant of map voting allows admins to specify a small number of maps which are numbered and announced in admin broadcasts. Players can then vote for the map their choice by typing the corresponding map number into chat.
 
-#### Options
+Player Commands:
+ * `!mapvote help` - Show other commands players can use.
+ * `!mapvote results` - Show the results of the current map vote.
+ * `<layer number>` - Vote for a layer using the layer number.
+
+
+Admin Commands (Admin Chat Only):
+ * `!mapvote start <layer name 1>, <layer name 2>, ...` - Start a new map vote with the specified maps.
+ * `!mapvote restart` - Restarts the map vote with the same layers.
+ * `!mapvote end` - End the map vote and announce the winner.
+ * `!mapvote destroy` - End the map vote without announcing the winner.
+
+
+##### Options
 <table>
   <thead>
     <tr>
@@ -405,9 +419,22 @@ A map voting system that uses numbers to allow players to vote on layers.
 </table>
 
 ### mapvote-did-you-mean
-A map voting system that uses a "Did you mean?" algorithm to allow players to vote on layers.
+The `mapvote-did-you-mean` plugin provides map voting functionality. This variant of map voting uses a "Did you mean?" algorithm to allow players to easily select one of a large pool of layers by typing it's name into the in-game chat.
 
-#### Options
+Player Commands:
+ * `!mapvote help` - Show other commands players can use.
+ * `!mapvote results` - Show the results of the current map vote.
+ * `!mapvote <layer name>` - Vote for the specified layer. Misspelling will be corrected where possible.
+
+
+Admin Commands (Admin Chat Only):
+ * `!mapvote start` - Start a new map vote
+ * `!mapvote restart` - Restarts the map vote.
+ * `!mapvote end` - End the map vote and announce the winner.
+ * `!mapvote destroy` - End the map vote without announcing the winner.
+
+
+##### Options
 <table>
   <thead>
     <tr>
@@ -427,9 +454,28 @@ A map voting system that uses a "Did you mean?" algorithm to allow players to vo
 </table>
 
 ### mysql-log
-Log server information and statistics to a MySQL DB.
+The `mysql-log` plugin will log various server statistics and events to a MySQL database. This is great for server performance monitoring and/or player stat tracking.
 
-#### Options
+Installation:
+ * Obtain/Install MySQL. MySQL v8.x.x has been tested with this plugin and is recommended.
+ * Enable legacy authentication in your database using [this guide](https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server).
+ * Execute the [schema](mysql-schema.sql) to setup the database.
+ * Add a server to the database with `INSERT INTO Server (name) VALUES ("Your Server Name");`.
+ * Find the ID of the server you just inserted with `SELECT * FROM Server;`.
+ * Replace the server ID in your config with the ID from the inserted record in the database.
+
+
+If you encounter any issues you can enable `debug: true` in your MySQL connector to get more error logs in the console.
+
+
+Grafana:
+ * [Grafana](https://grafana.com/) is a cool way of viewing server statistics stored in the database.
+ * Install Grafana.
+ * Add your MySQL database as a datasource named `SquadJS - MySQL`.
+ * Import the [SquadJS Dashboard](SquadJS-Dashboard.json) to get a preconfigured MySQL only Grafana dashboard.
+ * Install any missing Grafana plugins.
+
+##### Options
 <table>
   <thead>
     <tr>
@@ -447,9 +493,9 @@ Log server information and statistics to a MySQL DB.
 </table>
 
 ### seeding-message
-Display seeding messages in admin broadcasts.
+The `seeding-message` plugin broadcasts seeding rule messages to players at regular intervals or after a newplayer has connected to the server. It can also be configured to display live messages when the server goes live.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -473,9 +519,9 @@ Display seeding messages in admin broadcasts.
 </table>
 
 ### team-randomizer
-Randomize teams with an admin command.
+The `team-randomizer` plugin can be used to randomize teams. It's great for destroying clan stacks or for social events. It can be run by typing `!randomize` into in-game admin chat.
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
@@ -555,8 +601,9 @@ SquadJS would not be possible without the support of so many individuals and org
  * subtlerod for proposing the initial log parsing idea, helping to design the log parsing process and for providing multiple servers to test with.
  * Fourleaf, Mex and various other members of ToG / ToG-L for helping to stage logs and participate in small scale tests.
  * The Coalition community, including those that participate in Wednesday Fight Night, for participating in larger scale tests and for providing feedback on plugins.
- * iDronee for providing Linux Squad server logs to ensure log parsing regexes support the OS.
+ * My GitHub sponsors!
  * Everyone in the Squad RCON Discord and others who have submitted bug reports, suggestions and feedback.
+ * iDronee for providing Linux Squad server logs to ensure log parsing regexes support the OS.
 
 ## License
 ```

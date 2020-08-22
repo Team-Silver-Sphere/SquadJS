@@ -2,9 +2,11 @@ import { LOG_PARSER_TEAMKILL } from 'squad-server/events/log-parser';
 
 export default {
   name: 'auto-tk-warn',
-  description: 'Automatically warn players who teamkill.',
-  defaultDisabled: false,
+  description:
+    'The `auto-tk-warn` plugin will automatically warn players in game to apologise for teamkills when they ' +
+    'teamkill another player.',
 
+  defaultDisabled: false,
   optionsSpec: {
     message: {
       type: 'String',

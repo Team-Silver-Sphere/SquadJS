@@ -3,9 +3,9 @@ import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
 
 export default {
   name: 'discord-chat',
-  description: 'Log in game chat to Discord.',
-  defaultDisabled: false,
+  description: 'The `discord-chat` plugin will log in-game chat to a Discord channel.',
 
+  defaultDisabled: false,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',

@@ -7,9 +7,23 @@ import MapVote from './mapvote.js';
 
 export default {
   name: 'mapvote-123',
-  description: 'A map voting system that uses numbers to allow players to vote on layers.',
-  defaultDisabled: true,
+  description:
+    'The `mapvote-123` plugin provides map voting functionality. This variant of map voting allows admins to specify ' +
+    'a small number of maps which are numbered and announced in admin broadcasts. Players can then vote for the map ' +
+    'their choice by typing the corresponding map number into chat.' +
+    '\n\n' +
+    'Player Commands:\n' +
+    ' * `!mapvote help` - Show other commands players can use.\n' +
+    ' * `!mapvote results` - Show the results of the current map vote.\n' +
+    ' * `<layer number>` - Vote for a layer using the layer number.\n' +
+    '\n\n' +
+    'Admin Commands (Admin Chat Only):\n' +
+    ' * `!mapvote start <layer name 1>, <layer name 2>, ...` - Start a new map vote with the specified maps.\n' +
+    ' * `!mapvote restart` - Restarts the map vote with the same layers.\n' +
+    ' * `!mapvote end` - End the map vote and announce the winner.\n' +
+    ' * `!mapvote destroy` - End the map vote without announcing the winner.\n',
 
+  defaultDisabled: true,
   optionsSpec: {
     minVoteCount: {
       type: 'Integer',

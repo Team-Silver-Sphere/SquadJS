@@ -25,6 +25,7 @@ SquadJS is a scripting framework, designed for Squad servers, that aims to handl
 SquadJS relies on being able to access the Squad server log directory in order to parse logs live to collect information. Thus, SquadJS must be hosted on the same server box as your Squad server.
 
 ### Prerequisites
+ * Git
  * [Node.js](https://nodejs.org/en/) (Current) - [Download](https://nodejs.org/en/)
  * [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
  * Some plugins may have additional requirements.
@@ -251,8 +252,9 @@ SquadJS would not be possible without the support of so many individuals and org
  * subtlerod for proposing the initial log parsing idea, helping to design the log parsing process and for providing multiple servers to test with.
  * Fourleaf, Mex and various other members of ToG / ToG-L for helping to stage logs and participate in small scale tests.
  * The Coalition community, including those that participate in Wednesday Fight Night, for participating in larger scale tests and for providing feedback on plugins.
- * iDronee for providing Linux Squad server logs to ensure log parsing regexes support the OS.
+ * My GitHub sponsors!
  * Everyone in the Squad RCON Discord and others who have submitted bug reports, suggestions and feedback.
+ * iDronee for providing Linux Squad server logs to ensure log parsing regexes support the OS.
 
 ## License
 ```

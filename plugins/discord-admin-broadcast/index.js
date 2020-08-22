@@ -3,9 +3,10 @@ import { LOG_PARSER_ADMIN_BROADCAST } from 'squad-server/events/log-parser';
 
 export default {
   name: 'discord-admin-broadcast',
-  description: 'Log admin broadcasts to Discord.',
-  defaultDisabled: false,
+  description:
+    'The `discord-admin-broadcast` plugin will send a copy of admin broadcasts made in game to a Discord channel.',
 
+  defaultDisabled: false,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',

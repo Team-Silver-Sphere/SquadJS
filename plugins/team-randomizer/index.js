@@ -2,9 +2,11 @@ import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
 
 export default {
   name: 'team-randomizer',
-  description: 'Randomize teams with an admin command.',
-  defaultDisabled: false,
+  description:
+    "The `team-randomizer` plugin can be used to randomize teams. It's great for destroying clan stacks or for " +
+    'social events. It can be run by typing `!randomize` into in-game admin chat.',
 
+  defaultDisabled: false,
   optionsSpec: {
     command: {
       type: 'String',

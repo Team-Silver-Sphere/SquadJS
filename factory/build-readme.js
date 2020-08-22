@@ -28,7 +28,7 @@ for (const pluginName of sortedPluginNames) {
     `### ${plugin.name}
 ${plugin.description}
 
-#### Options
+##### Options
 <table>
   <thead>
     <tr>
