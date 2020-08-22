@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/squadjs-logo.png" alt="Logo" width="500"/>
+<img src="core/assets/squadjs-logo.png" alt="Logo" width="500"/>
 
 #### SquadJS
 
