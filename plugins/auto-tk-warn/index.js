@@ -6,7 +6,7 @@ export default {
     'The `auto-tk-warn` plugin will automatically warn players in game to apologise for teamkills when they ' +
     'teamkill another player.',
 
-  defaultDisabled: false,
+  defaultEnabled: true,
   optionsSpec: {
     message: {
       type: 'String',

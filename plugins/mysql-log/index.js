@@ -30,7 +30,7 @@ export default {
     ' * Import the [SquadJS Dashboard](SquadJS-Dashboard.json) to get a preconfigured MySQL only Grafana dashboard.\n' +
     ' * Install any missing Grafana plugins.',
 
-  defaultDisabled: true,
+  defaultEnabled: false,
   optionsSpec: {
     mysqlPool: {
       type: 'MySQLPoolConnector',

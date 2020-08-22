@@ -3,7 +3,7 @@ export default {
   description:
     'The `discord-debug` plugin can be used to help debug SquadJS by dumping SquadJS events to a Discord channel.',
 
-  defaultDisabled: true,
+  defaultEnabled: false,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',

@@ -6,7 +6,7 @@ export default {
     "The `team-randomizer` plugin can be used to randomize teams. It's great for destroying clan stacks or for " +
     'social events. It can be run by typing `!randomize` into in-game admin chat.',
 
-  defaultDisabled: false,
+  defaultEnabled: true,
   optionsSpec: {
     command: {
       type: 'String',

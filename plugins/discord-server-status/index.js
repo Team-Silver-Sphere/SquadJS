@@ -9,7 +9,7 @@ export default {
     'The `discord-server-status` plugin displays a server status embed to Discord when someone uses the `!server` ' +
     'command in a Discord channel.',
 
-  defaultDisabled: false,
+  defaultEnabled: true,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',

@@ -63,26 +63,26 @@
   "plugins": [
     {
       "plugin": "auto-tk-warn",
-      "disabled": false,
+      "enabled": true,
       "message": "Please apologise for ALL TKs in ALL chat!"
     },
     {
       "plugin": "discord-admin-broadcast",
-      "disabled": false,
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "Discord Channel ID",
       "color": 16761867
     },
     {
       "plugin": "discord-admin-cam-logs",
-      "disabled": false,
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "Discord Channel ID",
       "color": 16761867
     },
     {
       "plugin": "discord-chat",
-      "disabled": false,
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "Discord Channel ID",
       "ignoreChats": [
@@ -93,7 +93,7 @@
     },
     {
       "plugin": "discord-admin-request",
-      "disabled": false,
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "Discord Channel ID",
       "ignoreChats": [
@@ -107,21 +107,21 @@
     },
     {
       "plugin": "discord-debug",
-      "disabled": true,
+      "enabled": false,
       "discordClient": "discord",
       "channelID": "Discord Channel ID",
       "events": []
     },
     {
       "plugin": "discord-rcon",
-      "disabled": false,
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "Discord Channel ID",
       "prependAdminNameInBroadcast": false
     },
     {
       "plugin": "discord-server-status",
-      "disabled": false,
+      "enabled": true,
       "discordClient": "discord",
       "color": 16761867,
       "colorGradient": true,
@@ -131,7 +131,7 @@
     },
     {
       "plugin": "discord-teamkill",
-      "disabled": false,
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "Discord Channel ID",
       "teamkillColor": 16761867,
@@ -141,12 +141,12 @@
     },
     {
       "plugin": "mapvote-123",
-      "disabled": true,
+      "enabled": false,
       "minVoteCount": null
     },
     {
       "plugin": "mapvote-did-you-mean",
-      "disabled": true,
+      "enabled": false,
       "layerFilter": "layerFilter",
       "alwaysOn": true,
       "minPlayerCount": null,
@@ -154,13 +154,13 @@
     },
     {
       "plugin": "mysql-log",
-      "disabled": true,
+      "enabled": false,
       "mysqlPool": "mysql",
       "overrideServerID": null
     },
     {
       "plugin": "seeding-message",
-      "disabled": false,
+      "enabled": true,
       "mode": "interval",
       "interval": 150000,
       "delay": 45000,
@@ -172,7 +172,7 @@
     },
     {
       "plugin": "team-randomizer",
-      "disabled": false,
+      "enabled": true,
       "command": "!randomize"
     }
   ]

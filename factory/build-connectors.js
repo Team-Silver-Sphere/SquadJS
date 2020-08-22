@@ -22,7 +22,7 @@ export default async function (config) {
   const connectors = {};
 
   for (const pluginConfig of config.plugins) {
-    if (pluginConfig.disabled) continue;
+    if (!pluginConfig.enabled) continue;
 
     const plugin = plugins[pluginConfig.plugin];
 

@@ -6,7 +6,7 @@ export default {
     'The `seeding-message` plugin broadcasts seeding rule messages to players at regular intervals or after a new' +
     'player has connected to the server. It can also be configured to display live messages when the server goes live.',
 
-  defaultDisabled: false,
+  defaultEnabled: true,
   optionsSpec: {
     mode: {
       type: '`interval` or `onjoin`',

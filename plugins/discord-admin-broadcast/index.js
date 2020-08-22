@@ -6,7 +6,7 @@ export default {
   description:
     'The `discord-admin-broadcast` plugin will send a copy of admin broadcasts made in game to a Discord channel.',
 
-  defaultDisabled: false,
+  defaultEnabled: true,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',

@@ -18,7 +18,7 @@ export default async function (configPath) {
 
   console.log('Loading plugins...');
   for (const pluginConfig of config.plugins) {
-    if (pluginConfig.disabled) continue;
+    if (!pluginConfig.enabled) continue;
 
     console.log(`Loading plugin ${pluginConfig.plugin}...`);
     const plugin = plugins[pluginConfig.plugin];

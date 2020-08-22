@@ -23,7 +23,7 @@ export default {
     ' * `!mapvote end` - End the map vote and announce the winner.\n' +
     ' * `!mapvote destroy` - End the map vote without announcing the winner.\n',
 
-  defaultDisabled: true,
+  defaultEnabled: false,
   optionsSpec: {
     minVoteCount: {
       type: 'Integer',

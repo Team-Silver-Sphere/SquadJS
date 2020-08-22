@@ -6,7 +6,7 @@ export default {
   description:
     'The `discord-teamkill` plugin logs teamkills and related information to a Discord channel for admin to review.',
 
-  defaultDisabled: false,
+  defaultEnabled: true,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',

@@ -7,7 +7,7 @@ export default {
     'The `discord-admin-request` plugin will ping admins in a Discord channel when a player requests an admin via ' +
     'the `!admin` command in in-game chat.',
 
-  defaultDisabled: false,
+  defaultEnabled: true,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',

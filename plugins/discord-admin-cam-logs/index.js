@@ -9,7 +9,7 @@ export default {
   description:
     'The `discord-admin-cam-logs` plugin will log in game admin camera usage to a Discord channel.',
 
-  defaultDisabled: false,
+  defaultEnabled: true,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',

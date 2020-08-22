@@ -16,7 +16,7 @@ const pluginKeys = Object.keys(plugins).sort((a, b) =>
 for (const pluginKey of pluginKeys) {
   const plugin = plugins[pluginKey];
 
-  const pluginConfig = { plugin: plugin.name, disabled: plugin.defaultDisabled };
+  const pluginConfig = { plugin: plugin.name, enabled: plugin.defaultEnabled };
   for (const option in plugin.optionsSpec) {
     pluginConfig[option] = plugin.optionsSpec[option].default;
   }

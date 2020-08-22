@@ -5,7 +5,7 @@ export default {
   name: 'discord-chat',
   description: 'The `discord-chat` plugin will log in-game chat to a Discord channel.',
 
-  defaultDisabled: false,
+  defaultEnabled: true,
   optionsSpec: {
     discordClient: {
       type: 'DiscordConnector',
