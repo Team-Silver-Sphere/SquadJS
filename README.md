@@ -43,17 +43,17 @@ SquadJS can be configured via a JSON configuration file which, by default, is lo
 The following section of the configuration contains information about your Squad server.
 ```json
 "server": {
-"id": 1,
-"host": "xxx.xxx.xxx.xxx",
-"queryPort": 27165,
-"rconPort": 21114,
-"rconPassword": "password",
-"logReaderMode": "tail",
-"logDir": "C:/path/to/squad/log/folder",
-"ftpPort": 21,
-"ftpUser": "FTP Username",
-"ftpPassword": "FTP Password",
-"rconVerbose": false
+  "id": 1,
+  "host": "xxx.xxx.xxx.xxx",
+  "queryPort": 27165,
+  "rconPort": 21114,
+  "rconPassword": "password",
+  "logReaderMode": "tail",
+  "logDir": "C:/path/to/squad/log/folder",
+  "ftpPort": 21,
+  "ftpUser": "FTP Username",
+  "ftpPassword": "FTP Password",
+  "rconVerbose": false
 },
 ```
  * `id` - An integer ID to uniquely identify the server.
@@ -71,7 +71,7 @@ The following section of the configuration contains information about your Squad
 Connectors allow SquadJS to communicate with external resources.
 ```json
 "connectors": {
-"discord": "Discord Login Token",
+  "discord": "Discord Login Token",
 },
 ```
 Connectors should be named, for example the above is named `discord`, and should have the associated config against it. Configs can be specified by name in plugin options. 
