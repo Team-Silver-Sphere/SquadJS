@@ -465,7 +465,7 @@ Installation:
  * Replace the server ID in your config with the ID from the inserted record in the database.
 
 
-If you encounter any issues you can enable `debug: true` in your MySQL connector to get more error logs in the console.
+If you encounter any issues you can enable `"debug": true` in your MySQL connector to get more error logs in the console.
 
 
 Grafana:
