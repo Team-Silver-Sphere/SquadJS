@@ -55,7 +55,7 @@ export default {
     let manuallyCreated;
 
     async function newMapvote(manuallyCreatedOption = true) {
-      mapvote = new MapVote(server, options.squadLayerFilter, {
+      mapvote = new MapVote(server, options.layerFilter, {
         minVoteCount: options.minVoteCount
       });
 

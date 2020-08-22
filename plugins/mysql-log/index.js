@@ -21,7 +21,7 @@ export default {
     ' * Find the ID of the server you just inserted with `SELECT * FROM Server;`.\n' +
     ' * Replace the server ID in your config with the ID from the inserted record in the database.\n' +
     '\n\n' +
-    'If you encounter any issues you can enable `debug: true` in your MySQL connector to get more error logs in the console.\n' +
+    'If you encounter any issues you can enable `"debug": true` in your MySQL connector to get more error logs in the console.\n' +
     '\n\n' +
     'Grafana:\n' +
     ' * [Grafana](https://grafana.com/) is a cool way of viewing server statistics stored in the database.\n' +
