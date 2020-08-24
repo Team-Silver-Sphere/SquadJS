@@ -39,6 +39,8 @@ SquadJS relies on being able to access the Squad server log directory in order t
 ### Configuring SquadJS
 SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS and is named [config.json](https://github.com/Thomas-Smyth/SquadJS/blob/master/config.json).
 
+The config file needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
+
 #### Server
 The following section of the configuration contains information about your Squad server.
 ```json
@@ -74,7 +76,7 @@ Connectors allow SquadJS to communicate with external resources.
   "discord": "Discord Login Token",
 },
 ```
-Connectors should be named, for example the above is named `discord`, and should have the associated config against it. Configs can be specified by name in plugin options. 
+Connectors should be named, for example the above is named `discord`, and should have the associated config against it. Configs can be specified by name in plugin options. Should a connector not be needed by any plugin then the default values can be left or you can remove it from your config file.
 
 See below for more details on connectors and their associated config.
 
