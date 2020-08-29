@@ -10,7 +10,7 @@
     "ftpPort": 21,
     "ftpUser": "FTP Username",
     "ftpPassword": "FTP Password",
-    "rconVerbose": false
+    "rconVerbose": true
   },
   "connectors": {
     "discord": "Discord Login Token",
