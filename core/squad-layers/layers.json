@@ -4609,7 +4609,7 @@
         }
     },
     {
-        "layer": "CAF_Albasrah_Invasion_v1",
+        "layer": "CAF_Al_Basrah_Invasion_v1",
         "map": "CAF Al Basrah",
         "layerClassname": "CAF_Albasrah_Invasion_v1",
         "gamemode": "Invasion",
