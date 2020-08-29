@@ -2,8 +2,6 @@ import EventEmitter from 'events';
 
 import Gamedig from 'gamedig';
 
-import printLogo from 'core/utils/print-logo';
-
 import LogParser from './log-parser/index.js';
 import Rcon from './rcon/index.js';
 
@@ -94,7 +92,6 @@ export default class Server extends EventEmitter {
   }
 
   async watch() {
-    printLogo();
     console.log(`Watching server ${this.id}...`);
     if (this.logParser) await this.logParser.watch();
     if (this.rcon) await this.rcon.watch();

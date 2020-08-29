@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import SquadLayers from 'connectors/squad-layers';
+import { SquadLayers } from 'core/squad-layers';
 
 export default class MapVote extends EventEmitter {
   constructor(server, squadLayerFilter, options = {}) {
@@ -47,7 +47,7 @@ export default class MapVote extends EventEmitter {
       Object.keys(this.playerVotes).length >= this.minVoteCount
     ) {
       return Object.keys(this.layerVotes)
-        .map(layerName => ({
+        .map((layerName) => ({
           layer: this.squadLayerFilter.getLayerByLayerName(layerName),
           votes: this.layerVotes[layerName]
         }))

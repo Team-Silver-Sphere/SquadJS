@@ -1,48 +1,57 @@
 import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
 
-function shuffle(array) {
-  let currentIndex = array.length;
-  let temporaryValue;
-  let randomIndex;
+export default {
+  name: 'team-randomizer',
+  description:
+    "The `team-randomizer` plugin can be used to randomize teams. It's great for destroying clan stacks or for " +
+    'social events. It can be run by typing `!randomize` into in-game admin chat.',
 
-  // While there remain elements to shuffle...
-  while (currentIndex !== 0) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+  defaultEnabled: true,
+  optionsSpec: {
+    command: {
+      type: 'String',
+      required: false,
+      default: '!randomize',
+      description: 'The command used to randomize the teams.'
+    }
+  },
 
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
+  init: async (server, options) => {
+    const commandRegex = new RegExp(`^${options.command}`, 'i');
 
-  return array;
-}
+    server.on(RCON_CHAT_MESSAGE, (info) => {
+      if (info.chat !== 'ChatAdmin') return;
 
-export default function(server, options = {}) {
-  if (!server) throw new Error('TeamRandomizer must be provided with a reference to the server.');
+      const match = info.message.match(commandRegex);
+      if (!match) return;
 
-  const command = options.command || '!randomize';
-  const commandRegex = new RegExp(`^${command}`, 'i');
+      const players = server.players.slice(0);
 
-  server.on(RCON_CHAT_MESSAGE, info => {
-    if (info.chat !== 'ChatAdmin') return;
+      let currentIndex = players.length;
+      let temporaryValue;
+      let randomIndex;
 
-    const match = info.message.match(commandRegex);
-    if (!match) return;
+      // While there remain elements to shuffle...
+      while (currentIndex !== 0) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
 
-    const players = server.players.slice(0);
-    shuffle(players);
-
-    let team = '1';
-
-    for (const player of players) {
-      if (player.teamID !== team) {
-        server.rcon.execute(`AdminForceTeamChange "${player.steamID}"`);
+        // And swap it with the current element.
+        temporaryValue = players[currentIndex];
+        players[currentIndex] = players[randomIndex];
+        players[randomIndex] = temporaryValue;
       }
 
-      team = team === '1' ? '2' : '1';
-    }
-  });
-}
+      let team = '1';
+
+      for (const player of players) {
+        if (player.teamID !== team) {
+          server.rcon.execute(`AdminForceTeamChange "${player.steamID}"`);
+        }
+
+        team = team === '1' ? '2' : '1';
+      }
+    });
+  }
+};

@@ -48,8 +48,8 @@ export default class SquadLayerFilter extends SquadLayersClass {
     return new SquadLayerFilter(layers, activeLayerFilter);
   }
 
-  static buildFromFile(filename, activeLayerFilter, delimiter = '\n') {
-    const lines = fs.readFileSync('./connectors/data/layers.json', 'utf8').split(delimiter);
+  static buildFromFile(path, activeLayerFilter, delimiter = '\n') {
+    const lines = fs.readFileSync(path, 'utf8').split(delimiter);
     const layers = [];
 
     const validLayerNames = SquadLayers.getLayerNames();

@@ -1,0 +1,179 @@
+{
+  "server": {
+    "id": 1,
+    "host": "xxx.xxx.xxx.xxx",
+    "queryPort": 27165,
+    "rconPort": 21114,
+    "rconPassword": "password",
+    "logReaderMode": "tail",
+    "logDir": "C:/path/to/squad/log/folder",
+    "ftpPort": 21,
+    "ftpUser": "FTP Username",
+    "ftpPassword": "FTP Password",
+    "rconVerbose": true
+  },
+  "connectors": {
+    "discord": "Discord Login Token",
+    "layerFilter": {
+      "type": "buildFromFilter",
+      "filter": {
+        "whitelistedLayers": null,
+        "blacklistedLayers": null,
+        "whitelistedMaps": null,
+        "blacklistedMaps": null,
+        "whitelistedGamemodes": null,
+        "blacklistedGamemodes": [
+          "Training"
+        ],
+        "flagCountMin": null,
+        "flagCountMax": null,
+        "hasCommander": null,
+        "hasTanks": null,
+        "hasHelicopters": null
+      },
+      "activeLayerFilter": {
+        "historyResetTime": 18000000,
+        "layerHistoryTolerance": 8,
+        "mapHistoryTolerance": 4,
+        "gamemodeHistoryTolerance": {
+          "Invasion": 4
+        },
+        "gamemodeRepetitiveTolerance": {
+          "Invasion": 4
+        },
+        "playerCountComplianceEnabled": true,
+        "factionComplianceEnabled": true,
+        "factionHistoryTolerance": {
+          "RUS": 4
+        },
+        "factionRepetitiveTolerance": {
+          "RUS": 4
+        }
+      }
+    },
+    "mysql": {
+      "connectionLimit": 10,
+      "host": "host",
+      "port": 3306,
+      "user": "squadjs",
+      "password": "password",
+      "database": "squadjs"
+    }
+  },
+  "plugins": [
+    {
+      "plugin": "auto-tk-warn",
+      "enabled": true,
+      "message": "Please apologise for ALL TKs in ALL chat!"
+    },
+    {
+      "plugin": "discord-admin-broadcast",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "Discord Channel ID",
+      "color": 16761867
+    },
+    {
+      "plugin": "discord-admin-cam-logs",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "Discord Channel ID",
+      "color": 16761867
+    },
+    {
+      "plugin": "discord-chat",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "Discord Channel ID",
+      "ignoreChats": [
+        "ChatSquad"
+      ],
+      "chatColors": {},
+      "color": 16761867
+    },
+    {
+      "plugin": "discord-admin-request",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "Discord Channel ID",
+      "ignoreChats": [
+        "ChatSquad"
+      ],
+      "ignorePhrases": [],
+      "adminPrefix": "!admin",
+      "pingGroups": [],
+      "pingDelay": 60000,
+      "color": 16761867
+    },
+    {
+      "plugin": "discord-debug",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "Discord Channel ID",
+      "events": []
+    },
+    {
+      "plugin": "discord-rcon",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "Discord Channel ID",
+      "prependAdminNameInBroadcast": false
+    },
+    {
+      "plugin": "discord-server-status",
+      "enabled": true,
+      "discordClient": "discord",
+      "color": 16761867,
+      "colorGradient": true,
+      "connectLink": true,
+      "command": "!server",
+      "disableStatus": false
+    },
+    {
+      "plugin": "discord-teamkill",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "Discord Channel ID",
+      "teamkillColor": 16761867,
+      "suicideColor": 16761867,
+      "ignoreSuicides": false,
+      "disableSCBL": false
+    },
+    {
+      "plugin": "mapvote-123",
+      "enabled": false,
+      "minVoteCount": null
+    },
+    {
+      "plugin": "mapvote-did-you-mean",
+      "enabled": false,
+      "layerFilter": "layerFilter",
+      "alwaysOn": true,
+      "minPlayerCount": null,
+      "minVoteCount": null
+    },
+    {
+      "plugin": "mysql-log",
+      "enabled": false,
+      "mysqlPool": "mysql",
+      "overrideServerID": null
+    },
+    {
+      "plugin": "seeding-message",
+      "enabled": true,
+      "mode": "interval",
+      "interval": 150000,
+      "delay": 45000,
+      "seedingThreshold": 50,
+      "seedingMessage": "Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!",
+      "liveEnabled": true,
+      "liveThreshold": 2,
+      "liveMessage": "Live"
+    },
+    {
+      "plugin": "team-randomizer",
+      "enabled": true,
+      "command": "!randomize"
+    }
+  ]
+}

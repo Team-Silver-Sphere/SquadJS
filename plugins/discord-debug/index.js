@@ -1,15 +1,37 @@
-export default async function(server, discordClient, channelID, events = []) {
-  if (!server) throw new Error('DiscordDebug must be provided with a reference to the server.');
+export default {
+  name: 'discord-debug',
+  description:
+    'The `discord-debug` plugin can be used to help debug SquadJS by dumping SquadJS events to a Discord channel.',
 
-  if (!discordClient) throw new Error('DiscordDebug must be provided with a Discord.js client.');
+  defaultEnabled: false,
+  optionsSpec: {
+    discordClient: {
+      type: 'DiscordConnector',
+      required: true,
+      default: 'discord',
+      description: 'The name of the Discord Connector to use.'
+    },
+    channelID: {
+      type: 'Discord Channel ID',
+      required: true,
+      default: 'Discord Channel ID',
+      description: 'The ID of the channel to log admin broadcasts to.'
+    },
+    events: {
+      type: 'Array',
+      required: true,
+      default: [],
+      description: 'A list of events to dump.'
+    }
+  },
 
-  if (!channelID) throw new Error('DicordDebug must be provided with a channel ID.');
+  init: async (server, options) => {
+    const channel = await options.discordClient.channels.fetch(options.channelID);
 
-  const channel = await discordClient.channels.fetch(channelID);
-
-  for (const event of events) {
-    server.on(event, info => {
-      channel.send(`\`\`\`${JSON.stringify(info, null, 2)}\`\`\``);
-    });
+    for (const event of options.events) {
+      server.on(event, (info) => {
+        channel.send(`\`\`\`${JSON.stringify(info, null, 2)}\`\`\``);
+      });
+    }
   }
-}
+};

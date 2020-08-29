@@ -2,6 +2,7 @@
 *.tmp
 
 index-test.js
+config-test.json
 
 # Dependencies
 node_modules/

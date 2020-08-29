@@ -105,12 +105,12 @@ export default class Rcon {
 
       this.client.on('data', this.onData);
 
-      this.client.on('error', err => {
+      this.client.on('error', (err) => {
         this.verbose(`Socket Error: ${err.message}`);
         this.emitter.emit(RCON_ERROR, err);
       });
 
-      this.client.on('close', async hadError => {
+      this.client.on('close', async (hadError) => {
         this.verbose(`Socket Closed. AutoReconnect: ${this.autoReconnect}`);
         this.connected = false;
         this.client.removeListener('data', this.onData);
@@ -138,7 +138,7 @@ export default class Rcon {
         resolve();
       };
 
-      const onError = err => {
+      const onError = (err) => {
         this.verbose(`Error Opening Socket: ${err.message}`);
         this.client.removeListener('connect', onConnect);
         reject(err);
@@ -162,7 +162,7 @@ export default class Rcon {
         resolve();
       };
 
-      const onError = err => {
+      const onError = (err) => {
         this.verbose(`Error disconnecting: ${err.message}`);
         this.client.removeListener('close', onClose);
         reject(err);

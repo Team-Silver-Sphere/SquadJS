@@ -1,4 +1,4 @@
-import SquadLayers from 'connectors/squad-layers';
+import { SquadLayers } from 'core/squad-layers';
 
 import { LOG_PARSER_NEW_GAME } from '../../events/log-parser.js';
 

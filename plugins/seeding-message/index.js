@@ -1,59 +1,104 @@
 import { LOG_PARSER_PLAYER_CONNECTED } from 'squad-server/events/log-parser';
 
-export default function(server, options = {}) {
-  if (!server) throw new Error('SeedingMessage must be provided with a reference to the server.');
+export default {
+  name: 'seeding-message',
+  description:
+    'The `seeding-message` plugin broadcasts seeding rule messages to players at regular intervals or after a new' +
+    'player has connected to the server. It can also be configured to display live messages when the server goes live.',
 
-  const mode = options.mode || 'interval';
-  const interval = options.interval || 150 * 1000;
-  const delay = options.delay || 45 * 1000;
+  defaultEnabled: true,
+  optionsSpec: {
+    mode: {
+      type: '`interval` or `onjoin`',
+      required: false,
+      default: 'interval',
+      description: 'Display seeding messages at a set interval or after players join.'
+    },
+    interval: {
+      type: 'Number',
+      required: false,
+      default: 150 * 1000,
+      description: 'How frequently to display the seeding messages in seconds.'
+    },
+    delay: {
+      type: 'Number',
+      required: false,
+      default: 45 * 1000,
+      description: 'How long to wait after a player joins to display the announcement in seconds.'
+    },
+    seedingThreshold: {
+      type: 'Number',
+      required: false,
+      default: 50,
+      description: 'Number of players before the server is considered live.'
+    },
+    seedingMessage: {
+      type: 'String',
+      required: false,
+      default: 'Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!',
+      description: 'The seeding message to display.'
+    },
+    liveEnabled: {
+      type: 'String',
+      required: false,
+      default: true,
+      description: 'Display a "Live" message when a certain player count is met.'
+    },
+    liveThreshold: {
+      type: 'Number',
+      required: false,
+      default: 2,
+      description:
+        'When above the seeding threshold, but within this number "Live" messages are displayed.'
+    },
+    liveMessage: {
+      type: 'String',
+      required: false,
+      default: 'Live',
+      description: 'The "Live" message to display.'
+    }
+  },
 
-  const seedingThreshold = options.seedingThreshold || 50;
-  const seedingMessage =
-    options.seedingMessage ||
-    'Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!';
-
-  const liveEnabled = options.liveEnabled || true;
-  const liveThreshold = seedingThreshold + (options.liveThreshold || 2);
-  const liveMessage = options.liveMessage || 'Live!';
-
-  switch (mode) {
-    case 'interval':
-      setInterval(() => {
-        const playerCount = server.players.length;
-
-        if (playerCount === 0) return;
-
-        if (playerCount < seedingThreshold) {
-          server.rcon.execute(`AdminBroadcast ${seedingMessage}`);
-          return;
-        }
-
-        if (liveEnabled && playerCount < liveThreshold) {
-          server.rcon.execute(`AdminBroadcast ${liveMessage}`);
-        }
-      }, interval);
-
-      break;
-    case 'onjoin':
-      server.on(LOG_PARSER_PLAYER_CONNECTED, () => {
-        setTimeout(() => {
+  init: async (server, options) => {
+    switch (options.mode) {
+      case 'interval':
+        setInterval(() => {
           const playerCount = server.players.length;
 
           if (playerCount === 0) return;
 
-          if (playerCount < seedingThreshold) {
-            server.rcon.execute(`AdminBroadcast ${seedingMessage}`);
+          if (playerCount < options.seedingThreshold) {
+            server.rcon.execute(`AdminBroadcast ${options.seedingMessage}`);
             return;
           }
 
-          if (liveEnabled && playerCount < liveThreshold) {
-            server.rcon.execute(`AdminBroadcast ${liveMessage}`);
+          if (options.liveEnabled && playerCount < options.liveThreshold) {
+            server.rcon.execute(`AdminBroadcast ${options.liveMessage}`);
           }
-        }, delay);
-      });
+        }, options.interval);
 
-      break;
-    default:
-      throw new Error('Invalid SeedingMessage mode.');
+        break;
+      case 'onjoin':
+        server.on(LOG_PARSER_PLAYER_CONNECTED, () => {
+          setTimeout(() => {
+            const playerCount = server.players.length;
+
+            if (playerCount === 0) return;
+
+            if (playerCount < options.seedingThreshold) {
+              server.rcon.execute(`AdminBroadcast ${options.seedingMessage}`);
+              return;
+            }
+
+            if (options.liveEnabled && playerCount < options.liveThreshold) {
+              server.rcon.execute(`AdminBroadcast ${options.liveMessage}`);
+            }
+          }, options.delay);
+        });
+
+        break;
+      default:
+        throw new Error('Invalid SeedingMessage mode.');
+    }
   }
-}
+};
