@@ -27,7 +27,7 @@ export default {
     ' * [Grafana](https://grafana.com/) is a cool way of viewing server statistics stored in the database.\n' +
     ' * Install Grafana.\n' +
     ' * Add your MySQL database as a datasource named `SquadJS - MySQL`.\n' +
-    ' * Import the [SquadJS Dashboard](SquadJS-Dashboard.json) to get a preconfigured MySQL only Grafana dashboard.\n' +
+    ' * Import the [SquadJS Dashboard](https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/SquadJS-Dashboard.json) to get a preconfigured MySQL only Grafana dashboard.\n' +
     ' * Install any missing Grafana plugins.',
 
   defaultEnabled: false,
