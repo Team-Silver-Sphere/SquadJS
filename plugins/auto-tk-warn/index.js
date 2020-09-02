@@ -16,11 +16,11 @@ export default {
     }
   },
 
-  init: async (server, connectors, options) => {
+  init: async (server, options) => {
     server.on(LOG_PARSER_TEAMKILL, (info) => {
       // ignore suicides
       if (info.attacker.steamID === info.victim.steamID) return;
-      server.rcon.execute(`AdminWarn "${info.attacker.steamID}" ${options.message}`);
+      server.rcon.warn(info.attacker.steamID, options.message);
     });
   }
 };
