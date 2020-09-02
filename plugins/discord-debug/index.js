@@ -30,8 +30,7 @@ export default {
 
     for (const event of options.events) {
       server.on(event, (info) => {
-        info.event = event;
-        channel.send(`\`\`\`${JSON.stringify(info, null, 2)}\`\`\``);
+        channel.send(`\`\`\`${JSON.stringify({ ...info, event }, null, 2)}\`\`\``);
       });
     }
   }
