@@ -16,7 +16,7 @@ export default {
     'Installation:\n' +
     ' * Obtain/Install MySQL. MySQL v8.x.x has been tested with this plugin and is recommended.\n' +
     ' * Enable legacy authentication in your database using [this guide](https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server).\n' +
-    ' * Execute the [schema](mysql-schema.sql) to setup the database.\n' +
+    ' * Execute the [schema](https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/mysql-schema.sql) to setup the database.\n' +
     ' * Add a server to the database with `INSERT INTO Server (name) VALUES ("Your Server Name");`.\n' +
     ' * Find the ID of the server you just inserted with `SELECT * FROM Server;`.\n' +
     ' * Replace the server ID in your config with the ID from the inserted record in the database.\n' +
