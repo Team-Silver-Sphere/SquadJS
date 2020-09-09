@@ -557,6 +557,26 @@ The `team-randomizer` plugin can be used to randomize teams. It's great for dest
       <tr><td>command</td><td>String</td><td>false</td><td>!randomize</td><td>The command used to randomize the teams.</td></tr>
   </tbody>
 </table>
+
+### intervalled-broadcasts
+The `intervalled-broadcasts` plugin allows you to set broadcasts, which will be broadcasted at certain intervals
+
+##### Options
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr><td>broadcasts</td><td>Array</td><td>false</td><td>["Server powered by SquadJS."]</td><td>The broadcasted messages.</td></tr>
+<tr><td>interval</td><td>Number</td><td>false</td><td>150000</td><td>How frequently to broadcast in seconds.</td></tr>
+  </tbody>
+</table>
  
 ## Creating Your Own Plugins
 To create your own plugin you need a basic knowledge of JavaScript.

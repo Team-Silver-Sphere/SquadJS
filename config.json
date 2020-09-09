@@ -186,6 +186,14 @@
       "plugin": "team-randomizer",
       "enabled": true,
       "command": "!randomize"
+    },
+    {
+      "plugin": "intervalled-broadcasts",
+      "enabled": false,
+      "broadcasts": [
+        "Server powered by SquadJS."
+      ],
+      "interval": 150000
     }
   ]
 }
