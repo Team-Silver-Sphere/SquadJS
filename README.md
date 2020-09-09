@@ -207,6 +207,25 @@ The `auto-tk-warn` plugin will automatically warn players in game to apologise f
   </tbody>
 </table>
 
+### chat-commands
+The `chat-command` plugin will automatically broadcast messages when a player types the corresponding command into any chat.
+
+##### Options
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr><td>commands</td><td>Array of command configs</td><td>false</td><td>[{"command":"!squadjs","type":"warn","response":"This server is powered by SquadJS.","ignoreChats":[]}]</td><td>See the default value as an example of how to configure commands. Type can either be `warn` or `broadcast`</td></tr>
+  </tbody>
+</table>
+
 ### discord-admin-broadcast
 The `discord-admin-broadcast` plugin will send a copy of admin broadcasts made in game to a Discord channel.
 
@@ -536,25 +555,6 @@ The `team-randomizer` plugin can be used to randomize teams. It's great for dest
   </thead>
   <tbody>
       <tr><td>command</td><td>String</td><td>false</td><td>!randomize</td><td>The command used to randomize the teams.</td></tr>
-  </tbody>
-</table>
-
-### chat-commands
-The `chat-command` plugin will automatically broadcast messages when a player types the corresponding command into any chat.
-
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>commands</td><td>Array of command configs</td><td>false</td><td>[{"command":"!squadjs","type":"warn","response":"This server is powered by SquadJS.","ignoreChats":[]}]</td><td>See the default value as an example of how to configure commands. Type can either be `warn` or `broadcast`</td></tr>
   </tbody>
 </table>
  
