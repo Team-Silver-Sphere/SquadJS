@@ -1,26 +1,44 @@
-import { LOG_PARSER_TEAMKILL } from 'squad-server/events/log-parser';
+import { CHAT_MESSAGE } from 'squad-server/events';
 
 export default {
-  name: 'auto-tk-warn',
+  name: 'chat-commands',
   description:
-    'The `auto-tk-warn` plugin will automatically warn players in game to apologise for teamkills when they ' +
-    'teamkill another player.',
+    'The `chat-command` plugin will automatically broadcast messages when a player types the corresponding command into any chat.',
 
-  defaultEnabled: true,
+  defaultEnabled: false,
   optionsSpec: {
-    message: {
-      type: 'String',
+    commands: {
+      type: 'Array of command configs',
       required: false,
-      default: 'Please apologise for ALL TKs in ALL chat!',
-      description: 'The message to warn players with.'
+      default: [
+        {
+          command: '!squadjs',
+          type: 'warn',
+          response: 'This server is powered by SquadJS.',
+          ignoreChats: []
+        }
+      ],
+      description:
+        'See the default value as an example of how to configure commands. Type can either be `warn` or `broadcast`'
     }
   },
 
   init: async (server, options) => {
-    server.on(LOG_PARSER_TEAMKILL, (info) => {
-      // ignore suicides
-      if (info.attacker.steamID === info.victim.steamID) return;
-      server.rcon.warn(info.attacker.steamID, options.message);
+    server.on(CHAT_MESSAGE, (info) => {
+      console.log(info);
+      // loop through all possibilities
+      for (const command of options.commands) {
+        // check if message is a command
+        if (!info.message.startsWith(command.command)) continue;
+        // check if ignored channel
+        if (command.ignoreChats.includes(info.chat)) continue;
+        // React to command with either a broadcast or a warning
+        if (command.type === 'broadcast') {
+          server.rcon.broadcast(command.response);
+        } else if (command.type === 'warn') {
+          server.rcon.warn(info.steamID, command.response);
+        }
+      }
     });
   }
 };
