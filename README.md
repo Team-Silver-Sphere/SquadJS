@@ -208,7 +208,7 @@ The `auto-tk-warn` plugin will automatically warn players in game to apologise f
 </table>
 
 ### chat-commands
-The `chat-command` plugin will automatically broadcast messages when a player types the corresponding command into any chat.
+The `chat-command` plugin can be configured to make chat commands that broadcast or warn the caller with present messages.
 
 ##### Options
 <table>
@@ -222,7 +222,7 @@ The `chat-command` plugin will automatically broadcast messages when a player ty
     </tr>
   </thead>
   <tbody>
-      <tr><td>commands</td><td>Array of command configs</td><td>false</td><td>[{"command":"!squadjs","type":"warn","response":"This server is powered by SquadJS.","ignoreChats":[]}]</td><td>See the default value as an example of how to configure commands. Type can either be `warn` or `broadcast`</td></tr>
+      <tr><td>commands</td><td>Array of command configs</td><td>false</td><td>[{"command":"!squadjs","type":"warn","response":"This server is powered by SquadJS.","ignoreChats":[]}]</td><td>An array of objects containing the following properties: `command`, the command that initiates the message. `type`, either `warn` or `broadcast`. `response`, the message to respond with. `ignoreChats`, a list of chat to ignore for this command.</td></tr>
   </tbody>
 </table>
 

@@ -3,7 +3,7 @@ import { CHAT_MESSAGE } from 'squad-server/events';
 export default {
   name: 'chat-commands',
   description:
-    'The `chat-command` plugin will automatically broadcast messages when a player types the corresponding command into any chat.',
+    'The `chat-command` plugin can be configured to make chat commands that broadcast or warn the caller with present messages.',
 
   defaultEnabled: false,
   optionsSpec: {
@@ -19,7 +19,7 @@ export default {
         }
       ],
       description:
-        'See the default value as an example of how to configure commands. Type can either be `warn` or `broadcast`'
+        'An array of objects containing the following properties: `command`, the command that initiates the message. `type`, either `warn` or `broadcast`. `response`, the message to respond with. `ignoreChats`, a list of chat to ignore for this command.'
     }
   },
 
