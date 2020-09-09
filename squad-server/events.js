@@ -28,7 +28,7 @@ const LAYERS_UPDATED = 'LAYERS_UPDATED';
  */
 const A2S_INFO_UPDATED = 'A2S_INFO_UPDATED';
 
-/** Occurs when an admin enters admin camera.
+/** Occurs when a message is sent.
  *
  * Data:
  * - chat - Chat the message was sent to.
