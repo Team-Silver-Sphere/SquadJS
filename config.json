@@ -67,6 +67,18 @@
       "message": "Please apologise for ALL TKs in ALL chat!"
     },
     {
+      "plugin": "chat-commands",
+      "enabled": false,
+      "commands": [
+        {
+          "command": "!squadjs",
+          "type": "warn",
+          "response": "This server is powered by SquadJS.",
+          "ignoreChats": []
+        }
+      ]
+    },
+    {
       "plugin": "discord-admin-broadcast",
       "enabled": true,
       "discordClient": "discord",

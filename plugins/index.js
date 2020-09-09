@@ -12,9 +12,11 @@ import mapvoteDidYouMean from './mapvote/mapvote-did-you-mean.js';
 import mysqlLog from './mysql-log/index.js';
 import seedingMessage from './seeding-message/index.js';
 import teamRandomizer from './team-randomizer/index.js';
+import chatCommands from './chat-commands/index.js';
 
 export {
   autoTKWarn,
+  chatCommands,
   discordAdminBroadcast,
   discordAdminCamLogs,
   discordChat,
@@ -32,6 +34,7 @@ export {
 
 const plugins = [
   autoTKWarn,
+  chatCommands,
   discordAdminBroadcast,
   discordAdminCamLogs,
   discordChat,
