@@ -5,7 +5,7 @@
  */
 const RCON_ERROR = 'RCON_ERROR';
 
-/** Occurs when an admin enters admin camera.
+/** Occurs when a message is sent.
  *
  * Data:
  * - chat - Chat the message was sent to.
