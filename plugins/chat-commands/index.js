@@ -25,7 +25,6 @@ export default {
 
   init: async (server, options) => {
     server.on(CHAT_MESSAGE, (info) => {
-      console.log(info);
       // loop through all possibilities
       for (const command of options.commands) {
         // check if message is a command
