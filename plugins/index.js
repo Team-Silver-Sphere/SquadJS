@@ -16,6 +16,7 @@ import chatCommands from './chat-commands/index.js';
 
 export {
   autoTKWarn,
+  chatCommands,
   discordAdminBroadcast,
   discordAdminCamLogs,
   discordChat,
@@ -28,12 +29,12 @@ export {
   mapvoteDidYouMean,
   mysqlLog,
   seedingMessage,
-  teamRandomizer,
-  chatCommands
+  teamRandomizer
 };
 
 const plugins = [
   autoTKWarn,
+  chatCommands,
   discordAdminBroadcast,
   discordAdminCamLogs,
   discordChat,
@@ -46,8 +47,7 @@ const plugins = [
   mapvoteDidYouMean,
   mysqlLog,
   seedingMessage,
-  teamRandomizer,
-  chatCommands
+  teamRandomizer
 ];
 
 const namedPlugins = {};
