@@ -1,5 +1,5 @@
 import { COPYRIGHT_MESSAGE } from 'core/constants';
-import { LOG_PARSER_TEAMKILL } from 'squad-server/events/log-parser';
+import { TEAMKILL } from 'squad-server/events';
 
 export default {
   name: 'discord-teamkill',
@@ -49,7 +49,7 @@ export default {
   init: async (server, options) => {
     const channel = await options.discordClient.channels.fetch(options.channelID);
 
-    server.on(LOG_PARSER_TEAMKILL, (info) => {
+    server.on(TEAMKILL, (info) => {
       if (!info.attacker) return;
       if (options.ignoreSuicides && info.suicide) return;
 

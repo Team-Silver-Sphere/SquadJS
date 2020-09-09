@@ -1,7 +1,7 @@
 import tinygradient from 'tinygradient';
 
 import { COPYRIGHT_MESSAGE } from 'core/constants';
-import { SERVER_A2S_UPDATED } from 'squad-server/events/server';
+import { A2S_INFO_UPDATED } from 'squad-server/events';
 
 export default {
   name: 'discord-server-status',
@@ -77,7 +77,7 @@ export default {
       await reaction.message.edit(makeEmbed(server, options));
     });
 
-    server.on(SERVER_A2S_UPDATED, () => {
+    server.on(A2S_INFO_UPDATED, () => {
       if (!options.disableStatus)
         options.discordClient.user.setActivity(
           `(${server.playerCount}/${server.publicSlots}) ${server.currentLayer}`,

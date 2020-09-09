@@ -1,6 +1,6 @@
 import { SquadLayers } from 'core/squad-layers';
 
-import { LOG_PARSER_NEW_GAME } from '../../events/log-parser.js';
+import { NEW_GAME } from '../../events.js';
 
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogWorld: Bringing World \/([A-z]+)\/Maps\/([A-z]+)\/(?:Gameplay_Layers\/)?([A-z0-9_]+)/,
@@ -19,6 +19,6 @@ export default {
     };
 
     /* Emit new game event */
-    logParser.server.emit(LOG_PARSER_NEW_GAME, data);
+    logParser.server.emit(NEW_GAME, data);
   }
 };

@@ -1,6 +1,5 @@
 import { COPYRIGHT_MESSAGE } from 'core/constants';
-import { LOG_PARSER_NEW_GAME } from 'squad-server/events/log-parser';
-import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
+import { NEW_GAME, CHAT_MESSAGE } from 'squad-server/events';
 
 import MapVote from './mapvote.js';
 
@@ -75,7 +74,7 @@ export default {
 
     if (options.alwaysOn) newMapvote(false);
 
-    server.on(LOG_PARSER_NEW_GAME, () => {
+    server.on(NEW_GAME, () => {
       if (options.alwaysOn) {
         newMapvote(false);
       } else {
@@ -83,7 +82,7 @@ export default {
       }
     });
 
-    server.on(RCON_CHAT_MESSAGE, async (info) => {
+    server.on(CHAT_MESSAGE, async (info) => {
       const match = info.message.match(/^!mapvote ?(.*)/);
       if (!match) return;
 

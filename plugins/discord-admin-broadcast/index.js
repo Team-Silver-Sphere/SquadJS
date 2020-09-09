@@ -1,5 +1,5 @@
 import { COPYRIGHT_MESSAGE } from 'core/constants';
-import { LOG_PARSER_ADMIN_BROADCAST } from 'squad-server/events/log-parser';
+import { ADMIN_BROADCAST } from 'squad-server/events';
 
 export default {
   name: 'discord-admin-broadcast',
@@ -31,7 +31,7 @@ export default {
   init: async (server, options) => {
     const channel = await options.discordClient.channels.fetch(options.channelID);
 
-    server.on(LOG_PARSER_ADMIN_BROADCAST, async (info) => {
+    server.on(ADMIN_BROADCAST, async (info) => {
       channel.send({
         embed: {
           title: 'Admin Broadcast',

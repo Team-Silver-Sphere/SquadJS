@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import RCONProtocol from './protocol.js';
 
-import { RCON_CHAT_MESSAGE, RCON_ERROR } from '../events/rcon.js';
+import { CHAT_MESSAGE, RCON_ERROR } from '../events.js';
 
 export default class Rcon {
   constructor(options = {}, emitter) {
@@ -256,7 +256,7 @@ export default class Rcon {
           /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[SteamID:([0-9]{17})] (.+?) : (.*)/
         );
 
-        this.emitter.emit(RCON_CHAT_MESSAGE, {
+        this.emitter.emit(CHAT_MESSAGE, {
           raw: decodedPacket.body,
           chat: message[1],
           steamID: message[2],

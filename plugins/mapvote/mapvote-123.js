@@ -1,7 +1,6 @@
 import { SquadLayerFilter } from 'core/squad-layers';
 import { COPYRIGHT_MESSAGE } from 'core/constants';
-import { LOG_PARSER_NEW_GAME } from 'squad-server/events/log-parser';
-import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
+import { NEW_GAME, CHAT_MESSAGE } from 'squad-server/events';
 
 import MapVote from './mapvote.js';
 
@@ -36,11 +35,11 @@ export default {
   init: async (server, options) => {
     let mapvote = null;
 
-    server.on(LOG_PARSER_NEW_GAME, () => {
+    server.on(NEW_GAME, () => {
       mapvote = null;
     });
 
-    server.on(RCON_CHAT_MESSAGE, async (info) => {
+    server.on(CHAT_MESSAGE, async (info) => {
       const voteMatch = info.message.match(/^([0-9])/);
       if (voteMatch) {
         if (!mapvote) return;

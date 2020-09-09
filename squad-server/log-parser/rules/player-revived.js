@@ -1,4 +1,4 @@
-import { LOG_PARSER_PLAYER_REVIVED } from '../../events/log-parser.js';
+import { PLAYER_REVIVED } from '../../events.js';
 
 export default {
   // the names are currently the wrong way around in these logs
@@ -13,6 +13,6 @@ export default {
       reviver: await logParser.server.getPlayerByName(args[3])
     };
 
-    logParser.server.emit(LOG_PARSER_PLAYER_REVIVED, data);
+    logParser.server.emit(PLAYER_REVIVED, data);
   }
 };

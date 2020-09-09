@@ -1,11 +1,11 @@
 import {
-  LOG_PARSER_NEW_GAME,
-  LOG_PARSER_PLAYER_WOUNDED,
-  LOG_PARSER_PLAYER_DIED,
-  LOG_PARSER_PLAYER_REVIVED,
-  LOG_PARSER_SERVER_TICK_RATE
-} from 'squad-server/events/log-parser';
-import { SERVER_PLAYERS_UPDATED } from 'squad-server/events/server';
+  NEW_GAME,
+  PLAYER_WOUNDED,
+  PLAYER_DIED,
+  PLAYER_REVIVED,
+  TICK_RATE,
+  PLAYERS_UPDATED
+} from 'squad-server/events';
 
 export default {
   name: 'mysql-log',
@@ -49,21 +49,21 @@ export default {
   init: async (server, options) => {
     const serverID = options.overrideServerID === null ? server.id : options.overrideServerID;
 
-    server.on(LOG_PARSER_SERVER_TICK_RATE, (info) => {
+    server.on(TICK_RATE, (info) => {
       options.mysqlPool.query(
         'INSERT INTO ServerTickRate(time, server, tick_rate) VALUES (?,?,?)',
         [info.time, serverID, info.tickRate]
       );
     });
 
-    server.on(SERVER_PLAYERS_UPDATED, (players) => {
+    server.on(PLAYERS_UPDATED, (players) => {
       options.mysqlPool.query(
         'INSERT INTO PlayerCount(time, server, player_count) VALUES (NOW(),?,?)',
         [serverID, players.length]
       );
     });
 
-    server.on(LOG_PARSER_NEW_GAME, (info) => {
+    server.on(NEW_GAME, (info) => {
       options.mysqlPool.query('call NewMatch(?,?,?,?,?,?,?)', [
         serverID,
         info.time,
@@ -75,7 +75,7 @@ export default {
       ]);
     });
 
-    server.on(LOG_PARSER_PLAYER_WOUNDED, (info) => {
+    server.on(PLAYER_WOUNDED, (info) => {
       options.mysqlPool.query('call InsertPlayerWounded(?,?,?,?,?,?,?,?,?,?,?,?,?)', [
         serverID,
         info.time,
@@ -93,7 +93,7 @@ export default {
       ]);
     });
 
-    server.on(LOG_PARSER_PLAYER_DIED, (info) => {
+    server.on(PLAYER_DIED, (info) => {
       options.mysqlPool.query('call InsertPlayerDied(?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
         serverID,
         info.time,
@@ -112,7 +112,7 @@ export default {
       ]);
     });
 
-    server.on(LOG_PARSER_PLAYER_REVIVED, (info) => {
+    server.on(PLAYER_REVIVED, (info) => {
       options.mysqlPool.query('call InsertPlayerRevived(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
         serverID,
         info.time,

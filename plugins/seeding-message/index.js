@@ -1,4 +1,4 @@
-import { LOG_PARSER_PLAYER_CONNECTED } from 'squad-server/events/log-parser';
+import { PLAYER_CONNECTED } from 'squad-server/events';
 
 export default {
   name: 'seeding-message',
@@ -79,7 +79,7 @@ export default {
 
         break;
       case 'onjoin':
-        server.on(LOG_PARSER_PLAYER_CONNECTED, () => {
+        server.on(PLAYER_CONNECTED, () => {
           setTimeout(() => {
             const playerCount = server.players.length;
 

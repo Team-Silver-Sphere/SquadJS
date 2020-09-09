@@ -1,4 +1,4 @@
-import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
+import { CHAT_MESSAGE } from 'squad-server/events';
 
 export default {
   name: 'team-randomizer',
@@ -19,7 +19,7 @@ export default {
   init: async (server, options) => {
     const commandRegex = new RegExp(`^${options.command}`, 'i');
 
-    server.on(RCON_CHAT_MESSAGE, (info) => {
+    server.on(CHAT_MESSAGE, (info) => {
       if (info.chat !== 'ChatAdmin') return;
 
       const match = info.message.match(commandRegex);

@@ -1,5 +1,5 @@
 import { COPYRIGHT_MESSAGE } from 'core/constants';
-import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
+import { CHAT_MESSAGE } from 'squad-server/events';
 
 export default {
   name: 'discord-admin-request',
@@ -64,7 +64,7 @@ export default {
 
     const channel = await options.discordClient.channels.fetch(options.channelID);
 
-    server.on(RCON_CHAT_MESSAGE, async (info) => {
+    server.on(CHAT_MESSAGE, async (info) => {
       if (options.ignoreChats.includes(info.chat)) return;
       if (!info.message.startsWith(`${options.adminPrefix}`)) return;
 

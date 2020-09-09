@@ -1,8 +1,5 @@
 import { COPYRIGHT_MESSAGE } from 'core/constants';
-import {
-  LOG_PARSER_PLAYER_POSSESS,
-  LOG_PARSER_PLAYER_UNPOSSESS
-} from 'squad-server/events/log-parser';
+import { PLAYER_POSSESS, PLAYER_UNPOSSESS } from 'squad-server/events';
 
 export default {
   name: 'discord-admin-cam-logs',
@@ -36,7 +33,7 @@ export default {
 
     const adminsInCam = {};
 
-    server.on(LOG_PARSER_PLAYER_POSSESS, (info) => {
+    server.on(PLAYER_POSSESS, (info) => {
       if (info.player === null || info.possessClassname !== 'CameraMan') return;
 
       adminsInCam[info.player.steamID] = info.time;
@@ -65,7 +62,7 @@ export default {
       });
     });
 
-    server.on(LOG_PARSER_PLAYER_UNPOSSESS, (info) => {
+    server.on(PLAYER_UNPOSSESS, (info) => {
       if (info.switchPossess === true || !(info.player.steamID in adminsInCam)) return;
 
       channel.send({

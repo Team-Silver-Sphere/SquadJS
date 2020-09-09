@@ -227,13 +227,13 @@ function aPluginToLogPlayerCountEvery60Seconds(server){
 A more common approach in this version of SquadJS is to react to an event happening:
 ```js
 function aPluginToLogTeamkills(server){
-  server.on(LOG_PARSER_TEAMKILL, info => {
+  server.on(TEAMKILL, info => {
     console.log(info);
   });
 }
 ```
 
-A complete list of events that you can listen for and the information included within each is found [here](https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/events/log-parser.js), [here](https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/events/rcon.js) and [here](https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/events/server.js).
+A complete list of events that you can listen for and the information included within each is found [here](https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/events.js).
 
 Various actions can be completed in a plugin. Most of these will involve outside system, e.g. Discord.js to run a Discord bot, so they are not documented here. However, you may run RCON commands using `server.rcon.execute("Command");`.
 

@@ -1,4 +1,4 @@
-import { LOG_PARSER_TEAMKILL } from 'squad-server/events/log-parser';
+import { TEAMKILL } from 'squad-server/events';
 
 export default {
   name: 'auto-tk-warn',
@@ -17,7 +17,7 @@ export default {
   },
 
   init: async (server, options) => {
-    server.on(LOG_PARSER_TEAMKILL, (info) => {
+    server.on(TEAMKILL, (info) => {
       // ignore suicides
       if (info.attacker.steamID === info.victim.steamID) return;
       server.rcon.warn(info.attacker.steamID, options.message);
