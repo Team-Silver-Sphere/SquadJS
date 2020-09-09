@@ -12,6 +12,7 @@ import mapvoteDidYouMean from './mapvote/mapvote-did-you-mean.js';
 import mysqlLog from './mysql-log/index.js';
 import seedingMessage from './seeding-message/index.js';
 import teamRandomizer from './team-randomizer/index.js';
+import chatCommands from './chat-commands/index.js';
 
 export {
   autoTKWarn,
@@ -27,7 +28,8 @@ export {
   mapvoteDidYouMean,
   mysqlLog,
   seedingMessage,
-  teamRandomizer
+  teamRandomizer,
+  chatCommands
 };
 
 const plugins = [
@@ -44,7 +46,8 @@ const plugins = [
   mapvoteDidYouMean,
   mysqlLog,
   seedingMessage,
-  teamRandomizer
+  teamRandomizer,
+  chatCommands
 ];
 
 const namedPlugins = {};
