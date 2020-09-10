@@ -1,7 +1,7 @@
 export default {
   name: 'intervalled-broadcasts',
   description:
-    'The `intervalled-broadcasts` plugin allows you to set broadcasts, which will be broadcasted at certain intervals',
+    'The `intervalled-broadcasts` plugin allows you to set broadcasts, which will be broadcasted at preset intervals',
 
   defaultEnabled: false,
   optionsSpec: {
@@ -14,7 +14,7 @@ export default {
     interval: {
       type: 'Number',
       required: false,
-      default: 150 * 1000,
+      default: 5 * 60 * 1000,
       description: 'How frequently to broadcast in seconds.'
     }
   },
@@ -24,6 +24,6 @@ export default {
       server.rcon.broadcast(options.broadcasts[0]);
 
       options.broadcasts.push(options.broadcasts.shift());
-    }, options.interval.default);
+    }, options.interval);
   }
 };

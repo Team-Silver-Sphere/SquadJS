@@ -7,13 +7,13 @@ import discordDebug from './discord-debug/index.js';
 import discordRCON from './discord-rcon/index.js';
 import discordServerStatus from './discord-server-status/index.js';
 import discordTeamkill from './discord-teamkill/index.js';
+import intervalledBroadcasts from './intervalled-broadcasts/index.js';
 import mapvote123 from './mapvote/mapvote-123.js';
 import mapvoteDidYouMean from './mapvote/mapvote-did-you-mean.js';
 import mysqlLog from './mysql-log/index.js';
 import seedingMessage from './seeding-message/index.js';
 import teamRandomizer from './team-randomizer/index.js';
 import chatCommands from './chat-commands/index.js';
-import intervalledBroadcasts from './intervalled-broadcasts/index.js';
 
 
 export {
@@ -27,12 +27,12 @@ export {
   discordRCON,
   discordServerStatus,
   discordTeamkill,
+  intervalledBroadcasts,
   mapvote123,
   mapvoteDidYouMean,
   mysqlLog,
   seedingMessage,
-  teamRandomizer,
-  intervalledBroadcasts
+  teamRandomizer
 };
 
 const plugins = [
@@ -46,12 +46,12 @@ const plugins = [
   discordRCON,
   discordServerStatus,
   discordTeamkill,
+  intervalledBroadcasts,
   mapvote123,
   mapvoteDidYouMean,
   mysqlLog,
   seedingMessage,
-  teamRandomizer,
-  intervalledBroadcasts
+  teamRandomizer
 ];
 
 const namedPlugins = {};
