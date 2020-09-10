@@ -186,7 +186,7 @@ The `disabled` field can be toggled between `true`/ `false` to enabled/disable t
 Plugin options are also specified. A full list of plugin options can be seen below.
 
 ## Plugins
-The following is a list of plugins built into SquadJS:
+The following is a list of plugins built into SquadJS, you can click their title for more information:
 
 <details>
       <summary>auto-tk-warn</summary>
@@ -581,8 +581,8 @@ Installation:
  * Obtain/Install MySQL. MySQL v8.x.x has been tested with this plugin and is recommended.
  * Enable legacy authentication in your database using [this guide](https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server).
  * Execute the [schema](https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/mysql-schema.sql) to setup the database.
- * Add a server to the database with <code>INSERT INTO Server (name) VALUES ("Your Server Name");<code>.
- * Find the ID of the server you just inserted with <code>SELECT * FROM Server;<code>.
+ * Add a server to the database with <code>INSERT INTO Server (name) VALUES ("Your Server Name");</code>.
+ * Find the ID of the server you just inserted with <code>SELECT * FROM Server;</code>.
  * Replace the server ID in your config with the ID from the inserted record in the database.
 
 
@@ -592,7 +592,7 @@ If you encounter any issues you can enable <code>"debug": true</code> in your My
 Grafana:
  * [Grafana](https://grafana.com/) is a cool way of viewing server statistics stored in the database.
  * Install Grafana.
- * Add your MySQL database as a datasource named <code>SquadJS - MySQL<code>.
+ * Add your MySQL database as a datasource named <code>SquadJS - MySQL</code>.
  * Import the [SquadJS Dashboard](https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/SquadJS-Dashboard.json) to get a preconfigured MySQL only Grafana dashboard.
  * Install any missing Grafana plugins.</p>
       <h3>Options</h3>
