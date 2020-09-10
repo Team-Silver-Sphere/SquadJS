@@ -3,13 +3,21 @@ import { CHAT_MESSAGE } from 'squad-server/events';
 export default {
   name: 'chat-commands',
   description:
-    'The `chat-command` plugin can be configured to make chat commands that broadcast or warn the caller with present messages.',
+    'The <code>chat-command</code> plugin can be configured to make chat commands that broadcast or warn the caller ' +
+    'with present messages.',
 
-  defaultEnabled: false,
+  defaultEnabled: true,
   optionsSpec: {
     commands: {
-      type: 'Array of command configs',
       required: false,
+      description:
+        'An array of objects containing the following properties: ' +
+        '<ul>' +
+        '<li><code>command</code> - The command that initiates the message.</li>' +
+        '<li><code>type</code> - Either <code>warn</code> or <code>broadcast</code>.</li>' +
+        '<li><code>response</code> - The message to respond with.</li>' +
+        '<li><code>ignoreChats</code> - A list of chats to ignore the commands in. Use this to limit it to admins.</li>' +
+        '</ul>',
       default: [
         {
           command: '!squadjs',
@@ -17,9 +25,7 @@ export default {
           response: 'This server is powered by SquadJS.',
           ignoreChats: []
         }
-      ],
-      description:
-        'An array of objects containing the following properties: `command`, the command that initiates the message. `type`, either `warn` or `broadcast`. `response`, the message to respond with. `ignoreChats`, a list of chat to ignore for this command.'
+      ]
     }
   },
 

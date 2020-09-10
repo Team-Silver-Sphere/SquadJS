@@ -6,46 +6,44 @@ import MapVote from './mapvote.js';
 export default {
   name: 'mapvote-did-you-mean',
   description:
-    'The `mapvote-did-you-mean` plugin provides map voting functionality. This variant of map voting uses a "Did you ' +
+    'The <code>mapvote-did-you-mean</code> plugin provides map voting functionality. This variant of map voting uses a "Did you ' +
     'mean?" algorithm to allow players to easily select one of a large pool of layers by typing it\'s name into ' +
     'the in-game chat.' +
     '\n\n' +
     'Player Commands:\n' +
-    ' * `!mapvote help` - Show other commands players can use.\n' +
-    ' * `!mapvote results` - Show the results of the current map vote.\n' +
-    ' * `!mapvote <layer name>` - Vote for the specified layer. Misspelling will be corrected where possible.\n' +
+    ' * <code>!mapvote help</code> - Show other commands players can use.\n' +
+    ' * <code>!mapvote results</code> - Show the results of the current map vote.\n' +
+    ' * <code>!mapvote <layer name></code> - Vote for the specified layer. Misspelling will be corrected where possible.\n' +
     '\n\n' +
     'Admin Commands (Admin Chat Only):\n' +
-    ' * `!mapvote start` - Start a new map vote\n' +
-    ' * `!mapvote restart` - Restarts the map vote.\n' +
-    ' * `!mapvote end` - End the map vote and announce the winner.\n' +
-    ' * `!mapvote destroy` - End the map vote without announcing the winner.\n',
+    ' * <code>!mapvote start</code> - Start a new map vote\n' +
+    ' * <code>!mapvote restart</code> - Restarts the map vote.\n' +
+    ' * <code>!mapvote end</code> - End the map vote and announce the winner.\n' +
+    ' * <code>!mapvote destroy</code> - End the map vote without announcing the winner.\n',
 
   defaultEnabled: false,
   optionsSpec: {
     layerFilter: {
-      type: 'SquadLayerFilterConnector',
       required: false,
-      default: 'layerFilter',
-      description: 'The layers players can choose from.'
+      description: 'The layers players can choose from.',
+      default: 'layerFilter'
     },
     alwaysOn: {
-      type: 'Boolean',
       required: false,
-      default: true,
-      description: 'If true then the map voting system will always be live.'
+      description: 'If true then the map voting system will always be live.',
+      default: true
     },
     minPlayerCount: {
-      type: 'Integer',
       required: false,
+      description: 'The minimum number of players required for the vote to succeed.',
       default: null,
-      description: 'The minimum number of players required for the vote to succeed.'
+      example: 10
     },
     minVoteCount: {
-      type: 'Integer',
       required: false,
+      description: 'The minimum number of votes required for the vote to succeed.',
       default: null,
-      description: 'The minimum number of votes required for the vote to succeed.'
+      example: 5
     }
   },
 

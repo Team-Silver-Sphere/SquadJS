@@ -1,27 +1,27 @@
 export default {
   name: 'discord-debug',
   description:
-    'The `discord-debug` plugin can be used to help debug SquadJS by dumping SquadJS events to a Discord channel.',
+    'The <code>discord-debug</code> plugin can be used to help debug SquadJS by dumping SquadJS events to a ' +
+    'Discord channel.',
 
   defaultEnabled: false,
   optionsSpec: {
     discordClient: {
-      type: 'DiscordConnector',
       required: true,
-      default: 'discord',
-      description: 'The name of the Discord Connector to use.'
+      description: 'The name of the Discord Connector to use.',
+      default: 'discord'
     },
     channelID: {
-      type: 'Discord Channel ID',
       required: true,
-      default: 'Discord Channel ID',
-      description: 'The ID of the channel to log admin broadcasts to.'
+      description: 'The ID of the channel to log admin broadcasts to.',
+      default: '',
+      example: '667741905228136459'
     },
     events: {
-      type: 'Array',
       required: true,
+      description: 'A list of events to dump.',
       default: [],
-      description: 'A list of events to dump.'
+      example: ['PLAYER_DIED']
     }
   },
 

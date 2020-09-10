@@ -68,7 +68,7 @@
     },
     {
       "plugin": "chat-commands",
-      "enabled": false,
+      "enabled": true,
       "commands": [
         {
           "command": "!squadjs",
@@ -82,21 +82,21 @@
       "plugin": "discord-admin-broadcast",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "color": 16761867
     },
     {
       "plugin": "discord-admin-cam-logs",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "color": 16761867
     },
     {
       "plugin": "discord-chat",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "ignoreChats": [
         "ChatSquad"
       ],
@@ -107,10 +107,8 @@
       "plugin": "discord-admin-request",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
-      "ignoreChats": [
-        "ChatSquad"
-      ],
+      "channelID": "",
+      "ignoreChats": [],
       "ignorePhrases": [],
       "adminPrefix": "!admin",
       "pingGroups": [],
@@ -121,14 +119,14 @@
       "plugin": "discord-debug",
       "enabled": false,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "events": []
     },
     {
       "plugin": "discord-rcon",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "prependAdminNameInBroadcast": false
     },
     {
@@ -145,7 +143,7 @@
       "plugin": "discord-teamkill",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "teamkillColor": 16761867,
       "suicideColor": 16761867,
       "ignoreSuicides": false,

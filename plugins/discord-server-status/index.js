@@ -6,46 +6,40 @@ import { A2S_INFO_UPDATED } from 'squad-server/events';
 export default {
   name: 'discord-server-status',
   description:
-    'The `discord-server-status` plugin displays a server status embed to Discord when someone uses the `!server` ' +
-    'command in a Discord channel.',
+    'The <code>discord-server-status</code> plugin displays a server status embed to Discord when someone uses the ' +
+    '<code>!server</code> command in a Discord channel.',
 
   defaultEnabled: true,
   optionsSpec: {
     discordClient: {
-      type: 'DiscordConnector',
       required: true,
-      default: 'discord',
-      description: 'The name of the Discord Connector to use.'
+      description: 'The name of the Discord Connector to use.',
+      default: 'discord'
     },
     color: {
-      type: 'Discord Color Code',
       required: false,
-      default: 16761867,
-      description: 'The color code of the Discord embed.'
+      description: 'The color code of the Discord embed.',
+      default: 16761867
     },
     colorGradient: {
-      type: 'Boolean',
       required: false,
-      default: true,
-      description: 'Apply gradient color to Discord embed depending on the player count.'
+      description: 'Apply gradient color to Discord embed depending on the player count.',
+      default: true
     },
     connectLink: {
-      type: 'Boolean',
       required: false,
-      default: true,
-      description: 'Display a Steam server connection link.'
+      description: 'Display a Steam server connection link.',
+      default: true
     },
     command: {
-      type: 'String',
       required: false,
-      default: '!server',
-      description: 'The command that displays the embed.'
+      description: 'The command that displays the embed.',
+      default: '!server'
     },
     disableStatus: {
-      type: 'Boolean',
       required: false,
-      default: false,
-      description: 'Disable the bot status.'
+      description: 'Disable the bot status.',
+      default: false
     }
   },
 

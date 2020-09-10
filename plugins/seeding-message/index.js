@@ -3,59 +3,53 @@ import { PLAYER_CONNECTED } from 'squad-server/events';
 export default {
   name: 'seeding-message',
   description:
-    'The `seeding-message` plugin broadcasts seeding rule messages to players at regular intervals or after a new' +
-    'player has connected to the server. It can also be configured to display live messages when the server goes live.',
+    'The <code>seeding-message</code> plugin broadcasts seeding rule messages to players at regular intervals or ' +
+    'after a new player has connected to the server. It can also be configured to display live messages when the ' +
+    'server goes live.',
 
   defaultEnabled: true,
   optionsSpec: {
     mode: {
-      type: '`interval` or `onjoin`',
       required: false,
-      default: 'interval',
-      description: 'Display seeding messages at a set interval or after players join.'
+      description:
+        'Display seeding messages at a set interval or after players join. Either <code>interval</code> or <code>onjoin</code>.',
+      default: 'interval'
     },
     interval: {
-      type: 'Number',
       required: false,
-      default: 150 * 1000,
-      description: 'How frequently to display the seeding messages in seconds.'
+      description: 'How frequently to display the seeding messages in seconds.',
+      default: 150 * 1000
     },
     delay: {
-      type: 'Number',
       required: false,
-      default: 45 * 1000,
-      description: 'How long to wait after a player joins to display the announcement in seconds.'
+      description: 'How long to wait after a player joins to display the announcement in seconds.',
+      default: 45 * 1000
     },
     seedingThreshold: {
-      type: 'Number',
       required: false,
-      default: 50,
-      description: 'Number of players before the server is considered live.'
+      description: 'Number of players before the server is considered live.',
+      default: 50
     },
     seedingMessage: {
-      type: 'String',
       required: false,
-      default: 'Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!',
-      description: 'The seeding message to display.'
+      description: 'The seeding message to display.',
+      default: 'Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!'
     },
     liveEnabled: {
-      type: 'String',
       required: false,
-      default: true,
-      description: 'Display a "Live" message when a certain player count is met.'
+      description: 'Display a "Live" message when a certain player count is met.',
+      default: true
     },
     liveThreshold: {
-      type: 'Number',
       required: false,
-      default: 2,
       description:
-        'When above the seeding threshold, but within this number "Live" messages are displayed.'
+        'When above the seeding threshold, but within this number "Live" messages are displayed.',
+      default: 2
     },
     liveMessage: {
-      type: 'String',
       required: false,
-      default: 'Live',
-      description: 'The "Live" message to display.'
+      description: 'The "Live" message to display.',
+      default: 'Live'
     }
   },
 
