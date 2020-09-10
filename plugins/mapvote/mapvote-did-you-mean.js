@@ -174,7 +174,7 @@ export default {
       } catch (err) {
         await server.rcon.warn(info.steamID, err.message);
       }
-      await server.rcon.warn(info.steamID, `Powered by: ${COPYRIGHT_MESSAGE}`);
+      await server.rcon.warn(info.steamID, COPYRIGHT_MESSAGE);
     });
   }
 };
