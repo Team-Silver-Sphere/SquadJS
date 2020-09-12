@@ -407,6 +407,26 @@ The `discord-teamkill` plugin logs teamkills and related information to a Discor
   </tbody>
 </table>
 
+### intervalled-broadcasts
+The `intervalled-broadcasts` plugin allows you to set broadcasts, which will be broadcasted at preset intervals
+
+##### Options
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr><td>broadcasts</td><td>Array</td><td>false</td><td>["Server powered by SquadJS."]</td><td>The broadcasted messages.</td></tr>
+<tr><td>interval</td><td>Number</td><td>false</td><td>300000</td><td>How frequently to broadcast in seconds.</td></tr>
+  </tbody>
+</table>
+
 ### mapvote-123
 The `mapvote-123` plugin provides map voting functionality. This variant of map voting allows admins to specify a small number of maps which are numbered and announced in admin broadcasts. Players can then vote for the map their choice by typing the corresponding map number into chat.
 

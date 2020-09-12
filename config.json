@@ -152,6 +152,14 @@
       "disableSCBL": false
     },
     {
+      "plugin": "intervalled-broadcasts",
+      "enabled": false,
+      "broadcasts": [
+        "Server powered by SquadJS."
+      ],
+      "interval": 300000
+    },
+    {
       "plugin": "mapvote-123",
       "enabled": false,
       "minVoteCount": null
