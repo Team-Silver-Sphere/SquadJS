@@ -7,28 +7,28 @@ import MapVote from './mapvote.js';
 export default {
   name: 'mapvote-123',
   description:
-    'The `mapvote-123` plugin provides map voting functionality. This variant of map voting allows admins to specify ' +
+    'The <code>mapvote-123</code> plugin provides map voting functionality. This variant of map voting allows admins to specify ' +
     'a small number of maps which are numbered and announced in admin broadcasts. Players can then vote for the map ' +
     'their choice by typing the corresponding map number into chat.' +
     '\n\n' +
     'Player Commands:\n' +
-    ' * `!mapvote help` - Show other commands players can use.\n' +
-    ' * `!mapvote results` - Show the results of the current map vote.\n' +
-    ' * `<layer number>` - Vote for a layer using the layer number.\n' +
+    ' * <code>!mapvote help</code> - Show other commands players can use.\n' +
+    ' * <code>!mapvote results</code> - Show the results of the current map vote.\n' +
+    ' * <code><layer number></code> - Vote for a layer using the layer number.\n' +
     '\n\n' +
     'Admin Commands (Admin Chat Only):\n' +
-    ' * `!mapvote start <layer name 1>, <layer name 2>, ...` - Start a new map vote with the specified maps.\n' +
-    ' * `!mapvote restart` - Restarts the map vote with the same layers.\n' +
-    ' * `!mapvote end` - End the map vote and announce the winner.\n' +
-    ' * `!mapvote destroy` - End the map vote without announcing the winner.\n',
+    ' * <code>!mapvote start <layer name 1>, <layer name 2>, ...</code> - Start a new map vote with the specified maps.\n' +
+    ' * <code>!mapvote restart</code> - Restarts the map vote with the same layers.\n' +
+    ' * <code>!mapvote end</code> - End the map vote and announce the winner.\n' +
+    ' * <code>!mapvote destroy</code> - End the map vote without announcing the winner.\n',
 
   defaultEnabled: false,
   optionsSpec: {
     minVoteCount: {
-      type: 'Integer',
       required: false,
+      description: 'The minimum number of votes required for the vote to succeed.',
       default: null,
-      description: 'The minimum number of votes required for the vote to succeed.'
+      example: 3
     }
   },
 
@@ -49,7 +49,7 @@ export default {
         } catch (err) {
           await server.rcon.warn(info.steamID, err.message);
         }
-        await server.rcon.warn(info.steamID, `Powered by: ${COPYRIGHT_MESSAGE}`);
+        await server.rcon.warn(info.steamID, COPYRIGHT_MESSAGE);
       }
 
       const commandMatch = info.message.match(/^!mapvote ?(.*)/);

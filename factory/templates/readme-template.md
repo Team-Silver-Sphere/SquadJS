@@ -186,7 +186,7 @@ The `disabled` field can be toggled between `true`/ `false` to enabled/disable t
 Plugin options are also specified. A full list of plugin options can be seen below.
 
 ## Plugins
-The following is a list of plugins built into SquadJS:
+The following is a list of plugins built into SquadJS, you can click their title for more information:
 
 //PLUGIN-INFO//
  

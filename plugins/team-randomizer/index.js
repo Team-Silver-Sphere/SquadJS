@@ -3,16 +3,15 @@ import { CHAT_MESSAGE } from 'squad-server/events';
 export default {
   name: 'team-randomizer',
   description:
-    "The `team-randomizer` plugin can be used to randomize teams. It's great for destroying clan stacks or for " +
-    'social events. It can be run by typing `!randomize` into in-game admin chat.',
+    "The <code>team-randomizer</code> plugin can be used to randomize teams. It's great for destroying clan stacks " +
+    'or for social events. It can be run by typing <code>!randomize</code> into in-game admin chat.',
 
   defaultEnabled: true,
   optionsSpec: {
     command: {
-      type: 'String',
       required: false,
-      default: '!randomize',
-      description: 'The command used to randomize the teams.'
+      description: 'The command used to randomize the teams.',
+      default: '!randomize'
     }
   },
 

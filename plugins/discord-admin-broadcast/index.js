@@ -4,27 +4,26 @@ import { ADMIN_BROADCAST } from 'squad-server/events';
 export default {
   name: 'discord-admin-broadcast',
   description:
-    'The `discord-admin-broadcast` plugin will send a copy of admin broadcasts made in game to a Discord channel.',
+    'The <code>discord-admin-broadcast</code> plugin will send a copy of admin broadcasts made in game to a Discord ' +
+    'channel.',
 
   defaultEnabled: true,
   optionsSpec: {
     discordClient: {
-      type: 'DiscordConnector',
       required: true,
-      default: 'discord',
-      description: 'The name of the Discord Connector to use.'
+      description: 'The name of the Discord Connector to use.',
+      default: 'discord'
     },
     channelID: {
-      type: 'Discord Channel ID',
       required: true,
-      default: 'Discord Channel ID',
-      description: 'The ID of the channel to log admin broadcasts to.'
+      description: 'The ID of the channel to log admin broadcasts to.',
+      default: '',
+      example: '667741905228136459'
     },
     color: {
-      type: 'Discord Color Code',
       required: false,
-      default: 16761867,
-      description: 'The color of the embed.'
+      description: 'The color of the embed.',
+      default: 16761867
     }
   },
 

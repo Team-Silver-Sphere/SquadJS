@@ -3,39 +3,36 @@ import { CHAT_MESSAGE } from 'squad-server/events';
 
 export default {
   name: 'discord-chat',
-  description: 'The `discord-chat` plugin will log in-game chat to a Discord channel.',
+  description: 'The <code>discord-chat</code> plugin will log in-game chat to a Discord channel.',
 
   defaultEnabled: true,
   optionsSpec: {
     discordClient: {
-      type: 'DiscordConnector',
       required: true,
-      default: 'discord',
-      description: 'The name of the Discord Connector to use.'
+      description: 'The name of the Discord Connector to use.',
+      default: 'discord'
     },
     channelID: {
-      type: 'Discord Channel ID',
       required: true,
-      default: 'Discord Channel ID',
-      description: 'The ID of the channel to log admin broadcasts to.'
+      description: 'The ID of the channel to log admin broadcasts to.',
+      default: '',
+      example: '667741905228136459'
     },
     ignoreChats: {
-      type: 'Array',
       required: false,
       default: ['ChatSquad'],
       description: 'A list of chat names to ignore.'
     },
     chatColors: {
-      type: 'Object',
       required: false,
+      description: 'The color of the embed for each chat.',
       default: {},
-      description: 'The color of the embed for each chat. Example: `{ ChatAll: 16761867 }`.'
+      example: { ChatAll: 16761867 }
     },
     color: {
-      type: 'Discord Color Code',
       required: false,
-      default: 16761867,
-      description: 'The color of the embed.'
+      description: 'The color of the embed.',
+      default: 16761867
     }
   },
 

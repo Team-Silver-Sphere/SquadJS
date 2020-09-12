@@ -6,16 +6,14 @@ export default {
   defaultEnabled: false,
   optionsSpec: {
     broadcasts: {
-      type: 'Array',
       required: false,
-      default: ['Server powered by SquadJS.'],
-      description: 'The broadcasted messages.'
+      description: 'The broadcasted messages.',
+      default: ['Server powered by SquadJS.']
     },
     interval: {
-      type: 'Number',
       required: false,
-      default: 5 * 60 * 1000,
-      description: 'How frequently to broadcast in seconds.'
+      description: 'How frequently to broadcast in seconds.',
+      default: 5 * 60 * 1000
     }
   },
 

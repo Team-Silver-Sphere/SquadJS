@@ -5,15 +5,18 @@ import { SquadLayerFilter } from 'core/squad-layers';
 import plugins from 'plugins';
 
 const connectorTypes = {
-  DiscordConnector: async function (config) {
+  discordClient: async function (config) {
+    console.log('Starting discordClient connector...');
     const client = new Discord.Client();
     await client.login(config);
     return client;
   },
-  MySQLPoolConnector: async function (config) {
+  mysqlPool: async function (config) {
+    console.log('Starting mysqlPool connector...');
     return mysql.createPool(config);
   },
-  SquadLayerFilterConnector: async function (config) {
+  layerFilter: async function (config) {
+    console.log('Starting layerFilter connector...');
     return SquadLayerFilter[config.type](config.filter, config.activeLayerFilter);
   }
 };
@@ -27,16 +30,18 @@ export default async function (config) {
     const plugin = plugins[pluginConfig.plugin];
 
     for (const optionName of Object.keys(plugin.optionsSpec)) {
-      const option = plugin.optionsSpec[optionName];
+      // check it's a connector
+      if (!Object.keys(connectorTypes).includes(optionName)) continue;
 
-      if (!Object.keys(connectorTypes).includes(option.type)) continue;
-      if (!connectorTypes[option.type]) throw new Error('Connector type not supported!');
-
+      // check if connector is already setup
       if (connectors[pluginConfig[optionName]]) continue;
+
+      // check config for connector is present
       if (!config.connectors[pluginConfig[optionName]])
         throw new Error(`${pluginConfig[optionName]} connector config not present!`);
 
-      connectors[pluginConfig[optionName]] = await connectorTypes[option.type](
+      // initiate connector
+      connectors[pluginConfig[optionName]] = await connectorTypes[optionName](
         config.connectors[pluginConfig[optionName]]
       );
     }

@@ -4,58 +4,54 @@ import { CHAT_MESSAGE } from 'squad-server/events';
 export default {
   name: 'discord-admin-request',
   description:
-    'The `discord-admin-request` plugin will ping admins in a Discord channel when a player requests an admin via ' +
-    'the `!admin` command in in-game chat.',
+    'The <code>discord-admin-request</code> plugin will ping admins in a Discord channel when a player requests an ' +
+    'admin via the <code>!admin</code> command in in-game chat.',
 
   defaultEnabled: true,
   optionsSpec: {
     discordClient: {
-      type: 'DiscordConnector',
       required: true,
-      default: 'discord',
-      description: 'The name of the Discord Connector to use.'
+      description: 'The name of the Discord Connector to use.',
+      default: 'discord'
     },
     channelID: {
-      type: 'Discord Channel ID',
       required: true,
-      default: 'Discord Channel ID',
-      description: 'The ID of the channel to log admin broadcasts to.'
+      description: 'The ID of the channel to log admin broadcasts to.',
+      default: '',
+      example: '667741905228136459'
     },
     ignoreChats: {
-      type: 'Array',
       required: false,
-      default: ['ChatSquad'],
-      description: 'A list of chat names to ignore.'
+      description: 'A list of chat names to ignore.',
+      default: [],
+      example: ['ChatSquad']
     },
     ignorePhrases: {
-      type: 'Array',
       required: false,
+      description: 'A list of phrases to ignore.',
       default: [],
-      description: 'A list of phrases to ignore.'
+      example: ['switch']
     },
     adminPrefix: {
-      type: 'String',
       required: false,
-      default: '!admin',
-      description: 'The command that calls an admin.'
+      description: 'The command that calls an admin.',
+      default: '!admin'
     },
     pingGroups: {
-      type: 'Array',
       required: false,
+      description: 'A list of Discord role IDs to ping.',
       default: [],
-      description: 'A list of Discord role IDs to ping.'
+      example: ['500455137626554379']
     },
     pingDelay: {
-      type: 'Number',
       required: false,
-      default: 60 * 1000,
-      description: 'Cooldown for pings.'
+      description: 'Cooldown for pings in milliseconds.',
+      default: 60 * 1000
     },
     color: {
-      type: 'Discord Color Code',
       required: false,
-      default: 16761867,
-      description: 'The color of the embed.'
+      description: 'The color of the embed.',
+      default: 16761867
     }
   },
 
