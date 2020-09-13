@@ -658,7 +658,7 @@ Grafana:
 <details>
       <summary>skipmap</summary>
       <h2>skipmap</h2>
-      <p>The `skipmap` plugin will allow players to vote via `+/-` if they wish to skip the map</p>
+      <p>The <code>skipmap</code> plugin will allow players to vote via `+/-` if they wish to skip the current map</p>
       <h3>Options</h3>
       <h4>command (Required)</h4>
        <h6>Description</h6>
@@ -682,9 +682,9 @@ Grafana:
        <pre><code>600000</code></pre>
 <h4>endTimer</h4>
        <h6>Description</h6>
-       <p>Time before the end timer of the round where the votes are no longer valid.</p>
+       <p>Time before voting is no longer allowed.</p>
        <h6>Default</h6>
-       <pre><code>900000</code></pre>
+       <pre><code>1800000</code></pre>
 <h4>minimumVotes</h4>
        <h6>Description</h6>
        <p>The minimum required amount of votes for the vote to go through</p>

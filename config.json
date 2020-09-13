@@ -190,12 +190,12 @@
     },
     {
       "plugin": "skipmap",
-      "enabled": true,
+      "enabled": false,
       "command": "!skipmap",
       "voteDuration": 300000,
       "startTimer": 900000,
       "pastVoteTimer": 600000,
-      "endTimer": 900000,
+      "endTimer": 1800000,
       "minimumVotes": 20,
       "reminderInterval": 120000
     },

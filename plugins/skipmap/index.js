@@ -1,11 +1,12 @@
 import { CHAT_MESSAGE, NEW_GAME } from 'squad-server/events';
+import { COPYRIGHT_MESSAGE } from 'core/constants';
 
 export default {
   name: 'skipmap',
   description:
-    'The `skipmap` plugin will allow players to vote via `+/-` if they wish to skip the map',
+    'The <code>skipmap</code> plugin will allow players to vote via `+/-` if they wish to skip the current map',
 
-  defaultEnabled: true,
+  defaultEnabled: false,
   optionsSpec: {
     command: {
       required: true,
@@ -33,8 +34,8 @@ export default {
 
     endTimer: {
       required: false,
-      description: 'Time before the end timer of the round where the votes are no longer valid.',
-      default: 15 * 60 * 1000
+      description: 'Time before voting is no longer allowed.',
+      default: 30 * 60 * 1000
     },
 
     minimumVotes: {
@@ -64,7 +65,7 @@ export default {
       // check if message is command
       if (!info.message.chat.startsWith(options.command)) return;
       // check if enough time has passed since start of round and if not, inform the player
-      if (server.layerHistory[0].time < options.startTimer) {
+      if (server.layerHistory[0].time < Date.now() - options.startTimer) {
         const min = Math.floor(
           ((options.startTimer - server.layerHistory[0].time) % (1000 * 60 * 60)) / (1000 * 60)
         );
@@ -73,22 +74,18 @@ export default {
         );
         server.rcon.warn(
           info.steamID,
-          'Not enough time has passed since the start of the match. Please try again in ' +
-            min +
-            'm ' +
-            sec +
-            's'
+          `Not enough time has passed since the start of the match. Please try again in ${min}min ${sec}s`
         );
         return;
       }
       // check if enough time remains in the round, if not, inform player
-      if (server.layerHistory[0].time < 2 * 60 * 60 * 1000 - options.endTimer) {
-        server.rcon.warn(info.steamID, 'Too close to expected end of match.');
+      if (server.layerHistory[0].time > Date.now() - options.endTimer) {
+        server.rcon.warn(info.steamID, 'Match has progressed too far.');
         return;
       }
 
       // check if enough time has passed since the last vote
-      if (timeLastVote - new Date() < options.pastVoteTimer) {
+      if (timeLastVote < Date.now() - options.pastVoteTimer) {
         server.rcon.warn(info.steamID, 'Not enough time has passed since the last vote.');
         return;
       }
@@ -97,14 +94,14 @@ export default {
       playerVotes = {};
       voteActive = true;
       votePos = 1;
-      playerVotes[info.steamID] = info.message;
+      playerVotes[info.steamID] = '+';
       voteNeg = 0;
       // Set reminders
-      intervalReminderBroadcasts = setInterval(() => {
-        server.broadcast(
+      intervalReminderBroadcasts = setInterval(async () => {
+        await server.broadcast(
           'A vote to skip the current map has started. Please vote in favour with + or against with -.'
         );
-        server.broadcast('Current counter is: ' + votePos + ' in favour, ' + voteNeg + ' against.');
+        await server.broadcast(`Current counter is: ${votePos} in favour, ${voteNeg} against.`);
       }, options.reminderInterval);
 
       // End vote
@@ -121,27 +118,23 @@ export default {
           server.rcon.execute('AdminEndMatch');
         } else {
           server.rcon.broadcast(
-            'Not enough people voted in favour of skipping the match. ' +
-              votePos +
-              ' voted in favour, ' +
-              voteNeg +
-              'against.'
+            `Not enough people voted in favour of skipping the match. ${votePos} voted in favour, ${voteNeg} against.`
           );
         }
+        // As a vote happened, stop any further votes from happening until enough time has passed
+        timeLastVote = new Date();
       }, options.voteDuration);
-
-      // As a vote happened, stop any further votes from happening until enough time has passed
-      timeLastVote = new Date();
     });
 
     // Clear timeouts and intervals when new game starts
     server.on(NEW_GAME, (info) => {
       clearInterval(intervalReminderBroadcasts);
       clearTimeout(timeoutVote);
+      voteActive = false;
     });
 
     // Record votes
-    server.on(CHAT_MESSAGE, (info) => {
+    server.on(CHAT_MESSAGE, async (info) => {
       if (!voteActive) return;
 
       // Check if player has voted previously, if yes, remove their vote
@@ -151,12 +144,14 @@ export default {
       }
 
       // Record player vote
-      if (info.message.startsWith('+')) {
+      if (playerVotes[info.steamID] === '+') {
         votePos++;
-        server.rcon.warn(info.steamID, 'Your vote in favour has been saved.');
-      } else if (info.message.startsWith('-')) {
+        await server.rcon.warn(info.steamID, 'Your vote in favour has been saved.');
+        await server.rcon.warn(info.steamID, COPYRIGHT_MESSAGE);
+      } else if (playerVotes[info.steamID] === '-') {
         voteNeg--;
-        server.rcon.warn(info.steamID, 'Your vote against has been saved.');
+        await server.rcon.warn(info.steamID, 'Your vote against has been saved.');
+        await server.rcon.warn(info.steamID, COPYRIGHT_MESSAGE);
       }
       playerVotes[info.steamID] = info.message;
     });
