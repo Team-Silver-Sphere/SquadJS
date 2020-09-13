@@ -656,6 +656,48 @@ Grafana:
     </details>
 
 <details>
+      <summary>skipmap</summary>
+      <h2>skipmap</h2>
+      <p>The `skipmap` plugin will allow players to vote via `+/-` if they wish to skip the map</p>
+      <h3>Options</h3>
+      <h4>command (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the command to be used in chat.</p>
+       <h6>Default</h6>
+       <pre><code>!skipmap</code></pre>
+<h4>voteDuration</h4>
+       <h6>Description</h6>
+       <p>How long the vote should go.</p>
+       <h6>Default</h6>
+       <pre><code>300000</code></pre>
+<h4>startTimer</h4>
+       <h6>Description</h6>
+       <p>Time to wait before allowing the vote to go through.</p>
+       <h6>Default</h6>
+       <pre><code>900000</code></pre>
+<h4>pastVoteTimer</h4>
+       <h6>Description</h6>
+       <p>Time that needs to have passed since the last vote.</p>
+       <h6>Default</h6>
+       <pre><code>600000</code></pre>
+<h4>endTimer</h4>
+       <h6>Description</h6>
+       <p>Time before the end timer of the round where the votes are no longer valid.</p>
+       <h6>Default</h6>
+       <pre><code>900000</code></pre>
+<h4>minimumVotes</h4>
+       <h6>Description</h6>
+       <p>The minimum required amount of votes for the vote to go through</p>
+       <h6>Default</h6>
+       <pre><code>20</code></pre>
+<h4>reminderInterval</h4>
+       <h6>Description</h6>
+       <p>The time between individual reminders.</p>
+       <h6>Default</h6>
+       <pre><code>120000</code></pre>
+    </details>
+
+<details>
       <summary>team-randomizer</summary>
       <h2>team-randomizer</h2>
       <p>The <code>team-randomizer</code> plugin can be used to randomize teams. It's great for destroying clan stacks or for social events. It can be run by typing <code>!randomize</code> into in-game admin chat.</p>
