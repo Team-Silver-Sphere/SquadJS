@@ -57,7 +57,7 @@ export default {
     let timeoutVote;
     let timeLastVote;
     let voteActive;
-    const playerVotes = {};
+    let playerVotes = {};
 
     server.on(CHAT_MESSAGE, (info) => {
       // Run through conditions
@@ -94,6 +94,7 @@ export default {
       }
 
       // Actual vote
+      playerVotes = {};
       voteActive = true;
       votePos = 1;
       playerVotes[info.steamID] = info.message;
