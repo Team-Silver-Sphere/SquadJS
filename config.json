@@ -192,6 +192,13 @@
       "plugin": "team-randomizer",
       "enabled": true,
       "command": "!randomize"
+    },
+    {
+      "plugin": "discord-round-winner",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "Discord Channel ID",
+      "color": 16761867
     }
   ]
 }

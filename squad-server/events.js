@@ -1,3 +1,11 @@
+/** Occurs when the round ends.
+ *
+ * Data:
+ *  - winner - Winning Team
+ *  - layer - layer that was just played
+ */
+const ROUND_WINNER = 'ROUND_WINNER';
+
 /** Occurs when the player list is updated via RCON.
  *
  * Data:
@@ -200,5 +208,6 @@ export {
   PLAYER_DIED,
   PLAYER_REVIVED,
   TICK_RATE,
-  RCON_ERROR
+  RCON_ERROR,
+  ROUND_WINNER
 };

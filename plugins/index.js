@@ -14,7 +14,7 @@ import mysqlLog from './mysql-log/index.js';
 import seedingMessage from './seeding-message/index.js';
 import teamRandomizer from './team-randomizer/index.js';
 import chatCommands from './chat-commands/index.js';
-
+import roundWinner from './round-winner/index.js';
 
 export {
   autoTKWarn,
@@ -32,7 +32,8 @@ export {
   mapvoteDidYouMean,
   mysqlLog,
   seedingMessage,
-  teamRandomizer
+  teamRandomizer,
+  roundWinner
 };
 
 const plugins = [
@@ -51,7 +52,8 @@ const plugins = [
   mapvoteDidYouMean,
   mysqlLog,
   seedingMessage,
-  teamRandomizer
+  teamRandomizer,
+  roundWinner
 ];
 
 const namedPlugins = {};
