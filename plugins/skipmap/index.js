@@ -151,8 +151,13 @@ export default {
       }
 
       // Record player vote
-      if (info.message.startsWith('+')) votePos++;
-      else if (info.message.startsWith('-')) voteNeg--;
+      if (info.message.startsWith('+')) {
+        votePos++;
+        server.rcon.warn(info.steamID, 'Your vote in favour has been saved.');
+      } else if (info.message.startsWith('-')) {
+        voteNeg--;
+        server.rcon.warn(info.steamID, 'Your vote against has been saved.');
+      }
       playerVotes[info.steamID] = info.message;
     });
   }
