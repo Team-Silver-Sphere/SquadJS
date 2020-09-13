@@ -4,7 +4,7 @@ import { COPYRIGHT_MESSAGE } from 'core/constants';
 export default {
   name: 'skipmap',
   description:
-    'The <code>skipmap</code> plugin will allow players to vote via `+/-` if they wish to skip the current map',
+    'The <code>skipmap</code> plugin will allow players to vote via <code>+</code>/<code>-</code> if they wish to skip the current map',
 
   defaultEnabled: false,
   optionsSpec: {
@@ -16,26 +16,26 @@ export default {
 
     voteDuration: {
       required: false,
-      description: 'How long the vote should go.',
+      description: 'How long the vote should go on for.',
       default: 5 * 60 * 1000
     },
 
     startTimer: {
       required: false,
-      description: 'Time to wait before allowing the vote to go through.',
+      description: 'Time before voting is allowed.',
       default: 15 * 60 * 1000
-    },
-
-    pastVoteTimer: {
-      required: false,
-      description: 'Time that needs to have passed since the last vote.',
-      default: 10 * 60 * 1000
     },
 
     endTimer: {
       required: false,
       description: 'Time before voting is no longer allowed.',
       default: 30 * 60 * 1000
+    },
+
+    pastVoteTimer: {
+      required: false,
+      description: 'Time that needs to have passed since the last vote.',
+      default: 10 * 60 * 1000
     },
 
     minimumVotes: {
@@ -51,7 +51,7 @@ export default {
     }
   },
 
-  init: async (server, options) => {
+  init: (server, options) => {
     let votePos = 0;
     let voteNeg = 0;
     let intervalReminderBroadcasts;
