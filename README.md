@@ -681,7 +681,8 @@ Grafana:
        <h6>Description</h6>
        <p>The ID of the channel to log admin broadcasts to.</p>
        <h6>Default</h6>
-       <pre><code>Discord Channel ID</code></pre>
+       <pre><code>Discord Channel ID</code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
 <h4>color</h4>
        <h6>Description</h6>
        <p>The color of the embed.</p>

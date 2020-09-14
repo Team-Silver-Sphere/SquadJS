@@ -9,6 +9,7 @@ import PlayerUnPossess from './player-un-possess.js';
 import PlayerWounded from './player-wounded.js';
 import ServerTickRate from './server-tick-rate.js';
 import SteamIDConnected from './steamid-connected.js';
+import RoundWinner from './round-winner.js';
 
 export default [
   AdminBroadcast,
@@ -21,5 +22,6 @@ export default [
   PlayerUnPossess,
   PlayerWounded,
   ServerTickRate,
-  SteamIDConnected
+  SteamIDConnected,
+  RoundWinner
 ];

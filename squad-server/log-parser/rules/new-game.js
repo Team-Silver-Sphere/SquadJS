@@ -8,6 +8,7 @@ export default {
     const layer = SquadLayers.getLayerByLayerClassname(args[5]);
 
     const data = {
+      ...logParser.eventStore.WON,
       raw: args[0],
       time: args[1],
       chainID: args[2],
@@ -17,6 +18,8 @@ export default {
       map: layer ? layer.map : null,
       layer: layer ? layer.layer : null
     };
+
+    delete logParser.eventStore.WON;
 
     /* Emit new game event */
     logParser.server.emit(NEW_GAME, data);

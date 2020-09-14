@@ -1,5 +1,5 @@
 import { COPYRIGHT_MESSAGE } from 'core/constants';
-import { ROUND_WINNER } from 'squad-server/events';
+import { NEW_GAME } from 'squad-server/events';
 
 export default {
   name: 'discord-round-winner',
@@ -8,29 +8,27 @@ export default {
   defaultEnabled: true,
   optionsSpec: {
     discordClient: {
-      type: 'DiscordConnector',
       required: true,
-      default: 'discord',
-      description: 'The name of the Discord Connector to use.'
+      description: 'The name of the Discord Connector to use.',
+      default: 'discord'
     },
     channelID: {
-      type: 'Discord Channel ID',
       required: true,
+      description: 'The ID of the channel to log admin broadcasts to.',
       default: 'Discord Channel ID',
-      description: 'The ID of the channel to log admin broadcasts to.'
+      example: '667741905228136459'
     },
     color: {
-      type: 'Discord Color Code',
       required: false,
-      default: 16761867,
-      description: 'The color of the embed.'
+      description: 'The color of the embed.',
+      default: 16761867
     }
   },
 
   init: async (server, options) => {
     const channel = await options.discordClient.channels.fetch(options.channelID);
 
-    server.on(ROUND_WINNER, async (info) => {
+    server.on(NEW_GAME, async (info) => {
       channel.send({
         embed: {
           title: 'Round Winner',
