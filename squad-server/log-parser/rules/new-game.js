@@ -8,6 +8,7 @@ export default {
     const layer = SquadLayers.getLayerByLayerClassname(args[5]);
 
     const data = {
+      ...logParser.eventStore.WON,
       raw: args[0],
       time: args[1],
       chainID: args[2],

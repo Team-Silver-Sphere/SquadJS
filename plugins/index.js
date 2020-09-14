@@ -5,6 +5,7 @@ import discordChat from './discord-chat/index.js';
 import discordChatAdminRequest from './discord-admin-request/index.js';
 import discordDebug from './discord-debug/index.js';
 import discordRCON from './discord-rcon/index.js';
+import discordRoundWinner from './discord-round-winner/index.js';
 import discordServerStatus from './discord-server-status/index.js';
 import discordTeamkill from './discord-teamkill/index.js';
 import intervalledBroadcasts from './intervalled-broadcasts/index.js';
@@ -15,7 +16,6 @@ import seedingMessage from './seeding-message/index.js';
 import teamRandomizer from './team-randomizer/index.js';
 import chatCommands from './chat-commands/index.js';
 
-
 export {
   autoTKWarn,
   chatCommands,
@@ -25,6 +25,7 @@ export {
   discordChatAdminRequest,
   discordDebug,
   discordRCON,
+  discordRoundWinner,
   discordServerStatus,
   discordTeamkill,
   intervalledBroadcasts,
@@ -44,6 +45,7 @@ const plugins = [
   discordChatAdminRequest,
   discordDebug,
   discordRCON,
+  discordRoundWinner,
   discordServerStatus,
   discordTeamkill,
   intervalledBroadcasts,
