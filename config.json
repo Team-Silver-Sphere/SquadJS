@@ -130,6 +130,13 @@
       "prependAdminNameInBroadcast": false
     },
     {
+      "plugin": "discord-round-winner",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
       "plugin": "discord-server-status",
       "enabled": true,
       "discordClient": "discord",
@@ -175,13 +182,6 @@
       "enabled": false,
       "mysqlPool": "mysql",
       "overrideServerID": null
-    },
-    {
-      "plugin": "discord-round-winner",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "Discord Channel ID",
-      "color": 16761867
     },
     {
       "plugin": "seeding-message",

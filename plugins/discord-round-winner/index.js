@@ -15,7 +15,7 @@ export default {
     channelID: {
       required: true,
       description: 'The ID of the channel to log admin broadcasts to.',
-      default: 'Discord Channel ID',
+      default: '',
       example: '667741905228136459'
     },
     color: {
