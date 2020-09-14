@@ -1,5 +1,3 @@
-import { ROUND_WINNER } from '../../events.js';
-
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer]ASQGameMode::DetermineMatchWinner\(\): (.+) won on (.+)/,
   onMatch: (args, logParser) => {
@@ -11,6 +9,7 @@ export default {
       layer: args[4]
     };
 
-    logParser.server.emit(ROUND_WINNER, data);
+    if (logParser.eventStore.WON) logParser.eventStore.WON = data;
+    else logParser.eventStore.WON = { ...data, winner: null };
   }
 };
