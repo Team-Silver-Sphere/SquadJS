@@ -192,10 +192,10 @@
       "plugin": "skipmap",
       "enabled": false,
       "command": "!skipmap",
-      "voteDuration": 120000,
+      "voteDuration": 300000,
       "startTimer": 900000,
-      "pastVoteTimer": 600000,
       "endTimer": 1800000,
+      "pastVoteTimer": 600000,
       "minimumVotes": 20,
       "reminderInterval": 120000
     },

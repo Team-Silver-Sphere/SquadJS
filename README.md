@@ -658,33 +658,33 @@ Grafana:
 <details>
       <summary>skipmap</summary>
       <h2>skipmap</h2>
-      <p>The <code>skipmap</code> plugin will allow players to vote via `+/-` if they wish to skip the current map</p>
+      <p>The <code>skipmap</code> plugin will allow players to vote via <code>+</code>/<code>-</code> if they wish to skip the current map</p>
       <h3>Options</h3>
-      <h4>command (Required)</h4>
+      <h4>command</h4>
        <h6>Description</h6>
        <p>The name of the command to be used in chat.</p>
        <h6>Default</h6>
        <pre><code>!skipmap</code></pre>
 <h4>voteDuration</h4>
        <h6>Description</h6>
-       <p>How long the vote should go.</p>
+       <p>How long the vote should go on for.</p>
        <h6>Default</h6>
        <pre><code>300000</code></pre>
 <h4>startTimer</h4>
        <h6>Description</h6>
-       <p>Time to wait before allowing the vote to go through.</p>
+       <p>Time before voting is allowed.</p>
        <h6>Default</h6>
        <pre><code>900000</code></pre>
-<h4>pastVoteTimer</h4>
-       <h6>Description</h6>
-       <p>Time that needs to have passed since the last vote.</p>
-       <h6>Default</h6>
-       <pre><code>600000</code></pre>
 <h4>endTimer</h4>
        <h6>Description</h6>
        <p>Time before voting is no longer allowed.</p>
        <h6>Default</h6>
        <pre><code>1800000</code></pre>
+<h4>pastVoteTimer</h4>
+       <h6>Description</h6>
+       <p>Time that needs to have passed since the last vote.</p>
+       <h6>Default</h6>
+       <pre><code>600000</code></pre>
 <h4>minimumVotes</h4>
        <h6>Description</h6>
        <p>The minimum required amount of votes for the vote to go through</p>
