@@ -9,7 +9,7 @@ export default {
   defaultEnabled: false,
   optionsSpec: {
     command: {
-      required: true,
+      required: false,
       description: 'The name of the command to be used in chat.',
       default: '!skipmap'
     },
@@ -63,9 +63,13 @@ export default {
     server.on(CHAT_MESSAGE, (info) => {
       // Run through conditions
       // check if message is command
-      if (!info.message.chat.startsWith(options.command)) return;
+      if (!info.message.startsWith(options.command)) return;
+
       // check if enough time has passed since start of round and if not, inform the player
-      if (server.layerHistory[0].time < Date.now() - options.startTimer) {
+      if (
+        server.layerHistory.length > 0 &&
+        server.layerHistory[0].time < Date.now() - options.startTimer
+      ) {
         const min = Math.floor(
           ((options.startTimer - server.layerHistory[0].time) % (1000 * 60 * 60)) / (1000 * 60)
         );
@@ -78,8 +82,12 @@ export default {
         );
         return;
       }
+
       // check if enough time remains in the round, if not, inform player
-      if (server.layerHistory[0].time > Date.now() - options.endTimer) {
+      if (
+        server.layerHistory.length > 0 &&
+        server.layerHistory[0].time > Date.now() - options.endTimer
+      ) {
         server.rcon.warn(info.steamID, 'Match has progressed too far.');
         return;
       }
@@ -98,10 +106,12 @@ export default {
       voteNeg = 0;
       // Set reminders
       intervalReminderBroadcasts = setInterval(async () => {
-        await server.broadcast(
-          'A vote to skip the current map has started. Please vote in favour with + or against with -.'
+        await server.rcon.broadcast(
+          'A vote to skip the current map is in progress. Please vote in favour of skipping the map with + or against with -.'
         );
-        await server.broadcast(`Current counter is: ${votePos} in favour, ${voteNeg} against.`);
+        await server.rcon.broadcast(
+          `Currently ${votePos} people voted in favour and ${voteNeg} against skipping the current map.`
+        );
       }, options.reminderInterval);
 
       // End vote
