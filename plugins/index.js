@@ -11,10 +11,10 @@ import intervalledBroadcasts from './intervalled-broadcasts/index.js';
 import mapvote123 from './mapvote/mapvote-123.js';
 import mapvoteDidYouMean from './mapvote/mapvote-did-you-mean.js';
 import mysqlLog from './mysql-log/index.js';
+import roundWinner from './round-winner/index.js';
 import seedingMessage from './seeding-message/index.js';
 import teamRandomizer from './team-randomizer/index.js';
 import chatCommands from './chat-commands/index.js';
-import roundWinner from './round-winner/index.js';
 
 export {
   autoTKWarn,
@@ -31,9 +31,9 @@ export {
   mapvote123,
   mapvoteDidYouMean,
   mysqlLog,
+  roundWinner,
   seedingMessage,
-  teamRandomizer,
-  roundWinner
+  teamRandomizer
 };
 
 const plugins = [
@@ -51,9 +51,9 @@ const plugins = [
   mapvote123,
   mapvoteDidYouMean,
   mysqlLog,
+  roundWinner,
   seedingMessage,
-  teamRandomizer,
-  roundWinner
+  teamRandomizer
 ];
 
 const namedPlugins = {};

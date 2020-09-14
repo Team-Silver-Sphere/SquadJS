@@ -609,6 +609,29 @@ Grafana:
     </details>
 
 <details>
+      <summary>discord-round-winner</summary>
+      <h2>discord-round-winner</h2>
+      <p>The `discord-round-winner` plugin will send the round winner to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the Discord Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code>Discord Channel ID</code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+    </details>
+
+<details>
       <summary>seeding-message</summary>
       <h2>seeding-message</h2>
       <p>The <code>seeding-message</code> plugin broadcasts seeding rule messages to players at regular intervals or after a new player has connected to the server. It can also be configured to display live messages when the server goes live.</p>
@@ -665,29 +688,6 @@ Grafana:
        <p>The command used to randomize the teams.</p>
        <h6>Default</h6>
        <pre><code>!randomize</code></pre>
-    </details>
-
-<details>
-      <summary>discord-round-winner</summary>
-      <h2>discord-round-winner</h2>
-      <p>The `discord-round-winner` plugin will send the round winner to a Discord channel.</p>
-      <h3>Options</h3>
-      <h4>discordClient (Required)</h4>
-       <h6>Description</h6>
-       <p>The name of the Discord Connector to use.</p>
-       <h6>Default</h6>
-       <pre><code>discord</code></pre>
-<h4>channelID (Required)</h4>
-       <h6>Description</h6>
-       <p>The ID of the channel to log admin broadcasts to.</p>
-       <h6>Default</h6>
-       <pre><code>Discord Channel ID</code></pre><h6>Example</h6>
-       <pre><code>667741905228136459</code></pre>
-<h4>color</h4>
-       <h6>Description</h6>
-       <p>The color of the embed.</p>
-       <h6>Default</h6>
-       <pre><code>16761867</code></pre>
     </details>
  
 ## Creating Your Own Plugins
