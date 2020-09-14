@@ -19,9 +19,6 @@ export default {
       layer: layer ? layer.layer : null
     };
 
-    if (logParser.eventStore.WON) logParser.eventStore.WON = data;
-    else logParser.eventStore.WON = { ...data, winner: null };
-
     /* Emit new game event */
     logParser.server.emit(NEW_GAME, data);
   }
