@@ -192,7 +192,7 @@
       "plugin": "skipmap",
       "enabled": false,
       "command": "!skipmap",
-      "voteDuration": 300000,
+      "voteDuration": 120000,
       "startTimer": 900000,
       "pastVoteTimer": 600000,
       "endTimer": 1800000,

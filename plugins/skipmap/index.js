@@ -52,33 +52,38 @@ export default {
   },
 
   init: (server, options) => {
+    let voteActive;
     let votePos = 0;
     let voteNeg = 0;
+    let playerVotes = {};
     let intervalReminderBroadcasts;
     let timeoutVote;
-    let timeLastVote;
-    let voteActive;
-    let playerVotes = {};
+    let timeLastVote = null;
 
-    server.on(CHAT_MESSAGE, (info) => {
-      // Run through conditions
+    server.on(CHAT_MESSAGE, async (info) => {
       // check if message is command
       if (!info.message.startsWith(options.command)) return;
+
+      if (voteActive) {
+        await server.rcon.warn(info.steamID, 'Skipmap vote already in progress.');
+        return;
+      }
 
       // check if enough time has passed since start of round and if not, inform the player
       if (
         server.layerHistory.length > 0 &&
-        server.layerHistory[0].time < Date.now() - options.startTimer
+        server.layerHistory[0].time > Date.now() - options.startTimer
       ) {
-        const min = Math.floor(
-          ((options.startTimer - server.layerHistory[0].time) % (1000 * 60 * 60)) / (1000 * 60)
+        const seconds = Math.floor(
+          (server.layerHistory[0].time + options.startTimer - Date.now()) / 1000
         );
-        const sec = Math.floor(
-          (options.startTimer - server.layerHistory[0].time) % ((1000 * 60) / 1000)
-        );
-        server.rcon.warn(
+        const minutes = Math.floor(seconds / 60);
+
+        await server.rcon.warn(
           info.steamID,
-          `Not enough time has passed since the start of the match. Please try again in ${min}min ${sec}s`
+          `Not enough time has passed since the start of the match. Please try again in ${
+            minutes ? `${minutes}min` : ''
+          } ${seconds ? `${seconds - minutes * 60}s` : ''}`
         );
         return;
       }
@@ -86,24 +91,31 @@ export default {
       // check if enough time remains in the round, if not, inform player
       if (
         server.layerHistory.length > 0 &&
-        server.layerHistory[0].time > Date.now() - options.endTimer
+        server.layerHistory[0].time < Date.now() - options.endTimer
       ) {
-        server.rcon.warn(info.steamID, 'Match has progressed too far.');
+        await server.rcon.warn(info.steamID, 'Match has progressed too far.');
         return;
       }
 
       // check if enough time has passed since the last vote
-      if (timeLastVote < Date.now() - options.pastVoteTimer) {
-        server.rcon.warn(info.steamID, 'Not enough time has passed since the last vote.');
+      if (timeLastVote && timeLastVote > Date.now() - options.pastVoteTimer) {
+        await server.rcon.warn(info.steamID, 'Not enough time has passed since the last vote.');
         return;
       }
 
+      await server.rcon.warn(info.steamID, 'You have started a skip map vote.');
+      await server.rcon.warn(info.steamID, COPYRIGHT_MESSAGE);
+      await server.rcon.broadcast(
+        'A vote to skip the current map has been started. Please vote in favour of skipping the map with + or against with -.'
+      );
+
       // Actual vote
-      playerVotes = {};
       voteActive = true;
       votePos = 1;
-      playerVotes[info.steamID] = '+';
       voteNeg = 0;
+      playerVotes = {};
+      playerVotes[info.steamID] = '+';
+
       // Set reminders
       intervalReminderBroadcasts = setInterval(async () => {
         await server.rcon.broadcast(
@@ -125,6 +137,9 @@ export default {
           return;
         }
         if (votePos > voteNeg) {
+          server.rcon.broadcast(
+            `The vote to skip the current map has passed. ${votePos} voted in favour, ${voteNeg} against.`
+          );
           server.rcon.execute('AdminEndMatch');
         } else {
           server.rcon.broadcast(
@@ -137,15 +152,17 @@ export default {
     });
 
     // Clear timeouts and intervals when new game starts
-    server.on(NEW_GAME, (info) => {
+    server.on(NEW_GAME, () => {
       clearInterval(intervalReminderBroadcasts);
       clearTimeout(timeoutVote);
       voteActive = false;
+      timeLastVote = null;
     });
 
     // Record votes
     server.on(CHAT_MESSAGE, async (info) => {
       if (!voteActive) return;
+      if (!['+', '-'].includes(info.message)) return;
 
       // Check if player has voted previously, if yes, remove their vote
       if (playerVotes[info.steamID]) {
@@ -154,15 +171,16 @@ export default {
       }
 
       // Record player vote
-      if (playerVotes[info.steamID] === '+') {
+      if (info.message === '+') {
         votePos++;
         await server.rcon.warn(info.steamID, 'Your vote in favour has been saved.');
-        await server.rcon.warn(info.steamID, COPYRIGHT_MESSAGE);
-      } else if (playerVotes[info.steamID] === '-') {
-        voteNeg--;
+      } else if (info.message === '-') {
+        voteNeg++;
         await server.rcon.warn(info.steamID, 'Your vote against has been saved.');
-        await server.rcon.warn(info.steamID, COPYRIGHT_MESSAGE);
       }
+
+      await server.rcon.warn(info.steamID, COPYRIGHT_MESSAGE);
+
       playerVotes[info.steamID] = info.message;
     });
   }
