@@ -196,6 +196,17 @@
       "liveMessage": "Live"
     },
     {
+      "plugin": "skipmap",
+      "enabled": false,
+      "command": "!skipmap",
+      "voteDuration": 300000,
+      "startTimer": 900000,
+      "endTimer": 1800000,
+      "pastVoteTimer": 600000,
+      "minimumVotes": 20,
+      "reminderInterval": 120000
+    },
+    {
       "plugin": "team-randomizer",
       "enabled": true,
       "command": "!randomize"

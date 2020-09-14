@@ -13,6 +13,7 @@ import mapvote123 from './mapvote/mapvote-123.js';
 import mapvoteDidYouMean from './mapvote/mapvote-did-you-mean.js';
 import mysqlLog from './mysql-log/index.js';
 import seedingMessage from './seeding-message/index.js';
+import skipMap from './skipmap/index.js';
 import teamRandomizer from './team-randomizer/index.js';
 import chatCommands from './chat-commands/index.js';
 
@@ -33,6 +34,7 @@ export {
   mapvoteDidYouMean,
   mysqlLog,
   seedingMessage,
+  skipMap,
   teamRandomizer
 };
 
@@ -53,6 +55,7 @@ const plugins = [
   mapvoteDidYouMean,
   mysqlLog,
   seedingMessage,
+  skipMap,
   teamRandomizer
 ];
 
