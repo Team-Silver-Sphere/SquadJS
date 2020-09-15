@@ -19,6 +19,8 @@ export default {
       layer: layer ? layer.layer : null
     };
 
+    delete logParser.eventStore.WON;
+
     /* Emit new game event */
     logParser.server.emit(NEW_GAME, data);
   }

@@ -9,7 +9,7 @@ export default {
       layer: args[4]
     };
 
-    if (logParser.eventStore.WON) logParser.eventStore.WON = data;
-    else logParser.eventStore.WON = { ...data, winner: null };
+    if (logParser.eventStore.WON) logParser.eventStore.WON = { ...data, winner: null };
+    else logParser.eventStore.WON = data;
   }
 };
