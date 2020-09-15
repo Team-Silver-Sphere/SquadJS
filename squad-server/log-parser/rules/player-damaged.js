@@ -1,4 +1,4 @@
-import { LOG_PARSER_PLAYER_DAMAGED } from '../../events/log-parser.js';
+import { PLAYER_DAMAGED } from '../../events.js';
 
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Player:(.+) ActualDamage=([0-9.]+) from (.+) caused by ([A-z_0-9]+)_C/,
@@ -18,6 +18,6 @@ export default {
 
     logParser.eventStore[args[3]] = data;
 
-    logParser.server.emit(LOG_PARSER_PLAYER_DAMAGED, data);
+    logParser.server.emit(PLAYER_DAMAGED, data);
   }
 };

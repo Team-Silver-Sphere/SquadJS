@@ -6,13 +6,12 @@ import LogParser from './log-parser/index.js';
 import Rcon from './rcon/index.js';
 
 import {
-  SERVER_LAYER_CHANGE,
-  SERVER_PLAYERS_UPDATED,
-  SERVER_LAYERS_UPDATED,
-  SERVER_A2S_UPDATED
-} from './events/server.js';
-
-import { LOG_PARSER_NEW_GAME } from './events/log-parser.js';
+  LAYER_CHANGE,
+  PLAYERS_UPDATED,
+  LAYERS_UPDATED,
+  A2S_INFO_UPDATED,
+  NEW_GAME
+} from './events.js';
 
 export default class Server extends EventEmitter {
   constructor(options = {}) {
@@ -44,7 +43,7 @@ export default class Server extends EventEmitter {
     this.suffixStore = {};
 
     // setup internal listeners
-    this.on(LOG_PARSER_NEW_GAME, this.onLayerChange.bind(this));
+    this.on(NEW_GAME, this.onLayerChange.bind(this));
 
     // setup period updaters
     this.updatePlayers = this.updatePlayers.bind(this);
@@ -54,7 +53,7 @@ export default class Server extends EventEmitter {
       const data = await this.rcon.getMapInfo();
       this.currentLayer = data.currentLayer;
       this.nextLayer = data.nextLayer;
-      this.emit(SERVER_LAYERS_UPDATED, data);
+      this.emit(LAYERS_UPDATED, data);
     }, this.updateInterval);
 
     setInterval(async () => {
@@ -77,7 +76,7 @@ export default class Server extends EventEmitter {
       this.matchTimeout = parseFloat(data.raw.rules.MatchTimeout_f);
       this.gameVersion = data.raw.version;
 
-      this.emit(SERVER_A2S_UPDATED, {
+      this.emit(A2S_INFO_UPDATED, {
         serverName: this.serverName,
         maxPlayers: this.maxPlayers,
         publicSlots: this.publicSlots,
@@ -116,7 +115,7 @@ export default class Server extends EventEmitter {
     // delay another update
     this.updatePlayerTimeout = setTimeout(this.updatePlayers, this.updateInterval);
 
-    this.emit(SERVER_PLAYERS_UPDATED, this.players);
+    this.emit(PLAYERS_UPDATED, this.players);
   }
 
   async getPlayerByName(name, suffix = false) {
@@ -167,6 +166,6 @@ export default class Server extends EventEmitter {
   onLayerChange(info) {
     this.layerHistory.unshift(info);
     this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
-    this.emit(SERVER_LAYER_CHANGE, info);
+    this.emit(LAYER_CHANGE, info);
   }
 }

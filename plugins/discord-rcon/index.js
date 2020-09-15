@@ -1,27 +1,26 @@
 export default {
   name: 'discord-rcon',
   description:
-    'The `discord-rcon` plugin allows a specified Discord channel to be used as a RCON console to run RCON commands.',
+    'The <code>discord-rcon</code> plugin allows a specified Discord channel to be used as a RCON console to run ' +
+    'RCON commands.',
 
   defaultEnabled: true,
   optionsSpec: {
     discordClient: {
-      type: 'DiscordConnector',
       required: true,
-      default: 'discord',
-      description: 'The name of the Discord Connector to use.'
+      description: 'The name of the Discord Connector to use.',
+      default: 'discord'
     },
     channelID: {
-      type: 'Discord Channel ID',
       required: true,
-      default: 'Discord Channel ID',
-      description: 'The ID of the channel you wish to turn into a RCON console.'
+      description: 'The ID of the channel you wish to turn into a RCON console.',
+      default: '',
+      example: '667741905228136459'
     },
     prependAdminNameInBroadcast: {
-      type: 'Boolean',
       required: false,
-      default: false,
-      description: "Prepend the admin's name when he makes an announcement."
+      description: "Prepend the admin's name when he makes an announcement.",
+      default: false
     }
   },
 

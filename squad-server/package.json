@@ -12,9 +12,7 @@
   },
   "exports": {
     ".": "./index.js",
-    "./events/log-parser": "./events/log-parser.js",
-    "./events/rcon": "./events/rcon.js",
-    "./events/server": "./events/server.js",
+    "./events": "./events.js",
     "./log-parser": "./log-parser/index.js",
     "./rcon": "./rcon/index.js",
     "./plugins": "./plugins/index.js"

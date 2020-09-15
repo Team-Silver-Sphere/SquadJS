@@ -1,25 +1,24 @@
-import { RCON_CHAT_MESSAGE } from 'squad-server/events/rcon';
+import { CHAT_MESSAGE } from 'squad-server/events';
 
 export default {
   name: 'team-randomizer',
   description:
-    "The `team-randomizer` plugin can be used to randomize teams. It's great for destroying clan stacks or for " +
-    'social events. It can be run by typing `!randomize` into in-game admin chat.',
+    "The <code>team-randomizer</code> plugin can be used to randomize teams. It's great for destroying clan stacks " +
+    'or for social events. It can be run by typing <code>!randomize</code> into in-game admin chat.',
 
   defaultEnabled: true,
   optionsSpec: {
     command: {
-      type: 'String',
       required: false,
-      default: '!randomize',
-      description: 'The command used to randomize the teams.'
+      description: 'The command used to randomize the teams.',
+      default: '!randomize'
     }
   },
 
   init: async (server, options) => {
     const commandRegex = new RegExp(`^${options.command}`, 'i');
 
-    server.on(RCON_CHAT_MESSAGE, (info) => {
+    server.on(CHAT_MESSAGE, (info) => {
       if (info.chat !== 'ChatAdmin') return;
 
       const match = info.message.match(commandRegex);

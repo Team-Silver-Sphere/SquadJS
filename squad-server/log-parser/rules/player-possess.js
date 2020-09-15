@@ -1,4 +1,4 @@
-import { LOG_PARSER_PLAYER_POSSESS } from '../../events/log-parser.js';
+import { PLAYER_POSSESS } from '../../events.js';
 
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQPlayerController::)?OnPossess\(\): PC=(.+) Pawn=([A-z0-9_]+)_C/,
@@ -13,6 +13,6 @@ export default {
 
     logParser.eventStore[args[3]] = args[2];
 
-    logParser.server.emit(LOG_PARSER_PLAYER_POSSESS, data);
+    logParser.server.emit(PLAYER_POSSESS, data);
   }
 };

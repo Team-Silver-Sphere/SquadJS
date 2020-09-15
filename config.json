@@ -67,24 +67,36 @@
       "message": "Please apologise for ALL TKs in ALL chat!"
     },
     {
+      "plugin": "chat-commands",
+      "enabled": true,
+      "commands": [
+        {
+          "command": "!squadjs",
+          "type": "warn",
+          "response": "This server is powered by SquadJS.",
+          "ignoreChats": []
+        }
+      ]
+    },
+    {
       "plugin": "discord-admin-broadcast",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "color": 16761867
     },
     {
       "plugin": "discord-admin-cam-logs",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "color": 16761867
     },
     {
       "plugin": "discord-chat",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "ignoreChats": [
         "ChatSquad"
       ],
@@ -95,10 +107,8 @@
       "plugin": "discord-admin-request",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
-      "ignoreChats": [
-        "ChatSquad"
-      ],
+      "channelID": "",
+      "ignoreChats": [],
       "ignorePhrases": [],
       "adminPrefix": "!admin",
       "pingGroups": [],
@@ -109,15 +119,22 @@
       "plugin": "discord-debug",
       "enabled": false,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "events": []
     },
     {
       "plugin": "discord-rcon",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "prependAdminNameInBroadcast": false
+    },
+    {
+      "plugin": "discord-round-winner",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
     },
     {
       "plugin": "discord-server-status",
@@ -133,11 +150,19 @@
       "plugin": "discord-teamkill",
       "enabled": true,
       "discordClient": "discord",
-      "channelID": "Discord Channel ID",
+      "channelID": "",
       "teamkillColor": 16761867,
       "suicideColor": 16761867,
       "ignoreSuicides": false,
       "disableSCBL": false
+    },
+    {
+      "plugin": "intervalled-broadcasts",
+      "enabled": false,
+      "broadcasts": [
+        "Server powered by SquadJS."
+      ],
+      "interval": 300000
     },
     {
       "plugin": "mapvote-123",
@@ -169,6 +194,17 @@
       "liveEnabled": true,
       "liveThreshold": 2,
       "liveMessage": "Live"
+    },
+    {
+      "plugin": "skipmap",
+      "enabled": false,
+      "command": "!skipmap",
+      "voteDuration": 300000,
+      "startTimer": 900000,
+      "endTimer": 1800000,
+      "pastVoteTimer": 600000,
+      "minimumVotes": 20,
+      "reminderInterval": 120000
     },
     {
       "plugin": "team-randomizer",

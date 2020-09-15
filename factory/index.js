@@ -27,7 +27,7 @@ export default async function (configPath) {
     for (const optionName of Object.keys(plugin.optionsSpec)) {
       const option = plugin.optionsSpec[optionName];
 
-      if (option.type.match(/Connector$/)) {
+      if (['discordClient', 'mysqlPool', 'layerFilter'].includes(optionName)) {
         options[optionName] = connectors[pluginConfig[optionName]];
       } else {
         if (option.required) {

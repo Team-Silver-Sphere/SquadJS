@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS `Match` (
     `layer` VARCHAR(255),
     `startTime` TIMESTAMP NOT NULL,
     `endTime` TIMESTAMP NULL DEFAULT NULL,
-
+    `winner` VARCHAR(255),
+	
     FOREIGN KEY (`server`) REFERENCES `Server`(`id`)
         ON DELETE CASCADE
 );
@@ -141,10 +142,11 @@ CREATE PROCEDURE `NewMatch` (
     IN `p_mapClassname` VARCHAR(255),
     IN `p_layerClassname` VARCHAR(255),
     IN `p_map` VARCHAR(255),
-    IN `p_layer` VARCHAR(255)
+    IN `p_layer` VARCHAR(255),
+	IN `p_winner` VARCHAR(255)
 )
 BEGIN
-    UPDATE `Match` SET `endTime` = `p_time` WHERE `server` = `p_server` AND `endTime` IS NULL;
+    UPDATE `Match` SET `endTime` = `p_time`, `winner` = `p_winner` WHERE `server` = `p_server` AND `endTime` IS NULL;
     INSERT INTO `Match` (
         `server`,
         `startTime`,

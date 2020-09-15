@@ -1,55 +1,50 @@
 import { COPYRIGHT_MESSAGE } from 'core/constants';
-import { LOG_PARSER_TEAMKILL } from 'squad-server/events/log-parser';
+import { TEAMKILL } from 'squad-server/events';
 
 export default {
   name: 'discord-teamkill',
   description:
-    'The `discord-teamkill` plugin logs teamkills and related information to a Discord channel for admin to review.',
+    'The <code>discord-teamkill</code> plugin logs teamkills and related information to a Discord channel for admin to review.',
 
   defaultEnabled: true,
   optionsSpec: {
     discordClient: {
-      type: 'DiscordConnector',
       required: true,
-      default: 'discord',
-      description: 'The name of the Discord Connector to use.'
+      description: 'The name of the Discord Connector to use.',
+      default: 'discord'
     },
     channelID: {
-      type: 'Discord Channel ID',
       required: true,
-      default: 'Discord Channel ID',
-      description: 'The ID of the channel to log admin broadcasts to.'
+      description: 'The ID of the channel to log admin broadcasts to.',
+      default: '',
+      example: '667741905228136459'
     },
     teamkillColor: {
-      type: 'Discord Color Code',
       required: false,
-      default: 16761867,
-      description: 'The color of the embed for teamkills.'
+      description: 'The color of the embed for teamkills.',
+      default: 16761867
     },
     suicideColor: {
-      type: 'Discord Color Code',
       required: false,
-      default: 16761867,
-      description: 'The color of the embed for suicides.'
+      description: 'The color of the embed for suicides.',
+      default: 16761867
     },
     ignoreSuicides: {
-      type: 'Boolean',
       required: false,
-      default: false,
-      description: 'Ignore suicides.'
+      description: 'Ignore suicides.',
+      default: false
     },
     disableSCBL: {
-      type: 'Boolean',
       required: false,
-      default: false,
-      description: 'Disable Squad Community Ban List information.'
+      description: 'Disable Squad Community Ban List information.',
+      default: false
     }
   },
 
   init: async (server, options) => {
     const channel = await options.discordClient.channels.fetch(options.channelID);
 
-    server.on(LOG_PARSER_TEAMKILL, (info) => {
+    server.on(TEAMKILL, (info) => {
       if (!info.attacker) return;
       if (options.ignoreSuicides && info.suicide) return;
 

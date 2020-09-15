@@ -1,6 +1,6 @@
 import { SquadLayers } from 'core/squad-layers';
 
-import { LOG_PARSER_NEW_GAME } from '../../events/log-parser.js';
+import { NEW_GAME } from '../../events.js';
 
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogWorld: Bringing World \/([A-z]+)\/Maps\/([A-z]+)\/(?:Gameplay_Layers\/)?([A-z0-9_]+)/,
@@ -8,6 +8,7 @@ export default {
     const layer = SquadLayers.getLayerByLayerClassname(args[5]);
 
     const data = {
+      ...logParser.eventStore.WON,
       raw: args[0],
       time: args[1],
       chainID: args[2],
@@ -18,7 +19,9 @@ export default {
       layer: layer ? layer.layer : null
     };
 
+    delete logParser.eventStore.WON;
+
     /* Emit new game event */
-    logParser.server.emit(LOG_PARSER_NEW_GAME, data);
+    logParser.server.emit(NEW_GAME, data);
   }
 };

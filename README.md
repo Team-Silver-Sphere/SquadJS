@@ -186,358 +186,551 @@ The `disabled` field can be toggled between `true`/ `false` to enabled/disable t
 Plugin options are also specified. A full list of plugin options can be seen below.
 
 ## Plugins
-The following is a list of plugins built into SquadJS:
+The following is a list of plugins built into SquadJS, you can click their title for more information:
 
-### auto-tk-warn
-The `auto-tk-warn` plugin will automatically warn players in game to apologise for teamkills when they teamkill another player.
+<details>
+      <summary>auto-tk-warn</summary>
+      <h2>auto-tk-warn</h2>
+      <p>The <code>auto-tk-warn</code> plugin will automatically warn players in game to apologise for teamkills when they teamkill another player.</p>
+      <h3>Options</h3>
+      <h4>message</h4>
+       <h6>Description</h6>
+       <p>The message to warn players with.</p>
+       <h6>Default</h6>
+       <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre><h6>Example</h6>
+       <pre><code>Test</code></pre>
+    </details>
 
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>message</td><td>String</td><td>false</td><td>Please apologise for ALL TKs in ALL chat!</td><td>The message to warn players with.</td></tr>
-  </tbody>
-</table>
+<details>
+      <summary>chat-commands</summary>
+      <h2>chat-commands</h2>
+      <p>The <code>chat-command</code> plugin can be configured to make chat commands that broadcast or warn the caller with present messages.</p>
+      <h3>Options</h3>
+      <h4>commands</h4>
+       <h6>Description</h6>
+       <p>An array of objects containing the following properties: <ul><li><code>command</code> - The command that initiates the message.</li><li><code>type</code> - Either <code>warn</code> or <code>broadcast</code>.</li><li><code>response</code> - The message to respond with.</li><li><code>ignoreChats</code> - A list of chats to ignore the commands in. Use this to limit it to admins.</li></ul></p>
+       <h6>Default</h6>
+       <pre><code>[
+  {
+    "command": "!squadjs",
+    "type": "warn",
+    "response": "This server is powered by SquadJS.",
+    "ignoreChats": []
+  }
+]</code></pre>
+    </details>
 
-### discord-admin-broadcast
-The `discord-admin-broadcast` plugin will send a copy of admin broadcasts made in game to a Discord channel.
+<details>
+      <summary>discord-admin-broadcast</summary>
+      <h2>discord-admin-broadcast</h2>
+      <p>The <code>discord-admin-broadcast</code> plugin will send a copy of admin broadcasts made in game to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the Discord Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+    </details>
 
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
-<tr><td>channelID</td><td>Discord Channel ID</td><td>true</td><td>Discord Channel ID</td><td>The ID of the channel to log admin broadcasts to.</td></tr>
-<tr><td>color</td><td>Discord Color Code</td><td>false</td><td>16761867</td><td>The color of the embed.</td></tr>
-  </tbody>
-</table>
+<details>
+      <summary>discord-admin-cam-logs</summary>
+      <h2>discord-admin-cam-logs</h2>
+      <p>The <code>discord-admin-cam-logs</code> plugin will log in game admin camera usage to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the Discord Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin cam usage to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+    </details>
 
-### discord-admin-cam-logs
-The `discord-admin-cam-logs` plugin will log in game admin camera usage to a Discord channel.
+<details>
+      <summary>discord-chat</summary>
+      <h2>discord-chat</h2>
+      <p>The <code>discord-chat</code> plugin will log in-game chat to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the Discord Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>ignoreChats</h4>
+       <h6>Description</h6>
+       <p>A list of chat names to ignore.</p>
+       <h6>Default</h6>
+       <pre><code>[
+  "ChatSquad"
+]</code></pre>
+<h4>chatColors</h4>
+       <h6>Description</h6>
+       <p>The color of the embed for each chat.</p>
+       <h6>Default</h6>
+       <pre><code>{}</code></pre><h6>Example</h6>
+       <pre><code>{
+  "ChatAll": 16761867
+}</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+    </details>
 
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
-<tr><td>channelID</td><td>Discord Channel ID</td><td>true</td><td>Discord Channel ID</td><td>The ID of the channel to log admin cam usage to.</td></tr>
-<tr><td>color</td><td>Discord Color Code</td><td>false</td><td>16761867</td><td>The color of the embed.</td></tr>
-  </tbody>
-</table>
+<details>
+      <summary>discord-admin-request</summary>
+      <h2>discord-admin-request</h2>
+      <p>The <code>discord-admin-request</code> plugin will ping admins in a Discord channel when a player requests an admin via the <code>!admin</code> command in in-game chat.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the Discord Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>ignoreChats</h4>
+       <h6>Description</h6>
+       <p>A list of chat names to ignore.</p>
+       <h6>Default</h6>
+       <pre><code>[]</code></pre><h6>Example</h6>
+       <pre><code>[
+  "ChatSquad"
+]</code></pre>
+<h4>ignorePhrases</h4>
+       <h6>Description</h6>
+       <p>A list of phrases to ignore.</p>
+       <h6>Default</h6>
+       <pre><code>[]</code></pre><h6>Example</h6>
+       <pre><code>[
+  "switch"
+]</code></pre>
+<h4>adminPrefix</h4>
+       <h6>Description</h6>
+       <p>The command that calls an admin.</p>
+       <h6>Default</h6>
+       <pre><code>!admin</code></pre>
+<h4>pingGroups</h4>
+       <h6>Description</h6>
+       <p>A list of Discord role IDs to ping.</p>
+       <h6>Default</h6>
+       <pre><code>[]</code></pre><h6>Example</h6>
+       <pre><code>[
+  "500455137626554379"
+]</code></pre>
+<h4>pingDelay</h4>
+       <h6>Description</h6>
+       <p>Cooldown for pings in milliseconds.</p>
+       <h6>Default</h6>
+       <pre><code>60000</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+    </details>
 
-### discord-chat
-The `discord-chat` plugin will log in-game chat to a Discord channel.
+<details>
+      <summary>discord-debug</summary>
+      <h2>discord-debug</h2>
+      <p>The <code>discord-debug</code> plugin can be used to help debug SquadJS by dumping SquadJS events to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the Discord Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>events (Required)</h4>
+       <h6>Description</h6>
+       <p>A list of events to dump.</p>
+       <h6>Default</h6>
+       <pre><code>[]</code></pre><h6>Example</h6>
+       <pre><code>[
+  "PLAYER_DIED"
+]</code></pre>
+    </details>
 
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
-<tr><td>channelID</td><td>Discord Channel ID</td><td>true</td><td>Discord Channel ID</td><td>The ID of the channel to log admin broadcasts to.</td></tr>
-<tr><td>ignoreChats</td><td>Array</td><td>false</td><td>["ChatSquad"]</td><td>A list of chat names to ignore.</td></tr>
-<tr><td>chatColors</td><td>Object</td><td>false</td><td>{}</td><td>The color of the embed for each chat. Example: `{ ChatAll: 16761867 }`.</td></tr>
-<tr><td>color</td><td>Discord Color Code</td><td>false</td><td>16761867</td><td>The color of the embed.</td></tr>
-  </tbody>
-</table>
+<details>
+      <summary>discord-rcon</summary>
+      <h2>discord-rcon</h2>
+      <p>The <code>discord-rcon</code> plugin allows a specified Discord channel to be used as a RCON console to run RCON commands.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the Discord Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel you wish to turn into a RCON console.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>prependAdminNameInBroadcast</h4>
+       <h6>Description</h6>
+       <p>Prepend the admin's name when he makes an announcement.</p>
+       <h6>Default</h6>
+       <pre><code>false</code></pre>
+    </details>
 
-### discord-admin-request
-The `discord-admin-request` plugin will ping admins in a Discord channel when a player requests an admin via the `!admin` command in in-game chat.
+<details>
+      <summary>discord-round-winner</summary>
+      <h2>discord-round-winner</h2>
+      <p>The `discord-round-winner` plugin will send the round winner to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the Discord Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+    </details>
 
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
-<tr><td>channelID</td><td>Discord Channel ID</td><td>true</td><td>Discord Channel ID</td><td>The ID of the channel to log admin broadcasts to.</td></tr>
-<tr><td>ignoreChats</td><td>Array</td><td>false</td><td>["ChatSquad"]</td><td>A list of chat names to ignore.</td></tr>
-<tr><td>ignorePhrases</td><td>Array</td><td>false</td><td>[]</td><td>A list of phrases to ignore.</td></tr>
-<tr><td>adminPrefix</td><td>String</td><td>false</td><td>!admin</td><td>The command that calls an admin.</td></tr>
-<tr><td>pingGroups</td><td>Array</td><td>false</td><td>[]</td><td>A list of Discord role IDs to ping.</td></tr>
-<tr><td>pingDelay</td><td>Number</td><td>false</td><td>60000</td><td>Cooldown for pings.</td></tr>
-<tr><td>color</td><td>Discord Color Code</td><td>false</td><td>16761867</td><td>The color of the embed.</td></tr>
-  </tbody>
-</table>
+<details>
+      <summary>discord-server-status</summary>
+      <h2>discord-server-status</h2>
+      <p>The <code>discord-server-status</code> plugin displays a server status embed to Discord when someone uses the <code>!server</code> command in a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the Discord Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color code of the Discord embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+<h4>colorGradient</h4>
+       <h6>Description</h6>
+       <p>Apply gradient color to Discord embed depending on the player count.</p>
+       <h6>Default</h6>
+       <pre><code>true</code></pre>
+<h4>connectLink</h4>
+       <h6>Description</h6>
+       <p>Display a Steam server connection link.</p>
+       <h6>Default</h6>
+       <pre><code>true</code></pre>
+<h4>command</h4>
+       <h6>Description</h6>
+       <p>The command that displays the embed.</p>
+       <h6>Default</h6>
+       <pre><code>!server</code></pre>
+<h4>disableStatus</h4>
+       <h6>Description</h6>
+       <p>Disable the bot status.</p>
+       <h6>Default</h6>
+       <pre><code>false</code></pre>
+    </details>
 
-### discord-debug
-The `discord-debug` plugin can be used to help debug SquadJS by dumping SquadJS events to a Discord channel.
+<details>
+      <summary>discord-teamkill</summary>
+      <h2>discord-teamkill</h2>
+      <p>The <code>discord-teamkill</code> plugin logs teamkills and related information to a Discord channel for admin to review.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the Discord Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>teamkillColor</h4>
+       <h6>Description</h6>
+       <p>The color of the embed for teamkills.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+<h4>suicideColor</h4>
+       <h6>Description</h6>
+       <p>The color of the embed for suicides.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+<h4>ignoreSuicides</h4>
+       <h6>Description</h6>
+       <p>Ignore suicides.</p>
+       <h6>Default</h6>
+       <pre><code>false</code></pre>
+<h4>disableSCBL</h4>
+       <h6>Description</h6>
+       <p>Disable Squad Community Ban List information.</p>
+       <h6>Default</h6>
+       <pre><code>false</code></pre>
+    </details>
 
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
-<tr><td>channelID</td><td>Discord Channel ID</td><td>true</td><td>Discord Channel ID</td><td>The ID of the channel to log admin broadcasts to.</td></tr>
-<tr><td>events</td><td>Array</td><td>true</td><td>[]</td><td>A list of events to dump.</td></tr>
-  </tbody>
-</table>
+<details>
+      <summary>intervalled-broadcasts</summary>
+      <h2>intervalled-broadcasts</h2>
+      <p>The `intervalled-broadcasts` plugin allows you to set broadcasts, which will be broadcasted at preset intervals</p>
+      <h3>Options</h3>
+      <h4>broadcasts</h4>
+       <h6>Description</h6>
+       <p>The broadcasted messages.</p>
+       <h6>Default</h6>
+       <pre><code>[
+  "Server powered by SquadJS."
+]</code></pre>
+<h4>interval</h4>
+       <h6>Description</h6>
+       <p>How frequently to broadcast in seconds.</p>
+       <h6>Default</h6>
+       <pre><code>300000</code></pre>
+    </details>
 
-### discord-rcon
-The `discord-rcon` plugin allows a specified Discord channel to be used as a RCON console to run RCON commands.
-
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
-<tr><td>channelID</td><td>Discord Channel ID</td><td>true</td><td>Discord Channel ID</td><td>The ID of the channel you wish to turn into a RCON console.</td></tr>
-<tr><td>prependAdminNameInBroadcast</td><td>Boolean</td><td>false</td><td>false</td><td>Prepend the admin's name when he makes an announcement.</td></tr>
-  </tbody>
-</table>
-
-### discord-server-status
-The `discord-server-status` plugin displays a server status embed to Discord when someone uses the `!server` command in a Discord channel.
-
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
-<tr><td>color</td><td>Discord Color Code</td><td>false</td><td>16761867</td><td>The color code of the Discord embed.</td></tr>
-<tr><td>colorGradient</td><td>Boolean</td><td>false</td><td>true</td><td>Apply gradient color to Discord embed depending on the player count.</td></tr>
-<tr><td>connectLink</td><td>Boolean</td><td>false</td><td>true</td><td>Display a Steam server connection link.</td></tr>
-<tr><td>command</td><td>String</td><td>false</td><td>!server</td><td>The command that displays the embed.</td></tr>
-<tr><td>disableStatus</td><td>Boolean</td><td>false</td><td>false</td><td>Disable the bot status.</td></tr>
-  </tbody>
-</table>
-
-### discord-teamkill
-The `discord-teamkill` plugin logs teamkills and related information to a Discord channel for admin to review.
-
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>discordClient</td><td>DiscordConnector</td><td>true</td><td>discord</td><td>The name of the Discord Connector to use.</td></tr>
-<tr><td>channelID</td><td>Discord Channel ID</td><td>true</td><td>Discord Channel ID</td><td>The ID of the channel to log admin broadcasts to.</td></tr>
-<tr><td>teamkillColor</td><td>Discord Color Code</td><td>false</td><td>16761867</td><td>The color of the embed for teamkills.</td></tr>
-<tr><td>suicideColor</td><td>Discord Color Code</td><td>false</td><td>16761867</td><td>The color of the embed for suicides.</td></tr>
-<tr><td>ignoreSuicides</td><td>Boolean</td><td>false</td><td>false</td><td>Ignore suicides.</td></tr>
-<tr><td>disableSCBL</td><td>Boolean</td><td>false</td><td>false</td><td>Disable Squad Community Ban List information.</td></tr>
-  </tbody>
-</table>
-
-### mapvote-123
-The `mapvote-123` plugin provides map voting functionality. This variant of map voting allows admins to specify a small number of maps which are numbered and announced in admin broadcasts. Players can then vote for the map their choice by typing the corresponding map number into chat.
+<details>
+      <summary>mapvote-123</summary>
+      <h2>mapvote-123</h2>
+      <p>The <code>mapvote-123</code> plugin provides map voting functionality. This variant of map voting allows admins to specify a small number of maps which are numbered and announced in admin broadcasts. Players can then vote for the map their choice by typing the corresponding map number into chat.
 
 Player Commands:
- * `!mapvote help` - Show other commands players can use.
- * `!mapvote results` - Show the results of the current map vote.
- * `<layer number>` - Vote for a layer using the layer number.
+ * <code>!mapvote help</code> - Show other commands players can use.
+ * <code>!mapvote results</code> - Show the results of the current map vote.
+ * <code><layer number></code> - Vote for a layer using the layer number.
 
 
 Admin Commands (Admin Chat Only):
- * `!mapvote start <layer name 1>, <layer name 2>, ...` - Start a new map vote with the specified maps.
- * `!mapvote restart` - Restarts the map vote with the same layers.
- * `!mapvote end` - End the map vote and announce the winner.
- * `!mapvote destroy` - End the map vote without announcing the winner.
+ * <code>!mapvote start <layer name 1>, <layer name 2>, ...</code> - Start a new map vote with the specified maps.
+ * <code>!mapvote restart</code> - Restarts the map vote with the same layers.
+ * <code>!mapvote end</code> - End the map vote and announce the winner.
+ * <code>!mapvote destroy</code> - End the map vote without announcing the winner.
+</p>
+      <h3>Options</h3>
+      <h4>minVoteCount</h4>
+       <h6>Description</h6>
+       <p>The minimum number of votes required for the vote to succeed.</p>
+       <h6>Default</h6>
+       <pre><code>null</code></pre><h6>Example</h6>
+       <pre><code>3</code></pre>
+    </details>
 
-
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>minVoteCount</td><td>Integer</td><td>false</td><td>null</td><td>The minimum number of votes required for the vote to succeed.</td></tr>
-  </tbody>
-</table>
-
-### mapvote-did-you-mean
-The `mapvote-did-you-mean` plugin provides map voting functionality. This variant of map voting uses a "Did you mean?" algorithm to allow players to easily select one of a large pool of layers by typing it's name into the in-game chat.
+<details>
+      <summary>mapvote-did-you-mean</summary>
+      <h2>mapvote-did-you-mean</h2>
+      <p>The <code>mapvote-did-you-mean</code> plugin provides map voting functionality. This variant of map voting uses a "Did you mean?" algorithm to allow players to easily select one of a large pool of layers by typing it's name into the in-game chat.
 
 Player Commands:
- * `!mapvote help` - Show other commands players can use.
- * `!mapvote results` - Show the results of the current map vote.
- * `!mapvote <layer name>` - Vote for the specified layer. Misspelling will be corrected where possible.
+ * <code>!mapvote help</code> - Show other commands players can use.
+ * <code>!mapvote results</code> - Show the results of the current map vote.
+ * <code>!mapvote <layer name></code> - Vote for the specified layer. Misspelling will be corrected where possible.
 
 
 Admin Commands (Admin Chat Only):
- * `!mapvote start` - Start a new map vote
- * `!mapvote restart` - Restarts the map vote.
- * `!mapvote end` - End the map vote and announce the winner.
- * `!mapvote destroy` - End the map vote without announcing the winner.
+ * <code>!mapvote start</code> - Start a new map vote
+ * <code>!mapvote restart</code> - Restarts the map vote.
+ * <code>!mapvote end</code> - End the map vote and announce the winner.
+ * <code>!mapvote destroy</code> - End the map vote without announcing the winner.
+</p>
+      <h3>Options</h3>
+      <h4>layerFilter</h4>
+       <h6>Description</h6>
+       <p>The layers players can choose from.</p>
+       <h6>Default</h6>
+       <pre><code>layerFilter</code></pre>
+<h4>alwaysOn</h4>
+       <h6>Description</h6>
+       <p>If true then the map voting system will always be live.</p>
+       <h6>Default</h6>
+       <pre><code>true</code></pre>
+<h4>minPlayerCount</h4>
+       <h6>Description</h6>
+       <p>The minimum number of players required for the vote to succeed.</p>
+       <h6>Default</h6>
+       <pre><code>null</code></pre><h6>Example</h6>
+       <pre><code>10</code></pre>
+<h4>minVoteCount</h4>
+       <h6>Description</h6>
+       <p>The minimum number of votes required for the vote to succeed.</p>
+       <h6>Default</h6>
+       <pre><code>null</code></pre><h6>Example</h6>
+       <pre><code>5</code></pre>
+    </details>
 
-
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>layerFilter</td><td>SquadLayerFilterConnector</td><td>false</td><td>layerFilter</td><td>The layers players can choose from.</td></tr>
-<tr><td>alwaysOn</td><td>Boolean</td><td>false</td><td>true</td><td>If true then the map voting system will always be live.</td></tr>
-<tr><td>minPlayerCount</td><td>Integer</td><td>false</td><td>null</td><td>The minimum number of players required for the vote to succeed.</td></tr>
-<tr><td>minVoteCount</td><td>Integer</td><td>false</td><td>null</td><td>The minimum number of votes required for the vote to succeed.</td></tr>
-  </tbody>
-</table>
-
-### mysql-log
-The `mysql-log` plugin will log various server statistics and events to a MySQL database. This is great for server performance monitoring and/or player stat tracking.
+<details>
+      <summary>mysql-log</summary>
+      <h2>mysql-log</h2>
+      <p>The <code>mysql-log</code> plugin will log various server statistics and events to a MySQL database. This is great for server performance monitoring and/or player stat tracking.
 
 Installation:
  * Obtain/Install MySQL. MySQL v8.x.x has been tested with this plugin and is recommended.
  * Enable legacy authentication in your database using [this guide](https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server).
  * Execute the [schema](https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/mysql-schema.sql) to setup the database.
- * Add a server to the database with `INSERT INTO Server (name) VALUES ("Your Server Name");`.
- * Find the ID of the server you just inserted with `SELECT * FROM Server;`.
+ * Add a server to the database with <code>INSERT INTO Server (name) VALUES ("Your Server Name");</code>.
+ * Find the ID of the server you just inserted with <code>SELECT * FROM Server;</code>.
  * Replace the server ID in your config with the ID from the inserted record in the database.
 
 
-If you encounter any issues you can enable `"debug": true` in your MySQL connector to get more error logs in the console.
+If you encounter any issues you can enable <code>"debug": true</code> in your MySQL connector to get more error logs in the console.
 
 
 Grafana:
  * [Grafana](https://grafana.com/) is a cool way of viewing server statistics stored in the database.
  * Install Grafana.
- * Add your MySQL database as a datasource named `SquadJS - MySQL`.
+ * Add your MySQL database as a datasource named <code>SquadJS - MySQL</code>.
  * Import the [SquadJS Dashboard](https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/SquadJS-Dashboard.json) to get a preconfigured MySQL only Grafana dashboard.
- * Install any missing Grafana plugins.
+ * Install any missing Grafana plugins.</p>
+      <h3>Options</h3>
+      <h4>mysqlPool (Required)</h4>
+       <h6>Description</h6>
+       <p>The name of the MySQL Pool Connector to use.</p>
+       <h6>Default</h6>
+       <pre><code>mysql</code></pre>
+<h4>overrideServerID</h4>
+       <h6>Description</h6>
+       <p>A overridden server ID.</p>
+       <h6>Default</h6>
+       <pre><code>null</code></pre>
+    </details>
 
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>mysqlPool</td><td>MySQLPoolConnector</td><td>true</td><td>mysql</td><td>The name of the MySQL Pool Connector to use.</td></tr>
-<tr><td>overrideServerID</td><td>Int</td><td>false</td><td>null</td><td>A overridden server ID.</td></tr>
-  </tbody>
-</table>
+<details>
+      <summary>seeding-message</summary>
+      <h2>seeding-message</h2>
+      <p>The <code>seeding-message</code> plugin broadcasts seeding rule messages to players at regular intervals or after a new player has connected to the server. It can also be configured to display live messages when the server goes live.</p>
+      <h3>Options</h3>
+      <h4>mode</h4>
+       <h6>Description</h6>
+       <p>Display seeding messages at a set interval or after players join. Either <code>interval</code> or <code>onjoin</code>.</p>
+       <h6>Default</h6>
+       <pre><code>interval</code></pre>
+<h4>interval</h4>
+       <h6>Description</h6>
+       <p>How frequently to display the seeding messages in seconds.</p>
+       <h6>Default</h6>
+       <pre><code>150000</code></pre>
+<h4>delay</h4>
+       <h6>Description</h6>
+       <p>How long to wait after a player joins to display the announcement in seconds.</p>
+       <h6>Default</h6>
+       <pre><code>45000</code></pre>
+<h4>seedingThreshold</h4>
+       <h6>Description</h6>
+       <p>Number of players before the server is considered live.</p>
+       <h6>Default</h6>
+       <pre><code>50</code></pre>
+<h4>seedingMessage</h4>
+       <h6>Description</h6>
+       <p>The seeding message to display.</p>
+       <h6>Default</h6>
+       <pre><code>Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!</code></pre>
+<h4>liveEnabled</h4>
+       <h6>Description</h6>
+       <p>Display a "Live" message when a certain player count is met.</p>
+       <h6>Default</h6>
+       <pre><code>true</code></pre>
+<h4>liveThreshold</h4>
+       <h6>Description</h6>
+       <p>When above the seeding threshold, but within this number "Live" messages are displayed.</p>
+       <h6>Default</h6>
+       <pre><code>2</code></pre>
+<h4>liveMessage</h4>
+       <h6>Description</h6>
+       <p>The "Live" message to display.</p>
+       <h6>Default</h6>
+       <pre><code>Live</code></pre>
+    </details>
 
-### seeding-message
-The `seeding-message` plugin broadcasts seeding rule messages to players at regular intervals or after a newplayer has connected to the server. It can also be configured to display live messages when the server goes live.
+<details>
+      <summary>skipmap</summary>
+      <h2>skipmap</h2>
+      <p>The <code>skipmap</code> plugin will allow players to vote via <code>+</code>/<code>-</code> if they wish to skip the current map</p>
+      <h3>Options</h3>
+      <h4>command</h4>
+       <h6>Description</h6>
+       <p>The name of the command to be used in chat.</p>
+       <h6>Default</h6>
+       <pre><code>!skipmap</code></pre>
+<h4>voteDuration</h4>
+       <h6>Description</h6>
+       <p>How long the vote should go on for.</p>
+       <h6>Default</h6>
+       <pre><code>300000</code></pre>
+<h4>startTimer</h4>
+       <h6>Description</h6>
+       <p>Time before voting is allowed.</p>
+       <h6>Default</h6>
+       <pre><code>900000</code></pre>
+<h4>endTimer</h4>
+       <h6>Description</h6>
+       <p>Time before voting is no longer allowed.</p>
+       <h6>Default</h6>
+       <pre><code>1800000</code></pre>
+<h4>pastVoteTimer</h4>
+       <h6>Description</h6>
+       <p>Time that needs to have passed since the last vote.</p>
+       <h6>Default</h6>
+       <pre><code>600000</code></pre>
+<h4>minimumVotes</h4>
+       <h6>Description</h6>
+       <p>The minimum required amount of votes for the vote to go through</p>
+       <h6>Default</h6>
+       <pre><code>20</code></pre>
+<h4>reminderInterval</h4>
+       <h6>Description</h6>
+       <p>The time between individual reminders.</p>
+       <h6>Default</h6>
+       <pre><code>120000</code></pre>
+    </details>
 
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>mode</td><td>`interval` or `onjoin`</td><td>false</td><td>interval</td><td>Display seeding messages at a set interval or after players join.</td></tr>
-<tr><td>interval</td><td>Number</td><td>false</td><td>150000</td><td>How frequently to display the seeding messages in seconds.</td></tr>
-<tr><td>delay</td><td>Number</td><td>false</td><td>45000</td><td>How long to wait after a player joins to display the announcement in seconds.</td></tr>
-<tr><td>seedingThreshold</td><td>Number</td><td>false</td><td>50</td><td>Number of players before the server is considered live.</td></tr>
-<tr><td>seedingMessage</td><td>String</td><td>false</td><td>Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!</td><td>The seeding message to display.</td></tr>
-<tr><td>liveEnabled</td><td>String</td><td>false</td><td>true</td><td>Display a "Live" message when a certain player count is met.</td></tr>
-<tr><td>liveThreshold</td><td>Number</td><td>false</td><td>2</td><td>When above the seeding threshold, but within this number "Live" messages are displayed.</td></tr>
-<tr><td>liveMessage</td><td>String</td><td>false</td><td>Live</td><td>The "Live" message to display.</td></tr>
-  </tbody>
-</table>
-
-### team-randomizer
-The `team-randomizer` plugin can be used to randomize teams. It's great for destroying clan stacks or for social events. It can be run by typing `!randomize` into in-game admin chat.
-
-##### Options
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr><td>command</td><td>String</td><td>false</td><td>!randomize</td><td>The command used to randomize the teams.</td></tr>
-  </tbody>
-</table>
+<details>
+      <summary>team-randomizer</summary>
+      <h2>team-randomizer</h2>
+      <p>The <code>team-randomizer</code> plugin can be used to randomize teams. It's great for destroying clan stacks or for social events. It can be run by typing <code>!randomize</code> into in-game admin chat.</p>
+      <h3>Options</h3>
+      <h4>command</h4>
+       <h6>Description</h6>
+       <p>The command used to randomize the teams.</p>
+       <h6>Default</h6>
+       <pre><code>!randomize</code></pre>
+    </details>
  
 ## Creating Your Own Plugins
 To create your own plugin you need a basic knowledge of JavaScript.
@@ -576,13 +769,13 @@ function aPluginToLogPlayerCountEvery60Seconds(server){
 A more common approach in this version of SquadJS is to react to an event happening:
 ```js
 function aPluginToLogTeamkills(server){
-  server.on(LOG_PARSER_TEAMKILL, info => {
+  server.on(TEAMKILL, info => {
     console.log(info);
   });
 }
 ```
 
-A complete list of events that you can listen for and the information included within each is found [here](https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/events/log-parser.js), [here](https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/events/rcon.js) and [here](https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/events/server.js).
+A complete list of events that you can listen for and the information included within each is found [here](https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/events.js).
 
 Various actions can be completed in a plugin. Most of these will involve outside system, e.g. Discord.js to run a Discord bot, so they are not documented here. However, you may run RCON commands using `server.rcon.execute("Command");`.
 

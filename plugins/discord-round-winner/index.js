@@ -1,11 +1,9 @@
 import { COPYRIGHT_MESSAGE } from 'core/constants';
-import { ADMIN_BROADCAST } from 'squad-server/events';
+import { NEW_GAME } from 'squad-server/events';
 
 export default {
-  name: 'discord-admin-broadcast',
-  description:
-    'The <code>discord-admin-broadcast</code> plugin will send a copy of admin broadcasts made in game to a Discord ' +
-    'channel.',
+  name: 'discord-round-winner',
+  description: 'The `discord-round-winner` plugin will send the round winner to a Discord channel.',
 
   defaultEnabled: true,
   optionsSpec: {
@@ -30,15 +28,15 @@ export default {
   init: async (server, options) => {
     const channel = await options.discordClient.channels.fetch(options.channelID);
 
-    server.on(ADMIN_BROADCAST, async (info) => {
+    server.on(NEW_GAME, async (info) => {
       channel.send({
         embed: {
-          title: 'Admin Broadcast',
+          title: 'Round Winner',
           color: options.color,
           fields: [
             {
               name: 'Message',
-              value: `${info.message}`
+              value: `${info.winner} won on ${info.layer}`
             }
           ],
           timestamp: info.time.toISOString(),

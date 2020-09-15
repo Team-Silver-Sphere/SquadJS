@@ -1,4 +1,4 @@
-import { LOG_PARSER_PLAYER_CONNECTED } from '../../events/log-parser.js';
+import { PLAYER_CONNECTED } from '../../events.js';
 
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogNet: Join succeeded: (.+)/,
@@ -12,6 +12,6 @@ export default {
       player: await logParser.server.getPlayerByName(args[3], true)
     };
 
-    logParser.server.emit(LOG_PARSER_PLAYER_CONNECTED, data);
+    logParser.server.emit(PLAYER_CONNECTED, data);
   }
 };

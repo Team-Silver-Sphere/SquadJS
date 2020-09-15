@@ -1,4 +1,4 @@
-import { LOG_PARSER_ADMIN_BROADCAST } from '../../events/log-parser.js';
+import { ADMIN_BROADCAST } from '../../events.js';
 
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: ADMIN COMMAND: Message broadcasted <(.+)> from (.+)/,
@@ -11,6 +11,6 @@ export default {
       from: args[4]
     };
 
-    logParser.server.emit(LOG_PARSER_ADMIN_BROADCAST, data);
+    logParser.server.emit(ADMIN_BROADCAST, data);
   }
 };

@@ -1,4 +1,4 @@
-import { LOG_PARSER_PLAYER_WOUNDED, LOG_PARSER_TEAMKILL } from '../../events/log-parser.js';
+import { PLAYER_WOUNDED, TEAMKILL } from '../../events.js';
 
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQSoldier::)?Wound\(\): Player:(.+) KillingDamage=(?:-)*([0-9.]+) from ([A-z_0-9]+) caused by ([A-z_0-9]+)_C/,
@@ -16,7 +16,7 @@ export default {
 
     logParser.eventStore[args[3]] = data;
 
-    logParser.server.emit(LOG_PARSER_PLAYER_WOUNDED, data);
-    if (data.teamkill) logParser.server.emit(LOG_PARSER_TEAMKILL, data);
+    logParser.server.emit(PLAYER_WOUNDED, data);
+    if (data.teamkill) logParser.server.emit(TEAMKILL, data);
   }
 };
