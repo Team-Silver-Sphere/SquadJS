@@ -182,6 +182,18 @@ export default {
       await server.rcon.warn(info.steamID, COPYRIGHT_MESSAGE);
 
       playerVotes[info.steamID] = info.message;
+
+      // If 50 people voted in favour, instantly win the vote
+      if (votePos >= 50) {
+        await server.rcon.broadcast(
+          `The vote to skip the current map has passed. ${votePos} voted in favour, ${voteNeg} against.`
+        );
+        await server.rcon.execute('AdminEndMatch');
+        timeLastVote = new Date();
+        voteActive = false;
+        clearInterval(intervalReminderBroadcasts);
+        clearTimeout(timeoutVote);
+      }
     });
   }
 };
