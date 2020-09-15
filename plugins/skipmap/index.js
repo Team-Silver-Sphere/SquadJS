@@ -184,7 +184,7 @@ export default {
       playerVotes[info.steamID] = info.message;
 
       // If 50 people voted in favour, instantly win the vote
-      if (votePos >= 50) {
+      if (votePos > server.players.length / 2) {
         await server.rcon.broadcast(
           `The vote to skip the current map has passed. ${votePos} voted in favour, ${voteNeg} against.`
         );
