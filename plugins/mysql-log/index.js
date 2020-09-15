@@ -62,14 +62,15 @@ export default {
     });
 
     server.on(NEW_GAME, (info) => {
-      options.mysqlPool.query('call NewMatch(?,?,?,?,?,?,?)', [
+      options.mysqlPool.query('call NewMatch(?,?,?,?,?,?,?,?)', [
         serverID,
         info.time,
         info.dlc,
         info.mapClassname,
         info.layerClassname,
         info.map,
-        info.layer
+        info.layer,
+        info.winner
       ]);
     });
 
