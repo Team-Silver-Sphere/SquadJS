@@ -78,7 +78,6 @@ export default {
           (server.layerHistory[0].time + options.startTimer - Date.now()) / 1000
         );
         const minutes = Math.floor(seconds / 60);
-        console.log(minutes, seconds);
 
         await server.rcon.warn(
           info.steamID,
