@@ -40,7 +40,7 @@ export default {
 
     minimumVotes: {
       required: false,
-      description: 'The minimum required amount of votes for the vote to go through',
+      description: 'The minimum percentage of people required to vote for the vote to go through.',
       default: 20
     },
 
