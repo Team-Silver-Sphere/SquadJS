@@ -115,6 +115,7 @@ export default {
       voteNeg = 0;
       playerVotes = {};
       playerVotes[info.steamID] = '+';
+      timeLastVote = new Date(); // As a vote happened, stop any further votes from happening until enough time has passed
 
       // Set reminders
       intervalReminderBroadcasts = setInterval(async () => {
@@ -132,7 +133,7 @@ export default {
         voteActive = false;
         clearInterval(intervalReminderBroadcasts);
         // Check if enough people voted
-        if (voteNeg + votePos < options.minVoteCount) {
+        if (voteNeg + votePos < options.minimumVotes) {
           server.rcon.broadcast('Not enough people voted for the vote to go through.');
           return;
         }
@@ -146,8 +147,6 @@ export default {
             `Not enough people voted in favour of skipping the match. ${votePos} voted in favour, ${voteNeg} against.`
           );
         }
-        // As a vote happened, stop any further votes from happening until enough time has passed
-        timeLastVote = new Date();
       }, options.voteDuration);
     });
 
@@ -183,8 +182,8 @@ export default {
 
       playerVotes[info.steamID] = info.message;
 
-      // If 50 people voted in favour, instantly win the vote
-      if (votePos >= 50) {
+      // If 50% of people voted in favour, instantly win the vote
+      if (votePos > server.players.length / 2) {
         await server.rcon.broadcast(
           `The vote to skip the current map has passed. ${votePos} voted in favour, ${voteNeg} against.`
         );
