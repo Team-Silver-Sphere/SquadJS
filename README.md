@@ -710,7 +710,7 @@ Grafana:
        <pre><code>600000</code></pre>
 <h4>minimumVotes</h4>
        <h6>Description</h6>
-       <p>The minimum required amount of votes for the vote to go through</p>
+       <p>The minimum percentage of people required to vote for the vote to go through.</p>
        <h6>Default</h6>
        <pre><code>20</code></pre>
 <h4>reminderInterval</h4>
