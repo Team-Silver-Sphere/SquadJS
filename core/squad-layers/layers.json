@@ -15,14 +15,14 @@
             "tickets": "250"
         },
         "teamTwo": {
-            "faction": "INS",
+            "faction": "MEA",
             "tickets": "250"
         },
-        "tanks": "x1 for INS, 30min delay",
+        "tanks": "N/A",
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 45,
+            "min": 36,
             "max": 80
         }
     },
@@ -93,7 +93,7 @@
         "flagCount": 6,
         "teamOne": {
             "faction": "GB",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "INS",
@@ -120,7 +120,7 @@
         "flagCount": 6,
         "teamOne": {
             "faction": "GB",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "INS",
@@ -177,7 +177,7 @@
             "tickets": "150"
         },
         "teamTwo": {
-            "faction": "INS",
+            "faction": "MEA",
             "tickets": "150"
         },
         "tanks": "N/A",
@@ -216,6 +216,29 @@
         }
     },
     {
+        "layer": "Al Basrah TA v1",
+        "map": "Al Basrah",
+        "layerClassname": "Albasrah_TA_v1",
+        "mapSize": "2x2 km",
+        "gamemode": "TA",
+        "version": "v1",
+        "lighting": "Sunny Mid Day",
+        "info": null,
+        "commander": false,
+        "flagCount": 1,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "24"
+        },
+        "teamTwo": {
+            "faction": "USA",
+            "tickets": "24"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": false
+    },
+    {
         "layer": "Al Basrah TC v1",
         "map": "Al Basrah",
         "layerClassname": "Albasrah_TC_v1",
@@ -228,17 +251,17 @@
         "flagCount": 67,
         "teamOne": {
             "faction": "GB",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
-            "faction": "INS",
-            "tickets": "400"
+            "faction": "MEA",
+            "tickets": "450"
         },
-        "tanks": "x1 for INS, 20 min delay",
-        "helicopters": "x1 for GB, 20min delay",
+        "tanks": "N/A",
+        "helicopters": "x1 per team, 10min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 54,
+            "min": 45,
             "max": 80
         }
     },
@@ -255,14 +278,14 @@
         "flagCount": 53,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
-            "faction": "INS",
-            "tickets": "400"
+            "faction": "MEA",
+            "tickets": "450"
         },
-        "tanks": "x1 for INS, 20 min delay",
-        "helicopters": "N/A",
+        "tanks": "N/A",
+        "helicopters": "x1 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
@@ -289,7 +312,7 @@
             "tickets": "300"
         },
         "tanks": "N/A",
-        "helicopters": "N/A",
+        "helicopters": "x2 per team, 10 min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
@@ -316,7 +339,7 @@
             "tickets": "300"
         },
         "tanks": "N/A",
-        "helicopters": "x2 per team",
+        "helicopters": "x2 per team, 10 min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
@@ -336,11 +359,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "RUS",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "MIL",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "N/A",
         "helicopters": "x1 RUS, 30min delay",
@@ -360,10 +383,10 @@
         "lighting": "Overcast",
         "info": "Random",
         "commander": true,
-        "flagCount": 6,
+        "flagCount": 5,
         "teamOne": {
             "faction": "USA",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "RUS",
@@ -390,11 +413,11 @@
         "flagCount": 4,
         "teamOne": {
             "faction": "GB",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "700"
+            "tickets": "800"
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 per team, 10min delay",
@@ -525,11 +548,11 @@
         "flagCount": 67,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 per team, 6min delay",
@@ -555,7 +578,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "N/A",
@@ -633,11 +656,11 @@
         "flagCount": 6,
         "teamOne": {
             "faction": "USA",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "900"
+            "tickets": "1000"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -660,11 +683,11 @@
         "flagCount": 6,
         "teamOne": {
             "faction": "USA",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "900"
+            "tickets": "1000"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -717,7 +740,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "N/A",
@@ -768,17 +791,368 @@
         "flagCount": 54,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
-            "tickets": "400"
+            "faction": "MEA",
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah AAS v1",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_AAS_v1",
+        "mapSize": "3x3 km",
+        "gamemode": "AAS",
+        "version": "v1",
+        "lighting": "Partial Clouds Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "MEA",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "300"
+        },
+        "tanks": "x1 per team, 20min delay",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah AAS v2",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_AAS_v2",
+        "mapSize": "3x3 km",
+        "gamemode": "AAS",
+        "version": "v2",
+        "lighting": "Partial Clouds Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "300"
+        },
+        "tanks": "x1 per team, 20min delay",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah Insurgency v1",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_Insurgency_v1",
+        "mapSize": "3x3 km",
+        "gamemode": "Insurgency",
+        "version": "v1",
+        "lighting": "Dusty Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 0,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "200"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "600"
+        },
+        "tanks": "x1 per team",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah Invasion v1",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_Invasion_v1",
+        "mapSize": "3x3 km",
+        "gamemode": "Invasion",
+        "version": "v1",
+        "lighting": "Dusty Mid Day",
+        "info": "Random",
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "200"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "900"
+        },
+        "tanks": "x2 for USA, x1 for INS",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah Invasion v2",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_Invasion_v2",
+        "mapSize": "3x3 km",
+        "gamemode": "Invasion",
+        "version": "v2",
+        "lighting": "Dusty Mid Day",
+        "info": "Random",
+        "commander": true,
+        "flagCount": 4,
+        "teamOne": {
+            "faction": "MEA",
+            "tickets": "800"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "250"
+        },
+        "tanks": "x1 Temp for MEA, x2 for INS",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah Invasion v2",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_Invasion_v2",
+        "mapSize": "3x3 km",
+        "gamemode": "Invasion",
+        "version": "v2",
+        "lighting": "Dusty Mid Day",
+        "info": "Random",
+        "commander": true,
+        "flagCount": 4,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "200"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "900"
+        },
+        "tanks": "x2 for USA, x1 for INS",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah RAAS v1",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_RAAS_v1",
+        "mapSize": "3x3 km",
+        "gamemode": "RAAS",
+        "version": "v1",
+        "lighting": "Partial Clouds Mid Day ",
+        "info": "PAAS",
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah RAAS v2",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_RAAS_v2",
+        "mapSize": "3x3 km",
+        "gamemode": "RAAS",
+        "version": "v2",
+        "lighting": "Clear Morning",
+        "info": null,
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "GB",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "300"
+        },
+        "tanks": "x2 per team, 20min delay",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah RAAS v3",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_RAAS_v3",
+        "mapSize": "3x3 km",
+        "gamemode": "RAAS",
+        "version": "v3",
+        "lighting": "Clear Morning",
+        "info": null,
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "300"
+        },
+        "tanks": "x2 per team, 20min delay",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah Skirmish v1",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_Skirmish_v1",
+        "mapSize": "3x3 km",
+        "gamemode": "Skirmish",
+        "version": "v1",
+        "lighting": "Clear Night",
+        "info": null,
+        "commander": false,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "150"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "150"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "mix": 0,
+            "max": 40
+        }
+    },
+    {
+        "layer": "Fallujah Skirmish v2",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_Skirmish_v2",
+        "mapSize": "3x3 km",
+        "gamemode": "Skirmish",
+        "version": "v2",
+        "lighting": "Sand Storm Mid Day",
+        "info": null,
+        "commander": false,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "150"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "150"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "mix": 0,
+            "max": 40
+        }
+    },
+    {
+        "layer": "Fallujah TC v1",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_TC_v1",
+        "mapSize": "3x3 km",
+        "gamemode": "TC",
+        "version": "v1",
+        "lighting": "Partial Clouds Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 40,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "450"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "450"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "Fallujah TC v2",
+        "map": "Fallujah",
+        "layerClassname": "Fallujah_TC_v2",
+        "mapSize": "3x3 km",
+        "gamemode": "TC",
+        "version": "v2",
+        "lighting": "Sand Storm Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 91,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "450"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "450"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
             "max": 80
         }
     },
@@ -794,12 +1168,12 @@
         "commander": true,
         "flagCount": 5,
         "teamOne": {
-            "faction": "RUS",
-            "tickets": "250"
+            "faction": "USA",
+            "tickets": "300"
         },
         "teamTwo": {
-            "faction": "MIL",
-            "tickets": "250"
+            "faction": "RUS",
+            "tickets": "300"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -821,12 +1195,12 @@
         "commander": true,
         "flagCount": 7,
         "teamOne": {
-            "faction": "GB",
-            "tickets": "250"
+            "faction": "USA",
+            "tickets": "300"
         },
         "teamTwo": {
-            "faction": "MIL",
-            "tickets": "250"
+            "faction": "RUS",
+            "tickets": "300"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -876,11 +1250,11 @@
         "flagCount": 4,
         "teamOne": {
             "faction": "GB",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "MIL",
-            "tickets": "700"
+            "tickets": "800"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -906,7 +1280,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "MIL",
+            "faction": "RUS",
             "tickets": "300"
         },
         "tanks": "N/A",
@@ -930,11 +1304,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "GB",
-            "tickets": "250"
+            "tickets": "300"
         },
         "teamTwo": {
-            "faction": "MIL",
-            "tickets": "250"
+            "faction": "RUS",
+            "tickets": "300"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -957,11 +1331,11 @@
         "flagCount": 6,
         "teamOne": {
             "faction": "GB",
-            "tickets": "250"
+            "tickets": "300"
         },
         "teamTwo": {
             "faction": "MIL",
-            "tickets": "250"
+            "tickets": "300"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -1038,11 +1412,11 @@
         "flagCount": 30,
         "teamOne": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "MIL",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -1064,18 +1438,18 @@
         "commander": true,
         "flagCount": 6,
         "teamOne": {
-            "faction": "RUS",
+            "faction": "USA",
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "MIL",
+            "faction": "RUS",
             "tickets": "300"
         },
-        "tanks": "x1 for MIL",
-        "helicopters": "x1 for RUS, 20min delay",
+        "tanks": "N/A",
+        "helicopters": "x2 per team, 10 min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "min": 54,
+            "min": 45,
             "max": 80
         }
     },
@@ -1099,7 +1473,7 @@
             "tickets": "300"
         },
         "tanks": "x1 per team, 20min delay",
-        "helicopters": "x2 per team",
+        "helicopters": "x2 per team, 10 min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
@@ -1173,7 +1547,7 @@
         "flagCount": 6,
         "teamOne": {
             "faction": "USA",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "RUS",
@@ -1200,7 +1574,7 @@
         "flagCount": 6,
         "teamOne": {
             "faction": "RUS",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "MIL",
@@ -1389,11 +1763,11 @@
         "flagCount": 64,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
@@ -1469,7 +1843,7 @@
         "commander": true,
         "flagCount": 0,
         "teamOne": {
-            "faction": "USA",
+            "faction": "MEA",
             "tickets": "99999"
         },
         "teamTwo": {
@@ -1575,7 +1949,7 @@
         "lighting": "Stormy",
         "info": "Random",
         "commander": true,
-        "flagCount": 6,
+        "flagCount": 5,
         "teamOne": {
             "faction": "USA",
             "tickets": "150"
@@ -1602,7 +1976,7 @@
         "lighting": "Sunset",
         "info": "Random",
         "commander": true,
-        "flagCount": 6,
+        "flagCount": 5,
         "teamOne": {
             "faction": "GB",
             "tickets": "150"
@@ -1636,7 +2010,7 @@
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "x1 for INS, 20min delay",
         "helicopters": "x2 for USA, 10min delay",
@@ -1716,7 +2090,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "x1 per team, 20min delay",
@@ -1743,7 +2117,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "INS",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "x1 for INS, 10min delay",
@@ -1794,11 +2168,11 @@
         "flagCount": 43,
         "teamOne": {
             "faction": "GB",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS_DE",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
@@ -1821,11 +2195,11 @@
         "flagCount": 44,
         "teamOne": {
             "faction": "MIL",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -1851,11 +2225,11 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "N/A",
-        "helicopters": "x2 per team",
+        "helicopters": "x2 per team, 10 min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
@@ -1872,7 +2246,7 @@
         "lighting": "Mid Day",
         "info": null,
         "commander": true,
-        "flagCount": 7,
+        "flagCount": 8,
         "teamOne": {
             "faction": "USA",
             "tickets": "300"
@@ -2040,7 +2414,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "INS",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "N/A",
@@ -2117,12 +2491,12 @@
         "commander": true,
         "flagCount": 39,
         "teamOne": {
-            "faction": "USA",
-            "tickets": "400"
+            "faction": "RUS_DE",
+            "tickets": "450"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
-            "tickets": "400"
+            "faction": "MEA",
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
@@ -2145,11 +2519,11 @@
         "flagCount": 7,
         "teamOne": {
             "faction": "RUS_DE",
-            "tickets": "250"
+            "tickets": "300"
         },
         "teamTwo": {
-            "faction": "INS",
-            "tickets": "250"
+            "faction": "MEA",
+            "tickets": "300"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -2229,7 +2603,7 @@
             "tickets": "250"
         },
         "teamTwo": {
-            "faction": "INS",
+            "faction": "MEA",
             "tickets": "250"
         },
         "tanks": "N/A",
@@ -2256,7 +2630,7 @@
             "tickets": "250"
         },
         "teamTwo": {
-            "faction": "INS",
+            "faction": "MEA",
             "tickets": "250"
         },
         "tanks": "N/A",
@@ -2307,11 +2681,11 @@
         "flagCount": 37,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
-            "faction": "INS",
-            "tickets": "400"
+            "faction": "MEA",
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -2364,7 +2738,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "N/A",
@@ -2445,7 +2819,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "N/A",
@@ -2496,10 +2870,10 @@
         "flagCount": 98,
         "teamOne": {
             "faction": "GB",
-            "tickets": "300"
+            "tickets": "450"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "x1 per team, 20min delay",
@@ -2523,11 +2897,11 @@
         "flagCount": 67,
         "teamOne": {
             "faction": "USA",
-            "tickets": "300"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS_DE",
-            "tickets": "300"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
@@ -2538,9 +2912,9 @@
         }
     },
     {
-        "layer": "Logar Valley AAS v1",
-        "map": "Logar Valley",
-        "layerClassname": "LogarValley_AAS_v1",
+        "layer": "Logar Valley Valley AAS v1",
+        "map": "Logar Valley Valley",
+        "layerClassname": "LogarValley_Valley_AAS_v1",
         "mapSize": "1x1 km",
         "gamemode": "AAS",
         "version": "v1",
@@ -2550,11 +2924,11 @@
         "flagCount": 8,
         "teamOne": {
             "faction": "USA",
-            "tickets": "200"
+            "tickets": "250"
         },
         "teamTwo": {
-            "faction": "INS",
-            "tickets": "200"
+            "faction": "MEA",
+            "tickets": "250"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -2565,9 +2939,9 @@
         }
     },
     {
-        "layer": "Logar Valley AAS v2",
-        "map": "Logar Valley",
-        "layerClassname": "LogarValley_AAS_v2",
+        "layer": "Logar Valley Valley AAS v2",
+        "map": "Logar Valley Valley",
+        "layerClassname": "LogarValley_Valley_AAS_v2",
         "mapSize": "1x1 km",
         "gamemode": "AAS",
         "version": "v2",
@@ -2577,11 +2951,11 @@
         "flagCount": 6,
         "teamOne": {
             "faction": "USA",
-            "tickets": "200"
+            "tickets": "250"
         },
         "teamTwo": {
-            "faction": "INS",
-            "tickets": "200"
+            "faction": "MEA",
+            "tickets": "250"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -2592,9 +2966,9 @@
         }
     },
     {
-        "layer": "Logar Valley Insurgency v1",
-        "map": "Logar Valley",
-        "layerClassname": "LogarValley_Insurgency_v1",
+        "layer": "Logar Valley Valley Insurgency v1",
+        "map": "Logar Valley Valley",
+        "layerClassname": "LogarValley_Valley_Insurgency_v1",
         "mapSize": "1x1 km",
         "gamemode": "Insurgency",
         "version": "v1",
@@ -2619,9 +2993,9 @@
         }
     },
     {
-        "layer": "Logar Valley RAAS v1",
-        "map": "Logar Valley",
-        "layerClassname": "LogarValley_RAAS_v1",
+        "layer": "Logar Valley Valley RAAS v1",
+        "map": "Logar Valley Valley",
+        "layerClassname": "LogarValley_Valley_RAAS_v1",
         "mapSize": "1x1 km",
         "gamemode": "RAAS",
         "version": "v1",
@@ -2634,7 +3008,7 @@
             "tickets": "250"
         },
         "teamTwo": {
-            "faction": "INS",
+            "faction": "MEA",
             "tickets": "250"
         },
         "tanks": "N/A",
@@ -2646,9 +3020,9 @@
         }
     },
     {
-        "layer": "Logar Valley Skirmish v1",
-        "map": "Logar Valley",
-        "layerClassname": "LogarValley_Skirmish_v1",
+        "layer": "Logar Valley Valley Skirmish v1",
+        "map": "Logar Valley Valley",
+        "layerClassname": "LogarValley_Valley_Skirmish_v1",
         "mapSize": "1x1 km",
         "gamemode": "Skirmish",
         "version": "v1",
@@ -2673,9 +3047,9 @@
         }
     },
     {
-        "layer": "Logar Valley TC v1",
-        "map": "Logar Valley",
-        "layerClassname": "LogarValley_TC_v1",
+        "layer": "Logar Valley Valley TC v1",
+        "map": "Logar Valley Valley",
+        "layerClassname": "LogarValley_Valley_TC_v1",
         "mapSize": "1x1 km",
         "gamemode": "TC",
         "version": "v1",
@@ -2685,11 +3059,11 @@
         "flagCount": 42,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
-            "faction": "INS",
-            "tickets": "400"
+            "faction": "MEA",
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -2847,11 +3221,11 @@
         "flagCount": 22,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -2901,11 +3275,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "GB",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 for USA, 6min delay",
@@ -2931,7 +3305,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "x1 per team, 20min delay",
@@ -2958,7 +3332,7 @@
             "tickets": "150"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "150"
         },
         "tanks": "N/A",
@@ -3009,11 +3383,11 @@
         "flagCount": 36,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
-            "tickets": "400"
+            "faction": "MEA",
+            "tickets": "450"
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 per team",
@@ -3030,7 +3404,7 @@
         "mapSize": "2x2 km",
         "gamemode": "AAS",
         "version": "v1",
-        "lighting": "Mid Day Clouds",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": true,
         "flagCount": 6,
@@ -3057,7 +3431,7 @@
         "mapSize": "2x2 km",
         "gamemode": "AAS",
         "version": "v2",
-        "lighting": "Mid Day Clouds",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": true,
         "flagCount": 6,
@@ -3111,7 +3485,7 @@
         "mapSize": "2x2 km",
         "gamemode": "Destruction",
         "version": "v1",
-        "lighting": "Mid Day Clouds",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": true,
         "flagCount": 0,
@@ -3148,7 +3522,7 @@
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "150"
+            "tickets": "200"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -3165,13 +3539,13 @@
         "mapSize": "2x2 km",
         "gamemode": "Invasion",
         "version": "v2",
-        "lighting": "Mid Day Clouds",
+        "lighting": "Partial Clouds Mid Day",
         "info": "Random",
         "commander": true,
         "flagCount": 5,
         "teamOne": {
             "faction": "GB",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "RUS",
@@ -3192,7 +3566,7 @@
         "mapSize": "2x2 km",
         "gamemode": "RAAS",
         "version": "v1",
-        "lighting": "Mid Day Clouds",
+        "lighting": "Partial Clouds Mid Day",
         "info": "Lanes",
         "commander": true,
         "flagCount": 5,
@@ -3240,6 +3614,29 @@
         }
     },
     {
+        "layer": "Narva TA v1",
+        "map": "Narva",
+        "layerClassname": "Narva_TA_v1",
+        "mapSize": "2x2 km",
+        "gamemode": "TA",
+        "version": "v1",
+        "lighting": "Partial Clouds Mid Day",
+        "info": null,
+        "commander": false,
+        "flagCount": 1,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "24"
+        },
+        "teamTwo": {
+            "faction": "USA",
+            "tickets": "24"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": false
+    },
+    {
         "layer": "Narva TC v1",
         "map": "Narva",
         "layerClassname": "Narva_TC_v1",
@@ -3252,11 +3649,11 @@
         "flagCount": 30,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -3273,17 +3670,17 @@
         "mapSize": "2x2 km",
         "gamemode": "TC",
         "version": "v2",
-        "lighting": "Mid Day Clouds",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": true,
         "flagCount": 56,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "x1 per team, 30min delay",
         "helicopters": "N/A",
@@ -3333,7 +3730,7 @@
         "flagCount": 6,
         "teamOne": {
             "faction": "USA",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "MIL",
@@ -3360,7 +3757,7 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "RUS",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "MIL",
@@ -3522,11 +3919,11 @@
         "flagCount": 34,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
@@ -3549,11 +3946,11 @@
         "flagCount": 41,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "x2 per team",
@@ -3606,7 +4003,7 @@
             "tickets": "250"
         },
         "teamTwo": {
-            "faction": "INS",
+            "faction": "MEA",
             "tickets": "250"
         },
         "tanks": "N/A",
@@ -3614,33 +4011,6 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
-        }
-    },
-    {
-        "layer": "Sumari Invasion v1",
-        "map": "Sumari",
-        "layerClassname": "Sumari_Invasion_v1",
-        "mapSize": "1x1 km",
-        "gamemode": "Invasion",
-        "version": "v1",
-        "lighting": "Sunrise",
-        "info": "Random",
-        "commander": false,
-        "flagCount": 6,
-        "teamOne": {
-            "faction": "USA",
-            "tickets": "150"
-        },
-        "teamTwo": {
-            "faction": "INS",
-            "tickets": "900"
-        },
-        "tanks": "N/A",
-        "helicopters": "N/A",
-        "newForVersion": false,
-        "estimatedSuitablePlayerCount": {
-            "min": 54,
             "max": 80
         }
     },
@@ -3672,13 +4042,40 @@
         }
     },
     {
+        "layer": "Sumari Invasion v1",
+        "map": "Sumari",
+        "layerClassname": "Sumari_Invasion_v1",
+        "mapSize": "1x1 km",
+        "gamemode": "Invasion",
+        "version": "v1",
+        "lighting": "Sunrise",
+        "info": "Random",
+        "commander": false,
+        "flagCount": 6,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "200"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "900"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
         "layer": "Sumari RAAS v1",
         "map": "Sumari",
         "layerClassname": "Sumari_RAAS_v1",
         "mapSize": "1x1 km",
         "gamemode": "RAAS",
         "version": "v1",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": false,
         "flagCount": 6,
@@ -3687,7 +4084,7 @@
             "tickets": "250"
         },
         "teamTwo": {
-            "faction": "INS",
+            "faction": "MEA",
             "tickets": "250"
         },
         "tanks": "N/A",
@@ -3705,7 +4102,7 @@
         "mapSize": "1x1 km",
         "gamemode": "RAAS",
         "version": "v2",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": false,
         "flagCount": 6,
@@ -3714,7 +4111,7 @@
             "tickets": "250"
         },
         "teamTwo": {
-            "faction": "INS",
+            "faction": "MEA",
             "tickets": "250"
         },
         "tanks": "N/A",
@@ -3759,17 +4156,17 @@
         "mapSize": "1x1 km",
         "gamemode": "TC",
         "version": "v1",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": false,
         "flagCount": 24,
         "teamOne": {
             "faction": "USA",
-            "tickets": "300"
+            "tickets": "450"
         },
         "teamTwo": {
-            "faction": "INS",
-            "tickets": "300"
+            "faction": "MEA",
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -3807,6 +4204,33 @@
         }
     },
     {
+        "layer": "Tallil Outskirts AAS v2",
+        "map": "Tallil Outskirts",
+        "layerClassname": "Tallil_Outskirts_AAS_v2",
+        "mapSize": "4x4 km",
+        "gamemode": "AAS",
+        "version": "v2",
+        "lighting": "Sunny Mid Day",
+        "info": null,
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "350"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "350"
+        },
+        "tanks": "x2 per team, 20min delay",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
         "layer": "Tallil Outskirts Invasion v1",
         "map": "Tallil Outskirts",
         "layerClassname": "Tallil_Outskirts_Invasion_v1",
@@ -3819,7 +4243,7 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "USA",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "RUS_DE",
@@ -3846,11 +4270,11 @@
         "flagCount": 3,
         "teamOne": {
             "faction": "RUS_DE",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "700"
+            "tickets": "800"
         },
         "tanks": "x1 for INS 20 min delay",
         "helicopters": "N/A",
@@ -3873,11 +4297,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "USA",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "N/A",
         "helicopters": "x1 USA, 20m delay",
@@ -3930,7 +4354,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "N/A",
@@ -4119,7 +4543,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "MEA",
             "tickets": "300"
         },
         "tanks": "x6 per team",
@@ -4129,6 +4553,29 @@
             "min": 54,
             "max": 80
         }
+    },
+    {
+        "layer": "Tallil Outskirts TA v1",
+        "map": "Tallil Outskirts",
+        "layerClassname": "Tallil_Outskirts_TA_v1",
+        "mapSize": "4x4 km",
+        "gamemode": "TA",
+        "version": "v1",
+        "lighting": "Sunny Mid Day",
+        "info": null,
+        "commander": false,
+        "flagCount": 1,
+        "teamOne": {
+            "faction": "USA",
+            "tickets": "34"
+        },
+        "teamTwo": {
+            "faction": "USA",
+            "tickets": "34"
+        },
+        "tanks": "x2 per team",
+        "helicopters": "N/A",
+        "newForVersion": false
     },
     {
         "layer": "Tallil Outskirts TC v1",
@@ -4237,7 +4684,7 @@
         "mapSize": "5x5 km",
         "gamemode": "AAS",
         "version": "v2",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": true,
         "flagCount": 7,
@@ -4264,7 +4711,7 @@
         "mapSize": "5x5 km",
         "gamemode": "Destruction",
         "version": "v1",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": true,
         "flagCount": 0,
@@ -4297,11 +4744,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "GB",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "MIL",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x2 for GB",
@@ -4318,7 +4765,7 @@
         "mapSize": "5x5 km",
         "gamemode": "Invasion",
         "version": "v2",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": "Random",
         "commander": true,
         "flagCount": 5,
@@ -4328,7 +4775,7 @@
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "150"
+            "tickets": "200"
         },
         "tanks": "x1 per team",
         "helicopters": "x2 per team, 2m delay for USA",
@@ -4345,7 +4792,7 @@
         "mapSize": "5x5 km",
         "gamemode": "RAAS",
         "version": "v1",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": "Lanes",
         "commander": true,
         "flagCount": 7,
@@ -4372,7 +4819,7 @@
         "mapSize": "5x5 km",
         "gamemode": "RAAS",
         "version": "v2",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": true,
         "flagCount": 5,
@@ -4453,7 +4900,7 @@
         "mapSize": "5x5 km",
         "gamemode": "RAAS",
         "version": "v5",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": true,
         "flagCount": 5,
@@ -4534,7 +4981,7 @@
         "mapSize": "5x5 km",
         "gamemode": "Skirmish",
         "version": "v3",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": false,
         "flagCount": 4,
@@ -4555,23 +5002,46 @@
         }
     },
     {
+        "layer": "Yehorivka TA v1",
+        "map": "Yehorivka",
+        "layerClassname": "Yehorivka_TA_v1",
+        "mapSize": "5x5 km",
+        "gamemode": "TA",
+        "version": "v1",
+        "lighting": "Partial Clouds Mid Day",
+        "info": null,
+        "commander": false,
+        "flagCount": 1,
+        "teamOne": {
+            "faction": "RUS",
+            "tickets": "34"
+        },
+        "teamTwo": {
+            "faction": "RUS",
+            "tickets": "34"
+        },
+        "tanks": "x2 per team",
+        "helicopters": "N/A",
+        "newForVersion": false
+    },
+    {
         "layer": "Yehorivka TC v1",
         "map": "Yehorivka",
         "layerClassname": "Yehorivka_TC_v1",
         "mapSize": "5x5 km",
         "gamemode": "TC",
         "version": "v1",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": true,
         "flagCount": 57,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "x2 per team, 20min delay",
         "helicopters": "x1 per team",
@@ -4588,17 +5058,17 @@
         "mapSize": "5x5 km",
         "gamemode": "TC",
         "version": "v2",
-        "lighting": "Mixed Clouds Mid Day",
+        "lighting": "Partial Clouds Mid Day",
         "info": null,
         "commander": true,
         "flagCount": 67,
         "teamOne": {
             "faction": "USA",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "x1 per team",
         "helicopters": "x1 per team",
@@ -4621,15 +5091,42 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "CAF_AR",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "x1 per team",
         "helicopters": "1x CAF, 20min delay",
         "newForVersion": false,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Al_Basrah_Invasion_v2",
+        "map": "CAF Al Basrah",
+        "layerClassname": "CAF_Albasrah_Invasion_v2",
+        "gamemode": "Invasion",
+        "version": "v2",
+        "dlc": "CAF",
+        "lighting": "Sunset",
+        "info": "Random",
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "200"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "800"
+        },
+        "tanks": "x1 per team",
+        "helicopters": "x1 CAF, 10min delay",
+        "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
             "max": 80
@@ -4651,7 +5148,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "MIL",
+            "faction": "RUS",
             "tickets": "300"
         },
         "tanks": "N/A",
@@ -4678,7 +5175,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "RUS_DE",
+            "faction": "RUS",
             "tickets": "300"
         },
         "tanks": "x1 per team, 20min delay",
@@ -4705,11 +5202,11 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "MIL",
+            "faction": "RUS",
             "tickets": "300"
         },
         "tanks": "N/A",
-        "helicopters": "1x CAF, 20min delay",
+        "helicopters": "x1 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
@@ -4744,14 +5241,95 @@
         }
     },
     {
+        "layer": "CAF_Chora_RAAS_v1",
+        "map": "CAF Chora",
+        "layerClassname": "CAF_Chora_RAAS_v1",
+        "gamemode": "RAAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Sunny Mid Day",
+        "info": "Random",
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "300"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 40,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Fallujah_Invasion_v1",
+        "map": "CAF Fallujah",
+        "layerClassname": "CAF_Fallujah_Invasion_v1",
+        "gamemode": "Invasion",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Night",
+        "info": "Random",
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "200"
+        },
+        "teamTwo": {
+            "faction": "INS",
+            "tickets": "900"
+        },
+        "tanks": "x2 per team",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Fallujah_RAAS_v1",
+        "map": "CAF Fallujah",
+        "layerClassname": "CAF_Fallujah_RAAS_v1",
+        "gamemode": "RAAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Mid Day",
+        "info": "Lanes",
+        "commander": true,
+        "flagCount": 6,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "300"
+        },
+        "tanks": "x2 per team",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 45,
+            "max": 80
+        }
+    },
+    {
         "layer": "CAF_Fools_Road_RAAS_v1",
         "map": "CAF Fool's Road",
         "layerClassname": "CAF_Fools_Road_RAAS_v1",
         "gamemode": "RAAS",
         "version": "v1",
         "dlc": "CAF",
-        "lighting": "",
-        "info": null,
+        "lighting": "Sunny Afternoon",
+        "info": "Random",
         "commander": true,
         "flagCount": 5,
         "teamOne": {
@@ -4759,12 +5337,12 @@
             "tickets": "250"
         },
         "teamTwo": {
-            "faction": "MIL",
+            "faction": "RUS",
             "tickets": "250"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 40,
             "max": 80
@@ -4786,7 +5364,7 @@
             "tickets": "300"
         },
         "teamTwo": {
-            "faction": "MIL",
+            "faction": "RUS",
             "tickets": "300"
         },
         "tanks": "1x MIl, 1x CAF 30min delay",
@@ -4810,11 +5388,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "CAF",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "MIL",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "N/A",
@@ -4832,7 +5410,7 @@
         "version": "v1",
         "dlc": "CAF",
         "lighting": "Sunny Mid Day",
-        "info": null,
+        "info": "Random",
         "commander": true,
         "flagCount": 6,
         "teamOne": {
@@ -4891,11 +5469,11 @@
         "flagCount": 64,
         "teamOne": {
             "faction": "CAF",
-            "tickets": "300"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "300"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
@@ -4945,11 +5523,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "CAF",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "x1 per team, 10min delay",
         "helicopters": "N/A",
@@ -4999,11 +5577,11 @@
         "flagCount": 33,
         "teamOne": {
             "faction": "CAF_AR",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS_DE",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -5026,17 +5604,44 @@
         "flagCount": 4,
         "teamOne": {
             "faction": "CAF",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "700"
+            "tickets": "900"
         },
         "tanks": "N/A",
         "helicopters": "x1 for CAF, 20min delay",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Kokan_Valley_RAAS_v1",
+        "map": "CAF Kokan",
+        "layerClassname": "CAF_Kokan_Valley_RAAS_v1",
+        "gamemode": "RAAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Overcast",
+        "info": "Random",
+        "commander": true,
+        "flagCount": 6,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "250"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "250"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 40,
             "max": 80
         }
     },
@@ -5057,7 +5662,7 @@
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "N/A",
         "helicopters": "x2 for CAF",
@@ -5107,17 +5712,44 @@
         "flagCount": 64,
         "teamOne": {
             "faction": "CAF_AR",
-            "tickets": "300"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "INS",
-            "tickets": "300"
+            "tickets": "450"
         },
         "tanks": "x2 for INS, 5min delay, x1 for CAF, 20min delay",
         "helicopters": "x1 for CAF, 20min delay",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_LogarValley_RAAS_v1",
+        "map": "CAF Logar Valley",
+        "layerClassname": "CAF_LogarValley_RAAS_v1",
+        "gamemode": "RAAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Overcast",
+        "info": "Random",
+        "commander": true,
+        "flagCount": 6,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "250"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "250"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 40,
             "max": 80
         }
     },
@@ -5188,11 +5820,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "CAF",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "MIL",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "x1 per team, 20min delay",
         "helicopters": "x1 per team",
@@ -5215,11 +5847,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "CAF",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "USA",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "N/A",
         "helicopters": "N/A",
@@ -5404,11 +6036,11 @@
         "flagCount": 55,
         "teamOne": {
             "faction": "CAF",
-            "tickets": "350"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "350"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
@@ -5434,7 +6066,7 @@
             "tickets": "250"
         },
         "teamTwo": {
-            "faction": "MIL",
+            "faction": "RUS",
             "tickets": "250"
         },
         "tanks": "N/A",
@@ -5457,7 +6089,7 @@
         "commander": true,
         "flagCount": 5,
         "teamOne": {
-            "faction": "CAF",
+            "faction": "CAF_AR",
             "tickets": "300"
         },
         "teamTwo": {
@@ -5479,8 +6111,8 @@
         "gamemode": "RAAS",
         "version": "v1",
         "dlc": "CAF",
-        "lighting": "Mixed Clouds Mid Day",
-        "info": null,
+        "lighting": "Mid Day",
+        "info": "Random",
         "commander": true,
         "flagCount": 5,
         "teamOne": {
@@ -5496,6 +6128,33 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Mutaha_RAAS_v2",
+        "map": "CAF Mutaha",
+        "layerClassname": "CAF_Mutaha_RAAS_v2",
+        "gamemode": "RAAS",
+        "version": "v2",
+        "dlc": "CAF",
+        "lighting": "Mid Day",
+        "info": "Random",
+        "commander": true,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "300"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "300"
+        },
+        "tanks": "x1 per team",
+        "helicopters": "x1 per team, 15min delay",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
             "max": 80
         }
     },
@@ -5539,11 +6198,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "CAF",
-            "tickets": "800"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "150"
+            "tickets": "900"
         },
         "tanks": "x1 per team, 6min delay",
         "helicopters": "x1 per team, 6min delay",
@@ -5615,7 +6274,7 @@
         "version": "v1",
         "dlc": "CAF",
         "lighting": "Mid Day",
-        "info": null,
+        "info": "Random",
         "commander": true,
         "flagCount": 8,
         "teamOne": {
@@ -5628,9 +6287,36 @@
         },
         "tanks": "N/A",
         "helicopters": "x3 per team",
-        "newForVersion": true,
+        "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
+            "max": 80
+        }
+    },
+    {
+        "layer": "CAF_Sumari_AAS_v1",
+        "map": "CAF Sumari",
+        "layerClassname": "CAF_Sumari_AAS_v1",
+        "gamemode": "AAS",
+        "version": "v1",
+        "dlc": "CAF",
+        "lighting": "Mid Day",
+        "info": null,
+        "commander": false,
+        "flagCount": 7,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "250"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "250"
+        },
+        "tanks": "N/A",
+        "helicopters": "N/A",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 36,
             "max": 80
         }
     },
@@ -5642,7 +6328,7 @@
         "version": "v1",
         "dlc": "CAF",
         "lighting": "Sunny Mid Day",
-        "info": null,
+        "info": "Random",
         "commander": true,
         "flagCount": 6,
         "teamOne": {
@@ -5662,6 +6348,33 @@
         }
     },
     {
+        "layer": "CAF_Tallil_Outskirts_RAAS_v2",
+        "map": "CAF Tallil Outskirts",
+        "layerClassname": "CAF_Tallil_Outskirts_RAAS_v2",
+        "gamemode": "RAAS",
+        "version": "v2",
+        "dlc": "CAF",
+        "lighting": "Sunny Mid Day",
+        "info": "Lanes",
+        "commander": true,
+        "flagCount": 5,
+        "teamOne": {
+            "faction": "CAF_AR",
+            "tickets": "350"
+        },
+        "teamTwo": {
+            "faction": "MEA",
+            "tickets": "350"
+        },
+        "tanks": "x3 per team",
+        "helicopters": "x2 per team",
+        "newForVersion": true,
+        "estimatedSuitablePlayerCount": {
+            "min": 54,
+            "max": 80
+        }
+    },
+    {
         "layer": "CAF_Yehorivka_Invasion_v1",
         "map": "CAF Yehorivka",
         "layerClassname": "CAF_Yehorivka_Invasion_v1",
@@ -5674,11 +6387,11 @@
         "flagCount": 5,
         "teamOne": {
             "faction": "CAF",
-            "tickets": "150"
+            "tickets": "200"
         },
         "teamTwo": {
             "faction": "MIL",
-            "tickets": "800"
+            "tickets": "900"
         },
         "tanks": "x1 per team",
         "helicopters": "x1 for CAF",
@@ -5696,7 +6409,7 @@
         "version": "v1",
         "dlc": "CAF",
         "lighting": "Mixed Clouds Mid Day",
-        "info": null,
+        "info": "Random",
         "commander": true,
         "flagCount": 7,
         "teamOne": {
@@ -5728,11 +6441,11 @@
         "flagCount": 67,
         "teamOne": {
             "faction": "CAF",
-            "tickets": "400"
+            "tickets": "450"
         },
         "teamTwo": {
             "faction": "RUS",
-            "tickets": "400"
+            "tickets": "450"
         },
         "tanks": "N/A",
         "helicopters": "x1 per team",
