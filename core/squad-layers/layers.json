@@ -2912,9 +2912,9 @@
         }
     },
     {
-        "layer": "Logar Valley Valley AAS v1",
-        "map": "Logar Valley Valley",
-        "layerClassname": "LogarValley_Valley_AAS_v1",
+        "layer": "Logar Valley AAS v1",
+        "map": "Logar Valley",
+        "layerClassname": "LogarValley_AAS_v1",
         "mapSize": "1x1 km",
         "gamemode": "AAS",
         "version": "v1",
@@ -2939,9 +2939,9 @@
         }
     },
     {
-        "layer": "Logar Valley Valley AAS v2",
-        "map": "Logar Valley Valley",
-        "layerClassname": "LogarValley_Valley_AAS_v2",
+        "layer": "Logar Valley AAS v2",
+        "map": "Logar Valley",
+        "layerClassname": "LogarValley_AAS_v2",
         "mapSize": "1x1 km",
         "gamemode": "AAS",
         "version": "v2",
@@ -2966,9 +2966,9 @@
         }
     },
     {
-        "layer": "Logar Valley Valley Insurgency v1",
-        "map": "Logar Valley Valley",
-        "layerClassname": "LogarValley_Valley_Insurgency_v1",
+        "layer": "Logar Valley Insurgency v1",
+        "map": "Logar Valley",
+        "layerClassname": "LogarValley_Insurgency_v1",
         "mapSize": "1x1 km",
         "gamemode": "Insurgency",
         "version": "v1",
@@ -2993,9 +2993,9 @@
         }
     },
     {
-        "layer": "Logar Valley Valley RAAS v1",
-        "map": "Logar Valley Valley",
-        "layerClassname": "LogarValley_Valley_RAAS_v1",
+        "layer": "Logar Valley RAAS v1",
+        "map": "Logar Valley",
+        "layerClassname": "LogarValley_RAAS_v1",
         "mapSize": "1x1 km",
         "gamemode": "RAAS",
         "version": "v1",
@@ -3020,9 +3020,9 @@
         }
     },
     {
-        "layer": "Logar Valley Valley Skirmish v1",
-        "map": "Logar Valley Valley",
-        "layerClassname": "LogarValley_Valley_Skirmish_v1",
+        "layer": "Logar Valley Skirmish v1",
+        "map": "Logar Valley",
+        "layerClassname": "LogarValley_Skirmish_v1",
         "mapSize": "1x1 km",
         "gamemode": "Skirmish",
         "version": "v1",
@@ -3047,9 +3047,9 @@
         }
     },
     {
-        "layer": "Logar Valley Valley TC v1",
-        "map": "Logar Valley Valley",
-        "layerClassname": "LogarValley_Valley_TC_v1",
+        "layer": "Logar Valley TC v1",
+        "map": "Logar Valley",
+        "layerClassname": "LogarValley_TC_v1",
         "mapSize": "1x1 km",
         "gamemode": "TC",
         "version": "v1",
