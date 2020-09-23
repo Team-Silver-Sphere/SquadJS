@@ -23,7 +23,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -50,7 +50,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -77,7 +77,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -104,7 +104,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -131,7 +131,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -158,7 +158,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -262,7 +262,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -289,7 +289,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -316,7 +316,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -343,7 +343,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -370,7 +370,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -397,7 +397,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -424,7 +424,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -451,7 +451,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -478,7 +478,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -505,7 +505,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -559,7 +559,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -586,7 +586,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -613,7 +613,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -640,7 +640,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -667,7 +667,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -694,7 +694,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -721,7 +721,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -748,7 +748,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -802,7 +802,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -829,7 +829,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -856,7 +856,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -883,7 +883,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -910,7 +910,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -937,16 +937,16 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
-        "layer": "Fallujah Invasion v2",
+        "layer": "Fallujah Invasion v3",
         "map": "Fallujah",
-        "layerClassname": "Fallujah_Invasion_v2",
+        "layerClassname": "Fallujah_Invasion_v3",
         "mapSize": "3x3 km",
         "gamemode": "Invasion",
-        "version": "v2",
+        "version": "v3",
         "lighting": "Dusty Mid Day",
         "info": "Random",
         "commander": true,
@@ -964,7 +964,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -991,7 +991,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1018,7 +1018,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1045,7 +1045,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1126,7 +1126,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1153,7 +1153,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1180,7 +1180,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1207,7 +1207,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1234,7 +1234,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1261,7 +1261,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1288,7 +1288,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1315,7 +1315,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1342,7 +1342,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1423,7 +1423,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1450,7 +1450,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1477,7 +1477,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1504,7 +1504,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1531,7 +1531,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1558,7 +1558,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1585,7 +1585,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1612,7 +1612,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1639,7 +1639,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1666,7 +1666,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1693,7 +1693,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1720,7 +1720,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1774,7 +1774,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1801,7 +1801,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 0,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1828,7 +1828,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 0,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1855,7 +1855,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 0,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1882,7 +1882,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1909,7 +1909,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1936,7 +1936,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1963,7 +1963,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -1990,7 +1990,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2017,7 +2017,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2044,7 +2044,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2071,7 +2071,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2098,7 +2098,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2125,7 +2125,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2179,7 +2179,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2206,7 +2206,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2233,7 +2233,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2260,7 +2260,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2287,7 +2287,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2314,7 +2314,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2341,7 +2341,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2368,7 +2368,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2395,7 +2395,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2422,7 +2422,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2449,7 +2449,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2503,7 +2503,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2530,7 +2530,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2557,7 +2557,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2584,7 +2584,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2611,7 +2611,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2638,7 +2638,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2692,7 +2692,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2719,7 +2719,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2746,7 +2746,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2773,7 +2773,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2800,7 +2800,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2827,7 +2827,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2881,7 +2881,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2908,7 +2908,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2935,7 +2935,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2962,7 +2962,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -2989,7 +2989,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3016,7 +3016,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3070,7 +3070,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3097,7 +3097,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3124,7 +3124,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3151,7 +3151,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3178,7 +3178,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3232,7 +3232,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3259,7 +3259,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3286,7 +3286,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3313,7 +3313,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3367,7 +3367,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3394,7 +3394,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3421,7 +3421,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3448,7 +3448,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3475,7 +3475,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3502,7 +3502,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3529,7 +3529,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3556,7 +3556,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3583,7 +3583,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3660,7 +3660,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3687,7 +3687,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3714,7 +3714,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3741,7 +3741,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3768,7 +3768,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3795,7 +3795,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3822,7 +3822,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3849,7 +3849,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3876,7 +3876,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3930,7 +3930,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3957,7 +3957,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -3984,7 +3984,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4011,7 +4011,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4038,7 +4038,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4065,7 +4065,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4092,7 +4092,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4119,7 +4119,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4173,7 +4173,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4200,7 +4200,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4227,7 +4227,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4254,7 +4254,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4281,7 +4281,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4308,7 +4308,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4335,7 +4335,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4362,7 +4362,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4389,7 +4389,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4416,7 +4416,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4524,7 +4524,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4551,7 +4551,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4601,7 +4601,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4674,7 +4674,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4701,7 +4701,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4728,7 +4728,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4755,7 +4755,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4782,7 +4782,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4809,7 +4809,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4836,7 +4836,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4863,7 +4863,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4890,7 +4890,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -4917,7 +4917,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5048,7 +5048,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5075,7 +5075,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5102,7 +5102,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5129,7 +5129,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5156,7 +5156,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5183,7 +5183,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5210,7 +5210,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5237,7 +5237,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 40,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5264,7 +5264,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 40,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5291,7 +5291,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5318,7 +5318,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5345,7 +5345,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 40,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5372,7 +5372,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5399,7 +5399,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5426,7 +5426,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5453,7 +5453,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5480,7 +5480,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5507,7 +5507,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 0,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5534,7 +5534,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5561,7 +5561,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 40,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5588,7 +5588,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 40,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5615,7 +5615,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5642,7 +5642,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 40,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5669,7 +5669,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5696,7 +5696,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5723,7 +5723,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5750,7 +5750,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 40,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5777,7 +5777,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5804,7 +5804,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5831,7 +5831,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5858,7 +5858,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5885,7 +5885,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5912,7 +5912,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5939,7 +5939,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -5966,7 +5966,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6047,7 +6047,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6074,7 +6074,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 40,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6101,7 +6101,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6128,7 +6128,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6155,7 +6155,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6182,7 +6182,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6209,7 +6209,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6236,7 +6236,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6263,7 +6263,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6290,7 +6290,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6317,7 +6317,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 36,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6344,7 +6344,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6371,7 +6371,7 @@
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6398,7 +6398,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6425,7 +6425,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 54,
-            "max": 80
+            "max": 100
         }
     },
     {
@@ -6452,7 +6452,7 @@
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
             "min": 45,
-            "max": 80
+            "max": 100
         }
     }
 ]
