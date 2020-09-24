@@ -64,7 +64,7 @@ export default {
             mapvote = new MapVote(
               server,
               SquadLayerFilter.buildFromDidYouMeanList(
-                commandMatch[1].replace('start ', '').split(', ')
+                commandMatch[1].toLowerCase().replace('start ', '').split(', ')
               ),
               { minVoteCount: options.minVoteCount }
             );
@@ -93,7 +93,7 @@ export default {
           return;
         }
 
-        if (commandMatch[1] === 'restart') {
+        if (commandMatch[1].toLowerCase() === 'restart') {
           if (info.chat !== 'ChatAdmin') return;
 
           mapvote = new MapVote(server, mapvote.squadLayerFilter, {
@@ -118,7 +118,7 @@ export default {
           return;
         }
 
-        if (commandMatch[1] === 'end') {
+        if (commandMatch[1].toLowerCase() === 'end') {
           if (info.chat !== 'ChatAdmin') return;
 
           const results = mapvote.getResults();
@@ -132,13 +132,13 @@ export default {
           return;
         }
 
-        if (commandMatch[1] === 'destroy') {
+        if (commandMatch[1].toLowerCase() === 'destroy') {
           if (info.chat !== 'ChatAdmin') return;
           mapvote = null;
           return;
         }
 
-        if (commandMatch[1] === 'help') {
+        if (commandMatch[1].toLowerCase() === 'help') {
           await server.rcon.warn(info.steamID, 'To vote type the layer number into chat:');
           for (const layer of mapvote.squadLayerFilter.getLayers()) {
             await server.rcon.warn(info.steamID, `${layer.layerNumber} - ${layer.layer}`);
@@ -156,7 +156,7 @@ export default {
           );
         }
 
-        if (commandMatch[1] === 'results') {
+        if (commandMatch[1].toLowerCase() === 'results') {
           const results = mapvote.getResults();
 
           if (results.length === 0) {
