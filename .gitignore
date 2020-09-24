@@ -1,6 +1,7 @@
 # Project Files
 *.tmp
 
+config.json
 index-test.js
 config-test.json
 
