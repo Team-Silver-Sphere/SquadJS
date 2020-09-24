@@ -62,7 +62,7 @@ export default {
 
     server.on(CHAT_MESSAGE, async (info) => {
       // check if message is command
-      if (!info.message.startsWith(options.command)) return;
+      if (!info.message.toLowerCase().startsWith(options.command.toLowerCase())) return;
 
       if (voteActive) {
         await server.rcon.warn(info.steamID, 'Skipmap vote already in progress.');

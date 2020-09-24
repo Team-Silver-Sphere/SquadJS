@@ -53,8 +53,9 @@ export default {
       }
 
       const commandMatch = info.message.match(/^!mapvote ?(.*)/);
+     
       if (commandMatch) {
-        if (commandMatch[1].startsWith('start')) {
+        if (commandMatch[1].toLowerCase().startsWith('start')) {
           if (info.chat !== 'ChatAdmin') return;
 
           if (mapvote) {

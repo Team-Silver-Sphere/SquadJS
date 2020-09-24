@@ -62,10 +62,10 @@ export default {
 
     server.on(CHAT_MESSAGE, async (info) => {
       if (options.ignoreChats.includes(info.chat)) return;
-      if (!info.message.startsWith(`${options.adminPrefix}`)) return;
+      if (!info.message.toLowerCase().startsWith(options.adminPrefix.toLowerCase())) return;
 
       for (const ignorePhrase of options.ignorePhrases) {
-        if (info.message.includes(ignorePhrase)) return;
+        if (info.message.toLowerCase().includes(ignorePhrase.toLowerCase())) return;
       }
 
       const playerInfo = await server.getPlayerBySteamID(info.steamID);
