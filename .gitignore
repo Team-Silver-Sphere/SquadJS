@@ -1,9 +1,8 @@
 # Project Files
 *.tmp
 
+# Ignore customized config files
 config.json
-index-test.js
-config-test.json
 
 # Dependencies
 node_modules/
