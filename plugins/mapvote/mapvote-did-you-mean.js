@@ -84,7 +84,7 @@ export default {
       const match = info.message.match(/^!mapvote ?(.*)/);
       if (!match) return;
 
-      if (match[1] === 'help') {
+      if (match[1].toLowerCase() === 'help') {
         await server.rcon.warn(info.steamID, 'You may use any of the following commands in chat:');
         await server.rcon.warn(info.steamID, '!mapvote results - View the current vote counts.');
         await server.rcon.warn(

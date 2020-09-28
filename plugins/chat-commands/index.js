@@ -34,7 +34,7 @@ export default {
       // loop through all possibilities
       for (const command of options.commands) {
         // check if message is a command
-        if (!info.message.startsWith(command.command)) continue;
+        if (!info.message.toLowerCase().startsWith(command.command.toLowerCase())) continue;
         // check if ignored channel
         if (command.ignoreChats.includes(info.chat)) continue;
         // React to command with either a broadcast or a warning
