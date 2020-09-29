@@ -1,0 +1,154 @@
+{
+  "plugins": [
+    {
+      "plugin": "auto-tk-warn",
+      "enabled": true,
+      "message": "Please apologise for ALL TKs in ALL chat!"
+    },
+    {
+      "plugin": "chat-commands",
+      "enabled": true,
+      "commands": [
+        {
+          "command": "!squadjs",
+          "type": "warn",
+          "response": "This server is powered by SquadJS.",
+          "ignoreChats": []
+        }
+      ]
+    },
+    {
+      "plugin": "discord-admin-broadcast",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
+      "plugin": "discord-admin-cam-logs",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
+      "plugin": "discord-chat",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "ignoreChats": [
+        "ChatSquad"
+      ],
+      "chatColors": {},
+      "color": 16761867
+    },
+    {
+      "plugin": "discord-admin-request",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "ignoreChats": [],
+      "ignorePhrases": [],
+      "adminPrefix": "!admin",
+      "pingGroups": [],
+      "pingDelay": 60000,
+      "color": 16761867
+    },
+    {
+      "plugin": "discord-debug",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "events": []
+    },
+    {
+      "plugin": "discord-rcon",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "prependAdminNameInBroadcast": false
+    },
+    {
+      "plugin": "discord-round-winner",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
+      "plugin": "discord-server-status",
+      "enabled": true,
+      "discordClient": "discord",
+      "color": 16761867,
+      "colorGradient": true,
+      "connectLink": true,
+      "command": "!server",
+      "disableStatus": false
+    },
+    {
+      "plugin": "discord-teamkill",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "teamkillColor": 16761867,
+      "suicideColor": 16761867,
+      "ignoreSuicides": false,
+      "disableSCBL": false
+    },
+    {
+      "plugin": "intervalled-broadcasts",
+      "enabled": false,
+      "broadcasts": [
+        "Server powered by SquadJS."
+      ],
+      "interval": 300000
+    },
+    {
+      "plugin": "mapvote-123",
+      "enabled": false,
+      "minVoteCount": null
+    },
+    {
+      "plugin": "mapvote-did-you-mean",
+      "enabled": false,
+      "layerFilter": "layerFilter",
+      "alwaysOn": true,
+      "minPlayerCount": null,
+      "minVoteCount": null
+    },
+    {
+      "plugin": "mysql-log",
+      "enabled": false,
+      "mysqlPool": "mysql",
+      "overrideServerID": null
+    },
+    {
+      "plugin": "seeding-message",
+      "enabled": true,
+      "mode": "interval",
+      "interval": 150000,
+      "delay": 45000,
+      "seedingThreshold": 50,
+      "seedingMessage": "Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!",
+      "liveEnabled": true,
+      "liveThreshold": 2,
+      "liveMessage": "Live"
+    },
+    {
+      "plugin": "skipmap",
+      "enabled": false,
+      "command": "!skipmap",
+      "voteDuration": 300000,
+      "startTimer": 900000,
+      "endTimer": 1800000,
+      "pastVoteTimer": 600000,
+      "minimumVotes": 20,
+      "reminderInterval": 120000
+    },
+    {
+      "plugin": "team-randomizer",
+      "enabled": true,
+      "command": "!randomize"
+    }
+  ]
+}
