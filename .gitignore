@@ -1,8 +1,8 @@
 # Project Files
 *.tmp
 
-# Ignore customized config files
-config.json
+# Ignore server config with potentially sensitive data
+server-config.json
 
 # Dependencies
 node_modules/
