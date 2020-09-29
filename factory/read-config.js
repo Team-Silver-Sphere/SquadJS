@@ -9,10 +9,8 @@ export default function (configPath = './config.json') {
   const fullExamplePath = path.resolve(__dirname, '../', './example-config.json');
 
   if (!fs.existsSync(fullConfigPath)) {
-    try{
-      fs.copyFileSync(fullExamplePath, fullConfigPath);
-      throw new Error("SquadJS couldn't find any configuration file. We have generated a config file at "+fullConfigPath+". This file needs to be configured before running JquadJS again.");
-    } catch (err) { throw err; }
+    fs.copyFileSync(fullExamplePath, fullConfigPath);
+    throw new Error(`SquadJS couldn't find any configuration file. We have generated a config file at ${fullConfigPath}. This file needs to be configured before running SquadJS again.`);
   }
 
   const unparsedConfig = fs.readFileSync(fullConfigPath, 'utf8');
