@@ -33,7 +33,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 ### Installation
 1. Clone the repository: `git clone https://github.com/Thomas-Smyth/SquadJS`
 2. Install the dependencies: `yarn install`
-3. Copy `example-config.json` to `config.json` and configure it. See below for more details.
+3. Copy `example-config.json` and rename it to `config.json` and configure it. See below for more details.
 4. Start SquadJS: `node index.js`.
 
 ### Configuring SquadJS
