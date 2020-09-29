@@ -6,10 +6,12 @@ import plugins from 'plugins';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const server_template = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, './templates/config-template.json'), 'utf8')
+  fs.readFileSync(path.resolve(__dirname, './templates/server-config-template.json'), 'utf8')
 );
 
-const plugin_template = {'plugins':[]};
+const plugin_template = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, './templates/config-template.json'), 'utf8')
+);
 
 const pluginKeys = Object.keys(plugins).sort((a, b) =>
   a.name < b.name ? -1 : a.name > b.name ? 1 : 0
