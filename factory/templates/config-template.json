@@ -61,6 +61,5 @@
       "password": "password",
       "database": "squadjs"
     }
-  },
-  "plugins": []
+  }
 }

@@ -33,16 +33,19 @@ SquadJS relies on being able to access the Squad server log directory in order t
 ### Installation
 1. Clone the repository: `git clone https://github.com/Thomas-Smyth/SquadJS`
 2. Install the dependencies: `yarn install`
-3. Copy `example-config.json` and rename it to `config.json` and configure it. See below for more details.
+3. Copy [`example-config.json`](https://github.com/Thomas-Smyth/SquadJS/blob/master/example-config.json) to a new file and rename it to `server-config.json` then configure it. For more details see [Server Config](https://github.com/Thomas-Smyth/SquadJS#server-config).
 4. Start SquadJS: `node index.js`.
 
 ### Configuring SquadJS
-SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS and is named [config.json](https://github.com/Thomas-Smyth/SquadJS/blob/master/config.json).
+SquadJS can be configured via JSON configuration files which, by default, are located in the SquadJS directory. The following files are expected in this directory.
+* [config.json](https://github.com/Thomas-Smyth/SquadJS/blob/master/config.json).
+* server-config.json
+  > If this file does not exist follow step 3 in the [Installation](https://github.com/Thomas-Smyth/SquadJS#installation)
 
-The config file needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
+All config files needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
 
-#### Server
-The following section of the configuration contains information about your Squad server.
+#### Server Config
+The following section of `server-config.json` contains information about your Squad server.
 ```json
 "server": {
   "id": 1,
@@ -170,7 +173,7 @@ Connects to a MySQL database.
 The config is a set of pool connection options as listed in the [Node.js mysql](https://www.npmjs.com/package/mysql) documentation.
 
 #### Plugins
-The `plugins` section in your config file lists all plugins built into SquadJS, e.g.:
+Plugin configuration exists in the `config.json` file in the `plugins` section it lists all plugins built into SquadJS, e.g.:
 ```json
   "plugins": [
     {
