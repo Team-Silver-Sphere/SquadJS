@@ -184,7 +184,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -211,7 +211,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -531,7 +531,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -774,7 +774,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -1013,7 +1013,7 @@
             "faction": "MEA",
             "tickets": "300"
         },
-        "tanks": "x2 per team, 20min delay",
+        "tanks": "x2 per team, 10min delay",
         "helicopters": "N/A",
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
@@ -1071,7 +1071,7 @@
         "helicopters": "N/A",
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -1098,7 +1098,7 @@
         "helicopters": "N/A",
         "newForVersion": true,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -1368,7 +1368,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -1395,7 +1395,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -1746,7 +1746,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -2151,7 +2151,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -2475,7 +2475,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -2664,7 +2664,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -2853,7 +2853,7 @@
         "helicopters": "x2 per team",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -3042,7 +3042,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -3204,7 +3204,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -3339,7 +3339,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -3609,7 +3609,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -3902,7 +3902,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -4145,7 +4145,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -4442,7 +4442,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -4469,7 +4469,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -4496,7 +4496,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -4943,7 +4943,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -4970,7 +4970,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -4997,7 +4997,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -5992,7 +5992,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
@@ -6019,7 +6019,7 @@
         "helicopters": "N/A",
         "newForVersion": false,
         "estimatedSuitablePlayerCount": {
-            "mix": 0,
+            "min": 0,
             "max": 40
         }
     },
