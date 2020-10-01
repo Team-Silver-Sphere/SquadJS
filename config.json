@@ -144,7 +144,8 @@
       "colorGradient": true,
       "connectLink": true,
       "command": "!server",
-      "disableStatus": false
+      "disableStatus": false,
+      "interval": 0
     },
     {
       "plugin": "discord-teamkill",
