@@ -40,6 +40,11 @@ export default {
       required: false,
       description: 'Disable the bot status.',
       default: false
+    },
+    interval: {
+      required: false,
+      description: 'Sets the interval for automatic reload, 0 = no reload',
+      default: 0
     }
   },
 
@@ -69,6 +74,21 @@ export default {
 
       // update the message
       await reaction.message.edit(makeEmbed(server, options));
+
+      if (Number.isInteger(options.interval) && options.interval > 0) {
+        // clear interval when clicked refresh by user
+        if (refreshTimer) clearInterval(refreshTimer);
+
+        // set new interval and update message periodicly
+        try {
+          refreshTimer = setInterval(async () => {
+            await reaction.message.edit(makeEmbed(server, options));
+            console.log('reload');
+          }, options.interval * 1000);
+        } catch (e) {
+          console.error(e);
+        }
+      }
     });
 
     server.on(A2S_INFO_UPDATED, () => {
@@ -80,6 +100,8 @@ export default {
     });
   }
 };
+
+var refreshTimer;
 
 const gradient = tinygradient([
   { color: '#ff0000', pos: 0 },
