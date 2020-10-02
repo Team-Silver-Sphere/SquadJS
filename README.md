@@ -408,6 +408,24 @@ The following is a list of plugins built into SquadJS, you can click their title
        <p>Prepend the admin's name when he makes an announcement.</p>
        <h6>Default</h6>
        <pre><code>false</code></pre>
+<h4>permissions</h4>
+       <h6>Description</h6>
+       <p><ul><li>Dictionary of roles and a list of the permissions they are allowed to use.<li>If dictionary is empty (<code>{}</code>) permissions will be disabled</li><li>A list of avalable RCON commands can be found here <a>https://squad.gamepedia.com/Server_Administration#Admin_Console_Commands</a></ul></p>
+       <h6>Default</h6>
+       <pre><code>{}</code></pre><h6>Example</h6>
+       <pre><code>{
+  "discord_role_id": [
+    "list",
+    "of",
+    "allowed",
+    "commands"
+  ],
+  "123456789123456789": [
+    "AdminBroadcast",
+    "AdminForceTeamChange",
+    "AdminDemoteCommander"
+  ]
+}</code></pre>
     </details>
 
 <details>
