@@ -127,7 +127,8 @@
       "enabled": true,
       "discordClient": "discord",
       "channelID": "",
-      "prependAdminNameInBroadcast": false
+      "prependAdminNameInBroadcast": false,
+      "permissions": {}
     },
     {
       "plugin": "discord-round-winner",
