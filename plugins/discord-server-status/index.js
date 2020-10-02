@@ -83,7 +83,6 @@ export default {
         try {
           refreshTimer = setInterval(async () => {
             await reaction.message.edit(makeEmbed(server, options));
-            console.log('reload');
           }, options.interval * 1000);
         } catch (e) {
           console.error(e);
