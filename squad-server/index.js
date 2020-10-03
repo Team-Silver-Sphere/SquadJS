@@ -127,7 +127,7 @@ export default class Server extends EventEmitter {
       matchingPlayers.push(player);
     }
 
-    if (matchingPlayers.length === 0) {
+    if (matchingPlayers.length === 0 && suffix === false) {
       await this.updatePlayers();
 
       matchingPlayers = [];
