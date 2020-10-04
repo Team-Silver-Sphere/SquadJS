@@ -5,7 +5,7 @@ import plugins from 'plugins';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const template = JSON.parse(
+const config_template = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, './templates/config-template.json'), 'utf8')
 );
 
@@ -21,7 +21,7 @@ for (const pluginKey of pluginKeys) {
     pluginConfig[option] = plugin.optionsSpec[option].default;
   }
 
-  template.plugins.push(pluginConfig);
+  config_template.plugins.push(pluginConfig);
 }
 
-fs.writeFileSync(path.resolve(__dirname, '../config.json'), JSON.stringify(template, null, 2));
+fs.writeFileSync(path.resolve(__dirname, '../example-config.json'), JSON.stringify(config_template, null, 2));

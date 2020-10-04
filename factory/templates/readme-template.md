@@ -33,11 +33,19 @@ SquadJS relies on being able to access the Squad server log directory in order t
 ### Installation
 1. Clone the repository: `git clone https://github.com/Thomas-Smyth/SquadJS`
 2. Install the dependencies: `yarn install`
-3. Configure the `config.json` file. See below for more details.
+3. Copy [`example-config.json`](https://github.com/Thomas-Smyth/SquadJS/blob/master/example-config.json) to a new file and rename it to `config.json` then configure it. For more details see [Server Config](https://github.com/Thomas-Smyth/SquadJS#server).
 4. Start SquadJS: `node index.js`.
 
 ### Configuring SquadJS
-SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS and is named [config.json](https://github.com/Thomas-Smyth/SquadJS/blob/master/config.json).
+SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS directory and named [`config.json`](https://github.com/Thomas-Smyth/SquadJS/blob/master/config.json). If this file does not exist follow step 3 in the [Installation](https://github.com/Thomas-Smyth/SquadJS#installation)
+
+The following line of the configuration will determine if SquadJS should automatically update your config file if it is found to have missing items, this will preserve all of your current settings.
+```json
+"squadjs":{
+  "autoUpdateMyConfig": false
+}
+```
+ * `autoUpdateMyConfig` - Boolean to determine if SquadJs should updte the users config
 
 The config file needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
 
