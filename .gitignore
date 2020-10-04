@@ -1,8 +1,8 @@
 # Project Files
 *.tmp
 
-index-test.js
-config-test.json
+# Ignore config with potentially sensitive data
+config.json
 
 # Dependencies
 node_modules/
