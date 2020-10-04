@@ -1,5 +1,5 @@
 export default {
-  regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer]ASQGameMode::DetermineMatchWinner\(\): (.+) won on (.+)/,
+  regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQGameMode::)?DetermineMatchWinner\(\): (.+) won on (.+)/,
   onMatch: (args, logParser) => {
     const data = {
       raw: args[0],
