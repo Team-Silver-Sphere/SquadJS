@@ -189,21 +189,79 @@ Plugin options are also specified. A full list of plugin options can be seen bel
 The following is a list of plugins built into SquadJS, you can click their title for more information:
 
 <details>
-      <summary>ExamplePlugin</summary>
-      <h2>ExamplePlugin</h2>
-      <p>An example plugin that shows how to implement a basic plugin.</p>
+      <summary>ChatCommands</summary>
+      <h2>ChatCommands</h2>
+      <p>The <code>ChatCommands</code> plugin can be configured to make chat commands that broadcast or warn the caller with present messages.</p>
       <h3>Options</h3>
-      <h4>exampleOption</h4>
+      <h4>commands</h4>
        <h6>Description</h6>
-       <p>An example option.</p>
+       <p>An array of objects containing the following properties: <ul><li><code>command</code> - The command that initiates the message.</li><li><code>type</code> - Either <code>warn</code> or <code>broadcast</code>.</li><li><code>response</code> - The message to respond with.</li><li><code>ignoreChats</code> - A list of chats to ignore the commands in. Use this to limit it to admins.</li></ul></p>
        <h6>Default</h6>
-       <pre><code>A default value.</code></pre><h6>Example</h6>
-       <pre><code>An example value.</code></pre>
-<h4>exampleConnector (Required)</h4>
+       <pre><code>[
+  {
+    "command": "squadjs",
+    "type": "warn",
+    "response": "This server is powered by SquadJS.",
+    "ignoreChats": []
+  }
+]</code></pre>
+    </details>
+
+<details>
+      <summary>IntervalledBroadcasts</summary>
+      <h2>IntervalledBroadcasts</h2>
+      <p>The <code>IntervalledBroadcasts</code> plugin allows you to set broadcasts, which will be broadcasted at preset intervals</p>
+      <h3>Options</h3>
+      <h4>broadcasts</h4>
        <h6>Description</h6>
-       <p>An example Discord connector.</p>
+       <p>Messages to broadcast.</p>
        <h6>Default</h6>
-       <pre><code>discord</code></pre>
+       <pre><code>[]</code></pre><h6>Example</h6>
+       <pre><code>[
+  "This server is powered by SquadJS."
+]</code></pre>
+<h4>interval</h4>
+       <h6>Description</h6>
+       <p>Frequency of the broadcasts in milliseconds.</p>
+       <h6>Default</h6>
+       <pre><code>300000</code></pre>
+    </details>
+
+<details>
+      <summary>SeedingMode</summary>
+      <h2>SeedingMode</h2>
+      <p>The <code>SeedingMode</code> plugin broadcasts seeding rule messages to players at regular intervals when the server is below a specified player count. It can also be configured to display "Live" messages when the server goes live.</p>
+      <h3>Options</h3>
+      <h4>interval</h4>
+       <h6>Description</h6>
+       <p>Frequency of seeding messages in milliseconds.</p>
+       <h6>Default</h6>
+       <pre><code>150000</code></pre>
+<h4>seedingThreshold</h4>
+       <h6>Description</h6>
+       <p>Player count required for server not to be in seeding mode.</p>
+       <h6>Default</h6>
+       <pre><code>50</code></pre>
+<h4>seedingMessage</h4>
+       <h6>Description</h6>
+       <p>Seeding message to display.</p>
+       <h6>Default</h6>
+       <pre><code>Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!</code></pre>
+<h4>liveEnabled</h4>
+       <h6>Description</h6>
+       <p>Enable "Live" messages for when the server goes live.</p>
+       <h6>Default</h6>
+       <pre><code>true</code></pre>
+<h4>liveThreshold</h4>
+       <h6>Description</h6>
+       <p>Player count required for "Live" messages to not bee displayed.</p>
+       <h6>Default</h6>
+       <pre><code>52</code></pre>
+<h4>liveMessage</h4>
+       <h6>Description</h6>
+       <p>"Live" message to display.</p>
+       <h6>Default</h6>
+       <pre><code>Live!</code></pre>
     </details>
  
 ## Creating Your Own Plugins

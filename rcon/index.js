@@ -252,6 +252,16 @@ export default class Rcon extends EventEmiiter {
     return this.write(SERVERDATA_EXECCOMMAND, command);
   }
 
+  async broadcast(message) {
+    await this.execute(`AdminBroadcast ${message}`);
+  }
+
+  async getLayerInfo() {
+    const response = await this.execute('ShowNextMap');
+    const match = response.match(/^Current map is (.+), Next map is (.*)/);
+    return { currentLayer: match[1], nextLayer: match[2].length === 0 ? null : match[2] };
+  }
+
   async getListPlayers() {
     const response = await this.execute('ListPlayers');
 
@@ -275,9 +285,7 @@ export default class Rcon extends EventEmiiter {
     return players;
   }
 
-  async getLayerInfo() {
-    const response = await this.execute('ShowNextMap');
-    const match = response.match(/^Current map is (.+), Next map is (.*)/);
-    return { currentLayer: match[1], nextLayer: match[2].length === 0 ? null : match[2] };
+  async warn(steamID, message) {
+    await this.execute(`AdminWarn "${steamID}" ${message}`);
   }
 }

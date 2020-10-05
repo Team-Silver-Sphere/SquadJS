@@ -154,6 +154,10 @@ export default class SquadServer extends EventEmitter {
     this.rcon.on('CHAT_MESSAGE', async (data) => {
       data.player = await this.getPlayerBySteamID(data.steamID);
       this.emit('CHAT_MESSAGE', data);
+
+      const command = data.message.match(/!([^ ]+) ?(.*)/);
+      if (command)
+        this.emit(`CHAT_COMMAND:${command[1].toLowerCase()}`, { ...data, message: command[2] });
     });
 
     this.rcon.on('RCON_ERROR', (data) => {
@@ -220,7 +224,7 @@ export default class SquadServer extends EventEmitter {
     this.publicSlots = parseInt(data.raw.rules.NUMPUBCONN);
     this.reserveSlots = parseInt(data.raw.rules.NUMPRIVCONN);
 
-    this.playerCount = parseInt(data.raw.rules.PlayerCount_i);
+    this.a2sPlayerCount = parseInt(data.raw.rules.PlayerCount_i);
     this.publicQueue = parseInt(data.raw.rules.PublicQueue_i);
     this.reserveQueue = parseInt(data.raw.rules.ReservedQueue_i);
 

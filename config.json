@@ -14,7 +14,7 @@
   },
   "connectors": {
     "discord": "Discord Login Token",
-    "layerFilter": {
+    "squadlayerpool": {
       "type": "buildPoolFromFilter",
       "filter": {
         "whitelistedLayers": null,
@@ -62,10 +62,32 @@
   },
   "plugins": [
     {
-      "plugin": "ExamplePlugin",
-      "enabled": false,
-      "exampleOption": "A default value.",
-      "exampleConnector": "discord"
+      "plugin": "ChatCommands",
+      "enabled": true,
+      "commands": [
+        {
+          "command": "squadjs",
+          "type": "warn",
+          "response": "This server is powered by SquadJS.",
+          "ignoreChats": []
+        }
+      ]
+    },
+    {
+      "plugin": "IntervalledBroadcasts",
+      "enabled": true,
+      "broadcasts": ["TEST TEST TEST"],
+      "interval": 300000
+    },
+    {
+      "plugin": "SeedingMode",
+      "enabled": true,
+      "interval": 150000,
+      "seedingThreshold": 50,
+      "seedingMessage": "Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!",
+      "liveEnabled": true,
+      "liveThreshold": 52,
+      "liveMessage": "Live!"
     }
   ]
 }
