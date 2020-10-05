@@ -42,15 +42,21 @@ export default class DiscordRcon extends BasePlugin {
 
       let command = message.content;
 
-      if (options.prependAdminNameInBroadcast && command.match(/^adminbroadcast/i))
+      if (options.prependAdminNameInBroadcast)
         command = command.replace(
           /^AdminBroadcast /i,
           `AdminBroadcast ${message.member.displayName}: `
         );
 
-      for (const responseMessage of this.splitLongResponse(await server.rcon.execute(command)))
-        await message.channel.send(`\`\`\`${responseMessage}\`\`\``);
+      const response = await server.rcon.execute(command);
+
+      await this.respondToMessage(message, response);
     });
+  }
+
+  async respondToMessage(message, response) {
+    for (const splitResponse of this.splitLongResponse(response))
+      await message.channel.send(`\`\`\`${splitResponse}\`\`\``);
   }
 
   splitLongResponse(response) {
