@@ -188,23 +188,7 @@ Plugin options are also specified. A full list of plugin options can be seen bel
 ## Plugins
 The following is a list of plugins built into SquadJS, you can click their title for more information:
 
-<details>
-      <summary>ExamplePlugin</summary>
-      <h2>ExamplePlugin</h2>
-      <p>An example plugin that shows how to implement a basic plugin.</p>
-      <h3>Options</h3>
-      <h4>exampleOption</h4>
-       <h6>Description</h6>
-       <p>An example option.</p>
-       <h6>Default</h6>
-       <pre><code>A default value.</code></pre><h6>Example</h6>
-       <pre><code>An example value.</code></pre>
-<h4>exampleConnector (Required)</h4>
-       <h6>Description</h6>
-       <p>An example Discord connector.</p>
-       <h6>Default</h6>
-       <pre><code>discord</code></pre>
-    </details>
+//PLUGIN-INFO//
  
 ## Creating Your Own Plugins
 To create your own plugin you need a basic knowledge of JavaScript.

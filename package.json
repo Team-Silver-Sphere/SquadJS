@@ -9,19 +9,22 @@
     "assets",
     "core",
     "factory",
+    "log-parser",
     "plugins",
+    "rcon",
     "squad-server"
   ],
   "scripts": {
     "lint": "eslint --fix . && prettier --write \"./**/*.js\"",
-    "build-config": "node factory/build-config.js",
-    "build-readme": "node factory/build-readme.js",
-    "build-all": "node factory/build-config.js && node factory/build-readme.js"
+    "build-config": "node core/build-config.js",
+    "build-readme": "node core/build-readme.js",
+    "build-all": "node core/build-config.js && node factory/build-readme.js"
   },
   "type": "module",
   "dependencies": {
     "core": "1.0.0",
-    "factory": "1.0.0"
+    "factory": "1.0.0",
+    "squad-server": "1.0.0"
   },
   "devDependencies": {
     "eslint": "^7.6.0",

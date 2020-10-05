@@ -1,0 +1,13 @@
+{
+  "name": "log-parser",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "dependencies": {
+    "ftp-tail": "^1.0.2",
+    "moment": "^2.29.0",
+    "tail": "^2.0.4"
+  }
+}

@@ -1,20 +1,24 @@
 {
   "server": {
     "id": 1,
+
     "host": "xxx.xxx.xxx.xxx",
     "queryPort": 27165,
     "rconPort": 21114,
     "rconPassword": "password",
+
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
+
     "ftpPort": 21,
     "ftpUser": "FTP Username",
     "ftpPassword": "FTP Password",
+
     "rconVerbose": true
   },
   "connectors": {
     "discord": "Discord Login Token",
-    "layerFilter": {
+    "squadlayerpool": {
       "type": "buildPoolFromFilter",
       "filter": {
         "whitelistedLayers": null,
@@ -22,9 +26,7 @@
         "whitelistedMaps": null,
         "blacklistedMaps": null,
         "whitelistedGamemodes": null,
-        "blacklistedGamemodes": [
-          "Training"
-        ],
+        "blacklistedGamemodes": ["Training"],
         "flagCountMin": null,
         "flagCountMax": null,
         "hasCommander": null,
@@ -60,12 +62,5 @@
       "database": "squadjs"
     }
   },
-  "plugins": [
-    {
-      "plugin": "ExamplePlugin",
-      "enabled": false,
-      "exampleOption": "A default value.",
-      "exampleConnector": "discord"
-    }
-  ]
+  "plugins": []
 }

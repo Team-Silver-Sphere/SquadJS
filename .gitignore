@@ -1,7 +1,6 @@
 # Project Files
 *.tmp
 
-index-test.js
 config-test.json
 
 # Dependencies
