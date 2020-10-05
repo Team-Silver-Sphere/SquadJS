@@ -208,6 +208,29 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
+      <summary>DiscordRcon</summary>
+      <h2>DiscordRcon</h2>
+      <p>The <code>DiscordRcon</code> plugin allows a specified Discord channel to be used as a RCON console to run RCON commands</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>ID of channel to turn into RCON console.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>prependAdminNameInBroadcast</h4>
+       <h6>Description</h6>
+       <p>Prepend admin names when making announcements.</p>
+       <h6>Default</h6>
+       <pre><code>false</code></pre>
+    </details>
+
+<details>
       <summary>IntervalledBroadcasts</summary>
       <h2>IntervalledBroadcasts</h2>
       <p>The <code>IntervalledBroadcasts</code> plugin allows you to set broadcasts, which will be broadcasted at preset intervals</p>

@@ -74,9 +74,16 @@
       ]
     },
     {
-      "plugin": "IntervalledBroadcasts",
+      "plugin": "DiscordRcon",
       "enabled": true,
-      "broadcasts": ["TEST TEST TEST"],
+      "discordClient": "discord",
+      "channelID": "",
+      "prependAdminNameInBroadcast": false
+    },
+    {
+      "plugin": "IntervalledBroadcasts",
+      "enabled": false,
+      "broadcasts": [],
       "interval": 300000
     },
     {
