@@ -180,15 +180,19 @@ export default class SquadServer extends EventEmitter {
   async updatePlayerList() {
     if (this.updatePlayerListTimeout) clearTimeout(this.updatePlayerListTimeout);
 
-    const oldPlayerInfo = {};
-    for (const player of this.players) {
-      oldPlayerInfo[player.steamID] = player;
-    }
+    try {
+      const oldPlayerInfo = {};
+      for (const player of this.players) {
+        oldPlayerInfo[player.steamID] = player;
+      }
 
-    this.players = (await this.rcon.getListPlayers()).map((player) => ({
-      ...oldPlayerInfo[player.steamID],
-      ...player
-    }));
+      this.players = (await this.rcon.getListPlayers()).map((player) => ({
+        ...oldPlayerInfo[player.steamID],
+        ...player
+      }));
+    } catch (err) {
+      console.log('Failed to update player list.', err);
+    }
 
     this.updatePlayerListTimeout = setTimeout(this.updatePlayerList, this.updatePlayerListInterval);
   }
@@ -196,16 +200,20 @@ export default class SquadServer extends EventEmitter {
   async updateLayerInformation() {
     if (this.updateLayerInformationTimeout) clearTimeout(this.updateLayerInformationTimeout);
 
-    const layerInfo = await this.rcon.getLayerInfo();
+    try {
+      const layerInfo = await this.rcon.getLayerInfo();
 
-    if (this.layerHistory.length === 0) {
-      const layer = this.squadLayers.getLayerByLayerName(layerInfo.currentLayer);
+      if (this.layerHistory.length === 0) {
+        const layer = this.squadLayers.getLayerByLayerName(layerInfo.currentLayer);
 
-      this.layerHistory.unshift({ ...layer, time: Date.now() });
-      this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
+        this.layerHistory.unshift({ ...layer, time: Date.now() });
+        this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
+      }
+
+      this.nextLayer = layerInfo.nextLayer;
+    } catch (err) {
+      console.log('Failed to update layer information.', err);
     }
-
-    this.nextLayer = layerInfo.nextLayer;
 
     this.updateLayerInformationTimeout = setTimeout(
       this.updateLayerInformation,
@@ -216,20 +224,24 @@ export default class SquadServer extends EventEmitter {
   async updateA2SInformation() {
     if (this.updateA2SInformationTimeout) clearTimeout(this.updateA2SInformationTimeout);
 
-    const data = await Gamedig.query({ type: 'squad', host: this.host, port: this.queryPort });
+    try {
+      const data = await Gamedig.query({ type: 'squad', host: this.host, port: this.queryPort });
 
-    this.serverName = data.name;
+      this.serverName = data.name;
 
-    this.maxPlayers = parseInt(data.maxplayers);
-    this.publicSlots = parseInt(data.raw.rules.NUMPUBCONN);
-    this.reserveSlots = parseInt(data.raw.rules.NUMPRIVCONN);
+      this.maxPlayers = parseInt(data.maxplayers);
+      this.publicSlots = parseInt(data.raw.rules.NUMPUBCONN);
+      this.reserveSlots = parseInt(data.raw.rules.NUMPRIVCONN);
 
-    this.a2sPlayerCount = parseInt(data.raw.rules.PlayerCount_i);
-    this.publicQueue = parseInt(data.raw.rules.PublicQueue_i);
-    this.reserveQueue = parseInt(data.raw.rules.ReservedQueue_i);
+      this.a2sPlayerCount = parseInt(data.raw.rules.PlayerCount_i);
+      this.publicQueue = parseInt(data.raw.rules.PublicQueue_i);
+      this.reserveQueue = parseInt(data.raw.rules.ReservedQueue_i);
 
-    this.matchTimeout = parseFloat(data.raw.rules.MatchTimeout_f);
-    this.gameVersion = data.raw.version;
+      this.matchTimeout = parseFloat(data.raw.rules.MatchTimeout_f);
+      this.gameVersion = data.raw.version;
+    } catch (err) {
+      console.log('Failed to update A2S information.', err);
+    }
 
     this.updateA2SInformationTimeout = setTimeout(
       this.updateA2SInformation,
