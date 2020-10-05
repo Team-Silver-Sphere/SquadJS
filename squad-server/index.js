@@ -300,6 +300,8 @@ export default class SquadServer extends EventEmitter {
     console.log('Preparing connectors...');
     const connectors = {};
     for (const pluginConfig of config.plugins) {
+      if (!pluginConfig.enabled) continue;
+
       const Plugin = plugins[pluginConfig.plugin];
 
       for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
