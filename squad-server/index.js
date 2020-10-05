@@ -195,7 +195,7 @@ export default class SquadServer extends EventEmitter {
     const layerInfo = await this.rcon.getLayerInfo();
 
     if (this.layerHistory.length === 0) {
-      const layer = SquadLayers.getLayerByLayerName(layerInfo.currentLayer);
+      const layer = this.squadLayers.getLayerByLayerName(layerInfo.currentLayer);
 
       this.layerHistory.unshift({ ...layer, time: Date.now() });
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
