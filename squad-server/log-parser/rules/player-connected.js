@@ -9,7 +9,7 @@ export default {
       raw: args[0],
       time: args[1],
       chainID: args[2],
-      player: await logParser.server.getPlayerByName(args[3], true)
+      player: await logParser.server.getPlayerBySuffix(args[3])
     };
 
     logParser.server.emit(PLAYER_CONNECTED, data);
