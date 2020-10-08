@@ -117,50 +117,35 @@ export default class Server extends EventEmitter {
 
     this.emit(PLAYERS_UPDATED, this.players);
   }
-
-  async getPlayerByName(name, suffix = false) {
-    let matchingPlayers;
-
-    matchingPlayers = [];
-    for (const player of this.players) {
-      if (player[suffix ? 'suffix' : 'name'] !== name) continue;
-      matchingPlayers.push(player);
-    }
-
-    if (matchingPlayers.length === 0 && suffix === false) {
-      await this.updatePlayers();
-
-      matchingPlayers = [];
-      for (const player of this.players) {
-        if (player[suffix ? 'suffix' : 'name'] !== name) continue;
-        matchingPlayers.push(player);
-      }
-    }
-
-    if (matchingPlayers.length === 1) return matchingPlayers[0];
-    else return null;
+  
+  async getPlayerByName(name) {
+    return await this.getPlayerByAttribute('name', name);
   }
-
+  
+  async getPlayerBySuffix(suffix) {
+    return await this.getPlayerByAttribute('suffix', suffix);
+  }
+  
   async getPlayerBySteamID(steamID) {
-    let matchingPlayers;
-
-    matchingPlayers = [];
-    for (const player of this.players) {
-      if (player.steamID !== steamID) continue;
-      matchingPlayers.push(player);
-    }
-
-    if (matchingPlayers.length === 0) {
-      await this.updatePlayers();
-
-      matchingPlayers = [];
+    return await this.getPlayerByAttribute('steamID', steamID);
+  }
+  
+  async getPlayerByAttribute(attribute, value, reload = true) {  
+    const helper = () => {
       for (const player of this.players) {
-        if (player.steamID !== steamID) continue;
-        matchingPlayers.push(player);
+        if (player[attribute] === value) {
+          return player;
+        }
       }
     }
-
-    return matchingPlayers[0];
+    
+    let found = helper();
+    if (!found && reload) {
+      await this.updatePlayers();
+      helper(); 
+    }
+    
+    return found;
   }
 
   onLayerChange(info) {
