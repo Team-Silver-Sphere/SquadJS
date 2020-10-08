@@ -133,7 +133,7 @@ export default class Server extends EventEmitter {
   async getPlayerByAttribute(attribute, value, reload = true) {  
     const helper = () => {
       for (const player of this.players) {
-        if (player[attribute] === value) {
+        if (attribute in player && player[attribute] === value) {
           return player;
         }
       }
