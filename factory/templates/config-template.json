@@ -10,6 +10,7 @@
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
 
+    "ftpHost": null, // Set this if your FTP server does not listen on the same host as your Squad server
     "ftpPort": 21,
     "ftpUser": "FTP Username",
     "ftpPassword": "FTP Password",
