@@ -321,13 +321,13 @@ export default class SquadServer extends EventEmitter {
       const Plugin = plugins[pluginConfig.plugin];
 
       for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
+        // ignore non connectors
+        if (!option.connector) continue;
+
         if (!(optionName in pluginConfig))
           throw new Error(
             `${Plugin.name}: ${optionName} (${option.connector} connector) is missing.`
           );
-
-        // ignore non connectors
-        if (!option.connector) continue;
 
         const connectorName = pluginConfig[optionName];
 

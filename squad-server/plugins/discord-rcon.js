@@ -26,6 +26,19 @@ export default class DiscordRcon extends BasePlugin {
         default: '',
         example: '667741905228136459'
       },
+      permissions: {
+        required: false,
+        description:
+          '<ul>' +
+          '<li>Dictionary of roles and a list of the permissions they are allowed to use.' +
+          '<li>If dictionary is empty (<code>{}</code>) permissions will be disabled</li>' +
+          '<li>A list of available RCON commands can be found here <a>https://squad.gamepedia.com/Server_Administration#Admin_Console_Commands</a>.' +
+          '</ul>',
+        default: {},
+        example: {
+          '123456789123456789': ['AdminBroadcast', 'AdminForceTeamChange', 'AdminDemoteCommander']
+        }
+      },
       prependAdminNameInBroadcast: {
         required: false,
         description: 'Prepend admin names when making announcements.',
@@ -38,19 +51,39 @@ export default class DiscordRcon extends BasePlugin {
     super();
 
     options.discordClient.on('message', async (message) => {
+      // check the author of the message is not a bot and that the channel is the RCON console channel
       if (message.author.bot || message.channel.id !== options.channelID) return;
 
       let command = message.content;
 
+      // write admin's name into broadcast command if prependAdminNameInBroadcast is enabled
       if (options.prependAdminNameInBroadcast)
         command = command.replace(
           /^AdminBroadcast /i,
           `AdminBroadcast ${message.member.displayName}: `
         );
 
-      const response = await server.rcon.execute(command);
+      // check the admin has permissions
+      if (Object.keys(options.permissions).length !== 0) {
+        const commandPrefix = command.match(/([^ ]+)/);
 
-      await this.respondToMessage(message, response);
+        let hasPermission = false;
+        for (const [role, allowedCommands] of Object.entries(options.permissions)) {
+          if (!message.member._roles.includes(role)) continue;
+
+          for (const allowedCommand of allowedCommands)
+            if (commandPrefix[1].toLowerCase() === allowedCommand.toLowerCase())
+              hasPermission = true;
+        }
+
+        if (!hasPermission) {
+          await message.reply('you do not have permission to run that command.');
+          return;
+        }
+      }
+
+      // execute command and print response
+      await this.respondToMessage(message, await server.rcon.execute(command));
     });
   }
 
