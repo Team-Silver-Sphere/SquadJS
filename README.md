@@ -189,6 +189,18 @@ Plugin options are also specified. A full list of plugin options can be seen bel
 The following is a list of plugins built into SquadJS, you can click their title for more information:
 
 <details>
+      <summary>AutoTKWarn</summary>
+      <h2>AutoTKWarn</h2>
+      <p>The <code>AutoTkWarn</code> plugin will automatically warn players with a message when they teamkill.</p>
+      <h3>Options</h3>
+      <h4>message</h4>
+       <h6>Description</h6>
+       <p>The message to warn players with.</p>
+       <h6>Default</h6>
+       <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre>
+    </details>
+
+<details>
       <summary>ChatCommands</summary>
       <h2>ChatCommands</h2>
       <p>The <code>ChatCommands</code> plugin can be configured to make chat commands that broadcast or warn the caller with present messages.</p>
@@ -223,6 +235,18 @@ The following is a list of plugins built into SquadJS, you can click their title
        <h6>Default</h6>
        <pre><code></code></pre><h6>Example</h6>
        <pre><code>667741905228136459</code></pre>
+<h4>permissions</h4>
+       <h6>Description</h6>
+       <p><ul><li>Dictionary of roles and a list of the permissions they are allowed to use.<li>If dictionary is empty (<code>{}</code>) permissions will be disabled</li><li>A list of available RCON commands can be found here <a>https://squad.gamepedia.com/Server_Administration#Admin_Console_Commands</a>.</ul></p>
+       <h6>Default</h6>
+       <pre><code>{}</code></pre><h6>Example</h6>
+       <pre><code>{
+  "123456789123456789": [
+    "AdminBroadcast",
+    "AdminForceTeamChange",
+    "AdminDemoteCommander"
+  ]
+}</code></pre>
 <h4>prependAdminNameInBroadcast</h4>
        <h6>Description</h6>
        <p>Prepend admin names when making announcements.</p>

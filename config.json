@@ -62,6 +62,11 @@
   },
   "plugins": [
     {
+      "plugin": "AutoTKWarn",
+      "enabled": true,
+      "message": "Please apologise for ALL TKs in ALL chat!"
+    },
+    {
       "plugin": "ChatCommands",
       "enabled": true,
       "commands": [
@@ -75,9 +80,10 @@
     },
     {
       "plugin": "DiscordRcon",
-      "enabled": true,
+      "enabled": false,
       "discordClient": "discord",
       "channelID": "",
+      "permissions": {},
       "prependAdminNameInBroadcast": false
     },
     {
