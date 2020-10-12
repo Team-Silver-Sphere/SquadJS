@@ -220,6 +220,29 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
+      <summary>DiscordAdminBroadcast</summary>
+      <h2>DiscordAdminBroadcast</h2>
+      <p>The <code>DiscordAdminBroadcast</code> plugin will send a copy of admin broadcasts made in game to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+    </details>
+
+<details>
       <summary>DiscordRcon</summary>
       <h2>DiscordRcon</h2>
       <p>The <code>DiscordRcon</code> plugin allows a specified Discord channel to be used as a RCON console to run RCON commands</p>
