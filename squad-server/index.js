@@ -38,7 +38,7 @@ export default class SquadServer extends EventEmitter {
       mode: options.logReaderMode,
       logDir: options.logDir,
 
-      host: options.host,
+      host: options.ftpHost || options.host,
       port: options.ftpPort,
       user: options.ftpUser,
       password: options.ftpPassword,
