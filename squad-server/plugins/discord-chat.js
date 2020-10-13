@@ -1,7 +1,5 @@
 import DiscordBasePlugin from './discord-base-plugin.js';
 
-import { COPYRIGHT_MESSAGE } from '../utils/constants.js';
-
 export default class DiscordChat extends DiscordBasePlugin {
   static get description() {
     return 'The <code>DiscordChat</code> plugin will log in-game chat to a Discord channel.';
@@ -69,10 +67,7 @@ export default class DiscordChat extends DiscordBasePlugin {
               value: `${info.message}`
             }
           ],
-          timestamp: info.time.toISOString(),
-          footer: {
-            text: COPYRIGHT_MESSAGE
-          }
+          timestamp: info.time.toISOString()
         }
       });
     });

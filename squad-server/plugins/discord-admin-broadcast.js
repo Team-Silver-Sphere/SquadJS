@@ -1,5 +1,4 @@
 import DiscordBasePlugin from './discord-base-plugin.js';
-import { COPYRIGHT_MESSAGE } from '../utils/constants.js';
 
 export default class DiscordAdminBroadcast extends DiscordBasePlugin {
   static get description() {
@@ -44,10 +43,7 @@ export default class DiscordAdminBroadcast extends DiscordBasePlugin {
               value: `${info.message}`
             }
           ],
-          timestamp: info.time.toISOString(),
-          footer: {
-            text: COPYRIGHT_MESSAGE
-          }
+          timestamp: info.time.toISOString()
         }
       });
     });
