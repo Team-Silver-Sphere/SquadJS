@@ -98,6 +98,17 @@
       "color": 16761867
     },
     {
+      "plugin": "DiscordChat",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "chatColors": {},
+      "color": 16761867,
+      "ignoreChats": [
+        "ChatSquad"
+      ]
+    },
+    {
       "plugin": "DiscordRcon",
       "enabled": false,
       "discordClient": "discord",

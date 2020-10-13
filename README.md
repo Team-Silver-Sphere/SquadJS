@@ -298,6 +298,44 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
+      <summary>DiscordChat</summary>
+      <h2>DiscordChat</h2>
+      <p>The <code>DiscordChat</code> plugin will log in-game chat to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>chatColors</h4>
+       <h6>Description</h6>
+       <p>The color of the embed for each chat.</p>
+       <h6>Default</h6>
+       <pre><code>{}</code></pre><h6>Example</h6>
+       <pre><code>{
+  "ChatAll": 16761867
+}</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+<h4>ignoreChats</h4>
+       <h6>Description</h6>
+       <p>A list of chat names to ignore.</p>
+       <h6>Default</h6>
+       <pre><code>[
+  "ChatSquad"
+]</code></pre>
+    </details>
+
+<details>
       <summary>DiscordRcon</summary>
       <h2>DiscordRcon</h2>
       <p>The <code>DiscordRcon</code> plugin allows a specified Discord channel to be used as a RCON console to run RCON commands</p>

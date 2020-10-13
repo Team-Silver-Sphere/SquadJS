@@ -2,6 +2,7 @@ import AutoTKWarn from './auto-tk-warn.js';
 import ChatCommands from './chat-commands.js';
 import DiscordAdminBroadcast from './discord-admin-broadcast.js';
 import DiscordAdminRequest from './discord-admin-request.js';
+import DiscordChat from './discord-chat.js';
 import DiscordRcon from './discord-rcon.js';
 import IntervalledBroadcasts from './intervalled-broadcasts.js';
 import SeedingMode from './seeding-mode.js';
@@ -11,6 +12,7 @@ const plugins = [
   ChatCommands,
   DiscordAdminBroadcast,
   DiscordAdminRequest,
+  DiscordChat,
   DiscordRcon,
   IntervalledBroadcasts,
   SeedingMode
