@@ -1,7 +1,7 @@
-import BasePlugin from './base-plugin.js';
+import DiscordBasePlugin from './discord-base-plugin.js';
 import { COPYRIGHT_MESSAGE } from '../utils/constants.js';
 
-export default class DiscordAdminRequest extends BasePlugin {
+export default class DiscordAdminRequest extends DiscordBasePlugin {
   static get description() {
     return (
       'The <code>DiscordAdminRequest</code> plugin will ping admins in a Discord channel when a player requests ' +
@@ -10,17 +10,12 @@ export default class DiscordAdminRequest extends BasePlugin {
   }
 
   static get defaultEnabled() {
-    return false;
+    return true;
   }
 
   static get optionsSpecification() {
     return {
-      discordClient: {
-        required: true,
-        description: 'Discord connector name.',
-        connector: 'discord',
-        default: 'discord'
-      },
+      ...DiscordBasePlugin.optionsSpecification,
       channelID: {
         required: true,
         description: 'The ID of the channel to log admin broadcasts to.',
@@ -64,69 +59,67 @@ export default class DiscordAdminRequest extends BasePlugin {
   }
 
   constructor(server, options) {
-    super();
+    super(server, options);
 
     this.lastPing = Date.now();
 
-    options.discordClient.channels.fetch(options.channelID).then((channel) => {
-      server.on(`CHAT_COMMAND:${options.adminPrefix}`, async (info) => {
-        if (options.ignoreChats.includes(info.chat)) return;
+    server.on(`CHAT_COMMAND:${options.adminPrefix}`, async (info) => {
+      if (options.ignoreChats.includes(info.chat)) return;
 
-        for (const ignorePhrase of options.ignorePhrases) {
-          if (info.message.includes(ignorePhrase)) return;
-        }
+      for (const ignorePhrase of options.ignorePhrases) {
+        if (info.message.includes(ignorePhrase)) return;
+      }
 
-        if (info.message.length === 0) {
-          await server.rcon.warn(
-            info.player.steamID,
-            `Please specify what you would like help with when requesting an admin.`
-          );
-          return;
-        }
-
-        const message = {
-          embed: {
-            title: `${info.player.name} has requested admin support!`,
-            color: options.color,
-            fields: [
-              {
-                name: 'Player',
-                value: info.player.name,
-                inline: true
-              },
-              {
-                name: 'SteamID',
-                value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
-                inline: true
-              },
-              {
-                name: 'Team & Squad',
-                value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
-              },
-              {
-                name: 'Message',
-                value: info.message
-              }
-            ],
-            timestamp: info.time.toISOString(),
-            footer: {
-              text: COPYRIGHT_MESSAGE
-            }
-          }
-        };
-
-        if (options.pingGroups.length > 0 && Date.now() - options.pingDelay > this.lastPing) {
-          message.content = options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');
-          this.lastPing = Date.now();
-        }
-
-        await channel.send(message);
-
+      if (info.message.length === 0) {
         await server.rcon.warn(
           info.player.steamID,
-          `An admin has been notified, please wait for us to get back to you.`
+          `Please specify what you would like help with when requesting an admin.`
         );
-      });
+        return;
+      }
+
+      const message = {
+        embed: {
+          title: `${info.player.name} has requested admin support!`,
+          color: options.color,
+          fields: [
+            {
+              name: 'Player',
+              value: info.player.name,
+              inline: true
+            },
+            {
+              name: 'SteamID',
+              value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+              inline: true
+            },
+            {
+              name: 'Team & Squad',
+              value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
+            },
+            {
+              name: 'Message',
+              value: info.message
+            }
+          ],
+          timestamp: info.time.toISOString(),
+          footer: {
+            text: COPYRIGHT_MESSAGE
+          }
+        }
+      };
+
+      if (options.pingGroups.length > 0 && Date.now() - options.pingDelay > this.lastPing) {
+        message.content = options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');
+        this.lastPing = Date.now();
+      }
+
+      await this.sendDiscordMessage(message);
+
+      await server.rcon.warn(
+        info.player.steamID,
+        `An admin has been notified, please wait for us to get back to you.`
+      );
     });
   }
 }

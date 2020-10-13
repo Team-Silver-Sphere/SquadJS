@@ -87,7 +87,7 @@
     },
     {
       "plugin": "DiscordAdminRequest",
-      "enabled": false,
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "",
       "ignoreChats": [],

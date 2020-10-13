@@ -1,7 +1,7 @@
-import BasePlugin from './base-plugin.js';
+import DiscordBasePlugin from './discord-base-plugin.js';
 import { COPYRIGHT_MESSAGE } from '../utils/constants.js';
 
-export default class DiscordAdminBroadcast extends BasePlugin {
+export default class DiscordAdminBroadcast extends DiscordBasePlugin {
   static get description() {
     return (
       'The <code>DiscordAdminBroadcast</code> plugin will send a copy of admin broadcasts made in game to a Discord ' +
@@ -15,12 +15,7 @@ export default class DiscordAdminBroadcast extends BasePlugin {
 
   static get optionsSpecification() {
     return {
-      discordClient: {
-        required: true,
-        description: 'Discord connector name.',
-        connector: 'discord',
-        default: 'discord'
-      },
+      ...DiscordBasePlugin.optionsSpecification,
       channelID: {
         required: true,
         description: 'The ID of the channel to log admin broadcasts to.',
@@ -36,26 +31,24 @@ export default class DiscordAdminBroadcast extends BasePlugin {
   }
 
   constructor(server, options) {
-    super();
+    super(server, options);
 
-    options.discordClient.channels.fetch(options.channelID).then((channel) => {
-      server.on('ADMIN_BROADCAST', async (info) => {
-        await channel.send({
-          embed: {
-            title: 'Admin Broadcast',
-            color: options.color,
-            fields: [
-              {
-                name: 'Message',
-                value: `${info.message}`
-              }
-            ],
-            timestamp: info.time.toISOString(),
-            footer: {
-              text: COPYRIGHT_MESSAGE
+    server.on('ADMIN_BROADCAST', async (info) => {
+      await this.sendDiscordMessage({
+        embed: {
+          title: 'Admin Broadcast',
+          color: options.color,
+          fields: [
+            {
+              name: 'Message',
+              value: `${info.message}`
             }
+          ],
+          timestamp: info.time.toISOString(),
+          footer: {
+            text: COPYRIGHT_MESSAGE
           }
-        });
+        }
       });
     });
   }
