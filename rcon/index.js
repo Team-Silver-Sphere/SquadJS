@@ -148,7 +148,7 @@ export default class Rcon extends EventEmiiter {
           steamID: message[2],
           name: message[3],
           message: message[4],
-          time: Date.now()
+          time: new Date()
         });
       } else if (decodedPacket.id === END_PACKET_ID) {
         if (this.ignoreNextEndPacket) {
