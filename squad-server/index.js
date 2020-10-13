@@ -157,7 +157,10 @@ export default class SquadServer extends EventEmitter {
 
       const command = data.message.match(/!([^ ]+) ?(.*)/);
       if (command)
-        this.emit(`CHAT_COMMAND:${command[1].toLowerCase()}`, { ...data, message: command[2] });
+        this.emit(`CHAT_COMMAND:${command[1].toLowerCase()}`, {
+          ...data,
+          message: command[2].trim()
+        });
     });
 
     this.rcon.on('RCON_ERROR', (data) => {

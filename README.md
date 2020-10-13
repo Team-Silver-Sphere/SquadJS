@@ -241,6 +241,63 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
+      <summary>DiscordAdminRequest</summary>
+      <h2>DiscordAdminRequest</h2>
+      <p>The <code>DiscordAdminRequest</code> plugin will ping admins in a Discord channel when a player requests an admin via the <code>!admin</code> command in in-game chat.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>ignoreChats</h4>
+       <h6>Description</h6>
+       <p>A list of chat names to ignore.</p>
+       <h6>Default</h6>
+       <pre><code>[]</code></pre><h6>Example</h6>
+       <pre><code>[
+  "ChatSquad"
+]</code></pre>
+<h4>ignorePhrases</h4>
+       <h6>Description</h6>
+       <p>A list of phrases to ignore.</p>
+       <h6>Default</h6>
+       <pre><code>[]</code></pre><h6>Example</h6>
+       <pre><code>[
+  "switch"
+]</code></pre>
+<h4>adminPrefix</h4>
+       <h6>Description</h6>
+       <p>The command that calls an admin.</p>
+       <h6>Default</h6>
+       <pre><code>!admin</code></pre>
+<h4>pingGroups</h4>
+       <h6>Description</h6>
+       <p>A list of Discord role IDs to ping.</p>
+       <h6>Default</h6>
+       <pre><code>[]</code></pre><h6>Example</h6>
+       <pre><code>[
+  "500455137626554379"
+]</code></pre>
+<h4>pingDelay</h4>
+       <h6>Description</h6>
+       <p>Cooldown for pings in milliseconds.</p>
+       <h6>Default</h6>
+       <pre><code>60000</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+    </details>
+
+<details>
       <summary>DiscordRcon</summary>
       <h2>DiscordRcon</h2>
       <p>The <code>DiscordRcon</code> plugin allows a specified Discord channel to be used as a RCON console to run RCON commands</p>
