@@ -241,6 +241,29 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
+      <summary>DiscordAdminCamLogs</summary>
+      <h2>DiscordAdminCamLogs</h2>
+      <p>The <code>DiscordAdminCamLogs</code> plugin will log in game admin camera usage to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin camera usage to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+    </details>
+
+<details>
       <summary>DiscordAdminRequest</summary>
       <h2>DiscordAdminRequest</h2>
       <p>The <code>DiscordAdminRequest</code> plugin will ping admins in a Discord channel when a player requests an admin via the <code>!admin</code> command in in-game chat.</p>
@@ -272,11 +295,11 @@ The following is a list of plugins built into SquadJS, you can click their title
        <pre><code>[
   "switch"
 ]</code></pre>
-<h4>adminPrefix</h4>
+<h4>command</h4>
        <h6>Description</h6>
        <p>The command that calls an admin.</p>
        <h6>Default</h6>
-       <pre><code>!admin</code></pre>
+       <pre><code>admin</code></pre>
 <h4>pingGroups</h4>
        <h6>Description</h6>
        <p>A list of Discord role IDs to ping.</p>
@@ -338,7 +361,7 @@ The following is a list of plugins built into SquadJS, you can click their title
 <details>
       <summary>DiscordRcon</summary>
       <h2>DiscordRcon</h2>
-      <p>The <code>DiscordRcon</code> plugin allows a specified Discord channel to be used as a RCON console to run RCON commands</p>
+      <p>The <code>DiscordRcon</code> plugin allows a specified Discord channel to be used as a RCON console to run RCON commands.</p>
       <h3>Options</h3>
       <h4>discordClient (Required)</h4>
        <h6>Description</h6>
@@ -368,6 +391,24 @@ The following is a list of plugins built into SquadJS, you can click their title
        <p>Prepend admin names when making announcements.</p>
        <h6>Default</h6>
        <pre><code>false</code></pre>
+    </details>
+
+<details>
+      <summary>DiscordSubsystemRestarter</summary>
+      <h2>DiscordSubsystemRestarter</h2>
+      <p>The <code>DiscordSubSystemRestarter</code> plugin allows you to manually restart SquadJS subsystems in case an issues arises with them.<ul><li><code>!squadjs restartsubsystem rcon</code></li><li><code>!squadjs restartsubsystem logparser</code></li></ul></p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>role (Required)</h4>
+       <h6>Description</h6>
+       <p>ID of role required to run the sub system restart commands.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
     </details>
 
 <details>

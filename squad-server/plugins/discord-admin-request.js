@@ -33,10 +33,10 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
         default: [],
         example: ['switch']
       },
-      adminPrefix: {
+      command: {
         required: false,
         description: 'The command that calls an admin.',
-        default: '!admin'
+        default: 'admin'
       },
       pingGroups: {
         required: false,
@@ -60,9 +60,9 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
   constructor(server, options) {
     super(server, options);
 
-    this.lastPing = Date.now();
+    this.lastPing = Date.now() - options.pingDelay;
 
-    server.on(`CHAT_COMMAND:${options.adminPrefix}`, async (info) => {
+    server.on(`CHAT_COMMAND:${options.command}`, async (info) => {
       if (options.ignoreChats.includes(info.chat)) return;
 
       for (const ignorePhrase of options.ignorePhrases) {

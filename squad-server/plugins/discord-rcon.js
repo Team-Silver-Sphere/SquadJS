@@ -4,7 +4,7 @@ export default class DiscordRcon extends BasePlugin {
   static get description() {
     return (
       'The <code>DiscordRcon</code> plugin allows a specified Discord channel to be used as a RCON console to ' +
-      'run RCON commands'
+      'run RCON commands.'
     );
   }
 

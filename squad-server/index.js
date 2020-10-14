@@ -22,8 +22,7 @@ export default class SquadServer extends EventEmitter {
     for (const option of ['host', 'queryPort'])
       if (!(option in options)) throw new Error(`${option} must be specified.`);
 
-    this.host = options.host;
-    this.queryPort = options.queryPort;
+    this.options = options;
 
     this.layerHistory = [];
     this.layerHistoryMaxLength = options.layerHistoryMaxLength || 20;
@@ -34,19 +33,73 @@ export default class SquadServer extends EventEmitter {
 
     this.squadLayers = new SquadLayers(options.squadLayersSource);
 
-    this.logParser = new LogParser({
-      mode: options.logReaderMode,
-      logDir: options.logDir,
+    this.setupRCON();
+    this.setupLogParser();
 
-      host: options.ftpHost || options.host,
-      port: options.ftpPort,
-      user: options.ftpUser,
-      password: options.ftpPassword,
-      secure: options.ftpSecure,
-      timeout: options.ftpTimeout,
-      verbose: options.ftpVerbose,
-      fetchInterval: options.ftpFetchInterval,
-      maxTempFileSize: options.ftpMaxTempFileSize
+    this.updatePlayerList = this.updatePlayerList.bind(this);
+    this.updatePlayerListInterval = 30 * 1000;
+    this.updatePlayerListTimeout = null;
+
+    this.updateLayerInformation = this.updateLayerInformation.bind(this);
+    this.updateLayerInformationInterval = 30 * 1000;
+    this.updateLayerInformationTimeout = null;
+
+    this.updateA2SInformation = this.updateA2SInformation.bind(this);
+    this.updateA2SInformationInterval = 30 * 1000;
+    this.updateA2SInformationTimeout = null;
+  }
+
+  setupRCON() {
+    this.rcon = new Rcon({
+      host: this.options.host,
+      port: this.options.rconPort,
+      password: this.options.rconPassword,
+      autoReconnectInterval: this.options.rconAutoReconnectInterval
+    });
+
+    this.rcon.on('CHAT_MESSAGE', async (data) => {
+      data.player = await this.getPlayerBySteamID(data.steamID);
+      this.emit('CHAT_MESSAGE', data);
+
+      const command = data.message.match(/!([^ ]+) ?(.*)/);
+      if (command)
+        this.emit(`CHAT_COMMAND:${command[1].toLowerCase()}`, {
+          ...data,
+          message: command[2].trim()
+        });
+    });
+
+    this.rcon.on('RCON_ERROR', (data) => {
+      this.emit('RCON_ERROR', data);
+    });
+  }
+
+  async restartRCON() {
+    try {
+      await this.rcon.disconnect();
+    } catch (err) {
+      SquadServer.verbose('Failed to stop RCON instance when restarting.', err);
+    }
+
+    SquadServer.verbose('Setting up new RCON instance...');
+    this.setupRCON();
+    await this.rcon.connect();
+  }
+
+  setupLogParser() {
+    this.logParser = new LogParser({
+      mode: this.options.logReaderMode,
+      logDir: this.options.logDir,
+
+      host: this.options.ftpHost || this.options.host,
+      port: this.options.ftpPort,
+      user: this.options.ftpUser,
+      password: this.options.ftpPassword,
+      secure: this.options.ftpSecure,
+      timeout: this.options.ftpTimeout,
+      verbose: this.options.ftpVerbose,
+      fetchInterval: this.options.ftpFetchInterval,
+      maxTempFileSize: this.options.ftpMaxTempFileSize
     });
 
     this.logParser.on('ADMIN_BROADCAST', (data) => {
@@ -143,41 +196,18 @@ export default class SquadServer extends EventEmitter {
     this.logParser.on('TICK_RATE', (data) => {
       this.emit('TICK_RATE', data);
     });
+  }
 
-    this.rcon = new Rcon({
-      host: options.host,
-      port: options.rconPort,
-      password: options.rconPassword,
-      autoReconnectInterval: options.rconAutoReconnectInterval
-    });
+  async restartLogParser() {
+    try {
+      await this.logParser.unwatch();
+    } catch (err) {
+      SquadServer.verbose('Failed to stop LogParser instance when restarting.', err);
+    }
 
-    this.rcon.on('CHAT_MESSAGE', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
-      this.emit('CHAT_MESSAGE', data);
-
-      const command = data.message.match(/!([^ ]+) ?(.*)/);
-      if (command)
-        this.emit(`CHAT_COMMAND:${command[1].toLowerCase()}`, {
-          ...data,
-          message: command[2].trim()
-        });
-    });
-
-    this.rcon.on('RCON_ERROR', (data) => {
-      this.emit('RCON_ERROR', data);
-    });
-
-    this.updatePlayerList = this.updatePlayerList.bind(this);
-    this.updatePlayerListInterval = 30 * 1000;
-    this.updatePlayerListTimeout = null;
-
-    this.updateLayerInformation = this.updateLayerInformation.bind(this);
-    this.updateLayerInformationInterval = 30 * 1000;
-    this.updateLayerInformationTimeout = null;
-
-    this.updateA2SInformation = this.updateA2SInformation.bind(this);
-    this.updateA2SInformationInterval = 30 * 1000;
-    this.updateA2SInformationTimeout = null;
+    SquadServer.verbose('Setting up new LogParser instance...');
+    this.setupLogParser();
+    await this.logParser.watch();
   }
 
   async updatePlayerList() {
@@ -228,7 +258,11 @@ export default class SquadServer extends EventEmitter {
     if (this.updateA2SInformationTimeout) clearTimeout(this.updateA2SInformationTimeout);
 
     try {
-      const data = await Gamedig.query({ type: 'squad', host: this.host, port: this.queryPort });
+      const data = await Gamedig.query({
+        type: 'squad',
+        host: this.options.host,
+        port: this.options.queryPort
+      });
 
       this.serverName = data.name;
 
@@ -362,6 +396,8 @@ export default class SquadServer extends EventEmitter {
 
     SquadServer.verbose('Applying plugins to SquadServer...');
     for (const pluginConfig of config.plugins) {
+      if (!pluginConfig.enabled) continue;
+      
       if (!plugins[pluginConfig.plugin])
         throw new Error(`Plugin ${pluginConfig.plugin} does not exist.`);
 
@@ -393,7 +429,7 @@ export default class SquadServer extends EventEmitter {
     return server;
   }
 
-  static verbose(msg) {
-    console.log(`[SquadServer] ${msg}`);
+  static verbose(msg, ...additionalLogs) {
+    console.log(`[SquadServer] ${msg}`, ...additionalLogs);
   }
 }

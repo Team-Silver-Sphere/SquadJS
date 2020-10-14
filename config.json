@@ -86,13 +86,20 @@
       "color": 16761867
     },
     {
+      "plugin": "DiscordAdminCamLogs",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
       "plugin": "DiscordAdminRequest",
       "enabled": true,
       "discordClient": "discord",
       "channelID": "",
       "ignoreChats": [],
       "ignorePhrases": [],
-      "adminPrefix": "!admin",
+      "command": "admin",
       "pingGroups": [],
       "pingDelay": 60000,
       "color": 16761867
@@ -115,6 +122,12 @@
       "channelID": "",
       "permissions": {},
       "prependAdminNameInBroadcast": false
+    },
+    {
+      "plugin": "DiscordSubsystemRestarter",
+      "enabled": false,
+      "discordClient": "discord",
+      "role": ""
     },
     {
       "plugin": "IntervalledBroadcasts",
