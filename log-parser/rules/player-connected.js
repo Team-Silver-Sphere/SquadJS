@@ -1,6 +1,6 @@
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogNet: Join succeeded: (.+)/,
-  onMatch: async (args, logParser) => {
+  onMatch: (args, logParser) => {
     const data = {
       raw: args[0],
       time: args[1],

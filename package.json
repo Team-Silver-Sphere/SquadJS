@@ -7,10 +7,7 @@
   "private": true,
   "workspaces": [
     "assets",
-    "core",
-    "factory",
     "log-parser",
-    "plugins",
     "rcon",
     "squad-server"
   ],
@@ -22,8 +19,6 @@
   },
   "type": "module",
   "dependencies": {
-    "core": "1.0.0",
-    "factory": "1.0.0",
     "squad-server": "1.0.0"
   },
   "devDependencies": {

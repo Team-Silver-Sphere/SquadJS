@@ -6,6 +6,7 @@
     ".": "./index.js"
   },
   "dependencies": {
+    "async": "^3.2.0",
     "ftp-tail": "^1.0.2",
     "moment": "^2.29.0",
     "tail": "^2.0.4"

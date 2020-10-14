@@ -42,14 +42,14 @@ export default class LogParser extends EventEmitter {
     this.queue.push(line);
   }
 
-  async handleLine(line) {
+  handleLine(line) {
     for (const rule of rules) {
       const match = line.match(rule.regex);
       if (!match) continue;
 
       match[1] = moment.utc(match[1], 'YYYY.MM.DD-hh.mm.ss:SSS').toDate();
       match[2] = parseInt(match[2]);
-      await rule.onMatch(match, this);
+      rule.onMatch(match, this);
       break;
     }
   }

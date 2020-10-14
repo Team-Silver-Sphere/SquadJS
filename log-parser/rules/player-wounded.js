@@ -1,6 +1,6 @@
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQSoldier::)?Wound\(\): Player:(.+) KillingDamage=(?:-)*([0-9.]+) from ([A-z_0-9]+) caused by ([A-z_0-9]+)_C/,
-  onMatch: async (args, logParser) => {
+  onMatch: (args, logParser) => {
     const data = {
       ...logParser.eventStore[args[3]],
       raw: args[0],
