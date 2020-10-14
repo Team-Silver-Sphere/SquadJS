@@ -46,7 +46,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
         }
 
         await server.restartRCON();
-        message.reply('restarted RCON subsystem.');
+        message.reply('restarted the SquadJS RCON subsystem.');
       }
 
       if (message.content.match(/!squadjs restartsubsystem logparser/i)) {
@@ -55,7 +55,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
         }
 
         await server.restartLogParser();
-        message.reply('restarted LogParser subsystem.');
+        message.reply('restarted the SquadJS LogParser subsystem.');
       }
     });
   }

@@ -397,7 +397,7 @@ export default class SquadServer extends EventEmitter {
     SquadServer.verbose('Applying plugins to SquadServer...');
     for (const pluginConfig of config.plugins) {
       if (!pluginConfig.enabled) continue;
-      
+
       if (!plugins[pluginConfig.plugin])
         throw new Error(`Plugin ${pluginConfig.plugin} does not exist.`);
 
