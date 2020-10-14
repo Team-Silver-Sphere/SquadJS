@@ -14,16 +14,23 @@ export default class LogParser extends EventEmitter {
 
     this.eventStore = {};
 
-    this.queueLine = this.queueLine.bind(this);
-    this.handleLine = this.handleLine.bind(this);
-    this.queue = async.queue(this.handleLine);
+    this.queue = async.queue(async (line) => {
+      for (const rule of rules) {
+        const match = line.match(rule.regex);
+        if (!match) continue;
 
+        match[1] = moment.utc(match[1], 'YYYY.MM.DD-hh.mm.ss:SSS').toDate();
+        match[2] = parseInt(match[2]);
+        rule.onMatch(match, this);
+        break;
+      }
+    });
     switch (options.mode || 'tail') {
       case 'tail':
-        this.logReader = new TailLogReader(this.queueLine, options);
+        this.logReader = new TailLogReader(this.queue.push, options);
         break;
       case 'ftp':
-        this.logReader = new FTPLogReader(this.queueLine, options);
+        this.logReader = new FTPLogReader(this.queue.push, options);
         break;
       default:
         throw new Error('Invalid mode.');
@@ -36,21 +43,5 @@ export default class LogParser extends EventEmitter {
 
   async unwatch() {
     await this.logReader.unwatch();
-  }
-
-  queueLine(line) {
-    this.queue.push(line);
-  }
-
-  handleLine(line) {
-    for (const rule of rules) {
-      const match = line.match(rule.regex);
-      if (!match) continue;
-
-      match[1] = moment.utc(match[1], 'YYYY.MM.DD-hh.mm.ss:SSS').toDate();
-      match[2] = parseInt(match[2]);
-      rule.onMatch(match, this);
-      break;
-    }
   }
 }
