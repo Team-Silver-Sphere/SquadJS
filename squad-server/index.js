@@ -194,7 +194,7 @@ export default class SquadServer extends EventEmitter {
         ...player
       }));
     } catch (err) {
-      console.log('Failed to update player list.', err);
+      SquadServer.verbose('Failed to update player list.', err);
     }
 
     this.updatePlayerListTimeout = setTimeout(this.updatePlayerList, this.updatePlayerListInterval);
@@ -215,7 +215,7 @@ export default class SquadServer extends EventEmitter {
 
       this.nextLayer = layerInfo.nextLayer;
     } catch (err) {
-      console.log('Failed to update layer information.', err);
+      SquadServer.verbose('Failed to update layer information.', err);
     }
 
     this.updateLayerInformationTimeout = setTimeout(
@@ -243,7 +243,7 @@ export default class SquadServer extends EventEmitter {
       this.matchTimeout = parseFloat(data.raw.rules.MatchTimeout_f);
       this.gameVersion = data.raw.version;
     } catch (err) {
-      console.log('Failed to update A2S information.', err);
+      SquadServer.verbose('Failed to update A2S information.', err);
     }
 
     this.updateA2SInformationTimeout = setTimeout(
@@ -289,6 +289,8 @@ export default class SquadServer extends EventEmitter {
     await this.updatePlayerList();
     await this.updateLayerInformation();
     await this.updateA2SInformation();
+
+    SquadServer.verbose(`Watching ${this.serverName}...`);
   }
 
   async unwatch() {
@@ -297,12 +299,12 @@ export default class SquadServer extends EventEmitter {
   }
 
   static async buildFromConfig(configPath = './config.json') {
-    console.log('Reading config file...');
+    SquadServer.verbose('Reading config file...');
     configPath = path.resolve(__dirname, '../', configPath);
     if (!fs.existsSync(configPath)) throw new Error('Config file does not exist.');
     const unparsedConfig = fs.readFileSync(configPath, 'utf8');
 
-    console.log('Parsing config file...');
+    SquadServer.verbose('Parsing config file...');
     let config;
     try {
       config = JSON.parse(unparsedConfig);
@@ -310,13 +312,13 @@ export default class SquadServer extends EventEmitter {
       throw new Error('Unable to parse config file.');
     }
 
-    console.log('Creating SquadServer...');
+    SquadServer.verbose('Creating SquadServer...');
     const server = new SquadServer(config.server);
 
     // pull layers read to use to create layer filter connectors
     await server.squadLayers.pull();
 
-    console.log('Preparing connectors...');
+    SquadServer.verbose('Preparing connectors...');
     const connectors = {};
     for (const pluginConfig of config.plugins) {
       if (!pluginConfig.enabled) continue;
@@ -340,14 +342,14 @@ export default class SquadServer extends EventEmitter {
         const connectorConfig = config.connectors[connectorName];
 
         if (option.connector === 'discord') {
-          console.log(`Starting discord connector ${connectorName}...`);
+          SquadServer.verbose(`Starting discord connector ${connectorName}...`);
           connectors[connectorName] = new Discord.Client();
           await connectors[connectorName].login(connectorConfig);
         } else if (option.connector === 'mysql') {
-          console.log(`Starting mysqlPool connector ${connectorName}...`);
+          SquadServer.verbose(`Starting mysqlPool connector ${connectorName}...`);
           connectors[connectorName] = mysql.createPool(connectorConfig);
         } else if (option.connector === 'squadlayerpool') {
-          console.log(`Starting squadlayerfilter connector ${connectorName}...`);
+          SquadServer.verbose(`Starting squadlayerfilter connector ${connectorName}...`);
           connectors[connectorName] = server.squadLayers[connectorConfig.type](
             connectorConfig.filter,
             connectorConfig.activeLayerFilter
@@ -358,14 +360,14 @@ export default class SquadServer extends EventEmitter {
       }
     }
 
-    console.log('Applying plugins to SquadServer...');
+    SquadServer.verbose('Applying plugins to SquadServer...');
     for (const pluginConfig of config.plugins) {
       if (!plugins[pluginConfig.plugin])
         throw new Error(`Plugin ${pluginConfig.plugin} does not exist.`);
 
       const Plugin = plugins[pluginConfig.plugin];
 
-      console.log(`Initialising ${Plugin.name}...`);
+      SquadServer.verbose(`Initialising ${Plugin.name}...`);
 
       const options = {};
       for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
@@ -389,5 +391,9 @@ export default class SquadServer extends EventEmitter {
     }
 
     return server;
+  }
+
+  static verbose(msg) {
+    console.log(`[SquadServer] ${msg}`);
   }
 }

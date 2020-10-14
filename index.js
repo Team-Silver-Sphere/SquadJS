@@ -5,7 +5,5 @@ const configPath = process.argv[2] || './config.json';
 
 printLogo();
 SquadServer.buildFromConfig(configPath).then((server) => {
-  server.watch().then(() => {
-    console.log(`Watching ${server.serverName}...`);
-  });
+  server.watch();
 });

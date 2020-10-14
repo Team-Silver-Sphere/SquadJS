@@ -244,7 +244,7 @@ export default class Rcon extends EventEmiiter {
   }
 
   verbose(msg) {
-    console.log(`[${Date.now()}] RCON (Verbose): ${msg}`);
+    console.log(`[RCON] ${msg}`);
   }
 
   execute(command) {

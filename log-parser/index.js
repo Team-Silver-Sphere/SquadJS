@@ -14,6 +14,9 @@ export default class LogParser extends EventEmitter {
 
     this.eventStore = {};
 
+    this.linesPerMinute = 0;
+    this.linesPerMinuteInterval = null;
+
     this.queue = async.queue(async (line) => {
       for (const rule of rules) {
         const match = line.match(rule.regex);
@@ -24,7 +27,10 @@ export default class LogParser extends EventEmitter {
         rule.onMatch(match, this);
         break;
       }
+
+      this.linesPerMinute++;
     });
+
     switch (options.mode || 'tail') {
       case 'tail':
         this.logReader = new TailLogReader(this.queue.push, options);
@@ -39,9 +45,20 @@ export default class LogParser extends EventEmitter {
 
   async watch() {
     await this.logReader.watch();
+
+    this.linesPerMinuteInterval = setInterval(() => {
+      this.verbose(`Processing ${this.linesPerMinute} lines per minute.`);
+      this.linesPerMinute = 0;
+    }, 60 * 1000);
   }
 
   async unwatch() {
     await this.logReader.unwatch();
+
+    clearInterval(this.linesPerMinuteInterval);
+  }
+
+  verbose(msg) {
+    console.log(`[LogParser: ${msg}`);
   }
 }
