@@ -22,7 +22,7 @@ export default class Rcon extends EventEmiiter {
     this.password = options.password;
 
     this.reconnectInterval = null;
-    this.autoRconnectInterval = options.autoReconnectInterval || 5000;
+    this.autoReconnectInterval = options.autoReconnectInterval || 5000;
 
     this.maximumPacketSize = 4096;
 
