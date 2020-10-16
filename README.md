@@ -359,6 +359,23 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
+      <summary>DiscordPlaceholder</summary>
+      <h2>DiscordPlaceholder</h2>
+      <p>The <code>DiscordPlaceholder</code> plugin can be used to create placeholder messages in Discord for use by other plugins.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>command</h4>
+       <h6>Description</h6>
+       <p>Command that triggers the placeholder message.</p>
+       <h6>Default</h6>
+       <pre><code>!placeholder</code></pre>
+    </details>
+
+<details>
       <summary>DiscordRcon</summary>
       <h2>DiscordRcon</h2>
       <p>The <code>DiscordRcon</code> plugin allows a specified Discord channel to be used as a RCON console to run RCON commands.</p>
