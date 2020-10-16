@@ -4,6 +4,7 @@ import DiscordAdminBroadcast from './discord-admin-broadcast.js';
 import DiscordAdminCamLogs from './discord-admin-cam-logs.js';
 import DiscordAdminRequest from './discord-admin-request.js';
 import DiscordChat from './discord-chat.js';
+import DiscordDebug from './discord-debug.js';
 import DiscordPlaceholder from './discord-placeholder.js';
 import DiscordRcon from './discord-rcon.js';
 import DiscordSubsystemRestarter from './discord-subsystem-restarter.js';
@@ -17,6 +18,7 @@ const plugins = [
   DiscordAdminCamLogs,
   DiscordAdminRequest,
   DiscordChat,
+  DiscordDebug,
   DiscordPlaceholder,
   DiscordRcon,
   DiscordSubsystemRestarter,

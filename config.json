@@ -116,6 +116,13 @@
       ]
     },
     {
+      "plugin": "DiscordDebug",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "events": []
+    },
+    {
       "plugin": "DiscordPlaceholder",
       "enabled": true,
       "discordClient": "discord",

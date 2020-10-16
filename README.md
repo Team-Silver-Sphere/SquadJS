@@ -359,6 +359,32 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
+      <summary>DiscordDebug</summary>
+      <h2>DiscordDebug</h2>
+      <p>The <code>DiscordDebug</code> plugin can be used to help debug SquadJS by dumping SquadJS events to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log events to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>events (Required)</h4>
+       <h6>Description</h6>
+       <p>A list of events to dump.</p>
+       <h6>Default</h6>
+       <pre><code>[]</code></pre><h6>Example</h6>
+       <pre><code>[
+  "PLAYER_DIED"
+]</code></pre>
+    </details>
+
+<details>
       <summary>DiscordPlaceholder</summary>
       <h2>DiscordPlaceholder</h2>
       <p>The <code>DiscordPlaceholder</code> plugin can be used to create placeholder messages in Discord for use by other plugins.</p>
