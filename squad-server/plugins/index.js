@@ -7,6 +7,7 @@ import DiscordChat from './discord-chat.js';
 import DiscordDebug from './discord-debug.js';
 import DiscordPlaceholder from './discord-placeholder.js';
 import DiscordRcon from './discord-rcon.js';
+import DiscordServerStatus from './discord-server-status.js';
 import DiscordSubsystemRestarter from './discord-subsystem-restarter.js';
 import IntervalledBroadcasts from './intervalled-broadcasts.js';
 import SeedingMode from './seeding-mode.js';
@@ -21,6 +22,7 @@ const plugins = [
   DiscordDebug,
   DiscordPlaceholder,
   DiscordRcon,
+  DiscordServerStatus,
   DiscordSubsystemRestarter,
   IntervalledBroadcasts,
   SeedingMode

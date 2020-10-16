@@ -137,6 +137,14 @@
       "prependAdminNameInBroadcast": false
     },
     {
+      "plugin": "DiscordServerStatus",
+      "enabled": false,
+      "discordClient": "discord",
+      "messageIDs": [],
+      "updateInterval": 60000,
+      "disableStatus": false
+    },
+    {
       "plugin": "DiscordSubsystemRestarter",
       "enabled": false,
       "discordClient": "discord",

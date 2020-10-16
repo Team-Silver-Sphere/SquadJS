@@ -9,7 +9,8 @@
     "gamedig": "^2.0.20",
     "log-parser": "1.0.0",
     "mysql": "^2.18.1",
-    "rcon": "1.0.0"
+    "rcon": "1.0.0",
+    "tinygradient": "^1.1.2"
   },
   "exports": {
     ".": "./index.js",

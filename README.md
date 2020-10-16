@@ -437,6 +437,39 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
+      <summary>DiscordServerStatus</summary>
+      <h2>DiscordServerStatus</h2>
+      <p>The <code>DiscordServerStatus</code> plugin updates a message in Discord with current server information, e.g. player count.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>messageIDs (Required)</h4>
+       <h6>Description</h6>
+       <p>ID of messages to update.</p>
+       <h6>Default</h6>
+       <pre><code>[]</code></pre><h6>Example</h6>
+       <pre><code>[
+  {
+    "channelID": "667741905228136459",
+    "messageID": "766688383043895387"
+  }
+]</code></pre>
+<h4>updateInterval</h4>
+       <h6>Description</h6>
+       <p>How frequently to update the status in Discord.</p>
+       <h6>Default</h6>
+       <pre><code>60000</code></pre>
+<h4>disableStatus</h4>
+       <h6>Description</h6>
+       <p>Disable the bot status.</p>
+       <h6>Default</h6>
+       <pre><code>false</code></pre>
+    </details>
+
+<details>
       <summary>DiscordSubsystemRestarter</summary>
       <h2>DiscordSubsystemRestarter</h2>
       <p>The <code>DiscordSubSystemRestarter</code> plugin allows you to manually restart SquadJS subsystems in case an issues arises with them.<ul><li><code>!squadjs restartsubsystem rcon</code></li><li><code>!squadjs restartsubsystem logparser</code></li></ul></p>

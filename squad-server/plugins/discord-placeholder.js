@@ -33,10 +33,9 @@ export default class DiscordPlaceholder extends BasePlugin {
 
     options.discordClient.on('message', async (message) => {
       // check the author of the message is not a bot
-      if (message.author.bot) return;
+      if (message.author.bot || !message.content.toLowerCase().startsWith(options.command)) return;
 
-      const placeholder = await message.channel.send('Placeholder.');
-      await placeholder.edit(`Placeholder (ID: ${message.id})`);
+      await message.channel.send('Placeholder.');
     });
   }
 }
