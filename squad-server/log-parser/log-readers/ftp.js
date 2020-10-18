@@ -22,7 +22,7 @@ export default class TailLogReader {
 
       path: path.join(options.logDir, 'SquadGame.log'),
 
-      fetchInterval: options.ftpTetchInterval || 0,
+      fetchInterval: options.ftpFetchInterval || 0,
       maxTempFileSize: options.ftpMaxTempFileSize || 5 * 1000 * 1000 // 5 MB
     });
 
