@@ -22,7 +22,7 @@
 SquadJS is a scripting framework, designed for Squad servers, that aims to handle all communication and data collection to and from the servers. Using SquadJS as the base to any of your scripting projects allows you to easily write complex plugins without having to worry about the hassle of RCON or log parsing. However, for your convenience SquadJS comes shipped with multiple plugins already built for you allowing you to experience the power of SquadJS right away.
 
 ## Using SquadJS
-SquadJS relies on being able to access the Squad server log directory in order to parse logs live to collect information. Thus, SquadJS must be hosted on the same server box as your Squad server.
+SquadJS relies on being able to access the Squad server log directory in order to parse logs live to collect information. Thus, SquadJS must be hosted on the same server box as your Squad server or be connected to your Squad server via FTP.
 
 ### Prerequisites
  * Git
@@ -64,6 +64,7 @@ The following section of the configuration contains information about your Squad
  * `rconPort` - The RCON port of the server.
  * `rconPassword` - The RCON password of the server.
  * `logReaderMode` - `tail` will read from a local log file. `ftp` will read from a remote log file.
+ * `logDir` - The folder where your Squad logs are saved. Most likely will be `C:/servers/squad_server/SquadGame/Saved/Logs`
  * `ftpPort` - The FTP port of the server. Only required for `ftp` `logReaderMode`.
  * `ftpUser` - The FTP user of the server. Only required for `ftp` `logReaderMode`.
  * `ftpPassword` - The FTP password of the server. Only required for `ftp` `logReaderMode`.
