@@ -2,6 +2,7 @@
 *.tmp
 
 config-test.json
+config.json
 
 # Dependencies
 node_modules/
