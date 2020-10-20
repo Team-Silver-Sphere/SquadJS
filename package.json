@@ -12,7 +12,9 @@
     "squad-server"
   ],
   "scripts": {
+    "start": "node ./index.js",
     "lint": "eslint --fix . && prettier --write \"./**/*.js\"",
+    "merge-config": "node squad-server/scripts/update-config.js",
     "build-config": "node squad-server/scripts/build-config.js",
     "build-readme": "node squad-server/scripts/build-readme.js",
     "build-all": "node squad-server/scripts/build-config.js && node squad-server/scripts/build-readme.js"
