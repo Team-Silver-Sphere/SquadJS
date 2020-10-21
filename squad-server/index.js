@@ -332,20 +332,7 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.unwatch();
   }
 
-  static async buildFromConfig(configPath = './config.json') {
-    SquadServer.verbose('Reading config file...');
-    configPath = path.resolve(__dirname, '../', configPath);
-    if (!fs.existsSync(configPath)) throw new Error('Config file does not exist.');
-    const unparsedConfig = fs.readFileSync(configPath, 'utf8');
-
-    SquadServer.verbose('Parsing config file...');
-    let config;
-    try {
-      config = JSON.parse(unparsedConfig);
-    } catch (err) {
-      throw new Error('Unable to parse config file.');
-    }
-
+  static async buildFromConfig(config) {
     SquadServer.verbose('Creating SquadServer...');
     const server = new SquadServer(config.server);
 
@@ -427,6 +414,26 @@ export default class SquadServer extends EventEmitter {
     }
 
     return server;
+  }
+
+  static buildFromConfigString(configString) {
+    let config;
+    try {
+      config = JSON.parse(configString);
+    } catch (err) {
+      throw new Error('Unable to parse config file.');
+    }
+
+    return SquadServer.buildFromConfig(config);
+  }
+
+  static buildFromConfigFile(configPath = './config.json') {
+    SquadServer.verbose('Reading config file...');
+    configPath = path.resolve(__dirname, '../', configPath);
+    if (!fs.existsSync(configPath)) throw new Error('Config file does not exist.');
+    const configString = fs.readFileSync(configPath, 'utf8');
+
+    return SquadServer.buildFromConfigString(configString);
   }
 
   static verbose(msg, ...additionalLogs) {
