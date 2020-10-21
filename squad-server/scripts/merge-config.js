@@ -42,9 +42,6 @@ export function mergeConfig(fullConfigPath, fullExamplePath){
   return parsedConfig
 }
 
-//module.exports = { mergeConfig };
-
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const configPath = path.resolve(__dirname, '../../config.json');
