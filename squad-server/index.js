@@ -7,6 +7,8 @@ import Discord from 'discord.js';
 import Gamedig from 'gamedig';
 import mysql from 'mysql';
 
+import { mergeConfig } from './scripts/merge-config.js';
+
 import { SquadLayers } from './utils/squad-layers.js';
 import LogParser from 'log-parser';
 import Rcon from 'rcon';
@@ -335,16 +337,10 @@ export default class SquadServer extends EventEmitter {
   static async buildFromConfig(configPath = './config.json') {
     SquadServer.verbose('Reading config file...');
     configPath = path.resolve(__dirname, '../', configPath);
-    if (!fs.existsSync(configPath)) throw new Error('Config file does not exist.');
-    const unparsedConfig = fs.readFileSync(configPath, 'utf8');
-
-    SquadServer.verbose('Parsing config file...');
-    let config;
-    try {
-      config = JSON.parse(unparsedConfig);
-    } catch (err) {
-      throw new Error('Unable to parse config file.');
-    }
+    
+    const examplePath = path.resolve(__dirname, '../config-example.json');
+    
+    let config = mergeConfig(configPath, examplePath);
 
     SquadServer.verbose('Creating SquadServer...');
     const server = new SquadServer(config.server);
