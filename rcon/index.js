@@ -49,7 +49,7 @@ export default class Rcon extends EventEmiiter {
 
       this.client.on('error', (err) => {
         this.verbose(`Socket Error: ${err.message}`);
-        this.emitter.emit('RCON_ERROR', err);
+        this.emit('RCON_ERROR', err);
       });
 
       this.client.on('close', async (hadError) => {
