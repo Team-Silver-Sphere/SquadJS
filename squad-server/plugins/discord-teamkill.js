@@ -2,8 +2,10 @@ import DiscordBasePlugin from './discord-base-plugin.js';
 
 export default class DiscordTeamkill extends DiscordBasePlugin {
   static get description() {
-    return 'The <code>DiscordTeamkill</code> plugin logs teamkills and related information to a Discord channel for ' +
-      'admins to review.';
+    return (
+      'The <code>DiscordTeamkill</code> plugin logs teamkills and related information to a Discord channel for ' +
+      'admins to review.'
+    );
   }
 
   static get defaultEnabled() {

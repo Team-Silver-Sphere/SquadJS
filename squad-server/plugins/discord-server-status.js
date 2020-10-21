@@ -56,7 +56,12 @@ export default class DiscordServerStatus extends BasePlugin {
         }
       }
 
-      await options.discordClient.user.setActivity(`(${server.a2sPlayerCount}/${server.publicSlots}) ${server.layerHistory[0].layer || 'Unknown'}`, { type: 'WATCHING' });
+      await options.discordClient.user.setActivity(
+        `(${server.a2sPlayerCount}/${server.publicSlots}) ${
+          server.layerHistory[0].layer || 'Unknown'
+        }`,
+        { type: 'WATCHING' }
+      );
     }, options.updateInterval);
   }
 

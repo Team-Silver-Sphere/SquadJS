@@ -158,14 +158,6 @@
       "role": ""
     },
     {
-      "plugin": "DiscordTeamkill",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "color": 16761867,
-      "disableSCBL": false
-    },
-    {
       "plugin": "IntervalledBroadcasts",
       "enabled": false,
       "broadcasts": [],
@@ -180,6 +172,11 @@
       "liveEnabled": true,
       "liveThreshold": 52,
       "liveMessage": "Live!"
+    },
+    {
+      "plugin": "TeamRandomizer",
+      "enabled": true,
+      "command": "randomize"
     }
   ]
 }

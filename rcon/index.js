@@ -288,4 +288,8 @@ export default class Rcon extends EventEmiiter {
   async warn(steamID, message) {
     await this.execute(`AdminWarn "${steamID}" ${message}`);
   }
+
+  async switchTeam(steamID) {
+    await this.execute(`AdminForceTeamChange "${steamID}"`);
+  }
 }

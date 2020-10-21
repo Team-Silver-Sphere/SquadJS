@@ -10,9 +10,9 @@ import DiscordRcon from './discord-rcon.js';
 import DiscordRoundWinner from './discord-round-winner.js';
 import DiscordServerStatus from './discord-server-status.js';
 import DiscordSubsystemRestarter from './discord-subsystem-restarter.js';
-import DiscordTeamkill from './discord-teamkill.js';
 import IntervalledBroadcasts from './intervalled-broadcasts.js';
 import SeedingMode from './seeding-mode.js';
+import TeamRandomizer from './team-randomizer.js';
 
 const plugins = [
   AutoTKWarn,
@@ -27,9 +27,9 @@ const plugins = [
   DiscordRoundWinner,
   DiscordServerStatus,
   DiscordSubsystemRestarter,
-  DiscordTeamkill,
   IntervalledBroadcasts,
-  SeedingMode
+  SeedingMode,
+  TeamRandomizer
 ];
 
 const pluginsByName = {};
