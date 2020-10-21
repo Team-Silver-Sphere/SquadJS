@@ -25,4 +25,4 @@ for (const pluginKey of pluginKeys) {
   template.plugins.push(pluginConfig);
 }
 
-fs.writeFileSync(path.resolve(__dirname, '../../config.json'), JSON.stringify(template, null, 2));
+fs.writeFileSync(path.resolve(__dirname, '../../config-example.json'), JSON.stringify(template, null, 2));

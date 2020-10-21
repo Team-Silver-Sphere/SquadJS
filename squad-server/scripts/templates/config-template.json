@@ -1,4 +1,7 @@
 {
+  "squadjs": {
+    "autoUpdateMyConfig": false
+  },
   "server": {
     "id": 1,
 
