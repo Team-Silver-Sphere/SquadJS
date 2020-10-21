@@ -131,7 +131,7 @@ export default class SquadServer extends EventEmitter {
       data.victim = await this.getPlayerByName(data.victimName);
       data.attacker = await this.getPlayerByName(data.attackerName);
 
-      if (data.victim && data.attacker) data.teamkill = data.victim.teamID === data.attacker.teamID;
+      if (data.victim && data.attacker) data.teamkill = data.victim.teamID === data.attacker.teamID && data.victim.steamID !== data.attacker.steamID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -143,7 +143,7 @@ export default class SquadServer extends EventEmitter {
       data.victim = await this.getPlayerByName(data.victimName);
       data.attacker = await this.getPlayerByName(data.attackerName);
 
-      if (data.victim && data.attacker) data.teamkill = data.victim.teamID === data.attacker.teamID;
+      if (data.victim && data.attacker) data.teamkill = data.victim.teamID === data.attacker.teamID && data.victim.steamID !== data.attacker.steamID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -156,7 +156,7 @@ export default class SquadServer extends EventEmitter {
       data.victim = await this.getPlayerByName(data.victimName);
       data.attacker = await this.getPlayerByName(data.attackerName);
 
-      if (data.victim && data.attacker) data.teamkill = data.victim.teamID === data.attacker.teamID;
+      if (data.victim && data.attacker) data.teamkill = data.victim.teamID === data.attacker.teamID && data.victim.steamID !== data.attacker.steamID;
 
       delete data.victimName;
       delete data.attackerName;
