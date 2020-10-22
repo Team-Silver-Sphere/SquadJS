@@ -99,7 +99,10 @@ export default class SquadServer extends EventEmitter {
       timeout: this.options.ftpTimeout,
       verbose: this.options.ftpVerbose,
       fetchInterval: this.options.ftpFetchInterval,
-      maxTempFileSize: this.options.ftpMaxTempFileSize
+      maxTempFileSize: this.options.ftpMaxTempFileSize,
+
+      // enable this for FTP servers that do not support SIZE
+      useListForSize: this.options.ftpUseListForSize
     });
 
     this.logParser.on('ADMIN_BROADCAST', (data) => {

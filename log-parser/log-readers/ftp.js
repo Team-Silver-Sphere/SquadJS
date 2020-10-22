@@ -19,7 +19,9 @@ export default class TailLogReader {
       path: path.join(options.logDir, 'SquadGame.log'),
 
       fetchInterval: options.fetchInterval || 0,
-      maxTempFileSize: options.maxTempFileSize || 5 * 1000 * 1000 // 5 MB
+      maxTempFileSize: options.maxTempFileSize || 5 * 1000 * 1000, // 5 MB
+
+      useListForSize: options.useListForSize
     });
 
     if (typeof queueLine !== 'function')
