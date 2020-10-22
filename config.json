@@ -67,6 +67,12 @@
       "message": "Please apologise for ALL TKs in ALL chat!"
     },
     {
+      "plugin": "AutoKickAFK",
+      "enabled": true,
+      "warning": "",
+      "updateInterval": 3
+    },
+    {
       "plugin": "ChatCommands",
       "enabled": true,
       "commands": [

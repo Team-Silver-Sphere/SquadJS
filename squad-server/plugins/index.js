@@ -1,4 +1,5 @@
 import AutoTKWarn from './auto-tk-warn.js';
+import AutoKickAFK from './auto-kick-afk.js';
 import ChatCommands from './chat-commands.js';
 import DiscordAdminBroadcast from './discord-admin-broadcast.js';
 import DiscordAdminCamLogs from './discord-admin-cam-logs.js';
@@ -14,6 +15,7 @@ import SeedingMode from './seeding-mode.js';
 
 const plugins = [
   AutoTKWarn,
+  AutoKickAFK,
   ChatCommands,
   DiscordAdminBroadcast,
   DiscordAdminCamLogs,
