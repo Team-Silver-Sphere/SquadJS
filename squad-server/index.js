@@ -3,6 +3,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
+import axios from 'axios';
 import Discord from 'discord.js';
 import Gamedig from 'gamedig';
 import mysql from 'mysql';
@@ -10,6 +11,8 @@ import mysql from 'mysql';
 import { SquadLayers } from './utils/squad-layers.js';
 import LogParser from 'log-parser';
 import Rcon from 'rcon';
+
+import { SQUADJS_API } from './utils/constants.js';
 
 import plugins from './plugins/index.js';
 
@@ -47,6 +50,10 @@ export default class SquadServer extends EventEmitter {
     this.updateA2SInformation = this.updateA2SInformation.bind(this);
     this.updateA2SInformationInterval = 30 * 1000;
     this.updateA2SInformationTimeout = null;
+
+    this.pingSquadJSAPI = this.pingSquadJSAPI.bind(this);
+    this.pingSquadJSAPIInterval = 5 * 60 * 1000;
+    this.pingSquadJSAPITimeout = null;
   }
 
   setupRCON() {
@@ -337,6 +344,8 @@ export default class SquadServer extends EventEmitter {
     await this.updateA2SInformation();
 
     SquadServer.verbose(`Watching ${this.serverName}...`);
+
+    await this.pingSquadJSAPI();
   }
 
   async unwatch() {
@@ -422,7 +431,7 @@ export default class SquadServer extends EventEmitter {
         }
       }
 
-      server.plugins.push(new Plugin(server, options));
+      server.plugins.push(new Plugin(server, options, pluginConfig));
     }
 
     return server;
@@ -450,5 +459,37 @@ export default class SquadServer extends EventEmitter {
 
   static verbose(msg, ...additionalLogs) {
     console.log(`[SquadServer] ${msg}`, ...additionalLogs);
+  }
+
+  async pingSquadJSAPI() {
+    if (this.pingSquadJSAPITimeout) clearTimeout(this.pingSquadJSAPITimeout);
+
+    SquadServer.verbose(`Pinging SquadJS API...`);
+
+    const config = {
+      // send minimal information on server
+      server: {
+        host: this.options.host,
+        queryPort: this.options.queryPort,
+        logReaderMode: this.options.logReaderMode
+      },
+
+      // we send all plugin information as none of that is sensitive.
+      plugins: this.plugins.map((plugin) => ({
+        ...plugin.optionsRaw,
+        plugin: plugin.constructor.name
+      }))
+    };
+
+    try {
+      const { data } = await axios.post(SQUADJS_API + '/ping', { config });
+
+      if(data.error) SquadServer.verbose(`Successfully pinged the SquadJS API. Got back error: ${data.error}`);
+      else SquadServer.verbose(`Successfully pinged the SquadJS API. Got back message: ${data.message}`);
+    } catch(err) {
+      SquadServer.verbose('Failed to ping the SquadJS API: ', err);
+    }
+
+    this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
   }
 }
