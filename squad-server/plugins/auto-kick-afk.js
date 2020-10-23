@@ -14,14 +14,29 @@ export default class AutoKickAFK extends BasePlugin {
       warning: {
         required: false,
         description:
-          'If enabled SquadJS will warn a player once before kicking them. To disable remove the message `""`',
+          'If enabled SquadJS will warn a player once before kicking them. To disable remove the message (`""`)',
         default: 'Players not in a squad are unassigned and will be kicked in 3 minutes'
       },
       updateInterval: {
-        required: true,
-        description: 'How frequently to check if players are AFK in minutes.',
+        required: false,
+        description: 'How frequently to check if players are AFK in minutes. If the warning is enabled a player will be kicked after 2x this value otherwise they will be kicked immediately.',
         default: 3
-      }
+      },
+      playerThreshold:{
+        required: false,
+        description: 'Player count required for Auto Kick to start kicking players to disable set to above max player count',
+        default: 93
+      },
+      queueThreshold:{
+        required: false,
+        description: 'The number of players in the queue before Auto Kick starts kicking players set to -1 to disable',
+        default: -1
+      }/*,
+      ignoreAdmins:{
+        required: false,
+        description: 'Whether or not admins will be auto kicked for being unassigned',
+        default: false
+      }*/
     };
   }
 
@@ -29,41 +44,65 @@ export default class AutoKickAFK extends BasePlugin {
     super();
 
     this.playerDict = {};
+    //for initial testing
+    this.auditMode = true;
 
     const intervalMS = options.updateInterval * 60 * 1000;
 
-    setInterval(async () => {
-      console.log(server.players);
-      const lookup = {};
-      for (const player of server.players) {
-        lookup[player.steamID] = player;
+    setInterval( async ()=>{
+      if(server.players.count <= options.playerCountThreshold || ( server.publicQueue > options.queueThreshold > 0) ){
+        // clear tracking vlaues so if the player count indreases/decreases past any threshold stale players arent counted again if they happen to be unassigned
+        this.playerDict = {};
+        return;
+      }
 
+      for (const player of server.players) {
         // marks player if not in a Squad
-        if (player.squadID === null) {
-          if (player.steamID in this.playerDict) {
+        if(player.squadID === null){
+          if(player.steamID in this.playerDict){
+            // player in dict was already warned mark for kick
             this.playerDict[player.steamID] += 1;
-          } else {
+          }else{
+            // player not in dict is added for warning
             this.playerDict[player.steamID] = 0;
           }
-        } else if (player.steamID in this.playerDict) {
+        }else if(player.steamID in this.playerDict){
           // remove player from list if they joined a squad
           delete this.playerDict[player.steamID];
         }
       }
-
+  
+      console.log(this.playerDict);
+  
       const copy = Object.assign({}, this.playerDict);
-      for (const [steamID, count] of Object.entries(copy)) {
-        if (count >= 1) {
-          await server.rcon.kick(steamID);
-          delete this.playerDict[steamID];
-        }
-        if (count === 0 && options.warning !== '') {
-          await server.rcon.warn(steamID, options.warning);
-        } else {
-          await server.rcon.kick(steamID);
-          delete this.playerDict[steamID];
+      for(const [steamID, warnings] of Object.entries(copy)){
+        if(warnings >= 1 || options.warning === ''){
+          if(this.auditMode){
+            console.log(`[AUTO AFK] kick ${steamID} for AFK`)
+          }else{
+            // kick player that has been warned
+            await server.rcon.kick(steamID, 'UNASSIGNED - automatically removed');
+            delete this.playerDict[steamID];
+          }
+        }else{
+          if(this.auditMode){
+            console.log(`[AUTO AFK] warn player ${steamID} for AFK`);
+          }else{
+            server.rcon.warn(steamID, options.warning);
+          }
+          
         }
       }
-    }, intervalMS);
+    } , intervalMS );
+
+
+    //clean up every 20 minutes, removes players no longer on the server that may be stuck in the tracking dict
+    const cleanupMS = 20*60*1000;
+    setInterval( ()=> {
+      for(steamID of Object.keys(this.playerDict))
+        if(!steamID in server.players.map(p => p.steamID))
+          delete this.playerDict[steamID];
+    }, cleanupMS);
+
   }
 }

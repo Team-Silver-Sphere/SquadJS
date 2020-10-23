@@ -288,4 +288,7 @@ export default class Rcon extends EventEmiiter {
   async warn(steamID, message) {
     await this.execute(`AdminWarn "${steamID}" ${message}`);
   }
+  async kick(steamID, reason) {
+    await this.execute(`AdminKick "${steamID}" ${reason}`);
+  }
 }
