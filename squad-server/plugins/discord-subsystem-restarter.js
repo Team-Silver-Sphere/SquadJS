@@ -34,14 +34,14 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
   }
 
   constructor(server, options) {
-    super();
+    super(server, options);
 
-    options.discordClient.on('message', async (message) => {
+    this.options.discordClient.on('message', async (message) => {
       // check the author of the message is not a bot
       if (message.author.bot) return;
 
       if (message.content.match(/!squadjs restartsubsystem rcon/i)) {
-        if (!message.member._roles.includes(options.role)) {
+        if (!message.member._roles.includes(this.options.role)) {
           message.reply('you do not have permission to do that.');
         }
 
@@ -50,7 +50,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
       }
 
       if (message.content.match(/!squadjs restartsubsystem logparser/i)) {
-        if (!message.member._roles.includes(options.role)) {
+        if (!message.member._roles.includes(this.options.role)) {
           message.reply('you do not have permission to do that.');
         }
 

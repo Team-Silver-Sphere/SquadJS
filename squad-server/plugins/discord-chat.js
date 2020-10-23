@@ -41,12 +41,12 @@ export default class DiscordChat extends DiscordBasePlugin {
     super(server, options);
 
     server.on('CHAT_MESSAGE', async (info) => {
-      if (options.ignoreChats.includes(info.chat)) return;
+      if (this.options.ignoreChats.includes(info.chat)) return;
 
       await this.sendDiscordMessage({
         embed: {
           title: info.chat,
-          color: options.chatColors[info.chat] || options.color,
+          color: this.options.chatColors[info.chat] || this.options.color,
           fields: [
             {
               name: 'Player',

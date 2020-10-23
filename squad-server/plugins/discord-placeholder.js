@@ -29,11 +29,11 @@ export default class DiscordPlaceholder extends BasePlugin {
   }
 
   constructor(server, options) {
-    super();
+    super(server, options);
 
-    options.discordClient.on('message', async (message) => {
+    this.options.discordClient.on('message', async (message) => {
       // check the author of the message is not a bot
-      if (message.author.bot || !message.content.toLowerCase().startsWith(options.command)) return;
+      if (message.author.bot || !message.content.toLowerCase().startsWith(this.options.command)) return;
 
       await message.channel.send('Placeholder.');
     });

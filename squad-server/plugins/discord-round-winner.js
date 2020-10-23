@@ -33,7 +33,7 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
       await this.sendDiscordMessage({
         embed: {
           title: 'Round Winner',
-          color: options.color,
+          color: this.options.color,
           fields: [
             {
               name: 'Message',

@@ -36,7 +36,7 @@ export default class DiscordAdminBroadcast extends DiscordBasePlugin {
       await this.sendDiscordMessage({
         embed: {
           title: 'Admin Broadcast',
-          color: options.color,
+          color: this.options.color,
           fields: [
             {
               name: 'Message',

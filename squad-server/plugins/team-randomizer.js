@@ -23,9 +23,9 @@ export default class TeamRandomizer extends BasePlugin {
   }
 
   constructor(server, options) {
-    super();
+    super(server, options);
 
-    server.on(`CHAT_COMMAND:${options.command}`, async (info) => {
+    server.on(`CHAT_COMMAND:${this.options.command}`, async (info) => {
       if (info.chat !== 'ChatAdmin') return;
 
       const players = server.players.slice(0);

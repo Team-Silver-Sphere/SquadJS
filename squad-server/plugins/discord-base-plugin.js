@@ -15,16 +15,13 @@ export default class DiscordBasePlugin extends BasePlugin {
   }
 
   constructor(server, options) {
-    super();
-
-    this.discordClient = options.discordClient;
-    this.channelID = options.channelID;
+    super(server, options);
 
     this.channel = null;
   }
 
-  async sendDiscordMessage(message, channelID = this.channelID) {
-    if (this.channel === null) this.channel = await this.discordClient.channels.fetch(channelID);
+  async sendDiscordMessage(message, channelID = this.options.channelID) {
+    if (this.channel === null) this.channel = await this.options.discordClient.channels.fetch(channelID);
 
     if (typeof message === 'object' && 'embed' in message)
       message.embed.footer = { text: COPYRIGHT_MESSAGE };

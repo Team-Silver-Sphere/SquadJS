@@ -39,7 +39,7 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
       await this.sendDiscordMessage({
         embed: {
           title: `Admin Entered Admin Camera`,
-          color: options.color,
+          color: this.options.color,
           fields: [
             {
               name: "Admin's Name",
@@ -68,7 +68,7 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
       await this.sendDiscordMessage({
         embed: {
           title: `Admin Left Admin Camera`,
-          color: options.color,
+          color: this.options.color,
           fields: [
             {
               name: "Admin's Name",

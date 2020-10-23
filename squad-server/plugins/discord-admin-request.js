@@ -60,12 +60,12 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
   constructor(server, options) {
     super(server, options);
 
-    this.lastPing = Date.now() - options.pingDelay;
+    this.lastPing = Date.now() - this.pingDelay;
 
-    server.on(`CHAT_COMMAND:${options.command}`, async (info) => {
-      if (options.ignoreChats.includes(info.chat)) return;
+    server.on(`CHAT_COMMAND:${this.options.command}`, async (info) => {
+      if (this.options.ignoreChats.includes(info.chat)) return;
 
-      for (const ignorePhrase of options.ignorePhrases) {
+      for (const ignorePhrase of this.options.ignorePhrases) {
         if (info.message.includes(ignorePhrase)) return;
       }
 
@@ -80,7 +80,7 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
       const message = {
         embed: {
           title: `${info.player.name} has requested admin support!`,
-          color: options.color,
+          color: this.options.color,
           fields: [
             {
               name: 'Player',
@@ -105,8 +105,8 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
         }
       };
 
-      if (options.pingGroups.length > 0 && Date.now() - options.pingDelay > this.lastPing) {
-        message.content = options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');
+      if (this.options.pingGroups.length > 0 && Date.now() - this.options.pingDelay > this.lastPing) {
+        message.content = this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');
         this.lastPing = Date.now();
       }
 

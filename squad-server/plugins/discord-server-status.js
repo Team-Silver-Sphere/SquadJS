@@ -42,12 +42,12 @@ export default class DiscordServerStatus extends BasePlugin {
   }
 
   constructor(server, options) {
-    super();
+    super(server, options);
 
     setInterval(async () => {
-      for (const messageID of options.messageIDs) {
+      for (const messageID of this.options.messageIDs) {
         try {
-          const channel = await options.discordClient.channels.fetch(messageID.channelID);
+          const channel = await this.options.discordClient.channels.fetch(messageID.channelID);
           const message = await channel.messages.fetch(messageID.messageID);
 
           await message.edit(this.getEmbed(server));
@@ -56,13 +56,13 @@ export default class DiscordServerStatus extends BasePlugin {
         }
       }
 
-      await options.discordClient.user.setActivity(
+      await this.options.discordClient.user.setActivity(
         `(${server.a2sPlayerCount}/${server.publicSlots}) ${
           server.layerHistory[0].layer || 'Unknown'
         }`,
         { type: 'WATCHING' }
       );
-    }, options.updateInterval);
+    }, this.options.updateInterval);
   }
 
   getEmbed(server) {

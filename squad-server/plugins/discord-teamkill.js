@@ -67,7 +67,7 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
         }
       ];
 
-      if (!options.disableSCBL)
+      if (!this.options.disableSCBL)
         fields.push({
           name: 'Squad Community Ban List',
           value: `[Attacker's Bans](https://squad-community-ban-list.com/search/${info.attacker.steamID})`
@@ -76,7 +76,7 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
       await this.sendDiscordMessage({
         embed: {
           title: `Teamkill: ${info.attacker.name}`,
-          color: options.color,
+          color: this.options.color,
           fields: fields,
           timestamp: info.time.toISOString()
         }
