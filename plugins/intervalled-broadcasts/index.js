@@ -1,7 +1,7 @@
 export default {
   name: 'intervalled-broadcasts',
   description:
-    'The `intervalled-broadcasts` plugin allows you to set broadcasts, which will be broadcasted at preset intervals',
+    'The <code>intervalled-broadcasts</code> plugin allows you to set broadcasts, which will be broadcasted at preset intervals',
 
   defaultEnabled: false,
   optionsSpec: {
