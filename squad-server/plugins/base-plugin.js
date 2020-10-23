@@ -11,8 +11,9 @@ export default class BasePlugin {
     throw new Error('Plugin missing "static get optionSpecification()" method.');
   }
 
-  constructor(server, options = {}) {
+  constructor(server, options = {}, optionsRaw = {}) {
     this.server = server;
     this.options = options;
+    this.optionsRaw = optionsRaw;
   }
 }

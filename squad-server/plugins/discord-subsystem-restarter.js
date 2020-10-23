@@ -33,8 +33,8 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
     this.options.discordClient.on('message', async (message) => {
       // check the author of the message is not a bot
@@ -45,7 +45,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
           message.reply('you do not have permission to do that.');
         }
 
-        await server.restartRCON();
+        await this.server.restartRCON();
         message.reply('restarted the SquadJS RCON subsystem.');
       }
 
@@ -54,7 +54,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
           message.reply('you do not have permission to do that.');
         }
 
-        await server.restartLogParser();
+        await this.server.restartLogParser();
         message.reply('restarted the SquadJS LogParser subsystem.');
       }
     });

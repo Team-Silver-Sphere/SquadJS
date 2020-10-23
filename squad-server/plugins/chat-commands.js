@@ -36,17 +36,17 @@ export default class ChatCommands extends BasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
     for (const command of this.options.commands) {
-      server.on(`CHAT_COMMAND:${command.command}`, async (data) => {
+      this.server.on(`CHAT_COMMAND:${command.command}`, async (data) => {
         if (command.ignoreChats.includes(data.chat)) return;
 
         if (command.type === 'broadcast') {
-          await server.rcon.broadcast(command.response);
+          await this.server.rcon.broadcast(command.response);
         } else if (command.type === 'warn') {
-          await server.rcon.warn(data.player.steamID, command.response);
+          await this.server.rcon.warn(data.player.steamID, command.response);
         }
       });
     }

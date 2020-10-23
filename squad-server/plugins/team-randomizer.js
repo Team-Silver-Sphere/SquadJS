@@ -22,13 +22,13 @@ export default class TeamRandomizer extends BasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
-    server.on(`CHAT_COMMAND:${this.options.command}`, async (info) => {
+    this.server.on(`CHAT_COMMAND:${this.options.command}`, async (info) => {
       if (info.chat !== 'ChatAdmin') return;
 
-      const players = server.players.slice(0);
+      const players = this.server.players.slice(0);
 
       let currentIndex = players.length;
       let temporaryValue;
@@ -46,7 +46,7 @@ export default class TeamRandomizer extends BasePlugin {
       let team = '1';
 
       for (const player of players) {
-        if (player.teamID !== team) await server.rcon.switchTeam(player.steamID);
+        if (player.teamID !== team) await this.server.rcon.switchTeam(player.steamID);
 
         team = team === '1' ? '2' : '1';
       }

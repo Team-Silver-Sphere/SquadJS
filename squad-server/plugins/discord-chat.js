@@ -37,10 +37,10 @@ export default class DiscordChat extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
-    server.on('CHAT_MESSAGE', async (info) => {
+    this.server.on('CHAT_MESSAGE', async (info) => {
       if (this.options.ignoreChats.includes(info.chat)) return;
 
       await this.sendDiscordMessage({

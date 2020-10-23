@@ -29,10 +29,10 @@ export default class DiscordAdminBroadcast extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
-    server.on('ADMIN_BROADCAST', async (info) => {
+    this.server.on('ADMIN_BROADCAST', async (info) => {
       await this.sendDiscordMessage({
         embed: {
           title: 'Admin Broadcast',

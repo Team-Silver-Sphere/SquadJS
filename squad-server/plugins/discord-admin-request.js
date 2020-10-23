@@ -57,12 +57,12 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
     this.lastPing = Date.now() - this.pingDelay;
 
-    server.on(`CHAT_COMMAND:${this.options.command}`, async (info) => {
+    this.server.on(`CHAT_COMMAND:${this.options.command}`, async (info) => {
       if (this.options.ignoreChats.includes(info.chat)) return;
 
       for (const ignorePhrase of this.options.ignorePhrases) {
@@ -70,7 +70,7 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
       }
 
       if (info.message.length === 0) {
-        await server.rcon.warn(
+        await this.server.rcon.warn(
           info.player.steamID,
           `Please specify what you would like help with when requesting an admin.`
         );
@@ -105,14 +105,17 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
         }
       };
 
-      if (this.options.pingGroups.length > 0 && Date.now() - this.options.pingDelay > this.lastPing) {
+      if (
+        this.options.pingGroups.length > 0 &&
+        Date.now() - this.options.pingDelay > this.lastPing
+      ) {
         message.content = this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');
         this.lastPing = Date.now();
       }
 
       await this.sendDiscordMessage(message);
 
-      await server.rcon.warn(
+      await this.server.rcon.warn(
         info.player.steamID,
         `An admin has been notified, please wait for us to get back to you.`
       );

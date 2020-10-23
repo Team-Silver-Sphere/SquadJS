@@ -26,10 +26,10 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
-    server.on('NEW_GAME', async (info) => {
+    this.server.on('NEW_GAME', async (info) => {
       await this.sendDiscordMessage({
         embed: {
           title: 'Round Winner',

@@ -47,8 +47,8 @@ export default class DiscordRcon extends BasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
     this.options.discordClient.on('message', async (message) => {
       // check the author of the message is not a bot and that the channel is the RCON console channel
@@ -83,7 +83,7 @@ export default class DiscordRcon extends BasePlugin {
       }
 
       // execute command and print response
-      await this.respondToMessage(message, await server.rcon.execute(command));
+      await this.respondToMessage(message, await this.server.rcon.execute(command));
     });
   }
 

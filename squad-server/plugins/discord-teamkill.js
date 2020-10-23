@@ -34,10 +34,10 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
-    server.on('TEAMKILL', async (info) => {
+    this.server.on('TEAMKILL', async (info) => {
       if (!info.attacker) return;
 
       const fields = [
