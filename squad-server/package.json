@@ -15,6 +15,9 @@
   "exports": {
     ".": "./index.js",
     "./logo": "./utils/print-logo.js",
-    "./plugins": "./plugins/index.js"
+    "./plugins": "./plugins/index.js",
+    "./plugins/base": ".plugins/base-plugin.js",
+    "./server-events": "./core/server-events.js",
+    "./constants": "./utils/constants.js"
   }
 }

@@ -1,0 +1,9 @@
+{
+    "name": "mapvote",
+    "version": "1.0.0",
+    "type": "module",
+    "exports": {
+      "./constants": "./core/constants.js",
+      "./commands": "./core/plugin-commands.js"
+    }
+  }

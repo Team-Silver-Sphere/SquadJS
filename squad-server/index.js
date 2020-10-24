@@ -15,6 +15,7 @@ import Rcon from 'rcon';
 import { SQUADJS_API } from './utils/constants.js';
 
 import plugins from './plugins/index.js';
+import { NEW_GAME, CHAT_MESSAGE } from 'squad-server/server-events';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -64,9 +65,9 @@ export default class SquadServer extends EventEmitter {
       autoReconnectInterval: this.options.rconAutoReconnectInterval
     });
 
-    this.rcon.on('CHAT_MESSAGE', async (data) => {
+    this.rcon.on(CHAT_MESSAGE, async (data) => {
       data.player = await this.getPlayerBySteamID(data.steamID);
-      this.emit('CHAT_MESSAGE', data);
+      this.emit(CHAT_MESSAGE, data);
 
       const command = data.message.match(/!([^ ]+) ?(.*)/);
       if (command)
@@ -116,7 +117,7 @@ export default class SquadServer extends EventEmitter {
       this.emit('ADMIN_BROADCAST', data);
     });
 
-    this.logParser.on('NEW_GAME', (data) => {
+    this.logParser.on(NEW_GAME, (data) => {
       let layer;
       if (data.layer) layer = this.squadLayers.getLayerByLayerName(data.layer);
       else layer = this.squadLayers.getLayerByLayerClassname(data.layerClassname);
@@ -124,7 +125,7 @@ export default class SquadServer extends EventEmitter {
       this.layerHistory.unshift({ ...layer, time: data.time });
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
 
-      this.emit('NEW_GAME', data);
+      this.emit(NEW_GAME, data);
     });
 
     this.logParser.on('PLAYER_CONNECTED', async (data) => {
@@ -484,9 +485,13 @@ export default class SquadServer extends EventEmitter {
     try {
       const { data } = await axios.post(SQUADJS_API + '/ping', { config });
 
-      if(data.error) SquadServer.verbose(`Successfully pinged the SquadJS API. Got back error: ${data.error}`);
-      else SquadServer.verbose(`Successfully pinged the SquadJS API. Got back message: ${data.message}`);
-    } catch(err) {
+      if (data.error)
+        SquadServer.verbose(`Successfully pinged the SquadJS API. Got back error: ${data.error}`);
+      else
+        SquadServer.verbose(
+          `Successfully pinged the SquadJS API. Got back message: ${data.message}`
+        );
+    } catch (err) {
       SquadServer.verbose('Failed to ping the SquadJS API: ', err);
     }
 
