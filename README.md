@@ -580,32 +580,6 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
  
 <details>
-      <summary>mapvote-123</summary>
-      <h2>mapvote-123</h2>
-      <p>The <code>mapvote-123</code> plugin provides map voting functionality. This variant of map voting allows admins to specify a small number of maps which are numbered and announced in admin broadcasts. Players can then vote for the map their choice by typing the corresponding map number into chat.
-
-Player Commands:
- * <code>!mapvote help</code> - Show other commands players can use.
- * <code>!mapvote results</code> - Show the results of the current map vote.
- * <code><layer number></code> - Vote for a layer using the layer number.
-
-
-Admin Commands (Admin Chat Only):
- * <code>!mapvote start <layer name 1>, <layer name 2>, ...</code> - Start a new map vote with the specified maps.
- * <code>!mapvote restart</code> - Restarts the map vote with the same layers.
- * <code>!mapvote end</code> - End the map vote and announce the winner.
- * <code>!mapvote destroy</code> - End the map vote without announcing the winner.
-</p>
-      <h3>Options</h3>
-      <h4>minVoteCount</h4>
-       <h6>Description</h6>
-       <p>The minimum number of votes required for the vote to succeed.</p>
-       <h6>Default</h6>
-       <pre><code>null</code></pre><h6>Example</h6>
-       <pre><code>3</code></pre>
-    </details>
-
-<details>
       <summary>MapVoteAutoComplete</summary>
       <h2>MapVoteAutoComplete</h2>
       <p>The <code>MapVoteAutoComplete</code> plugin provides map voting functionality. This variant of map voting uses a "Did you mean?" algorithm to allow players to easily select one of a large pool of layers by typing it's name into the in-game chat.
