@@ -9,7 +9,7 @@ import { COPYRIGHT_MESSAGE, CHATS_ADMINCHAT } from 'squad-server/constants';
 export default class MapVote123 extends BasePlugin {
   static get description() {
     return (
-      'The <code>mapvote-123</code> plugin provides map voting functionality. This variant of map voting allows admins to specify ' +
+      'The <code>MapVote123</code> plugin provides map voting functionality. This variant of map voting allows admins to specify ' +
       'a small number of maps which are numbered and announced in admin broadcasts. Players can then vote for the map ' +
       'their choice by typing the corresponding map number into chat.' +
       '\n\n' +

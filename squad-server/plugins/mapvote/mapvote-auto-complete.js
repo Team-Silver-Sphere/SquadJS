@@ -9,7 +9,7 @@ import { COPYRIGHT_MESSAGE, CHATS_ADMINCHAT } from 'squad-server/constants';
 export default class MapVoteAutoComplete extends BasePlugin {
   static get description() {
     return (
-      'The <code>mapvote-did-you-mean</code> plugin provides map voting functionality. This variant of map voting uses a "Did you ' +
+      'The <code>MapVoteAutoComplete</code> plugin provides map voting functionality. This variant of map voting uses a "Did you ' +
       'mean?" algorithm to allow players to easily select one of a large pool of layers by typing it\'s name into ' +
       'the in-game chat.' +
       '\n\n' +
