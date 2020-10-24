@@ -19,6 +19,10 @@ export default class MapvoteVoteEngine extends EventEmitter {
     this.state = MapVoteState.NOT_STARTED;
   }
 
+  isVoteInProgress() {
+    return this.state === MapVoteState.IN_PROGRESS;
+  }
+
   initializeVote() {
     this.cleanupVoteProps();
 
@@ -28,7 +32,7 @@ export default class MapvoteVoteEngine extends EventEmitter {
   }
 
   async makeVote(identifier, layer) {
-    var layerResult = this.layerEngine.getLayerForVote(layer);
+    var layerResult = await this.layerEngine.getLayerForVote(layer.layer);
 
     if (!layerResult.valid) {
       return layerResult.message;
@@ -47,6 +51,16 @@ export default class MapvoteVoteEngine extends EventEmitter {
     }
 
     return layer.layer;
+  }
+
+  addVote(identifier, layerName) {
+    if (this.layerVotes[layerName]) {
+      this.layerVotes[layerName] += 1;
+    } else {
+      this.layerVotes[layerName] = 1;
+      this.layerVoteTimes[layerName] = new Date();
+    }
+    this.playerVotes[identifier] = layerName;
   }
 
   removeVote(identifier) {
@@ -100,9 +114,9 @@ export default class MapvoteVoteEngine extends EventEmitter {
       return 'Vote not in progress';
     }
 
-    const layer = this.layerEngine.getLayerByDidYouMean(layerName);
+    const layer = this.layerEngine.getLayerWithAutocomplete(layerName);
     if (layer === null) throw new Error(`${layerName} is not a Squad layer.`);
-    return this.makeVote(identifier, layer.layer);
+    return this.makeVote(identifier, layer);
   }
 
   async makeVoteByNumber(identifier, number) {
@@ -112,7 +126,7 @@ export default class MapvoteVoteEngine extends EventEmitter {
     }
 
     const layer = this.layerEngine.getLayerByNumber(number);
-    return this.makeVote(identifier, layer.layer);
+    return this.makeVote(identifier, layer);
   }
 }
 

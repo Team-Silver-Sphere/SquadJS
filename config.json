@@ -178,6 +178,19 @@
       "plugin": "TeamRandomizer",
       "enabled": true,
       "command": "randomize"
+    },
+    {
+      "plugin": "MapVote123",
+      "enabled": false,
+      "minVoteCount": null
+    },
+    {
+      "plugin": "MapVoteAutoComplete",
+      "enabled": false,
+      "layerFilter": "layerFilter",
+      "alwaysOn": true,
+      "minPlayerCount": null,
+      "minVoteCount": null
     }
   ]
 }

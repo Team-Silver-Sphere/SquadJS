@@ -13,4 +13,6 @@ const COPYRIGHT_MESSAGE = 'Powered by SquadJS, Copyright © 2020';
 
 const SQUADJS_API = 'https://squadjs.thomas-smyth.uk';
 
-export { SQUADJS_VERSION, COPYRIGHT_MESSAGE, SQUADJS_API };
+const CHATS_ADMINCHAT = 'ChatAdmin';
+
+export { SQUADJS_VERSION, COPYRIGHT_MESSAGE, SQUADJS_API, CHATS_ADMINCHAT };

@@ -2,9 +2,9 @@ import BasePlugin from 'squad-server/plugins/base';
 import MapvoteLayerEngine from './components/mapvote-layer-engine.js';
 import MapvoteVoteEngine from './components/mapvote-vote-engine.js';
 import { NEW_GAME, CHAT_MESSAGE } from 'squad-server/server-events';
-import { MAPVOTE_COMMANDS } from 'mapvote/commands';
+import { MAPVOTE_COMMANDS } from './core/plugin-command.js';
 import { MAP_VOTE_NEW_WINNER, MAP_VOTE_START, MAP_VOTE_END } from 'mapvote/constants';
-import { COPYRIGHT_MESSAGE } from 'squad-server/constants';
+import { COPYRIGHT_MESSAGE, CHATS_ADMINCHAT } from 'squad-server/constants';
 
 export default class MapVote123 extends BasePlugin {
   static get description() {
@@ -70,53 +70,68 @@ export default class MapVote123 extends BasePlugin {
       const commandMatch = info.message.match(MAPVOTE_COMMANDS.common.mapvote.pattern);
 
       if (commandMatch) {
-        if (commandMatch[1].startsWith('start')) {
-          if (info.chat !== 'ChatAdmin') return;
-
-          if (mapvote) {
-            await server.rcon.warn(info.steamID, 'A mapvote has already begun.');
-          } else {
-            // Build map vote
-            mapvote = this.buildMapVote(
-              server,
-              commandMatch[1].replace('start ', '').split(', '),
-              options
-            );
-
-            // Setup event callbacks
-            mapvote.on(MAP_VOTE_NEW_WINNER, async (results) => {
-              await server.rcon.broadcast(
-                `New Map Vote Winner: ${results[0].layer.layer}. Participate in the map vote by typing "!mapvote help" in chat.`
-              );
-            });
-
-            mapvote.on(MAP_VOTE_START, async () => {
-              await server.rcon.broadcast(
-                `A new map vote has started. Participate in the map vote by typing "!mapvote help" in chat. Map options to follow...`
+        if (info.chat === CHATS_ADMINCHAT) {
+          if (commandMatch[1].startsWith('start')) {
+            if (mapvote) {
+              await server.rcon.warn(info.steamID, 'A mapvote has already begun.');
+            } else {
+              // Build map vote
+              mapvote = this.buildMapVote(
+                server,
+                commandMatch[1].replace('start ', '').split(', '),
+                options
               );
 
-              await server.rcon.broadcast(
-                mapvote.squadLayerFilter
-                  .getLayerNames()
-                  .map((layerName, key) => `${key + 1} - ${layerName}`)
-                  .join(', ')
-              );
-            });
-
-            mapvote.on(MAP_VOTE_END, async (results) => {
-              if (results.length === 0) {
-                await server.rcon.broadcast(`No layer gained enough votes to win.`);
-              } else {
+              // Setup event callbacks
+              mapvote.on(MAP_VOTE_NEW_WINNER, async (results) => {
                 await server.rcon.broadcast(
-                  `${mapvote.getResults()[0].layer.layer} won the mapvote!`
+                  `New Map Vote Winner: ${results[0].layer.layer}. Participate in the map vote by typing "!mapvote help" in chat.`
                 );
-              }
-            });
+              });
 
-            // Start vote
-            mapvote.initializeVote();
+              mapvote.on(MAP_VOTE_START, async () => {
+                await server.rcon.broadcast(
+                  `A new map vote has started. Participate in the map vote by typing "!mapvote help" in chat. Map options to follow...`
+                );
+
+                await server.rcon.broadcast(
+                  mapvote.layerEngine.layerPool.layerNames
+                    .map((layerName, key) => `${key + 1} - ${layerName}`)
+                    .join(', ')
+                );
+              });
+
+              mapvote.on(MAP_VOTE_END, async (results) => {
+                if (results.length === 0) {
+                  await server.rcon.broadcast(`No layer gained enough votes to win.`);
+                } else {
+                  await server.rcon.broadcast(
+                    `${mapvote.getResults()[0].layer.layer} won the mapvote!`
+                  );
+                }
+              });
+
+              // Start vote
+              mapvote.initializeVote();
+            }
+            return;
           }
-          return;
+          if (commandMatch[1] === 'restart') {
+            mapvote.initializeVote();
+
+            return;
+          }
+          if (commandMatch[1] === 'end') {
+            mapvote.endVote();
+
+            mapvote = null;
+            return;
+          }
+
+          if (commandMatch[1] === 'destroy') {
+            mapvote = null;
+            return;
+          }
         }
 
         if (!mapvote) {
@@ -124,32 +139,9 @@ export default class MapVote123 extends BasePlugin {
           return;
         }
 
-        if (commandMatch[1] === 'restart') {
-          if (info.chat !== 'ChatAdmin') return;
-
-          mapvote.initializeVote();
-
-          return;
-        }
-
-        if (commandMatch[1] === 'end') {
-          if (info.chat !== 'ChatAdmin') return;
-
-          mapvote.endVote();
-
-          mapvote = null;
-          return;
-        }
-
-        if (commandMatch[1] === 'destroy') {
-          if (info.chat !== 'ChatAdmin') return;
-          mapvote = null;
-          return;
-        }
-
         if (commandMatch[1] === 'help') {
           await server.rcon.warn(info.steamID, 'To vote type the layer number into chat:');
-          for (const layer of mapvote.squadLayerFilter.getLayers()) {
+          for (const layer of mapvote.layerEngine.layerPool.layerNames) {
             await server.rcon.warn(info.steamID, `${layer.layerNumber} - ${layer.layer}`);
           }
 
@@ -163,6 +155,8 @@ export default class MapVote123 extends BasePlugin {
             info.steamID,
             'To see current results type into chat: !mapvote results'
           );
+
+          return;
         }
 
         if (commandMatch[1] === 'results') {
@@ -187,7 +181,7 @@ export default class MapVote123 extends BasePlugin {
   }
 
   buildMapVote(server, mapList, options) {
-    const layerEngine = new MapvoteLayerEngine(server, mapList);
+    const layerEngine = new MapvoteLayerEngine(server, { maps: mapList });
     return new MapvoteVoteEngine(layerEngine, options);
   }
 }
