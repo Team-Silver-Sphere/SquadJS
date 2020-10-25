@@ -50,28 +50,26 @@ export default class AutoKickAFK extends BasePlugin {
     const intervalMS = options.updateInterval * 60 * 1000;
 
     setInterval( async ()=>{
-      if(server.players.count <= options.playerCountThreshold || ( server.publicQueue > options.queueThreshold > 0) ){
+      if(server.players.count <= options.playerCountThreshold || (server.publicQueue > options.queueThreshold > 0) ){
         // clear tracking vlaues so if the player count indreases/decreases past any threshold stale players arent counted again if they happen to be unassigned
         this.playerDict = {};
         return;
       }
 
+      // loop through players on server an start tracking players not in a squad
       for (const player of server.players) {
-        // marks player if not in a Squad
-        if(player.squadID === null){
-          if(player.steamID in this.playerDict){
-            // player in dict was already warned mark for kick
-            this.playerDict[player.steamID] += 1;
+        if(player.squadID === null){ // player not in a squad
+          if(player.steamID in this.playerDict){ // player already tracked
+            this.playerDict[player.steamID] += 1; // mark player for kick
           }else{
-            // player not in dict is added for warning
-            this.playerDict[player.steamID] = 0;
+            this.playerDict[player.steamID] = 0; // start tracking player 
           }
         }else if(player.steamID in this.playerDict){
-          // remove player from list if they joined a squad
-          delete this.playerDict[player.steamID];
+          delete this.playerDict[player.steamID]; // tracked player joined a squad remove them
         }
       }
   
+      // debug log
       console.log(this.playerDict);
   
       const copy = Object.assign({}, this.playerDict);
@@ -80,7 +78,7 @@ export default class AutoKickAFK extends BasePlugin {
           if(this.auditMode){
             console.log(`[AUTO AFK] kick ${steamID} for AFK`)
           }else{
-            // kick player that has been warned
+            // kick player
             await server.rcon.kick(steamID, 'UNASSIGNED - automatically removed');
             delete this.playerDict[steamID];
           }
@@ -88,6 +86,7 @@ export default class AutoKickAFK extends BasePlugin {
           if(this.auditMode){
             console.log(`[AUTO AFK] warn player ${steamID} for AFK`);
           }else{
+            // warn player
             server.rcon.warn(steamID, options.warning);
           }
           
