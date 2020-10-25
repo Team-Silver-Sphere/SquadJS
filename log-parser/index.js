@@ -52,7 +52,9 @@ export default class LogParser extends EventEmitter {
   }
 
   async watch() {
+    Logger.verbose('LogParser', 1, 'Attempting to watch log file...');
     await this.logReader.watch();
+    Logger.verbose('LogParser', 1, 'Watching log file...');
 
     this.linesPerMinuteInterval = setInterval(() => {
       Logger.verbose('LogParser', 1, `Processing ${this.linesPerMinute} lines per minute.`);
