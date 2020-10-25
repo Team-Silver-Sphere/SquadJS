@@ -482,7 +482,7 @@ export default class SquadServer extends EventEmitter {
     };
 
     try {
-      const { data } = await axios.post(SQUADJS_API + '/ping', { config });
+      const { data } = await axios.post(SQUADJS_API + '/api/v1/ping', { config });
 
       if(data.error) SquadServer.verbose(`Successfully pinged the SquadJS API. Got back error: ${data.error}`);
       else SquadServer.verbose(`Successfully pinged the SquadJS API. Got back message: ${data.message}`);
