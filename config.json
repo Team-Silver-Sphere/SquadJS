@@ -15,6 +15,17 @@
   },
   "connectors": {
     "discord": "Discord Login Token",
+    "sqlite": {
+      "database": "databasename",
+      "user": "bob",
+      "password": "bobs-secret",
+      "server": {
+        "host": "hos-if-you-have-remote-database",
+        "dialect": "sqlite",
+        "logging": false,
+        "storage": "path/to/database"
+      }
+    },
     "squadlayerpool": {
       "type": "buildPoolFromFilter",
       "filter": {
@@ -148,9 +159,14 @@
       "plugin": "DiscordServerStatus",
       "enabled": false,
       "discordClient": "discord",
-      "messageIDs": [],
-      "updateInterval": 60000,
-      "disableStatus": false
+      "subscribeMessage": "!start",
+      "unsubscribeMessage": "!stop",
+      "interval": 300,
+      "storage": "sqlite",
+      "embedColor": "#FFFFFF",
+      "displayJoinLink": false,
+      "displayCurrentLayerImage": false,
+      "displayNextLayerThumbnail": false
     },
     {
       "plugin": "DiscordSubsystemRestarter",
@@ -178,6 +194,16 @@
       "plugin": "TeamRandomizer",
       "enabled": true,
       "command": "randomize"
+    },
+    {
+      "plugin": "DiscordPlayersList",
+      "enabled": false,
+      "discordClient": "discord",
+      "subscribeMessage": "!start",
+      "unsubscribeMessage": "!stop",
+      "interval": 300,
+      "storage": "sqlite",
+      "embedColor": "#FFFFFF"
     }
   ],
   "verboseness": {

@@ -13,6 +13,7 @@ import DiscordSubsystemRestarter from './discord-subsystem-restarter.js';
 import IntervalledBroadcasts from './intervalled-broadcasts.js';
 import SeedingMode from './seeding-mode.js';
 import TeamRandomizer from './team-randomizer.js';
+import DiscordPlayersList from './discord-players-list.js';
 
 const plugins = [
   AutoTKWarn,
@@ -29,7 +30,9 @@ const plugins = [
   DiscordSubsystemRestarter,
   IntervalledBroadcasts,
   SeedingMode,
-  TeamRandomizer
+  TeamRandomizer,
+  DiscordServerStatus,
+  DiscordPlayersList,
 ];
 
 const pluginsByName = {};

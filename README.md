@@ -440,6 +440,9 @@ The following is a list of plugins built into SquadJS, you can click their title
       <summary>DiscordRoundWinner</summary>
       <h2>DiscordRoundWinner</h2>
       <p>The <code>DiscordRoundWinner</code> plugin will send the round winner to a Discord channel.</p>
+      <summary>DiscordServerStatus</summary>
+      <h2>DiscordServerStatus</h2>
+      <p><code>DiscordServerStatus</code> discord plugin showing server information when called. It will update it's information on set delay.        Side accent color can be changed, current layer image can be displayed under and next layer image as a thumbnail.</p>
       <h3>Options</h3>
       <h4>discordClient (Required)</h4>
        <h6>Description</h6>
@@ -488,6 +491,44 @@ The following is a list of plugins built into SquadJS, you can click their title
 <h4>disableStatus</h4>
        <h6>Description</h6>
        <p>Disable the bot status.</p>
+<h4>subscribeMessage</h4>
+       <h6>Description</h6>
+       <p>Trigger message to start the broadcast on the channel</p>
+       <h6>Default</h6>
+       <pre><code>!start</code></pre>
+<h4>unsubscribeMessage</h4>
+       <h6>Description</h6>
+       <p>Trigger message to stop the broadcast on this channel</p>
+       <h6>Default</h6>
+       <pre><code>!stop</code></pre>
+<h4>interval</h4>
+       <h6>Description</h6>
+       <p>Update interval in seconds</p>
+       <h6>Default</h6>
+       <pre><code>300</code></pre>
+<h4>storage</h4>
+       <h6>Description</h6>
+       <p>Storrage connector name</p>
+       <h6>Default</h6>
+       <pre><code>sqlite</code></pre>
+<h4>embedColor</h4>
+       <h6>Description</h6>
+       <p>Color to use on small stuff to make things look cool</p>
+       <h6>Default</h6>
+       <pre><code>#FFFFFF</code></pre>
+<h4>displayJoinLink</h4>
+       <h6>Description</h6>
+       <p>Turns on or off link used to connecto to the server.</p>
+       <h6>Default</h6>
+       <pre><code>false</code></pre>
+<h4>displayCurrentLayerImage</h4>
+       <h6>Description</h6>
+       <p>Turns on or off current layer image in the embed message</p>
+       <h6>Default</h6>
+       <pre><code>false</code></pre>
+<h4>displayNextLayerThumbnail</h4>
+       <h6>Description</h6>
+       <p>Turns on or off next layer image in the messages thumbnail</p>
        <h6>Default</h6>
        <pre><code>false</code></pre>
     </details>
@@ -577,6 +618,40 @@ The following is a list of plugins built into SquadJS, you can click their title
        <p>The command used to randomize the teams.</p>
        <h6>Default</h6>
        <pre><code>randomize</code></pre>
+      <summary>DiscordPlayersList</summary>
+      <h2>DiscordPlayersList</h2>
+      <p><code>DiscordPlayerList</code> is a discord plugin displaying players currentley in each team. Two columns, each named by theyr fraction shorctcut.        Side accent color can be modified.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>subscribeMessage</h4>
+       <h6>Description</h6>
+       <p>Trigger message to start the broadcast on the channel</p>
+       <h6>Default</h6>
+       <pre><code>!start</code></pre>
+<h4>unsubscribeMessage</h4>
+       <h6>Description</h6>
+       <p>Trigger message to stop the broadcast on this channel</p>
+       <h6>Default</h6>
+       <pre><code>!stop</code></pre>
+<h4>interval</h4>
+       <h6>Description</h6>
+       <p>Update interval in seconds</p>
+       <h6>Default</h6>
+       <pre><code>300</code></pre>
+<h4>storage</h4>
+       <h6>Description</h6>
+       <p>Storrage connector name</p>
+       <h6>Default</h6>
+       <pre><code>sqlite</code></pre>
+<h4>embedColor</h4>
+       <h6>Description</h6>
+       <p>Color to use on small stuff to make things look cool</p>
+       <h6>Default</h6>
+       <pre><code>#FFFFFF</code></pre>
     </details>
  
 ## Creating Your Own Plugins

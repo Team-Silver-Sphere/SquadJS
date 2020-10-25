@@ -17,6 +17,17 @@
   },
   "connectors": {
     "discord": "Discord Login Token",
+    "sqlite": {
+      "database": "databasename",
+      "user": "bob",
+      "password": "bobs-secret",
+      "server": {
+        "host": "hos-if-you-have-remote-database",
+        "dialect": "sqlite",
+        "logging": false,
+        "storage": "path/to/database"
+      }
+    },
     "squadlayerpool": {
       "type": "buildPoolFromFilter",
       "filter": {

@@ -11,7 +11,8 @@
     "log-parser": "1.0.0",
     "mysql": "^2.18.1",
     "rcon": "1.0.0",
-    "tinygradient": "^1.1.2"
+    "sequelize": "^6.3.5",
+    "sqlite3": "^5.0.0"
   },
   "exports": {
     ".": "./index.js",

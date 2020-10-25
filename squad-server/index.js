@@ -19,6 +19,8 @@ import { SquadLayers } from './utils/squad-layers.js';
 
 import plugins from './plugins/index.js';
 
+import Seqelize from 'sequelize';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default class SquadServer extends EventEmitter {
@@ -408,6 +410,9 @@ export default class SquadServer extends EventEmitter {
             connectorConfig.filter,
             connectorConfig.activeLayerFilter
           );
+        } else if (option.connector === 'databaseClient') {
+          connectors[connectorName] = new Seqelize(connectorConfig.database, connectorConfig.user, connectorConfig.password, connectorConfig.server);
+          connectors[connectorName].authenticate();
         } else {
           throw new Error(`${option.connector} is an unsupported connector type.`);
         }
