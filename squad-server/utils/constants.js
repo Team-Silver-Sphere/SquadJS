@@ -11,6 +11,4 @@ const SQUADJS_VERSION = JSON.parse(
 /* As set out by the terms of the license, the following should not be modified. */
 const COPYRIGHT_MESSAGE = 'Powered by SquadJS, Copyright © 2020';
 
-const SQUADJS_API = 'https://squadjs.thomas-smyth.uk';
-
-export { SQUADJS_VERSION, COPYRIGHT_MESSAGE, SQUADJS_API };
+export { SQUADJS_VERSION, COPYRIGHT_MESSAGE };

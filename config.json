@@ -179,5 +179,10 @@
       "enabled": true,
       "command": "randomize"
     }
-  ]
+  ],
+  "verboseness": {
+    "SquadServer": 1,
+    "LogParser": 1,
+    "RCON": 1
+  }
 }

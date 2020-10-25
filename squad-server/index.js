@@ -8,20 +8,18 @@ import Discord from 'discord.js';
 import Gamedig from 'gamedig';
 import mysql from 'mysql';
 
-import { SquadLayers } from './utils/squad-layers.js';
+import Logger from 'core/logger';
+import { SQUADJS_API_DOMAIN } from 'core/constants';
+
 import LogParser from 'log-parser';
 import Rcon from 'rcon';
 
-import { SQUADJS_VERSION, SQUADJS_API } from './utils/constants.js';
-import Logger from './utils/logger.js';
+import { SQUADJS_VERSION } from './utils/constants.js';
+import { SquadLayers } from './utils/squad-layers.js';
 
 import plugins from './plugins/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// setup logger for module
-Logger.setVerboseness('SquadServer', 1);
-
 
 export default class SquadServer extends EventEmitter {
   constructor(options = {}) {
@@ -359,6 +357,11 @@ export default class SquadServer extends EventEmitter {
   }
 
   static async buildFromConfig(config) {
+    // Setup logging levels
+    for(const [module, verboseness] of Object.entries(config.verboseness)) {
+      Logger.setVerboseness(module, verboseness);
+    }
+
     Logger.verbose('SquadServer', 1, 'Creating SquadServer...');
     const server = new SquadServer(config.server);
 
@@ -486,8 +489,7 @@ export default class SquadServer extends EventEmitter {
     };
 
     try {
-      const { data } = await axios.post(SQUADJS_API + '/api/v1/ping', { config });
-
+      const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', { config });
 
       if(data.error) Logger.verbose('SquadServer', 1, `Successfully pinged the SquadJS API. Got back error: ${data.error}`);
       else Logger.verbose('SquadServer', 1, `Successfully pinged the SquadJS API. Got back message: ${data.message}`);

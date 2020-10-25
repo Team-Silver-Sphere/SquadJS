@@ -3,6 +3,8 @@ import EventEmitter from 'events';
 import async from 'async';
 import moment from 'moment';
 
+import Logger from 'core/logger';
+
 import TailLogReader from './log-readers/tail.js';
 import FTPLogReader from './log-readers/ftp.js';
 
@@ -47,7 +49,7 @@ export default class LogParser extends EventEmitter {
     await this.logReader.watch();
 
     this.linesPerMinuteInterval = setInterval(() => {
-      this.verbose(`Processing ${this.linesPerMinute} lines per minute.`);
+      Logger.verbose('LogParser', 1, `Processing ${this.linesPerMinute} lines per minute.`);
       this.linesPerMinute = 0;
     }, 60 * 1000);
   }
@@ -56,9 +58,5 @@ export default class LogParser extends EventEmitter {
     await this.logReader.unwatch();
 
     clearInterval(this.linesPerMinuteInterval);
-  }
-
-  verbose(msg) {
-    console.log(`[LogParser: ${msg}`);
   }
 }

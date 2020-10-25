@@ -61,5 +61,10 @@
       "database": "squadjs"
     }
   },
-  "plugins": []
+  "plugins": [],
+  "verboseness": {
+    "SquadServer": 1,
+    "LogParser": 1,
+    "RCON": 1
+  }
 }
