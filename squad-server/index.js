@@ -13,10 +13,15 @@ import LogParser from 'log-parser';
 import Rcon from 'rcon';
 
 import { SQUADJS_VERSION, SQUADJS_API } from './utils/constants.js';
+import Logger from './utils/logger.js';
 
 import plugins from './plugins/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// setup logger for module
+Logger.setVerboseness('SquadServer', 1);
+
 
 export default class SquadServer extends EventEmitter {
   constructor(options = {}) {
@@ -85,10 +90,10 @@ export default class SquadServer extends EventEmitter {
     try {
       await this.rcon.disconnect();
     } catch (err) {
-      SquadServer.verbose('Failed to stop RCON instance when restarting.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to stop RCON instance when restarting.', err);
     }
 
-    SquadServer.verbose('Setting up new RCON instance...');
+    Logger.verbose('SquadServer', 1, 'Setting up new RCON instance...');
     this.setupRCON();
     await this.rcon.connect();
   }
@@ -221,10 +226,10 @@ export default class SquadServer extends EventEmitter {
     try {
       await this.logParser.unwatch();
     } catch (err) {
-      SquadServer.verbose('Failed to stop LogParser instance when restarting.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to stop LogParser instance when restarting.', err);
     }
 
-    SquadServer.verbose('Setting up new LogParser instance...');
+    Logger.verbose('SquadServer', 1, 'Setting up new LogParser instance...');
     this.setupLogParser();
     await this.logParser.watch();
   }
@@ -243,7 +248,7 @@ export default class SquadServer extends EventEmitter {
         ...player
       }));
     } catch (err) {
-      SquadServer.verbose('Failed to update player list.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to update player list.', err);
     }
 
     this.updatePlayerListTimeout = setTimeout(this.updatePlayerList, this.updatePlayerListInterval);
@@ -264,7 +269,7 @@ export default class SquadServer extends EventEmitter {
 
       this.nextLayer = layerInfo.nextLayer;
     } catch (err) {
-      SquadServer.verbose('Failed to update layer information.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to update layer information.', err);
     }
 
     this.updateLayerInformationTimeout = setTimeout(
@@ -296,7 +301,7 @@ export default class SquadServer extends EventEmitter {
       this.matchTimeout = parseFloat(data.raw.rules.MatchTimeout_f);
       this.gameVersion = data.raw.version;
     } catch (err) {
-      SquadServer.verbose('Failed to update A2S information.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to update A2S information.', err);
     }
 
     this.updateA2SInformationTimeout = setTimeout(
@@ -343,7 +348,7 @@ export default class SquadServer extends EventEmitter {
     await this.updateLayerInformation();
     await this.updateA2SInformation();
 
-    SquadServer.verbose(`Watching ${this.serverName}...`);
+    Logger.verbose('SquadServer', 1, `Watching ${this.serverName}...`);
 
     await this.pingSquadJSAPI();
   }
@@ -354,13 +359,13 @@ export default class SquadServer extends EventEmitter {
   }
 
   static async buildFromConfig(config) {
-    SquadServer.verbose('Creating SquadServer...');
+    Logger.verbose('SquadServer', 1, 'Creating SquadServer...');
     const server = new SquadServer(config.server);
 
     // pull layers read to use to create layer filter connectors
     await server.squadLayers.pull();
 
-    SquadServer.verbose('Preparing connectors...');
+    Logger.verbose('SquadServer', 1, 'Preparing connectors...');
     const connectors = {};
     for (const pluginConfig of config.plugins) {
       if (!pluginConfig.enabled) continue;
@@ -384,14 +389,14 @@ export default class SquadServer extends EventEmitter {
         const connectorConfig = config.connectors[connectorName];
 
         if (option.connector === 'discord') {
-          SquadServer.verbose(`Starting discord connector ${connectorName}...`);
+          Logger.verbose('SquadServer', 1, `Starting discord connector ${connectorName}...`);
           connectors[connectorName] = new Discord.Client();
           await connectors[connectorName].login(connectorConfig);
         } else if (option.connector === 'mysql') {
-          SquadServer.verbose(`Starting mysqlPool connector ${connectorName}...`);
+          Logger.verbose('SquadServer', 1, `Starting mysqlPool connector ${connectorName}...`);
           connectors[connectorName] = mysql.createPool(connectorConfig);
         } else if (option.connector === 'squadlayerpool') {
-          SquadServer.verbose(`Starting squadlayerfilter connector ${connectorName}...`);
+          Logger.verbose('SquadServer', 1, `Starting squadlayerfilter connector ${connectorName}...`);
           connectors[connectorName] = server.squadLayers[connectorConfig.type](
             connectorConfig.filter,
             connectorConfig.activeLayerFilter
@@ -402,7 +407,7 @@ export default class SquadServer extends EventEmitter {
       }
     }
 
-    SquadServer.verbose('Applying plugins to SquadServer...');
+    Logger.verbose('SquadServer', 1, 'Applying plugins to SquadServer...');
     for (const pluginConfig of config.plugins) {
       if (!pluginConfig.enabled) continue;
 
@@ -411,7 +416,7 @@ export default class SquadServer extends EventEmitter {
 
       const Plugin = plugins[pluginConfig.plugin];
 
-      SquadServer.verbose(`Initialising ${Plugin.name}...`);
+      Logger.verbose('SquadServer', 1, `Initialising ${Plugin.name}...`);
 
       const options = {};
       for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
@@ -449,7 +454,7 @@ export default class SquadServer extends EventEmitter {
   }
 
   static buildFromConfigFile(configPath = './config.json') {
-    SquadServer.verbose('Reading config file...');
+    Logger.verbose('SquadServer', 1, 'Reading config file...');
     configPath = path.resolve(__dirname, '../', configPath);
     if (!fs.existsSync(configPath)) throw new Error('Config file does not exist.');
     const configString = fs.readFileSync(configPath, 'utf8');
@@ -457,14 +462,10 @@ export default class SquadServer extends EventEmitter {
     return SquadServer.buildFromConfigString(configString);
   }
 
-  static verbose(msg, ...additionalLogs) {
-    console.log(`[SquadServer] ${msg}`, ...additionalLogs);
-  }
-
   async pingSquadJSAPI() {
     if (this.pingSquadJSAPITimeout) clearTimeout(this.pingSquadJSAPITimeout);
 
-    SquadServer.verbose(`Pinging SquadJS API...`);
+    Logger.verbose('SquadServer', 1, 'Pinging SquadJS API...');
 
     const config = {
       // send minimal information on server
@@ -487,10 +488,11 @@ export default class SquadServer extends EventEmitter {
     try {
       const { data } = await axios.post(SQUADJS_API + '/api/v1/ping', { config });
 
-      if(data.error) SquadServer.verbose(`Successfully pinged the SquadJS API. Got back error: ${data.error}`);
-      else SquadServer.verbose(`Successfully pinged the SquadJS API. Got back message: ${data.message}`);
+
+      if(data.error) Logger.verbose('SquadServer', 1, `Successfully pinged the SquadJS API. Got back error: ${data.error}`);
+      else Logger.verbose('SquadServer', 1, `Successfully pinged the SquadJS API. Got back message: ${data.message}`);
     } catch(err) {
-      SquadServer.verbose('Failed to ping the SquadJS API: ', err);
+      Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err);
     }
 
     this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
