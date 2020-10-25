@@ -199,6 +199,43 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
+      <summary>AutoKickAFK</summary>
+      <h2>AutoKickAFK</h2>
+      <p>The <code>AutoKickAFK</code> plugin will automatically kick players that are not in a squad after a specified ammount of time.</p>
+      <h3>Options</h3>
+      <h4>warningMessage</h4>
+       <h6>Description</h6>
+       <p>Message SquadJS will send to players warning them they will be kicked</p>
+       <h6>Default</h6>
+       <pre><code>Join a squad, you are are unassigned and will be kicked</code></pre>
+<h4>kickMessage</h4>
+       <h6>Description</h6>
+       <p>Message to send to players when they are kicked</p>
+       <h6>Default</h6>
+       <pre><code>Unassigned - automatically removed</code></pre>
+<h4>frequencyOfWarnings</h4>
+       <h6>Description</h6>
+       <p>How often in seconds should we warn the player about being AFK?</p>
+       <h6>Default</h6>
+       <pre><code>30</code></pre>
+<h4>afkTimer</h4>
+       <h6>Description</h6>
+       <p>How long in minutes to wait before a player that is AFK is kicked</p>
+       <h6>Default</h6>
+       <pre><code>6</code></pre>
+<h4>playerThreshold</h4>
+       <h6>Description</h6>
+       <p>Player count required for Auto Kick to start kicking players to disable set to -1 to disable</p>
+       <h6>Default</h6>
+       <pre><code>93</code></pre>
+<h4>queueThreshold</h4>
+       <h6>Description</h6>
+       <p>The number of players in the queue before Auto Kick starts kicking players set to -1 to disable</p>
+       <h6>Default</h6>
+       <pre><code>-1</code></pre>
+    </details>
+
+<details>
       <summary>ChatCommands</summary>
       <h2>ChatCommands</h2>
       <p>The <code>ChatCommands</code> plugin can be configured to make chat commands that broadcast or warn the caller with present messages.</p>
