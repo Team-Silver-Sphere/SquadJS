@@ -3,13 +3,19 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
+import axios from 'axios';
 import Discord from 'discord.js';
 import Gamedig from 'gamedig';
 import mysql from 'mysql';
 
-import { SquadLayers } from './utils/squad-layers.js';
+import Logger from 'core/logger';
+import { SQUADJS_API_DOMAIN } from 'core/constants';
+
 import LogParser from 'log-parser';
 import Rcon from 'rcon';
+
+import { SQUADJS_VERSION } from './utils/constants.js';
+import { SquadLayers } from './utils/squad-layers.js';
 
 import plugins from './plugins/index.js';
 
@@ -47,6 +53,10 @@ export default class SquadServer extends EventEmitter {
     this.updateA2SInformation = this.updateA2SInformation.bind(this);
     this.updateA2SInformationInterval = 30 * 1000;
     this.updateA2SInformationTimeout = null;
+
+    this.pingSquadJSAPI = this.pingSquadJSAPI.bind(this);
+    this.pingSquadJSAPIInterval = 5 * 60 * 1000;
+    this.pingSquadJSAPITimeout = null;
   }
 
   setupRCON() {
@@ -78,10 +88,10 @@ export default class SquadServer extends EventEmitter {
     try {
       await this.rcon.disconnect();
     } catch (err) {
-      SquadServer.verbose('Failed to stop RCON instance when restarting.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to stop RCON instance when restarting.', err);
     }
 
-    SquadServer.verbose('Setting up new RCON instance...');
+    Logger.verbose('SquadServer', 1, 'Setting up new RCON instance...');
     this.setupRCON();
     await this.rcon.connect();
   }
@@ -99,7 +109,10 @@ export default class SquadServer extends EventEmitter {
       timeout: this.options.ftpTimeout,
       verbose: this.options.ftpVerbose,
       fetchInterval: this.options.ftpFetchInterval,
-      maxTempFileSize: this.options.ftpMaxTempFileSize
+      maxTempFileSize: this.options.ftpMaxTempFileSize,
+
+      // enable this for FTP servers that do not support SIZE
+      useListForSize: this.options.ftpUseListForSize
     });
 
     this.logParser.on('ADMIN_BROADCAST', (data) => {
@@ -131,7 +144,10 @@ export default class SquadServer extends EventEmitter {
       data.victim = await this.getPlayerByName(data.victimName);
       data.attacker = await this.getPlayerByName(data.attackerName);
 
-      if (data.victim && data.attacker) data.teamkill = data.victim.teamID === data.attacker.teamID;
+      if (data.victim && data.attacker)
+        data.teamkill =
+          data.victim.teamID === data.attacker.teamID &&
+          data.victim.steamID !== data.attacker.steamID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -143,7 +159,10 @@ export default class SquadServer extends EventEmitter {
       data.victim = await this.getPlayerByName(data.victimName);
       data.attacker = await this.getPlayerByName(data.attackerName);
 
-      if (data.victim && data.attacker) data.teamkill = data.victim.teamID === data.attacker.teamID;
+      if (data.victim && data.attacker)
+        data.teamkill =
+          data.victim.teamID === data.attacker.teamID &&
+          data.victim.steamID !== data.attacker.steamID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -156,7 +175,10 @@ export default class SquadServer extends EventEmitter {
       data.victim = await this.getPlayerByName(data.victimName);
       data.attacker = await this.getPlayerByName(data.attackerName);
 
-      if (data.victim && data.attacker) data.teamkill = data.victim.teamID === data.attacker.teamID;
+      if (data.victim && data.attacker)
+        data.teamkill =
+          data.victim.teamID === data.attacker.teamID &&
+          data.victim.steamID !== data.attacker.steamID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -202,10 +224,10 @@ export default class SquadServer extends EventEmitter {
     try {
       await this.logParser.unwatch();
     } catch (err) {
-      SquadServer.verbose('Failed to stop LogParser instance when restarting.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to stop LogParser instance when restarting.', err);
     }
 
-    SquadServer.verbose('Setting up new LogParser instance...');
+    Logger.verbose('SquadServer', 1, 'Setting up new LogParser instance...');
     this.setupLogParser();
     await this.logParser.watch();
   }
@@ -224,7 +246,7 @@ export default class SquadServer extends EventEmitter {
         ...player
       }));
     } catch (err) {
-      SquadServer.verbose('Failed to update player list.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to update player list.', err);
     }
 
     this.updatePlayerListTimeout = setTimeout(this.updatePlayerList, this.updatePlayerListInterval);
@@ -245,7 +267,7 @@ export default class SquadServer extends EventEmitter {
 
       this.nextLayer = layerInfo.nextLayer;
     } catch (err) {
-      SquadServer.verbose('Failed to update layer information.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to update layer information.', err);
     }
 
     this.updateLayerInformationTimeout = setTimeout(
@@ -277,7 +299,7 @@ export default class SquadServer extends EventEmitter {
       this.matchTimeout = parseFloat(data.raw.rules.MatchTimeout_f);
       this.gameVersion = data.raw.version;
     } catch (err) {
-      SquadServer.verbose('Failed to update A2S information.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to update A2S information.', err);
     }
 
     this.updateA2SInformationTimeout = setTimeout(
@@ -324,7 +346,9 @@ export default class SquadServer extends EventEmitter {
     await this.updateLayerInformation();
     await this.updateA2SInformation();
 
-    SquadServer.verbose(`Watching ${this.serverName}...`);
+    Logger.verbose('SquadServer', 1, `Watching ${this.serverName}...`);
+
+    await this.pingSquadJSAPI();
   }
 
   async unwatch() {
@@ -332,27 +356,19 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.unwatch();
   }
 
-  static async buildFromConfig(configPath = './config.json') {
-    SquadServer.verbose('Reading config file...');
-    configPath = path.resolve(__dirname, '../', configPath);
-    if (!fs.existsSync(configPath)) throw new Error('Config file does not exist.');
-    const unparsedConfig = fs.readFileSync(configPath, 'utf8');
-
-    SquadServer.verbose('Parsing config file...');
-    let config;
-    try {
-      config = JSON.parse(unparsedConfig);
-    } catch (err) {
-      throw new Error('Unable to parse config file.');
+  static async buildFromConfig(config) {
+    // Setup logging levels
+    for (const [module, verboseness] of Object.entries(config.verboseness)) {
+      Logger.setVerboseness(module, verboseness);
     }
 
-    SquadServer.verbose('Creating SquadServer...');
+    Logger.verbose('SquadServer', 1, 'Creating SquadServer...');
     const server = new SquadServer(config.server);
 
     // pull layers read to use to create layer filter connectors
     await server.squadLayers.pull();
 
-    SquadServer.verbose('Preparing connectors...');
+    Logger.verbose('SquadServer', 1, 'Preparing connectors...');
     const connectors = {};
     for (const pluginConfig of config.plugins) {
       if (!pluginConfig.enabled) continue;
@@ -376,14 +392,18 @@ export default class SquadServer extends EventEmitter {
         const connectorConfig = config.connectors[connectorName];
 
         if (option.connector === 'discord') {
-          SquadServer.verbose(`Starting discord connector ${connectorName}...`);
+          Logger.verbose('SquadServer', 1, `Starting discord connector ${connectorName}...`);
           connectors[connectorName] = new Discord.Client();
           await connectors[connectorName].login(connectorConfig);
         } else if (option.connector === 'mysql') {
-          SquadServer.verbose(`Starting mysqlPool connector ${connectorName}...`);
+          Logger.verbose('SquadServer', 1, `Starting mysqlPool connector ${connectorName}...`);
           connectors[connectorName] = mysql.createPool(connectorConfig);
         } else if (option.connector === 'squadlayerpool') {
-          SquadServer.verbose(`Starting squadlayerfilter connector ${connectorName}...`);
+          Logger.verbose(
+            'SquadServer',
+            1,
+            `Starting squadlayerfilter connector ${connectorName}...`
+          );
           connectors[connectorName] = server.squadLayers[connectorConfig.type](
             connectorConfig.filter,
             connectorConfig.activeLayerFilter
@@ -394,7 +414,7 @@ export default class SquadServer extends EventEmitter {
       }
     }
 
-    SquadServer.verbose('Applying plugins to SquadServer...');
+    Logger.verbose('SquadServer', 1, 'Applying plugins to SquadServer...');
     for (const pluginConfig of config.plugins) {
       if (!pluginConfig.enabled) continue;
 
@@ -403,7 +423,7 @@ export default class SquadServer extends EventEmitter {
 
       const Plugin = plugins[pluginConfig.plugin];
 
-      SquadServer.verbose(`Initialising ${Plugin.name}...`);
+      Logger.verbose('SquadServer', 1, `Initialising ${Plugin.name}...`);
 
       const options = {};
       for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
@@ -423,13 +443,74 @@ export default class SquadServer extends EventEmitter {
         }
       }
 
-      server.plugins.push(new Plugin(server, options));
+      server.plugins.push(new Plugin(server, options, pluginConfig));
     }
 
     return server;
   }
 
-  static verbose(msg, ...additionalLogs) {
-    console.log(`[SquadServer] ${msg}`, ...additionalLogs);
+  static buildFromConfigString(configString) {
+    let config;
+    try {
+      config = JSON.parse(configString);
+    } catch (err) {
+      throw new Error('Unable to parse config file.');
+    }
+
+    return SquadServer.buildFromConfig(config);
+  }
+
+  static buildFromConfigFile(configPath = './config.json') {
+    Logger.verbose('SquadServer', 1, 'Reading config file...');
+    configPath = path.resolve(__dirname, '../', configPath);
+    if (!fs.existsSync(configPath)) throw new Error('Config file does not exist.');
+    const configString = fs.readFileSync(configPath, 'utf8');
+
+    return SquadServer.buildFromConfigString(configString);
+  }
+
+  async pingSquadJSAPI() {
+    if (this.pingSquadJSAPITimeout) clearTimeout(this.pingSquadJSAPITimeout);
+
+    Logger.verbose('SquadServer', 1, 'Pinging SquadJS API...');
+
+    const config = {
+      // send minimal information on server
+      server: {
+        host: this.options.host,
+        queryPort: this.options.queryPort,
+        logReaderMode: this.options.logReaderMode
+      },
+
+      // we send all plugin information as none of that is sensitive.
+      plugins: this.plugins.map((plugin) => ({
+        ...plugin.optionsRaw,
+        plugin: plugin.constructor.name
+      })),
+
+      // send additional information about SquadJS
+      version: SQUADJS_VERSION
+    };
+
+    try {
+      const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', { config });
+
+      if (data.error)
+        Logger.verbose(
+          'SquadServer',
+          1,
+          `Successfully pinged the SquadJS API. Got back error: ${data.error}`
+        );
+      else
+        Logger.verbose(
+          'SquadServer',
+          1,
+          `Successfully pinged the SquadJS API. Got back message: ${data.message}`
+        );
+    } catch (err) {
+      Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err);
+    }
+
+    this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
   }
 }

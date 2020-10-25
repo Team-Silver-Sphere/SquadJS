@@ -47,28 +47,28 @@ export default class DiscordRcon extends BasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super();
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
-    options.discordClient.on('message', async (message) => {
+    this.options.discordClient.on('message', async (message) => {
       // check the author of the message is not a bot and that the channel is the RCON console channel
-      if (message.author.bot || message.channel.id !== options.channelID) return;
+      if (message.author.bot || message.channel.id !== this.channelID) return;
 
       let command = message.content;
 
       // write admin's name into broadcast command if prependAdminNameInBroadcast is enabled
-      if (options.prependAdminNameInBroadcast)
+      if (this.options.prependAdminNameInBroadcast)
         command = command.replace(
           /^AdminBroadcast /i,
           `AdminBroadcast ${message.member.displayName}: `
         );
 
       // check the admin has permissions
-      if (Object.keys(options.permissions).length !== 0) {
+      if (Object.keys(this.options.permissions).length !== 0) {
         const commandPrefix = command.match(/([^ ]+)/);
 
         let hasPermission = false;
-        for (const [role, allowedCommands] of Object.entries(options.permissions)) {
+        for (const [role, allowedCommands] of Object.entries(this.options.permissions)) {
           if (!message.member._roles.includes(role)) continue;
 
           for (const allowedCommand of allowedCommands)
@@ -83,7 +83,7 @@ export default class DiscordRcon extends BasePlugin {
       }
 
       // execute command and print response
-      await this.respondToMessage(message, await server.rcon.execute(command));
+      await this.respondToMessage(message, await this.server.rcon.execute(command));
     });
   }
 

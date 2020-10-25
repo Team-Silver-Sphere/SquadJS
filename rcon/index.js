@@ -1,6 +1,8 @@
 import EventEmiiter from 'events';
 import net from 'net';
 
+import Logger from 'core/logger';
+
 const SERVERDATA_EXECCOMMAND = 0x02;
 const SERVERDATA_RESPONSE_VALUE = 0x00;
 const SERVERDATA_AUTH = 0x03;
@@ -38,7 +40,7 @@ export default class Rcon extends EventEmiiter {
   }
 
   connect() {
-    this.verbose('Method Exec: connect()');
+    Logger.verbose('RCON', 1, 'Method Exec: connect()');
     return new Promise((resolve, reject) => {
       this.autoReconnect = true;
 
@@ -48,40 +50,40 @@ export default class Rcon extends EventEmiiter {
       this.client.on('data', this.onData);
 
       this.client.on('error', (err) => {
-        this.verbose(`Socket Error: ${err.message}`);
-        this.emitter.emit('RCON_ERROR', err);
+        Logger.verbose('RCON', 1, `Socket Error: ${err.message}`);
+        this.emit('RCON_ERROR', err);
       });
 
       this.client.on('close', async (hadError) => {
-        this.verbose(`Socket Closed. AutoReconnect: ${this.autoReconnect}`);
+        Logger.verbose('RCON', 1, `Socket Closed. AutoReconnect: ${this.autoReconnect}`);
         this.connected = false;
         this.client.removeListener('data', this.onData);
         if (!this.autoReconnect) return;
         if (this.reconnectInterval !== null) return;
         this.reconnectInterval = setInterval(async () => {
-          this.verbose('Attempting AutoReconnect.');
+          Logger.verbose('RCON', 1, 'Attempting AutoReconnect.');
           try {
             await this.connect();
             clearInterval(this.reconnectInterval);
             this.reconnectInterval = null;
-            this.verbose('Cleaned AutoReconnect.');
+            Logger.verbose('RCON', 1, 'Cleaned AutoReconnect.');
           } catch (err) {
-            this.verbose('AutoReconnect Failed.');
+            Logger.verbose('RCON', 1, 'AutoReconnect Failed.');
           }
         }, this.autoReconnectInterval);
       });
 
       const onConnect = async () => {
-        this.verbose('Socket Opened.');
+        Logger.verbose('RCON', 1, 'Socket Opened.');
         this.client.removeListener('error', onError);
         this.connected = true;
-        this.verbose('Sending auth packet...');
+        Logger.verbose('RCON', 1, 'Sending auth packet...');
         await this.write(SERVERDATA_AUTH, this.password);
         resolve();
       };
 
       const onError = (err) => {
-        this.verbose(`Error Opening Socket: ${err.message}`);
+        Logger.verbose('RCON', 1, `Error Opening Socket: ${err.message}`);
         this.client.removeListener('connect', onConnect);
         reject(err);
       };
@@ -94,18 +96,18 @@ export default class Rcon extends EventEmiiter {
   }
 
   async disconnect(disableAutoReconnect = true) {
-    this.verbose(`Method Exec: disconnect(${disableAutoReconnect})`);
+    Logger.verbose('RCON', 1, `Method Exec: disconnect(${disableAutoReconnect})`);
     return new Promise((resolve, reject) => {
       if (disableAutoReconnect) this.autoReconnect = false;
 
       const onClose = () => {
-        this.verbose('Disconnect successful.');
+        Logger.verbose('RCON', 1, 'Disconnect successful.');
         this.client.removeListener('error', onError);
         resolve();
       };
 
       const onError = (err) => {
-        this.verbose(`Error disconnecting: ${err.message}`);
+        Logger.verbose('RCON', 1, `Error disconnecting: ${err.message}`);
         this.client.removeListener('close', onClose);
         reject(err);
       };
@@ -207,14 +209,14 @@ export default class Rcon extends EventEmiiter {
         for (const packet of this.currentMultiPacketResponse) {
           if (packet.type === SERVERDATA_RESPONSE_VALUE) continue;
           if (packet.id !== MID_PACKET_ID) {
-            this.verbose('Unable to authenticate.');
+            Logger.verbose('RCON', 1, 'Unable to authenticate.');
             await this.disconnect(false);
             reject(new Error('Unable to authenticate.'));
           }
 
           this.currentMultiPacketResponse = [];
 
-          this.verbose('Authenticated.');
+          Logger.verbose('RCON', 1, 'Authenticated.');
           resolve();
         }
       };
@@ -243,12 +245,8 @@ export default class Rcon extends EventEmiiter {
     });
   }
 
-  verbose(msg) {
-    console.log(`[RCON] ${msg}`);
-  }
-
   execute(command) {
-    this.verbose(`Method Exec: execute(${command})`);
+    Logger.verbose('RCON', 1, `Method Exec: execute(${command})`);
     return this.write(SERVERDATA_EXECCOMMAND, command);
   }
 
@@ -290,5 +288,8 @@ export default class Rcon extends EventEmiiter {
   }
   async kick(steamID, reason) {
     await this.execute(`AdminKick "${steamID}" ${reason}`);
+  }
+  async switchTeam(steamID) {
+    await this.execute(`AdminForceTeamChange "${steamID}"`);
   }
 }

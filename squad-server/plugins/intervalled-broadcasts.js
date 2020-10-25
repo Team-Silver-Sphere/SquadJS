@@ -28,12 +28,12 @@ export default class IntervalledBroadcasts extends BasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super();
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
     setInterval(async () => {
-      await server.rcon.broadcast(options.broadcasts[0]);
-      options.broadcasts.push(options.broadcasts.shift());
-    }, options.interval);
+      await this.server.rcon.broadcast(this.options.broadcasts[0]);
+      this.broadcasts.push(this.options.broadcasts.shift());
+    }, this.options.interval);
   }
 }

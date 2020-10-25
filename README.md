@@ -437,6 +437,29 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
+      <summary>DiscordRoundWinner</summary>
+      <h2>DiscordRoundWinner</h2>
+      <p>The <code>DiscordRoundWinner</code> plugin will send the round winner to a Discord channel.</p>
+      <h3>Options</h3>
+      <h4>discordClient (Required)</h4>
+       <h6>Description</h6>
+       <p>Discord connector name.</p>
+       <h6>Default</h6>
+       <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+       <h6>Description</h6>
+       <p>The ID of the channel to log admin broadcasts to.</p>
+       <h6>Default</h6>
+       <pre><code></code></pre><h6>Example</h6>
+       <pre><code>667741905228136459</code></pre>
+<h4>color</h4>
+       <h6>Description</h6>
+       <p>The color of the embed.</p>
+       <h6>Default</h6>
+       <pre><code>16761867</code></pre>
+    </details>
+
+<details>
       <summary>DiscordServerStatus</summary>
       <h2>DiscordServerStatus</h2>
       <p>The <code>DiscordServerStatus</code> plugin updates a message in Discord with current server information, e.g. player count.</p>
@@ -542,6 +565,18 @@ The following is a list of plugins built into SquadJS, you can click their title
        <p>"Live" message to display.</p>
        <h6>Default</h6>
        <pre><code>Live!</code></pre>
+    </details>
+
+<details>
+      <summary>TeamRandomizer</summary>
+      <h2>TeamRandomizer</h2>
+      <p>The <code>TeamRandomizer</code> can be used to randomize teams. It's great for destroying clan stacks or for social events. It can be run by typing, by default, <code>!randomize</code> into in-game admin chat</p>
+      <h3>Options</h3>
+      <h4>command</h4>
+       <h6>Description</h6>
+       <p>The command used to randomize the teams.</p>
+       <h6>Default</h6>
+       <pre><code>randomize</code></pre>
     </details>
  
 ## Creating Your Own Plugins
