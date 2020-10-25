@@ -4,7 +4,8 @@ class Logger {
   }
 
   verbose(module, verboseness, message, ...extras) {
-      if(this.verboseness[module] >= verboseness) console.log(`[${module}][${verboseness}] ${message}`, ...extras);
+    if (this.verboseness[module] >= verboseness)
+      console.log(`[${module}][${verboseness}] ${message}`, ...extras);
   }
 
   setVerboseness(module, verboseness) {

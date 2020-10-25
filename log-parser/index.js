@@ -20,13 +20,19 @@ export default class LogParser extends EventEmitter {
     this.linesPerMinuteInterval = null;
 
     this.queue = async.queue(async (line) => {
+      Logger.verbose('LogParser', 4, `Matching on line: ${line}`);
+
       for (const rule of rules) {
         const match = line.match(rule.regex);
         if (!match) continue;
 
+        Logger.verbose('LogParser', 3, `Matched on line: ${match[0]}`);
+
         match[1] = moment.utc(match[1], 'YYYY.MM.DD-hh.mm.ss:SSS').toDate();
         match[2] = parseInt(match[2]);
+
         rule.onMatch(match, this);
+
         break;
       }
 

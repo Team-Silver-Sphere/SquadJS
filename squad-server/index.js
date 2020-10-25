@@ -358,7 +358,7 @@ export default class SquadServer extends EventEmitter {
 
   static async buildFromConfig(config) {
     // Setup logging levels
-    for(const [module, verboseness] of Object.entries(config.verboseness)) {
+    for (const [module, verboseness] of Object.entries(config.verboseness)) {
       Logger.setVerboseness(module, verboseness);
     }
 
@@ -399,7 +399,11 @@ export default class SquadServer extends EventEmitter {
           Logger.verbose('SquadServer', 1, `Starting mysqlPool connector ${connectorName}...`);
           connectors[connectorName] = mysql.createPool(connectorConfig);
         } else if (option.connector === 'squadlayerpool') {
-          Logger.verbose('SquadServer', 1, `Starting squadlayerfilter connector ${connectorName}...`);
+          Logger.verbose(
+            'SquadServer',
+            1,
+            `Starting squadlayerfilter connector ${connectorName}...`
+          );
           connectors[connectorName] = server.squadLayers[connectorConfig.type](
             connectorConfig.filter,
             connectorConfig.activeLayerFilter
@@ -491,9 +495,19 @@ export default class SquadServer extends EventEmitter {
     try {
       const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', { config });
 
-      if(data.error) Logger.verbose('SquadServer', 1, `Successfully pinged the SquadJS API. Got back error: ${data.error}`);
-      else Logger.verbose('SquadServer', 1, `Successfully pinged the SquadJS API. Got back message: ${data.message}`);
-    } catch(err) {
+      if (data.error)
+        Logger.verbose(
+          'SquadServer',
+          1,
+          `Successfully pinged the SquadJS API. Got back error: ${data.error}`
+        );
+      else
+        Logger.verbose(
+          'SquadServer',
+          1,
+          `Successfully pinged the SquadJS API. Got back message: ${data.message}`
+        );
+    } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err);
     }
 
