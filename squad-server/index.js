@@ -12,7 +12,7 @@ import { SquadLayers } from './utils/squad-layers.js';
 import LogParser from 'log-parser';
 import Rcon from 'rcon';
 
-import { SQUADJS_API } from './utils/constants.js';
+import { SQUADJS_VERSION, SQUADJS_API } from './utils/constants.js';
 
 import plugins from './plugins/index.js';
 
@@ -478,7 +478,10 @@ export default class SquadServer extends EventEmitter {
       plugins: this.plugins.map((plugin) => ({
         ...plugin.optionsRaw,
         plugin: plugin.constructor.name
-      }))
+      })),
+
+      // send additional information about SquadJS
+      version: SQUADJS_VERSION
     };
 
     try {
