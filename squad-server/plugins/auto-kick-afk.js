@@ -1,4 +1,5 @@
 import BasePlugin from './base-plugin.js';
+import Logger from 'core/logger';
 
 export default class AutoKickAFK extends BasePlugin {
   static get description() {
@@ -85,7 +86,7 @@ export default class AutoKickAFK extends BasePlugin {
     }
 
     const trackPlayer = async (steamID)=>{
-      console.log(`[AutoAFK] Tracking: ${steamID}`);
+      Logger.verbose('AutoAFK', 2, `[AutoAFK] Tracking: ${steamID}`);
       let trackStart = Date.now();
       let warnTimerID = setInterval( async ()=> {
         let msLeft = this.kickTimeout-(Date.now()-trackStart);
@@ -101,7 +102,7 @@ export default class AutoKickAFK extends BasePlugin {
     }
 
     const untrackPlayer = async (steamID)=>{
-      console.log(`[AutoAFK] unTrack: ${steamID}`);
+      Logger.verbose('AutoAFK', 2, `[AutoAFK] unTrack: ${steamID}`);
       clearInterval(this.trackedPlayers[steamID][0]); // clears warning interval
       clearTimeout(this.trackedPlayers[steamID][1]); // clears kick timeout
       delete this.trackedPlayers[steamID];
