@@ -11,27 +11,36 @@ export default class AutoKickAFK extends BasePlugin {
 
   static get optionsSpecification() {
     return {
-      warning: {
+      warningMessage: {
         required: false,
-        description:
-          'If enabled SquadJS will warn a player once before kicking them. To disable remove the message (`""`)',
-        default: 'Players not in a squad are unassigned and will be kicked in 3 minutes'
+        description: 'Message SquadJS will send to players warning them they will be kicked',
+        default: 'Join a squad, you are are unassigned and will be kicked'
       },
-      updateInterval: {
+      kickMessage: {
         required: false,
-        description: 'How frequently to check if players are AFK in minutes. If the warning is enabled a player will be kicked after 2x this value otherwise they will be kicked immediately.',
-        default: 3
+        description: 'Message to send to players when they are kicked',
+        default: 'Unassigned - automatically removed'
+      },
+      frequencyOfWarnings : {
+        required: false,
+        description: 'How often in seconds should we warn the player about being AFK?',
+        default: 30
+      },
+      afkTimer: {
+        required: false,
+        description: 'How long in minutes to wait before a player that is AFK is kicked',
+        default: 6
       },
       playerThreshold:{
         required: false,
-        description: 'Player count required for Auto Kick to start kicking players to disable set to above max player count',
+        description: 'Player count required for Auto Kick to start kicking players to disable set to -1 to disable',
         default: 93
       },
       queueThreshold:{
         required: false,
         description: 'The number of players in the queue before Auto Kick starts kicking players set to -1 to disable',
         default: -1
-      }/*,
+      }/*, to be added in future when we can track admins better
       ignoreAdmins:{
         required: false,
         description: 'Whether or not admins will be auto kicked for being unassigned',
@@ -43,64 +52,71 @@ export default class AutoKickAFK extends BasePlugin {
   constructor(server, options) {
     super();
 
-    this.playerDict = {};
+    this.kickTimeout =  options.afkTimer * 60 * 1000;
+    this.warningInterval = options.frequencyOfWarnings * 1000;
+
+    this.trackedPlayers = {};
     //for initial testing
     this.auditMode = true;
 
-    const intervalMS = options.updateInterval * 60 * 1000;
+    const runConditions = ()=>{
+      return true;
+      return ( (0 < options.playerCountThreshold < server.players.count) || (0 < options.queueThreshold < (server.publicQueue + server.reserveQueue)) )
+    }
 
-    setInterval( async ()=>{
-      if(server.players.count <= options.playerCountThreshold || (server.publicQueue > options.queueThreshold > 0) ){
-        // clear tracking vlaues so if the player count indreases/decreases past any threshold stale players arent counted again if they happen to be unassigned
-        this.playerDict = {};
+    const updateTrackingList = async ()=>{
+      //await server.updatePlayerList();
+      if( !runConditions() ){
+        // clear all tracked players if run conditions are not met.
+        for(steamID of Object.keys(this.trackedPlayers))
+          untrackPlayer(steamID);
         return;
-      }
-
-      // loop through players on server an start tracking players not in a squad
+      } 
+      // loop through players on server and start tracking players not in a squad
       for (const player of server.players) {
-        if(player.squadID === null){ // player not in a squad
-          if(player.steamID in this.playerDict){ // player already tracked
-            this.playerDict[player.steamID] += 1; // mark player for kick
-          }else{
-            this.playerDict[player.steamID] = 0; // start tracking player 
-          }
-        }else if(player.steamID in this.playerDict){
-          delete this.playerDict[player.steamID]; // tracked player joined a squad remove them
-        }
-      }
-  
-      // debug log
-      console.log(this.playerDict);
-  
-      const copy = Object.assign({}, this.playerDict);
-      for(const [steamID, warnings] of Object.entries(copy)){
-        if(warnings >= 1 || options.warning === ''){
-          if(this.auditMode){
-            console.log(`[AUTO AFK] kick ${steamID} for AFK`)
-          }else{
-            // kick player
-            await server.rcon.kick(steamID, 'UNASSIGNED - automatically removed');
-            delete this.playerDict[steamID];
-          }
-        }else{
-          if(this.auditMode){
-            console.log(`[AUTO AFK] warn player ${steamID} for AFK`);
-          }else{
-            // warn player
-            server.rcon.warn(steamID, options.warning);
-          }
-          
-        }
-      }
-    } , intervalMS );
+        let isTracked = (player.steamID in this.trackedPlayers);
+        let isUnassigned = (player.squadID === null);
 
+        if(isUnassigned && !isTracked)
+          this.trackedPlayers[player.steamID] = trackPlayer(player.steamID); // start tracking player
+        if(!isUnassigned && isTracked)
+          untrackPlayer(player.steamID); // tracked player joined a squad remove them
+      }
+    }
+
+    const trackPlayer = async (steamID)=>{
+      console.log(`[AutoAFK] Tracking: ${steamID}`);
+      let trackStart = Date.now();
+      let warnTimerID = setInterval( async ()=> {
+        let msLeft = this.kickTimeout-(Date.now()-trackStart);
+        let min = Math.floor((msLeft/1000/60) << 0);
+        let sec = Math.floor((msLeft/1000) % 60);
+        server.rcon.warn(steamID, `${options.warningMessage} - ${min}:${sec}`);
+      }, this.warningInterval);
+
+      let kickTimerID = setTimeout(async ()=>{
+        server.rcon.kick(steamID, options.kickMessage);
+      }, this.kickTimeout);
+      return [warnTimerID, kickTimerID]
+    }
+
+    const untrackPlayer = async (steamID)=>{
+      console.log(`[AutoAFK] unTrack: ${steamID}`);
+      clearInterval(this.trackedPlayers[steamID][0]); // clears warning interval
+      clearTimeout(this.trackedPlayers[steamID][1]); // clears kick timeout
+      delete this.trackedPlayers[steamID];
+    }
+
+
+    //setTimeout( updateTrackingList,  30*1000); // debug start tracking list
+    setInterval(updateTrackingList , 1*60*1000); //tracking list update loop
 
     //clean up every 20 minutes, removes players no longer on the server that may be stuck in the tracking dict
     const cleanupMS = 20*60*1000;
-    setInterval( ()=> {
-      for(steamID of Object.keys(this.playerDict))
+    setInterval( ()=>{
+      for(steamID of Object.keys(this.trackedPlayers))
         if(!steamID in server.players.map(p => p.steamID))
-          delete this.playerDict[steamID];
+          untrackPlayer(steamID);
     }, cleanupMS);
 
   }
