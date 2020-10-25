@@ -69,7 +69,7 @@
     {
       "plugin": "AutoKickAFK",
       "enabled": true,
-      "warning": "",
+      "warning": "Players not in a squad are unassigned and will be kicked in 3 minutes",
       "updateInterval": 3
     },
     {
