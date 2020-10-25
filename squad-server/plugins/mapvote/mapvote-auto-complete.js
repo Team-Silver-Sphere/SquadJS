@@ -35,7 +35,8 @@ export default class MapVoteAutoComplete extends BasePlugin {
       layerFilter: {
         required: false,
         description: 'The layers players can choose from.',
-        default: 'layerFilter'
+        connector: 'squadlayerpool',
+        default: 'squadlayerpool'
       },
       alwaysOn: {
         required: false,
@@ -195,7 +196,7 @@ export default class MapVoteAutoComplete extends BasePlugin {
   }
 
   buildMapVote(server, options) {
-    const layerEngine = new MapvoteLayerEngine(server, { layerFilter: options.layerFilter });
+    const layerEngine = new MapvoteLayerEngine(server, { layers: options.layerFilter });
     return new MapvoteVoteEngine(layerEngine, options);
   }
 }

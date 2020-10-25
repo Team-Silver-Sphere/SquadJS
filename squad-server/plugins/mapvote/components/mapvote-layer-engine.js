@@ -2,8 +2,8 @@ export default class MapvoteLayerEngine {
   constructor(server, options) {
     this.server = server;
 
-    if (options.layerFilter) {
-      this.layerPool = server.squadLayers.buildPoolFromFilter(options.layerFilter, null);
+    if (options.layers) {
+      this.layerPool = options.layers;
     } else {
       this.layerPool = server.squadLayers.buildPoolFromLayerNamesAutoCorrection(options.maps, null);
     }
@@ -12,7 +12,6 @@ export default class MapvoteLayerEngine {
   // TODO: Refactor this logic into dynamic validator list
   async getLayerForVote(layer) {
     layer = this.layerPool.getLayerByLayerName(layer);
-
     if (!this.layerPool.inPool(layer)) {
       return { valid: false, message: `${layer.layer} is not in layer pool.` };
     }
@@ -46,7 +45,7 @@ export default class MapvoteLayerEngine {
         message: `Cannot be played as either ${layer.teamOne.faction} or ${layer.teamTwo.faction} has been played too much recently.`
       };
     }
-    if (!this.layerPool.isPlayerCountCompliant(this.server.layerHistory, layer)) {
+    if (!this.layerPool.isPlayerCountCompliant(this.server, layer)) {
       return {
         valid: false,
         message: `${layer.layer} is only suitable for a player count between ${layer.estimatedSuitablePlayerCount.min} and ${layer.estimatedSuitablePlayerCount.max}.`

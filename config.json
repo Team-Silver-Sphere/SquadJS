@@ -187,7 +187,7 @@
     {
       "plugin": "MapVoteAutoComplete",
       "enabled": false,
-      "layerFilter": "layerFilter",
+      "layerFilter": "squadlayerpool",
       "alwaysOn": true,
       "minPlayerCount": null,
       "minVoteCount": null
