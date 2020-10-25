@@ -41,34 +41,39 @@ export default class DiscordServerStatus extends BasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super();
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
     setInterval(async () => {
-      for (const messageID of options.messageIDs) {
+      for (const messageID of this.options.messageIDs) {
         try {
-          const channel = await options.discordClient.channels.fetch(messageID.channelID);
+          const channel = await this.options.discordClient.channels.fetch(messageID.channelID);
           const message = await channel.messages.fetch(messageID.messageID);
 
-          await message.edit(this.getEmbed(server));
+          await message.edit(this.getEmbed());
         } catch (err) {
           console.log(err);
         }
       }
 
-      await options.discordClient.user.setActivity(`(${server.a2sPlayerCount}/${server.publicSlots}) ${server.layerHistory[0].layer || 'Unknown'}`, { type: 'WATCHING' });
-    }, options.updateInterval);
+      await this.options.discordClient.user.setActivity(
+        `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
+          this.server.layerHistory[0].layer || 'Unknown'
+        }`,
+        { type: 'WATCHING' }
+      );
+    }, this.options.updateInterval);
   }
 
-  getEmbed(server) {
+  getEmbed() {
     let players = '';
 
-    players += `${server.a2sPlayerCount}`;
-    if (server.publicQueue + server.reserveQueue > 0)
-      players += ` (+${server.publicQueue + server.reserveQueue})`;
+    players += `${this.server.a2sPlayerCount}`;
+    if (this.server.publicQueue + this.server.reserveQueue > 0)
+      players += ` (+${this.server.publicQueue + this.server.reserveQueue})`;
 
-    players += ` / ${server.publicSlots}`;
-    if (server.reserveSlots > 0) players += ` (+${server.reserveSlots})`;
+    players += ` / ${this.server.publicSlots}`;
+    if (this.server.reserveSlots > 0) players += ` (+${this.server.reserveSlots})`;
 
     const fields = [
       {
@@ -77,12 +82,12 @@ export default class DiscordServerStatus extends BasePlugin {
       },
       {
         name: 'Current Layer',
-        value: `\`\`\`${server.layerHistory[0].layer || 'Unknown'}\`\`\``,
+        value: `\`\`\`${this.server.layerHistory[0].layer || 'Unknown'}\`\`\``,
         inline: true
       },
       {
         name: 'Next Layer',
-        value: `\`\`\`${server.nextLayer || 'Unknown'}\`\`\``,
+        value: `\`\`\`${this.server.nextLayer || 'Unknown'}\`\`\``,
         inline: true
       }
     ];
@@ -90,14 +95,14 @@ export default class DiscordServerStatus extends BasePlugin {
     return {
       content: '',
       embed: {
-        title: server.serverName,
+        title: this.server.serverName,
         color: parseInt(
           tinygradient([
             { color: '#ff0000', pos: 0 },
             { color: '#ffff00', pos: 0.5 },
             { color: '#00ff00', pos: 1 }
           ])
-            .rgbAt(server.a2sPlayerCount / server.publicSlots)
+            .rgbAt(this.server.a2sPlayerCount / this.server.publicSlots)
             .toHex(),
           16
         ),

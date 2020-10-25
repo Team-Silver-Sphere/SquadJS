@@ -26,12 +26,12 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
     this.adminsInCam = {};
 
-    server.on('PLAYER_POSSESS', async (info) => {
+    this.server.on('PLAYER_POSSESS', async (info) => {
       if (info.player === null || info.possessClassname !== 'CameraMan') return;
 
       this.adminsInCam[info.player.steamID] = info.time;
@@ -39,7 +39,7 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
       await this.sendDiscordMessage({
         embed: {
           title: `Admin Entered Admin Camera`,
-          color: options.color,
+          color: this.options.color,
           fields: [
             {
               name: "Admin's Name",
@@ -57,7 +57,7 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
       });
     });
 
-    server.on('PLAYER_UNPOSSESS', async (info) => {
+    this.server.on('PLAYER_UNPOSSESS', async (info) => {
       if (
         info.player === null ||
         info.switchPossess === true ||
@@ -68,7 +68,7 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
       await this.sendDiscordMessage({
         embed: {
           title: `Admin Left Admin Camera`,
-          color: options.color,
+          color: this.options.color,
           fields: [
             {
               name: "Admin's Name",

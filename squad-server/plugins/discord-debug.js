@@ -30,11 +30,11 @@ export default class DiscordDebug extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options) {
-    super(server, options);
+  constructor(server, options, optionsRaw) {
+    super(server, options, optionsRaw);
 
-    for (const event of options.events) {
-      server.on(event, async (info) => {
+    for (const event of this.options.events) {
+      this.server.on(event, async (info) => {
         await this.sendDiscordMessage(`\`\`\`${JSON.stringify({ ...info, event }, null, 2)}\`\`\``);
       });
     }

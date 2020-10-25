@@ -6,15 +6,14 @@
     "queryPort": 27165,
     "rconPort": 21114,
     "rconPassword": "password",
+    "rconVerbose": true,
 
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
-
     "ftpPort": 21,
     "ftpUser": "FTP Username",
     "ftpPassword": "FTP Password",
-
-    "rconVerbose": true
+    "ftpUseListForSize": false
   },
   "connectors": {
     "discord": "Discord Login Token",
@@ -62,5 +61,10 @@
       "database": "squadjs"
     }
   },
-  "plugins": []
+  "plugins": [],
+  "verboseness": {
+    "SquadServer": 1,
+    "LogParser": 1,
+    "RCON": 1
+  }
 }

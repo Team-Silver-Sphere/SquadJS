@@ -1,15 +1,12 @@
 import DiscordBasePlugin from './discord-base-plugin.js';
 
-export default class DiscordAdminBroadcast extends DiscordBasePlugin {
+export default class DiscordRoundWinner extends DiscordBasePlugin {
   static get description() {
-    return (
-      'The <code>DiscordAdminBroadcast</code> plugin will send a copy of admin broadcasts made in game to a Discord ' +
-      'channel.'
-    );
+    return 'The <code>DiscordRoundWinner</code> plugin will send the round winner to a Discord channel.';
   }
 
   static get defaultEnabled() {
-    return false;
+    return true;
   }
 
   static get optionsSpecification() {
@@ -32,15 +29,15 @@ export default class DiscordAdminBroadcast extends DiscordBasePlugin {
   constructor(server, options, optionsRaw) {
     super(server, options, optionsRaw);
 
-    this.server.on('ADMIN_BROADCAST', async (info) => {
+    this.server.on('NEW_GAME', async (info) => {
       await this.sendDiscordMessage({
         embed: {
-          title: 'Admin Broadcast',
+          title: 'Round Winner',
           color: this.options.color,
           fields: [
             {
               name: 'Message',
-              value: `${info.message}`
+              value: `${info.winner} won on ${info.layer}.`
             }
           ],
           timestamp: info.time.toISOString()
