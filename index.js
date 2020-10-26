@@ -1,18 +1,28 @@
+import Logger from 'core/logger';
 import SquadServer from 'squad-server';
 import printLogo from 'squad-server/logo';
+import { ServerConfig } from './serverconfig.js';
 
 async function main() {
   await printLogo();
 
-  const config = process.env.config;
+  const envConfig = process.env.config;
   const configPath = process.argv[2];
-  if (config && configPath) throw new Error('Cannot accept both a config and config path.');
+  if (envConfig && configPath) throw new Error('Cannot accept both a config and config path.');
 
-  const server = config
-    ? await SquadServer.buildFromConfigString(config)
-    : await SquadServer.buildFromConfigFile(configPath || './config.json');
+  if (envConfig)
+    ServerConfig.buildFromPlainString(envConfig);
+  else
+    ServerConfig.buildFromConfigFile(configPath || './config.json');
 
-  await server.watch();
+  try {
+    const server = new SquadServer();
+
+    await server.watch();
+  } catch (e) {
+    // Catch all uncatch errors, try not to rely on this.
+    Logger.error('Main', e, e.stack);
+  }
 }
 
 main();

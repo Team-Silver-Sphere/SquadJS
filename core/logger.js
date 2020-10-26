@@ -8,7 +8,12 @@ class Logger {
       console.log(`[${module}][${verboseness}] ${message}`, ...extras);
   }
 
+  error(module, message, ...extras) {
+    console.error(`[${module}][ERROR] ${message}`, ...extras);
+  }
+
   setVerboseness(module, verboseness) {
+    this.verbose('SquadServer', 1, `Setting Logger verboseness levels for ${module}...`);
     this.verboseness[module] = verboseness;
   }
 }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import didYouMean from 'didyoumean';
 import fs from 'fs';
+import Logger from 'core/logger';
 
 class SquadLayersBase {
   get layerNames() {
@@ -32,6 +33,7 @@ class SquadLayersBase {
 class SquadLayers extends SquadLayersBase {
   constructor(source) {
     super();
+    Logger.verbose('SquadServer', 1, 'Creating SquadLayers...');
 
     this.source =
       source || 'https://raw.githubusercontent.com/Thomas-Smyth/squad-layers/master/layers.json';
