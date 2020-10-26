@@ -75,7 +75,8 @@
       "frequencyOfWarnings": 30,
       "afkTimer": 6,
       "playerThreshold": 93,
-      "queueThreshold": -1
+      "queueThreshold": -1,
+      "roundStartDelay": 15
     },
     {
       "plugin": "ChatCommands",

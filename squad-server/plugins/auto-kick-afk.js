@@ -41,6 +41,11 @@ export default class AutoKickAFK extends BasePlugin {
         required: false,
         description: 'The number of players in the queue before Auto Kick starts kicking players set to -1 to disable',
         default: -1
+      },
+      roundStartDelay:{
+        required: false,
+        description: 'Time delay in minutes from start of the round before auto AFK starts kicking again',
+        default: 15
       }/*, to be added in future when we can track admins better
       ignoreAdmins:{
         required: false,
@@ -55,24 +60,40 @@ export default class AutoKickAFK extends BasePlugin {
 
     this.kickTimeout =  options.afkTimer * 60 * 1000;
     this.warningInterval = options.frequencyOfWarnings * 1000;
+    this.gracePeriod = options.roundStartDelay * 60 * 1000;
+
+    this.betweenRounds = false;
 
     this.trackedPlayers = {};
-    //for initial testing
-    this.auditMode = true;
+
+    server.on('NEW_GAME', async (info) => {
+      this.betweenRounds = true;
+      updateTrackingList();
+      setTimeout(async ()=>{
+        this.betweenRounds = false;
+      }, this.gracePeriod);
+    });
+
+    server.on('PLAYER_SQUAD_CHANGE', async (player) =>{
+      if (player.steamID in this.trackedPlayers && player.squadID !== null){
+        untrackPlayer(player.steamID);
+      }
+    });
 
     const runConditions = ()=>{
-      return true;
-      return ( (0 < options.playerCountThreshold < server.players.count) || (0 < options.queueThreshold < (server.publicQueue + server.reserveQueue)) )
+      return ( !this.betweenRounds || (0 < options.playerCountThreshold < server.players.count) || (0 < options.queueThreshold < (server.publicQueue + server.reserveQueue)) )
     }
 
     const updateTrackingList = async ()=>{
-      //await server.updatePlayerList();
       if( !runConditions() ){
         // clear all tracked players if run conditions are not met.
         for(steamID of Object.keys(this.trackedPlayers))
           untrackPlayer(steamID);
         return;
       } 
+
+      //await server.updatePlayerList();
+
       // loop through players on server and start tracking players not in a squad
       for (const player of server.players) {
         let isTracked = (player.steamID in this.trackedPlayers);
@@ -108,8 +129,6 @@ export default class AutoKickAFK extends BasePlugin {
       delete this.trackedPlayers[steamID];
     }
 
-
-    //setTimeout( updateTrackingList,  30*1000); // debug start tracking list
     setInterval(updateTrackingList , 1*60*1000); //tracking list update loop
 
     //clean up every 20 minutes, removes players no longer on the server that may be stuck in the tracking dict
