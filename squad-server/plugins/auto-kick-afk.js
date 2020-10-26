@@ -1,6 +1,7 @@
 import BasePlugin from './base-plugin.js';
 import Logger from 'core/logger';
 
+
 export default class AutoKickAFK extends BasePlugin {
   static get description() {
     return 'The <code>AutoKickAFK</code> plugin will automatically kick players that are not in a squad after a specified ammount of time.';
@@ -81,6 +82,7 @@ export default class AutoKickAFK extends BasePlugin {
     });
 
     const runConditions = ()=>{
+      return true; // force run for testing TODO: remove
       return ( !this.betweenRounds || (0 < options.playerCountThreshold < server.players.count) || (0 < options.queueThreshold < (server.publicQueue + server.reserveQueue)) )
     }
 
@@ -92,40 +94,51 @@ export default class AutoKickAFK extends BasePlugin {
         return;
       } 
 
-      //await server.updatePlayerList();
+      //await server.updatePlayerList(); //possibly unneeded as updates to player list are already common
 
       // loop through players on server and start tracking players not in a squad
       for (const player of server.players) {
         let isTracked = (player.steamID in this.trackedPlayers);
         let isUnassigned = (player.squadID === null);
+        let isAdmin = false; //to be implemented
 
-        if(isUnassigned && !isTracked)
-          this.trackedPlayers[player.steamID] = trackPlayer(player.steamID); // start tracking player
+        if(isUnassigned && !isTracked && !isAdmin)
+          this.trackedPlayers[player.steamID] = trackPlayer(player); // start tracking player
         if(!isUnassigned && isTracked)
-          untrackPlayer(player.steamID); // tracked player joined a squad remove them
+          untrackPlayer(player.steamID); // tracked player joined a squad remove them (redundant afer addming PLAYER_SQUAD_CHANGE, keeping for now)
       }
     }
-
-    const trackPlayer = async (steamID)=>{
-      Logger.verbose('AutoAFK', 2, `[AutoAFK] Tracking: ${steamID}`);
-      let trackStart = Date.now();
-      let warnTimerID = setInterval( async ()=> {
-        let msLeft = this.kickTimeout-(Date.now()-trackStart);
-        let min = Math.floor((msLeft/1000/60) << 0);
-        let sec = Math.floor((msLeft/1000) % 60);
-        server.rcon.warn(steamID, `${options.warningMessage} - ${min}:${sec}`);
-      }, this.warningInterval);
-
-      let kickTimerID = setTimeout(async ()=>{
-        server.rcon.kick(steamID, options.kickMessage);
-      }, this.kickTimeout);
-      return [warnTimerID, kickTimerID]
+    
+    const msFormat = (ms)=>{
+      let min = Math.floor((ms/1000/60) << 0);
+      let sec = Math.floor((ms/1000) % 60);
+      return `${min}:${sec}`;
     }
 
-    const untrackPlayer = async (steamID)=>{
-      Logger.verbose('AutoAFK', 2, `[AutoAFK] unTrack: ${steamID}`);
-      clearInterval(this.trackedPlayers[steamID][0]); // clears warning interval
-      clearTimeout(this.trackedPlayers[steamID][1]); // clears kick timeout
+    const trackPlayer = (player)=>{
+      Logger.verbose('AutoAFK', 1, `Tracking: ${player.name}`);
+      let tracker = {};
+      tracker.player = player
+      tracker.startTime = Date.now();
+      tracker.warnTimerID = setInterval( async ()=> {
+        let timeLeft = msFormat(this.kickTimeout-(Date.now()-tracker.startTime));
+        Logger.verbose('AutoAFK', 1, `Warning: ${player.name} (${timeLeft})`);
+        server.rcon.warn(player.steamID, `${options.warningMessage} - ${timeLeft}`);
+      }, this.warningInterval);
+
+      tracker.kickTimerID = setTimeout(async ()=>{
+        Logger.verbose('AutoAFK', 1, `Kicked: ${player.name}`);
+        server.rcon.kick(player.steamID, options.kickMessage);
+        untrackPlayer(player.steamID);
+      }, this.kickTimeout);
+      return tracker;
+    }
+
+    const untrackPlayer = (steamID)=>{
+      let tracker = this.trackedPlayers[steamID];
+      Logger.verbose('AutoAFK', 1, `[AutoAFK] unTrack: ${tracker.player.name}`);
+      clearInterval(tracker.warnTimerID); // clears warning interval
+      clearTimeout(tracker.kickTimerID); // clears kick timeout
       delete this.trackedPlayers[steamID];
     }
 
