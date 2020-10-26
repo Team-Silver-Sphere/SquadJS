@@ -87,7 +87,7 @@ export default class AutoKickAFK extends BasePlugin {
     const updateTrackingList = async ()=>{
       if( !runConditions() ){
         // clear all tracked players if run conditions are not met.
-        for(steamID of Object.keys(this.trackedPlayers))
+        for(const steamID of Object.keys(this.trackedPlayers))
           untrackPlayer(steamID);
         return;
       } 
@@ -134,7 +134,7 @@ export default class AutoKickAFK extends BasePlugin {
     //clean up every 20 minutes, removes players no longer on the server that may be stuck in the tracking dict
     const cleanupMS = 20*60*1000;
     setInterval( ()=>{
-      for(steamID of Object.keys(this.trackedPlayers))
+      for(const steamID of Object.keys(this.trackedPlayers))
         if(!steamID in server.players.map(p => p.steamID))
           untrackPlayer(steamID);
     }, cleanupMS);
