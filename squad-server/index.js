@@ -245,6 +245,14 @@ export default class SquadServer extends EventEmitter {
         ...oldPlayerInfo[player.steamID],
         ...player
       }));
+
+      for (const player of this.players) {
+        if(typeof oldPlayerInfo[player.steamID] == 'undefined')
+          continue;
+        if(player.teamID !== oldPlayerInfo[player.steamID].teamID) this.emit('PLAYER_TEAM_CHANGE', player);
+        if(player.squadID !== oldPlayerInfo[player.steamID].squadID) this.emit('PLAYER_SQUAD_CHANGE', player);
+      }
+
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update player list.', err);
     }
