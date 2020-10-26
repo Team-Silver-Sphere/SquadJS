@@ -73,7 +73,7 @@ export default class Rcon extends EventEmitter {
       else
         Logger.verbose(
           'RCON',
-          1,
+          2,
           `Unknown packet type ${decodedPacket.type} in: ${this.decodedPacketToString(
             decodedPacket
           )}`
