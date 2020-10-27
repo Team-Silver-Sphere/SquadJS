@@ -236,7 +236,7 @@ export default class SquadServer extends EventEmitter {
 
   async setupAdminList() {
     try {
-      for (const list of this.options.adminLists) {
+      for (const list of this.options.reomteAdminLists) {
         const resp = await axios({
           method: 'GET',
           url: `${list}`
@@ -254,8 +254,8 @@ export default class SquadServer extends EventEmitter {
         /* eslint-disable no-unused-vars */
         for (const [input, steamID, groupID] of rawData.matchAll(adminRgx)) {
           const perms = adminGroups[groupID];
+          // exclude whitelist only "admins"
           if (!(perms.includes('reserve') && perms.length === 1)) {
-            // exclude whitelist only
             this.admins.push({ steamID: steamID, perms: perms });
           }
         }

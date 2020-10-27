@@ -14,7 +14,7 @@
     "ftpUser": "FTP Username",
     "ftpPassword": "FTP Password",
     "ftpUseListForSize": false,
-    "adminLists": []
+    "reomteAdminLists": []
   },
   "connectors": {
     "discord": "Discord Login Token",
