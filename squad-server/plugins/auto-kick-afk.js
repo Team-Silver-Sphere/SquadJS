@@ -49,12 +49,12 @@ export default class AutoKickAFK extends BasePlugin {
         description:
           'Time delay in minutes from start of the round before auto AFK starts kicking again',
         default: 15
-      } /*, to be added in future when we can track admins better
-      ignoreAdmins:{
+      },
+      ignoreAdmins: {
         required: false,
         description: 'Whether or not admins will be auto kicked for being unassigned',
         default: false
-      } */
+      }
     };
   }
 
@@ -105,7 +105,8 @@ export default class AutoKickAFK extends BasePlugin {
       for (const player of server.players) {
         const isTracked = player.steamID in this.trackedPlayers;
         const isUnassigned = player.squadID === null;
-        const isAdmin = player.steamID in server.admins.map((a) => a.steamID);
+        const isAdmin =
+          player.steamID in server.admins.map((a) => a.steamID) && options.ignoreAdmins;
 
         if (isUnassigned && !isTracked && !isAdmin)
           this.trackedPlayers[player.steamID] = trackPlayer(player); // start tracking player
