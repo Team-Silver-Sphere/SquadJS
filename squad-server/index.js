@@ -34,6 +34,7 @@ export default class SquadServer extends EventEmitter {
     this.layerHistoryMaxLength = options.layerHistoryMaxLength || 20;
 
     this.players = [];
+    this.admins = [];
 
     this.plugins = [];
 
@@ -41,6 +42,7 @@ export default class SquadServer extends EventEmitter {
 
     this.setupRCON();
     this.setupLogParser();
+    this.setupAdminList();
 
     this.updatePlayerList = this.updatePlayerList.bind(this);
     this.updatePlayerListInterval = 30 * 1000;
@@ -232,6 +234,39 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.watch();
   }
 
+  async setupAdminList() {
+    try {
+      for (const list of this.options.adminLists) {
+        const resp = await axios({
+          method: 'GET',
+          url: `${list}`
+        });
+
+        const rawData = resp.data;
+
+        const groupRgx = /(?<=Group=)(.*?):(.*)(?=\n)/g;
+        const adminRgx = /(?<=Admin=)(\d+):(\S+)(?=\s)/g;
+
+        const adminGroups = {};
+        for (const m of rawData.matchAll(groupRgx)) {
+          adminGroups[m[1]] = m[2].split(',');
+        }
+        /* eslint-disable no-unused-vars */
+        for (const [input, steamID, groupID] of rawData.matchAll(adminRgx)) {
+          const perms = adminGroups[groupID];
+          if (!(perms.includes('reserve') && perms.length === 1)) {
+            // exclude whitelist only
+            this.admins.push({ steamID: steamID, perms: perms });
+          }
+        }
+        /* eslint-enable no-unused-vars */
+        // console.log(this.admins)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async updatePlayerList() {
     if (this.updatePlayerListTimeout) clearTimeout(this.updatePlayerListTimeout);
 
@@ -247,12 +282,12 @@ export default class SquadServer extends EventEmitter {
       }));
 
       for (const player of this.players) {
-        if(typeof oldPlayerInfo[player.steamID] == 'undefined')
-          continue;
-        if(player.teamID !== oldPlayerInfo[player.steamID].teamID) this.emit('PLAYER_TEAM_CHANGE', player);
-        if(player.squadID !== oldPlayerInfo[player.steamID].squadID) this.emit('PLAYER_SQUAD_CHANGE', player);
+        if (typeof oldPlayerInfo[player.steamID] === 'undefined') continue;
+        if (player.teamID !== oldPlayerInfo[player.steamID].teamID)
+          this.emit('PLAYER_TEAM_CHANGE', player);
+        if (player.squadID !== oldPlayerInfo[player.steamID].squadID)
+          this.emit('PLAYER_SQUAD_CHANGE', player);
       }
-
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update player list.', err);
     }

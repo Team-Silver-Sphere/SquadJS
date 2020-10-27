@@ -13,7 +13,8 @@
     "ftpPort": 21,
     "ftpUser": "FTP Username",
     "ftpPassword": "FTP Password",
-    "ftpUseListForSize": false
+    "ftpUseListForSize": false,
+    "adminLists": []
   },
   "connectors": {
     "discord": "Discord Login Token",
