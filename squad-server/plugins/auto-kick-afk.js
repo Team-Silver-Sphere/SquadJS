@@ -84,7 +84,7 @@ export default class AutoKickAFK extends BasePlugin {
     });
 
     const runConditions = () => {
-      // return true; // force run for testing TODO: remove
+      // return true; // force run for testing
       return (
         !this.betweenRounds ||
         options.playerCountThreshold > 0 < server.players.count ||
@@ -124,11 +124,13 @@ export default class AutoKickAFK extends BasePlugin {
       Logger.verbose('AutoAFK', 1, `Tracking: ${player.name}`);
       const tracker = {};
       tracker.player = player;
+      tracker.warnings = 0;
       tracker.startTime = Date.now();
       tracker.warnTimerID = setInterval(async () => {
         const timeLeft = msFormat(this.kickTimeout - (Date.now() - tracker.startTime));
         Logger.verbose('AutoAFK', 1, `Warning: ${player.name} (${timeLeft})`);
         server.rcon.warn(player.steamID, `${options.warningMessage} - ${timeLeft}`);
+        tracker.warnings++;
       }, this.warningInterval);
 
       tracker.kickTimerID = setTimeout(async () => {
@@ -141,6 +143,7 @@ export default class AutoKickAFK extends BasePlugin {
 
     const untrackPlayer = (steamID) => {
       const tracker = this.trackedPlayers[steamID];
+      server.emit('PLAYER_AFK_KICKED', tracker);
       Logger.verbose('AutoAFK', 1, `[AutoAFK] unTrack: ${tracker.player.name}`);
       clearInterval(tracker.warnTimerID); // clears warning interval
       clearTimeout(tracker.kickTimerID); // clears kick timeout
