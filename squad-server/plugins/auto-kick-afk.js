@@ -156,8 +156,10 @@ export default class AutoKickAFK extends BasePlugin {
 
   msFormat(ms) {
     // take in generic # of ms and return formatted MM:SS
-    const min = Math.floor((ms / 1000 / 60) << 0);
-    const sec = Math.floor((ms / 1000) % 60);
+    let min = Math.floor((ms / 1000 / 60) << 0);
+    let sec = Math.floor((ms / 1000) % 60);
+    min = ('' + min).padStart(2, '0');
+    sec = ('' + sec).padStart(2, '0');
     return `${min}:${sec}`;
   }
 
@@ -172,10 +174,14 @@ export default class AutoKickAFK extends BasePlugin {
 
     // continuously warn player at rate set in options
     tracker.warnTimerID = setInterval(async () => {
-      const timeLeft = this.msFormat(this.kickTimeout - (Date.now() - tracker.startTime));
+      const msLeft = this.kickTimeout - this.warningInterval * (tracker.warnings + 1);
 
-      this.server.rcon.warn(player.steamID, `${this.options.warningMessage} - ${timeLeft}`);
-      Logger.verbose('AutoAFK', 1, `Warning: ${player.name} (${timeLeft})`);
+      // clear on last warning
+      if (msLeft < this.warningInterval + 1) clearInterval(tracker.warnTimerID);
+
+      const timeLeft = this.msFormat(msLeft);
+      this.server.rcon.warn(tracker.player.steamID, `${this.options.warningMessage} - ${timeLeft}`);
+      Logger.verbose('AutoAFK', 1, `Warning: ${tracker.player.name} (${timeLeft})`);
       tracker.warnings++;
     }, this.warningInterval);
 
@@ -184,22 +190,23 @@ export default class AutoKickAFK extends BasePlugin {
       // ensures player is still afk
       await this.updateTrackingList(true);
 
+      // return if player in tracker was removed from list
+      if (!(tracker.player.steamID in this.trackedPlayers)) return;
+
       this.server.rcon.kick(player.steamID, this.options.kickMessage);
       this.server.emit('PLAYER_AFK_KICKED', tracker);
-      Logger.verbose('AutoAFK', 1, `Kicked: ${player.name}`);
-      this.untrackPlayer(player.steamID);
+      Logger.verbose('AutoAFK', 1, `Kicked: ${tracker.player.name}`);
+      this.untrackPlayer(tracker.player.steamID);
     }, this.kickTimeout);
+
     return tracker;
   }
 
   untrackPlayer(steamID) {
     const tracker = this.trackedPlayers[steamID];
-    // clear player warning interval
     clearInterval(tracker.warnTimerID);
-    // clear player kick timeout
     clearTimeout(tracker.kickTimerID);
-    // remove player tracker
     delete this.trackedPlayers[steamID];
-    Logger.verbose('AutoAFK', 1, `[AutoAFK] unTrack: ${tracker.player.name}`);
+    Logger.verbose('AutoAFK', 1, `unTrack: ${tracker.player.name}`);
   }
 }
