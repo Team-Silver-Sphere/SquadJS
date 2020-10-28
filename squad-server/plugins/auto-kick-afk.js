@@ -58,12 +58,29 @@ export default class AutoKickAFK extends BasePlugin {
     };
   }
 
+  /**
+   * trackedPlayers[<steam64ID>] = <tracker>
+   *
+   *  <tracker> = {
+   *         player: <playerObj>
+   *       warnings: <int>
+   *      startTime: <Epoch Date>
+   *    warnTimerID: <intervalID>
+   *    kickTimerID: <timeoutID>
+   *  }
+   */
   constructor(server, options) {
     super();
+
+    this.server = server;
+    this.options = options;
 
     this.kickTimeout = options.afkTimer * 60 * 1000;
     this.warningInterval = options.frequencyOfWarnings * 1000;
     this.gracePeriod = options.roundStartDelay * 60 * 1000;
+
+    this.trackingListUpdateFrequency = 1 * 60 * 1000; // 1min
+    this.cleanUpFrequency = 20 * 60 * 1000; // 20min
 
     this.betweenRounds = false;
 
@@ -71,7 +88,7 @@ export default class AutoKickAFK extends BasePlugin {
 
     server.on('NEW_GAME', async (info) => {
       this.betweenRounds = true;
-      updateTrackingList();
+      this.updateTrackingList();
       setTimeout(async () => {
         this.betweenRounds = false;
       }, this.gracePeriod);
@@ -79,84 +96,100 @@ export default class AutoKickAFK extends BasePlugin {
 
     server.on('PLAYER_SQUAD_CHANGE', async (player) => {
       if (player.steamID in this.trackedPlayers && player.squadID !== null) {
-        untrackPlayer(player.steamID);
+        this.untrackPlayer(player.steamID);
       }
     });
 
-    const runConditions = () => {
-      // return true; // force run for testing
-      return (
-        !this.betweenRounds ||
-        options.playerCountThreshold > 0 < server.players.count ||
-        options.queueThreshold > 0 < server.publicQueue + server.reserveQueue
-      );
-    };
-
-    const updateTrackingList = async () => {
-      if (!runConditions()) {
-        // clear all tracked players if run conditions are not met.
-        for (const steamID of Object.keys(this.trackedPlayers)) untrackPlayer(steamID);
-        return;
-      }
-
-      // await server.updatePlayerList(); //possibly unneeded as updates to player list are already common
-
-      // loop through players on server and start tracking players not in a squad
-      for (const player of server.players) {
-        const isTracked = player.steamID in this.trackedPlayers;
-        const isUnassigned = player.squadID === null;
-        const isAdmin =
-          player.steamID in server.admins.map((a) => a.steamID) && options.ignoreAdmins;
-
-        if (isUnassigned && !isTracked && !isAdmin)
-          this.trackedPlayers[player.steamID] = trackPlayer(player); // start tracking player
-        if (!isUnassigned && isTracked) untrackPlayer(player.steamID); // tracked player joined a squad remove them (redundant afer addming PLAYER_SQUAD_CHANGE, keeping for now)
-      }
-    };
-
-    const msFormat = (ms) => {
-      const min = Math.floor((ms / 1000 / 60) << 0);
-      const sec = Math.floor((ms / 1000) % 60);
-      return `${min}:${sec}`;
-    };
-
-    const trackPlayer = (player) => {
-      Logger.verbose('AutoAFK', 1, `Tracking: ${player.name}`);
-      const tracker = {};
-      tracker.player = player;
-      tracker.warnings = 0;
-      tracker.startTime = Date.now();
-      tracker.warnTimerID = setInterval(async () => {
-        const timeLeft = msFormat(this.kickTimeout - (Date.now() - tracker.startTime));
-        Logger.verbose('AutoAFK', 1, `Warning: ${player.name} (${timeLeft})`);
-        server.rcon.warn(player.steamID, `${options.warningMessage} - ${timeLeft}`);
-        tracker.warnings++;
-      }, this.warningInterval);
-
-      tracker.kickTimerID = setTimeout(async () => {
-        Logger.verbose('AutoAFK', 1, `Kicked: ${player.name}`);
-        server.rcon.kick(player.steamID, options.kickMessage);
-        untrackPlayer(player.steamID);
-      }, this.kickTimeout);
-      return tracker;
-    };
-
-    const untrackPlayer = (steamID) => {
-      const tracker = this.trackedPlayers[steamID];
-      server.emit('PLAYER_AFK_KICKED', tracker);
-      Logger.verbose('AutoAFK', 1, `[AutoAFK] unTrack: ${tracker.player.name}`);
-      clearInterval(tracker.warnTimerID); // clears warning interval
-      clearTimeout(tracker.kickTimerID); // clears kick timeout
-      delete this.trackedPlayers[steamID];
-    };
-
-    setInterval(updateTrackingList, 1 * 60 * 1000); // tracking list update loop
+    // tracking list update loop
+    setInterval(this.updateTrackingList.bind(this), this.trackingListUpdateFrequency);
 
     // clean up every 20 minutes, removes players no longer on the server that may be stuck in the tracking dict
     const cleanupMS = 20 * 60 * 1000;
     setInterval(() => {
       for (const steamID of Object.keys(this.trackedPlayers))
-        if (!(steamID in server.players.map((p) => p.steamID))) untrackPlayer(steamID);
+        if (!(steamID in server.players.map((p) => p.steamID))) this.untrackPlayer(steamID);
     }, cleanupMS);
+  }
+
+  runConditions() {
+    // return true; // force run for testing
+    const queueMet =
+      this.options.queueThreshold > 0 < this.server.publicQueue + this.server.reserveQueue;
+    const countMet = this.options.playerCountThreshold > 0 < this.server.players.count;
+    return !this.betweenRounds && (queueMet || countMet);
+  }
+
+  async updateTrackingList(forceUpdate = false) {
+    if (!this.runConditions()) {
+      // clear all tracked players if run conditions are not met.
+      for (const steamID of Object.keys(this.trackedPlayers)) this.untrackPlayer(steamID);
+      return;
+    }
+
+    if (forceUpdate) await this.server.updatePlayerList();
+
+    // loop through players on server and start tracking players not in a squad
+    for (const player of this.server.players) {
+      const isTracked = player.steamID in this.trackedPlayers;
+      const isUnassigned = player.squadID === null;
+      const isAdmin =
+        player.steamID in this.server.admins.map((a) => a.steamID) && this.options.ignoreAdmins;
+
+      // start tracking player
+      if (isUnassigned && !isTracked && !isAdmin)
+        this.trackedPlayers[player.steamID] = this.trackPlayer(player);
+
+      // tracked player joined a squad remove them (redundant afer adding PLAYER_SQUAD_CHANGE, keeping for now)
+      if (!isUnassigned && isTracked) this.untrackPlayer(player.steamID);
+    }
+  }
+
+  msFormat(ms) {
+    // take in generic # of ms and return formatted MM:SS
+    const min = Math.floor((ms / 1000 / 60) << 0);
+    const sec = Math.floor((ms / 1000) % 60);
+    return `${min}:${sec}`;
+  }
+
+  trackPlayer(player) {
+    Logger.verbose('AutoAFK', 1, `Tracking: ${player.name}`);
+
+    const tracker = {
+      player: player,
+      warnings: 0,
+      startTime: Date.now()
+    };
+
+    // continuously warn player at rate set in options
+    tracker.warnTimerID = setInterval(async () => {
+      const timeLeft = this.msFormat(this.kickTimeout - (Date.now() - tracker.startTime));
+
+      this.server.rcon.warn(player.steamID, `${this.options.warningMessage} - ${timeLeft}`);
+      Logger.verbose('AutoAFK', 1, `Warning: ${player.name} (${timeLeft})`);
+      tracker.warnings++;
+    }, this.warningInterval);
+
+    // set timeout to kick player
+    tracker.kickTimerID = setTimeout(async () => {
+      // ensures player is still afk
+      await this.updateTrackingList(true);
+
+      this.server.rcon.kick(player.steamID, this.options.kickMessage);
+      this.server.emit('PLAYER_AFK_KICKED', tracker);
+      Logger.verbose('AutoAFK', 1, `Kicked: ${player.name}`);
+      this.untrackPlayer(player.steamID);
+    }, this.kickTimeout);
+    return tracker;
+  }
+
+  untrackPlayer(steamID) {
+    const tracker = this.trackedPlayers[steamID];
+    // clear player warning interval
+    clearInterval(tracker.warnTimerID);
+    // clear player kick timeout
+    clearTimeout(tracker.kickTimerID);
+    // remove player tracker
+    delete this.trackedPlayers[steamID];
+    Logger.verbose('AutoAFK', 1, `[AutoAFK] unTrack: ${tracker.player.name}`);
   }
 }
