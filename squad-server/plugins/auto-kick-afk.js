@@ -112,12 +112,12 @@ export default class AutoKickAFK extends BasePlugin {
 
   runConditions() {
     // return true; // force run for testing
-    const totalQueue = this.server.publicQueue + this.server.reserveQueue;
-    const queueMet = this.options.queueThreshold > 0 && this.options.queueThreshold < totalQueue;
+    const queueMet =
+      this.options.queueThreshold > 0 &&
+      this.options.queueThreshold < this.server.publicQueue + this.server.reserveQueue;
     const countMet =
       this.options.playerCountThreshold > 0 &&
       this.options.playerCountThreshold < this.server.players.count;
-
     const run = !this.betweenRounds && (queueMet || countMet);
 
     Logger.verbose(
