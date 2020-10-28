@@ -260,7 +260,7 @@ export default class SquadServer extends EventEmitter {
           }
         }
         /* eslint-enable no-unused-vars */
-        // console.log(this.admins)
+        Logger.verbose('SquadServer', 3, 'Admin list:', this.admins);
       }
     } catch (err) {
       console.log(err);

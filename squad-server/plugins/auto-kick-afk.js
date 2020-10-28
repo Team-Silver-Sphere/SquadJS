@@ -103,20 +103,29 @@ export default class AutoKickAFK extends BasePlugin {
     // tracking list update loop
     setInterval(this.updateTrackingList.bind(this), this.trackingListUpdateFrequency);
 
-    // clean up every 20 minutes, removes players no longer on the server that may be stuck in the tracking dict
-    const cleanupMS = 20 * 60 * 1000;
+    // removes players no longer on the server that may be in trackedPlayers
     setInterval(() => {
       for (const steamID of Object.keys(this.trackedPlayers))
         if (!(steamID in server.players.map((p) => p.steamID))) this.untrackPlayer(steamID);
-    }, cleanupMS);
+    }, this.cleanUpFrequency);
   }
 
   runConditions() {
     // return true; // force run for testing
-    const queueMet =
-      this.options.queueThreshold > 0 < this.server.publicQueue + this.server.reserveQueue;
-    const countMet = this.options.playerCountThreshold > 0 < this.server.players.count;
-    return !this.betweenRounds && (queueMet || countMet);
+    const totalQueue = this.server.publicQueue + this.server.reserveQueue;
+    const queueMet = this.options.queueThreshold > 0 && this.options.queueThreshold < totalQueue;
+    const countMet =
+      this.options.playerCountThreshold > 0 &&
+      this.options.playerCountThreshold < this.server.players.count;
+
+    const run = !this.betweenRounds && (queueMet || countMet);
+
+    Logger.verbose(
+      'AutoAFK',
+      2,
+      `RUN?: ${run} = ${!this.betweenRounds} && (${queueMet} || ${countMet})`
+    );
+    return run;
   }
 
   async updateTrackingList(forceUpdate = false) {
@@ -132,11 +141,12 @@ export default class AutoKickAFK extends BasePlugin {
     for (const player of this.server.players) {
       const isTracked = player.steamID in this.trackedPlayers;
       const isUnassigned = player.squadID === null;
-      const isAdmin =
-        player.steamID in this.server.admins.map((a) => a.steamID) && this.options.ignoreAdmins;
+      const isAdmin = player.steamID in this.server.admins.map((a) => a.steamID);
+
+      if (isUnassigned && isAdmin) Logger.verbose('AutoAFK', 2, `Admin is AFK: ${player.name}`);
 
       // start tracking player
-      if (isUnassigned && !isTracked && !isAdmin)
+      if (isUnassigned && !isTracked && !(isAdmin && this.options.ignoreAdmins))
         this.trackedPlayers[player.steamID] = this.trackPlayer(player);
 
       // tracked player joined a squad remove them (redundant afer adding PLAYER_SQUAD_CHANGE, keeping for now)
