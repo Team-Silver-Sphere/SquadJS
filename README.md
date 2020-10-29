@@ -233,6 +233,16 @@ The following is a list of plugins built into SquadJS, you can click their title
        <p>The number of players in the queue before Auto Kick starts kicking players set to -1 to disable</p>
        <h6>Default</h6>
        <pre><code>-1</code></pre>
+<h4>roundStartDelay</h4>
+       <h6>Description</h6>
+       <p>Time delay in minutes from start of the round before auto AFK starts kicking again</p>
+       <h6>Default</h6>
+       <pre><code>15</code></pre>
+<h4>ignoreAdmins</h4>
+       <h6>Description</h6>
+       <p>Whether or not admins will be auto kicked for being unassigned</p>
+       <h6>Default</h6>
+       <pre><code>false</code></pre>
     </details>
 
 <details>

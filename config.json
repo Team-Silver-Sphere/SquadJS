@@ -11,7 +11,8 @@
     "ftpPort": 21,
     "ftpUser": "FTP Username",
     "ftpPassword": "FTP Password",
-    "ftpUseListForSize": false
+    "ftpUseListForSize": false,
+    "reomteAdminLists": []
   },
   "connectors": {
     "discord": "Discord Login Token",
@@ -76,7 +77,8 @@
       "afkTimer": 6,
       "playerThreshold": 93,
       "queueThreshold": -1,
-      "roundStartDelay": 15
+      "roundStartDelay": 15,
+      "ignoreAdmins": false
     },
     {
       "plugin": "ChatCommands",
