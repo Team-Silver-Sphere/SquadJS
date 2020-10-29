@@ -248,11 +248,12 @@ export default class SquadServer extends EventEmitter {
         const adminRgx = /(?<=Admin=)(\d+):(\S+)(?=\s)/g;
 
         const adminGroups = {};
-        for (const m of rawData.matchAll(groupRgx)) {
-          adminGroups[m[1]] = m[2].split(',');
-        }
+
         /* eslint-disable no-unused-vars */
-        for (const [input, steamID, groupID] of rawData.matchAll(adminRgx)) {
+        for (const [match, groupID, groupPerms] of rawData.matchAll(groupRgx)) {
+          adminGroups[groupID] = groupPerms.split(',');
+        }
+        for (const [match, steamID, groupID] of rawData.matchAll(adminRgx)) {
           const perms = adminGroups[groupID];
           // exclude whitelist only "admins"
           if (!(perms.includes('reserve') && perms.length === 1)) {
