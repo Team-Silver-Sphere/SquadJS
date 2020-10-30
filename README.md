@@ -199,9 +199,9 @@ The following is a list of plugins built into SquadJS, you can click their title
     </details>
 
 <details>
-      <summary>AutoKickAFK</summary>
-      <h2>AutoKickAFK</h2>
-      <p>The <code>AutoKickAFK</code> plugin will automatically kick players that are not in a squad after a specified ammount of time.</p>
+      <summary>AutoKickUnassigned</summary>
+      <h2>AutoKickUnassigned</h2>
+      <p>The <code>AutoKickUnassigned</code> plugin will automatically kick players that are not in a squad after a specified ammount of time.</p>
       <h3>Options</h3>
       <h4>warningMessage</h4>
        <h6>Description</h6>
@@ -215,27 +215,27 @@ The following is a list of plugins built into SquadJS, you can click their title
        <pre><code>Unassigned - automatically removed</code></pre>
 <h4>frequencyOfWarnings</h4>
        <h6>Description</h6>
-       <p>How often in seconds should we warn the player about being AFK?</p>
+       <p>How often in seconds should we warn the player about being unassigned?</p>
        <h6>Default</h6>
        <pre><code>30</code></pre>
-<h4>afkTimer</h4>
+<h4>unassignedTimer</h4>
        <h6>Description</h6>
-       <p>How long in minutes to wait before a player that is AFK is kicked</p>
+       <p>How long in minutes to wait before a player that is unassigned is kicked</p>
        <h6>Default</h6>
        <pre><code>6</code></pre>
 <h4>playerThreshold</h4>
        <h6>Description</h6>
-       <p>Player count required for Auto Kick to start kicking players to disable set to -1 to disable</p>
+       <p>Player count required for AutoKick to start kicking players to disable set to -1 to disable</p>
        <h6>Default</h6>
        <pre><code>93</code></pre>
 <h4>queueThreshold</h4>
        <h6>Description</h6>
-       <p>The number of players in the queue before Auto Kick starts kicking players set to -1 to disable</p>
+       <p>The number of players in the queue before AutoKick starts kicking players set to -1 to disable</p>
        <h6>Default</h6>
        <pre><code>-1</code></pre>
 <h4>roundStartDelay</h4>
        <h6>Description</h6>
-       <p>Time delay in minutes from start of the round before auto AFK starts kicking again</p>
+       <p>Time delay in minutes from start of the round before AutoKick starts kicking again</p>
        <h6>Default</h6>
        <pre><code>15</code></pre>
 <h4>ignoreAdmins</h4>

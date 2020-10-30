@@ -12,7 +12,7 @@
     "ftpUser": "FTP Username",
     "ftpPassword": "FTP Password",
     "ftpUseListForSize": false,
-    "reomteAdminLists": []
+    "remoteAdminLists": []
   },
   "connectors": {
     "discord": "Discord Login Token",
@@ -69,12 +69,12 @@
       "message": "Please apologise for ALL TKs in ALL chat!"
     },
     {
-      "plugin": "AutoKickAFK",
+      "plugin": "AutoKickUnassigned",
       "enabled": true,
       "warningMessage": "Join a squad, you are are unassigned and will be kicked",
       "kickMessage": "Unassigned - automatically removed",
       "frequencyOfWarnings": 30,
-      "afkTimer": 6,
+      "unassignedTimer": 6,
       "playerThreshold": 93,
       "queueThreshold": -1,
       "roundStartDelay": 15,

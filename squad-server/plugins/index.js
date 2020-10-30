@@ -1,5 +1,5 @@
 import AutoTKWarn from './auto-tk-warn.js';
-import AutoKickAFK from './auto-kick-afk.js';
+import AutoKickUnassigned from './auto-kick-unassigned.js';
 import ChatCommands from './chat-commands.js';
 import DiscordAdminBroadcast from './discord-admin-broadcast.js';
 import DiscordAdminCamLogs from './discord-admin-cam-logs.js';
@@ -17,7 +17,7 @@ import TeamRandomizer from './team-randomizer.js';
 
 const plugins = [
   AutoTKWarn,
-  AutoKickAFK,
+  AutoKickUnassigned,
   ChatCommands,
   DiscordAdminBroadcast,
   DiscordAdminCamLogs,

@@ -236,7 +236,7 @@ export default class SquadServer extends EventEmitter {
 
   async setupAdminList() {
     try {
-      for (const list of this.options.reomteAdminLists) {
+      for (const list of this.options.remoteAdminLists) {
         const resp = await axios({
           method: 'GET',
           url: `${list}`

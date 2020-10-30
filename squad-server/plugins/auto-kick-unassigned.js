@@ -1,9 +1,9 @@
 import BasePlugin from './base-plugin.js';
 import Logger from 'core/logger';
 
-export default class AutoKickAFK extends BasePlugin {
+export default class AutoKickUnassigned extends BasePlugin {
   static get description() {
-    return 'The <code>AutoKickAFK</code> plugin will automatically kick players that are not in a squad after a specified ammount of time.';
+    return 'The <code>AutoKickUnassigned</code> plugin will automatically kick players that are not in a squad after a specified ammount of time.';
   }
 
   static get defaultEnabled() {
@@ -24,30 +24,30 @@ export default class AutoKickAFK extends BasePlugin {
       },
       frequencyOfWarnings: {
         required: false,
-        description: 'How often in seconds should we warn the player about being AFK?',
+        description: 'How often in seconds should we warn the player about being unassigned?',
         default: 30
       },
-      afkTimer: {
+      unassignedTimer: {
         required: false,
-        description: 'How long in minutes to wait before a player that is AFK is kicked',
+        description: 'How long in minutes to wait before a player that is unassigned is kicked',
         default: 6
       },
       playerThreshold: {
         required: false,
         description:
-          'Player count required for Auto Kick to start kicking players to disable set to -1 to disable',
+          'Player count required for AutoKick to start kicking players to disable set to -1 to disable',
         default: 93
       },
       queueThreshold: {
         required: false,
         description:
-          'The number of players in the queue before Auto Kick starts kicking players set to -1 to disable',
+          'The number of players in the queue before AutoKick starts kicking players set to -1 to disable',
         default: -1
       },
       roundStartDelay: {
         required: false,
         description:
-          'Time delay in minutes from start of the round before auto AFK starts kicking again',
+          'Time delay in minutes from start of the round before AutoKick starts kicking again',
         default: 15
       },
       ignoreAdmins: {
@@ -75,7 +75,7 @@ export default class AutoKickAFK extends BasePlugin {
     this.server = server;
     this.options = options;
 
-    this.kickTimeout = options.afkTimer * 60 * 1000;
+    this.kickTimeout = options.unassignedTimer * 60 * 1000;
     this.warningInterval = options.frequencyOfWarnings * 1000;
     this.gracePeriod = options.roundStartDelay * 60 * 1000;
 
@@ -121,7 +121,7 @@ export default class AutoKickAFK extends BasePlugin {
     const run = !this.betweenRounds && (queueMet || countMet);
 
     Logger.verbose(
-      'AutoAFK',
+      'AutoKick',
       2,
       `RUN?: ${run} = ${!this.betweenRounds} && (${queueMet} || ${countMet})`
     );
@@ -143,7 +143,7 @@ export default class AutoKickAFK extends BasePlugin {
       const isUnassigned = player.squadID === null;
       const isAdmin = player.steamID in this.server.admins.map((a) => a.steamID);
 
-      if (isUnassigned && isAdmin) Logger.verbose('AutoAFK', 2, `Admin is AFK: ${player.name}`);
+      if (isUnassigned && isAdmin) Logger.verbose('AutoKick', 2, `Admin is Unassigned: ${player.name}`);
 
       // start tracking player
       if (isUnassigned && !isTracked && !(isAdmin && this.options.ignoreAdmins))
@@ -164,7 +164,7 @@ export default class AutoKickAFK extends BasePlugin {
   }
 
   trackPlayer(player) {
-    Logger.verbose('AutoAFK', 1, `Tracking: ${player.name}`);
+    Logger.verbose('AutoKick', 1, `Tracking: ${player.name}`);
 
     const tracker = {
       player: player,
@@ -181,21 +181,21 @@ export default class AutoKickAFK extends BasePlugin {
 
       const timeLeft = this.msFormat(msLeft);
       this.server.rcon.warn(tracker.player.steamID, `${this.options.warningMessage} - ${timeLeft}`);
-      Logger.verbose('AutoAFK', 1, `Warning: ${tracker.player.name} (${timeLeft})`);
+      Logger.verbose('AutoKick', 1, `Warning: ${tracker.player.name} (${timeLeft})`);
       tracker.warnings++;
     }, this.warningInterval);
 
     // set timeout to kick player
     tracker.kickTimerID = setTimeout(async () => {
-      // ensures player is still afk
+      // ensures player is still Unassigned
       await this.updateTrackingList(true);
 
       // return if player in tracker was removed from list
       if (!(tracker.player.steamID in this.trackedPlayers)) return;
 
       this.server.rcon.kick(player.steamID, this.options.kickMessage);
-      this.server.emit('PLAYER_AFK_KICKED', tracker);
-      Logger.verbose('AutoAFK', 1, `Kicked: ${tracker.player.name}`);
+      this.server.emit('PLAYER_AUTO_KICKED', tracker);
+      Logger.verbose('AutoKick', 1, `Kicked: ${tracker.player.name}`);
       this.untrackPlayer(tracker.player.steamID);
     }, this.kickTimeout);
 
@@ -207,6 +207,6 @@ export default class AutoKickAFK extends BasePlugin {
     clearInterval(tracker.warnTimerID);
     clearTimeout(tracker.kickTimerID);
     delete this.trackedPlayers[steamID];
-    Logger.verbose('AutoAFK', 1, `unTrack: ${tracker.player.name}`);
+    Logger.verbose('AutoKick', 1, `unTrack: ${tracker.player.name}`);
   }
 }
