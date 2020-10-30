@@ -152,7 +152,7 @@ export default class AutoKickUnassigned extends BasePlugin {
     for (const player of this.server.players) {
       const isTracked     = player.steamID in this.trackedPlayers;
       const isUnassigned  = player.squadID === null;
-      const isAdmin       = player.steamID in this.options.adminList.adimins;
+      const isAdmin       = player.steamID in this.options.adminList.admins;
       const isWhitelist   = player.steamID in this.options.adminList.whitelist;
 
       if (isUnassigned && isAdmin) Logger.verbose('AutoKick', 2, `Admin is Unassigned: ${player.name}`);
