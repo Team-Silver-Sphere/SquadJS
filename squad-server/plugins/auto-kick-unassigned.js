@@ -12,6 +12,12 @@ export default class AutoKickUnassigned extends BasePlugin {
 
   static get optionsSpecification() {
     return {
+      adminList: {
+        required: true,
+        description: 'List of server admins.',
+        connector: 'remoteAdminLists',
+        default: 'remoteAdminLists'
+      },
       warningMessage: {
         required: false,
         description: 'Message SquadJS will send to players warning them they will be kicked',
@@ -53,6 +59,11 @@ export default class AutoKickUnassigned extends BasePlugin {
       ignoreAdmins: {
         required: false,
         description: 'Whether or not admins will be auto kicked for being unassigned',
+        default: false
+      },
+      ignoreWhitelist: {
+        required: false,
+        description: 'Whether or not players in the whitelist will be auto kicked for being unassigned',
         default: false
       }
     };
@@ -122,7 +133,7 @@ export default class AutoKickUnassigned extends BasePlugin {
 
     Logger.verbose(
       'AutoKick',
-      2,
+      3,
       `RUN?: ${run} = ${!this.betweenRounds} && (${queueMet} || ${countMet})`
     );
     return run;
@@ -139,14 +150,16 @@ export default class AutoKickUnassigned extends BasePlugin {
 
     // loop through players on server and start tracking players not in a squad
     for (const player of this.server.players) {
-      const isTracked = player.steamID in this.trackedPlayers;
-      const isUnassigned = player.squadID === null;
-      const isAdmin = player.steamID in this.server.admins.map((a) => a.steamID);
+      const isTracked     = player.steamID in this.trackedPlayers;
+      const isUnassigned  = player.squadID === null;
+      const isAdmin       = player.steamID in this.options.adminList.adimins;
+      const isWhitelist   = player.steamID in this.options.adminList.whitelist;
 
       if (isUnassigned && isAdmin) Logger.verbose('AutoKick', 2, `Admin is Unassigned: ${player.name}`);
+      if (isUnassigned && isWhitelist) Logger.verbose('AutoKick', 2, `Whitelist player is Unassigned: ${player.name}`);
 
       // start tracking player
-      if (isUnassigned && !isTracked && !(isAdmin && this.options.ignoreAdmins))
+      if (isUnassigned && !isTracked && !(isAdmin && this.options.ignoreAdmins) && !(isWhitelist && this.options.ignoreWhitelist))
         this.trackedPlayers[player.steamID] = this.trackPlayer(player);
 
       // tracked player joined a squad remove them (redundant afer adding PLAYER_SQUAD_CHANGE, keeping for now)

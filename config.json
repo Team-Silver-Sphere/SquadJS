@@ -11,11 +11,11 @@
     "ftpPort": 21,
     "ftpUser": "FTP Username",
     "ftpPassword": "FTP Password",
-    "ftpUseListForSize": false,
-    "remoteAdminLists": []
+    "ftpUseListForSize": false
   },
   "connectors": {
     "discord": "Discord Login Token",
+    "remoteAdminLists": [],
     "squadlayerpool": {
       "type": "buildPoolFromFilter",
       "filter": {
