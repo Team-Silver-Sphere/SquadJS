@@ -59,6 +59,26 @@ export default class SquadServer extends EventEmitter {
     this.pingSquadJSAPITimeout = null;
   }
 
+  async watch() {
+    await this.squadLayers.pull();
+
+    await this.rcon.connect();
+    await this.logParser.watch();
+
+    await this.updatePlayerList();
+    await this.updateLayerInformation();
+    await this.updateA2SInformation();
+
+    Logger.verbose('SquadServer', 1, `Watching ${this.serverName}...`);
+
+    await this.pingSquadJSAPI();
+  }
+
+  async unwatch() {
+    await this.rcon.disconnect();
+    await this.logParser.unwatch();
+  }
+
   setupRCON() {
     this.rcon = new Rcon({
       host: this.options.host,
@@ -336,26 +356,54 @@ export default class SquadServer extends EventEmitter {
     return this.getPlayerByCondition((player) => player.suffix === suffix, false);
   }
 
-  async watch() {
-    await this.squadLayers.pull();
+  async pingSquadJSAPI() {
+    if (this.pingSquadJSAPITimeout) clearTimeout(this.pingSquadJSAPITimeout);
 
-    await this.rcon.connect();
-    await this.logParser.watch();
+    Logger.verbose('SquadServer', 1, 'Pinging SquadJS API...');
 
-    await this.updatePlayerList();
-    await this.updateLayerInformation();
-    await this.updateA2SInformation();
+    const config = {
+      // send minimal information on server
+      server: {
+        host: this.options.host,
+        queryPort: this.options.queryPort,
+        logReaderMode: this.options.logReaderMode
+      },
 
-    Logger.verbose('SquadServer', 1, `Watching ${this.serverName}...`);
+      // we send all plugin information as none of that is sensitive.
+      plugins: this.plugins.map((plugin) => ({
+        ...plugin.optionsRaw,
+        plugin: plugin.constructor.name
+      })),
 
-    await this.pingSquadJSAPI();
+      // send additional information about SquadJS
+      version: SQUADJS_VERSION
+    };
+
+    try {
+      const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', { config });
+
+      if (data.error)
+        Logger.verbose(
+          'SquadServer',
+          1,
+          `Successfully pinged the SquadJS API. Got back error: ${data.error}`
+        );
+      else
+        Logger.verbose(
+          'SquadServer',
+          1,
+          `Successfully pinged the SquadJS API. Got back message: ${data.message}`
+        );
+    } catch (err) {
+      Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err);
+    }
+
+    this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
   }
 
-  async unwatch() {
-    await this.rcon.disconnect();
-    await this.logParser.unwatch();
-  }
-
+  /// ///////////////////////////////////////////////////////////////////////
+  // Should consider moving the following to a factory class of some kind. //
+  // ////////////////////////////////////////////////////////////////////////
   static async buildFromConfig(config) {
     // Setup logging levels
     for (const [module, verboseness] of Object.entries(config.verboseness)) {
@@ -449,68 +497,111 @@ export default class SquadServer extends EventEmitter {
     return server;
   }
 
-  static buildFromConfigString(configString) {
-    let config;
+  static parseConfig(configString) {
     try {
-      config = JSON.parse(configString);
+      return JSON.parse(configString);
     } catch (err) {
       throw new Error('Unable to parse config file.');
     }
-
-    return SquadServer.buildFromConfig(config);
   }
 
-  static buildFromConfigFile(configPath = './config.json') {
-    Logger.verbose('SquadServer', 1, 'Reading config file...');
+  static buildFromConfigString(configString) {
+    Logger.verbose('SquadServer', 1, 'Parsing config string...');
+    return SquadServer.buildFromConfig(SquadServer.parseConfig(configString));
+  }
+
+  static readConfigFile(configPath = './config.json') {
     configPath = path.resolve(__dirname, '../', configPath);
     if (!fs.existsSync(configPath)) throw new Error('Config file does not exist.');
-    const configString = fs.readFileSync(configPath, 'utf8');
-
-    return SquadServer.buildFromConfigString(configString);
+    return fs.readFileSync(configPath, 'utf8');
   }
 
-  async pingSquadJSAPI() {
-    if (this.pingSquadJSAPITimeout) clearTimeout(this.pingSquadJSAPITimeout);
+  static buildFromConfigFile(configPath) {
+    Logger.verbose('SquadServer', 1, 'Reading config file...');
+    return SquadServer.buildFromConfigString(SquadServer.readConfigFile(configPath));
+  }
 
-    Logger.verbose('SquadServer', 1, 'Pinging SquadJS API...');
+  static buildConfig() {
+    const templatePath = path.resolve(__dirname, './templates/config-template.json');
+    const templateString = fs.readFileSync(templatePath, 'utf8');
+    const template = SquadServer.parseConfig(templateString);
 
-    const config = {
-      // send minimal information on server
-      server: {
-        host: this.options.host,
-        queryPort: this.options.queryPort,
-        logReaderMode: this.options.logReaderMode
-      },
+    const pluginKeys = Object.keys(plugins).sort((a, b) =>
+      a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+    );
 
-      // we send all plugin information as none of that is sensitive.
-      plugins: this.plugins.map((plugin) => ({
-        ...plugin.optionsRaw,
-        plugin: plugin.constructor.name
-      })),
+    for (const pluginKey of pluginKeys) {
+      const Plugin = plugins[pluginKey];
 
-      // send additional information about SquadJS
-      version: SQUADJS_VERSION
-    };
+      const pluginConfig = { plugin: Plugin.name, enabled: Plugin.defaultEnabled };
+      for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
+        pluginConfig[optionName] = option.default;
+      }
 
-    try {
-      const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', { config });
-
-      if (data.error)
-        Logger.verbose(
-          'SquadServer',
-          1,
-          `Successfully pinged the SquadJS API. Got back error: ${data.error}`
-        );
-      else
-        Logger.verbose(
-          'SquadServer',
-          1,
-          `Successfully pinged the SquadJS API. Got back message: ${data.message}`
-        );
-    } catch (err) {
-      Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err);
+      template.plugins.push(pluginConfig);
     }
 
-    this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
+    return template;
+  }
+
+  static buildConfigFile() {
+    const configPath = path.resolve(__dirname, '../config.json');
+    const config = JSON.stringify(SquadServer.buildConfig(), null, 2);
+    fs.writeFileSync(configPath, config);
+  }
+
+  static buildReadmeFile() {
+    const pluginKeys = Object.keys(plugins).sort((a, b) =>
+      a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+    );
+
+    const pluginInfo = [];
+
+    for (const pluginName of pluginKeys) {
+      const Plugin = plugins[pluginName];
+
+      const options = [];
+      for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
+        let optionInfo = `<h4>${optionName}${option.required ? ' (Required)' : ''}</h4>
+           <h6>Description</h6>
+           <p>${option.description}</p>
+           <h6>Default</h6>
+           <pre><code>${
+             typeof option.default === 'object'
+               ? JSON.stringify(option.default, null, 2)
+               : option.default
+           }</code></pre>`;
+
+        if (option.example)
+          optionInfo += `<h6>Example</h6>
+           <pre><code>${
+             typeof option.example === 'object'
+               ? JSON.stringify(option.example, null, 2)
+               : option.example
+           }</code></pre>`;
+
+        options.push(optionInfo);
+      }
+
+      pluginInfo.push(
+        `<details>
+          <summary>${Plugin.name}</summary>
+          <h2>${Plugin.name}</h2>
+          <p>${Plugin.description}</p>
+          <h3>Options</h3>
+          ${options.join('\n')}
+        </details>`
+      );
+    }
+
+    const pluginInfoText = pluginInfo.join('\n\n');
+
+    const templatePath = path.resolve(__dirname, './templates/readme-template.md');
+    const template = fs.readFileSync(templatePath, 'utf8');
+
+    const readmePath = path.resolve(__dirname, '../README.md');
+    const readme = template.replace(/\/\/PLUGIN-INFO\/\//, pluginInfoText);
+
+    fs.writeFileSync(readmePath, readme);
   }
 }
