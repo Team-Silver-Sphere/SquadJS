@@ -22,34 +22,38 @@ export default class TeamRandomizer extends BasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  async init() {
+    this.server.on(`CHAT_COMMAND:${this.options.command}`, this.handleOnCHatCommand.bind(this));
+  }
 
-    this.server.on(`CHAT_COMMAND:${this.options.command}`, async (info) => {
-      if (info.chat !== 'ChatAdmin') return;
+  destroy() {
+    this.server.removeListener(`CHAT_COMMAND:${this.options.command}`, this.handleOnCHatCommand);
+  }
 
-      const players = this.server.players.slice(0);
+  async handleOnCHatCommand(info) {
+    if (info.chat !== 'ChatAdmin') return;
 
-      let currentIndex = players.length;
-      let temporaryValue;
-      let randomIndex;
+    const players = this.server.players.slice(0);
 
-      while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
+    let currentIndex = players.length;
+    let temporaryValue;
+    let randomIndex;
 
-        temporaryValue = players[currentIndex];
-        players[currentIndex] = players[randomIndex];
-        players[randomIndex] = temporaryValue;
-      }
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
 
-      let team = '1';
+      temporaryValue = players[currentIndex];
+      players[currentIndex] = players[randomIndex];
+      players[randomIndex] = temporaryValue;
+    }
 
-      for (const player of players) {
-        if (player.teamID !== team) await this.server.rcon.switchTeam(player.steamID);
+    let team = '1';
 
-        team = team === '1' ? '2' : '1';
-      }
-    });
+    for (const player of players) {
+      if (player.teamID !== team) await this.server.rcon.switchTeam(player.steamID);
+
+      team = team === '1' ? '2' : '1';
+    }
   }
 }

@@ -34,53 +34,57 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  async init() {
+    this.server.on('TEAMKILL', this.handleOnTeamkill.bind(this));
+  }
 
-    this.server.on('TEAMKILL', async (info) => {
-      if (!info.attacker) return;
+  destroy() {
+    this.server.removeListener('TEAMKILL', this.handleOnTeamkill);
+  }
 
-      const fields = [
-        {
-          name: "Attacker's Name",
-          value: info.attacker.name,
-          inline: true
-        },
-        {
-          name: "Attacker's SteamID",
-          value: `[${info.attacker.steamID}](https://steamcommunity.com/profiles/${info.attacker.steamID})`,
-          inline: true
-        },
-        {
-          name: 'Weapon',
-          value: info.weapon
-        },
-        {
-          name: "Victim's Name",
-          value: info.victim.name,
-          inline: true
-        },
-        {
-          name: "Victim's SteamID",
-          value: `[${info.victim.steamID}](https://steamcommunity.com/profiles/${info.victim.steamID})`,
-          inline: true
-        }
-      ];
+  async handleOnTeamkill(info) {
+    if (!info.attacker) return;
 
-      if (!this.options.disableSCBL)
-        fields.push({
-          name: 'Squad Community Ban List',
-          value: `[Attacker's Bans](https://squad-community-ban-list.com/search/${info.attacker.steamID})`
-        });
+    const fields = [
+      {
+        name: "Attacker's Name",
+        value: info.attacker.name,
+        inline: true
+      },
+      {
+        name: "Attacker's SteamID",
+        value: `[${info.attacker.steamID}](https://steamcommunity.com/profiles/${info.attacker.steamID})`,
+        inline: true
+      },
+      {
+        name: 'Weapon',
+        value: info.weapon
+      },
+      {
+        name: "Victim's Name",
+        value: info.victim.name,
+        inline: true
+      },
+      {
+        name: "Victim's SteamID",
+        value: `[${info.victim.steamID}](https://steamcommunity.com/profiles/${info.victim.steamID})`,
+        inline: true
+      }
+    ];
 
-      await this.sendDiscordMessage({
-        embed: {
-          title: `Teamkill: ${info.attacker.name}`,
-          color: this.options.color,
-          fields: fields,
-          timestamp: info.time.toISOString()
-        }
+    if (!this.options.disableSCBL)
+      fields.push({
+        name: 'Squad Community Ban List',
+        value: `[Attacker's Bans](https://squad-community-ban-list.com/search/${info.attacker.steamID})`
       });
+
+    await this.sendDiscordMessage({
+      embed: {
+        title: `Teamkill: ${info.attacker.name}`,
+        color: this.options.color,
+        fields: fields,
+        timestamp: info.time.toISOString()
+      }
     });
   }
 }

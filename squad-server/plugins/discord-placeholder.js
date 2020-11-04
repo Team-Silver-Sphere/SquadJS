@@ -28,15 +28,18 @@ export default class DiscordPlaceholder extends BasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  async init() {
+    this.discordClient.on('message', this.handleOnMessage.bidn(this.options.command));
+  }
 
-    this.options.discordClient.on('message', async (message) => {
-      // check the author of the message is not a bot
-      if (message.author.bot || !message.content.toLowerCase().startsWith(this.options.command))
+  destroy() {
+    this.discordClient.removeListener('message', this.handleOnMessage);
+  }
+
+  async handleOnMessage(command, message) {
+    if (message.author.bot || !message.content.toLowerCase().startsWith(command))
         return;
 
-      await message.channel.send('Placeholder.');
-    });
+    await message.channel.send('Placeholder.');
   }
 }

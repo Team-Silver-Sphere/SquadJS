@@ -48,10 +48,8 @@ export default class SeedingMode extends BasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
-
-    setInterval(async () => {
+  async init() {
+    this.intervalInstance = setInerval(async () => {
       if (
         this.server.a2sPlayerCount !== 0 &&
         this.server.a2sPlayerCount < this.options.liveThreshold
@@ -64,5 +62,9 @@ export default class SeedingMode extends BasePlugin {
       )
         await this.server.rcon.broadcast(this.options.liveMessage);
     }, this.options.interval);
+  }
+
+  destroy() {
+    clearInterval(this.intervalInstance);
   }
 }

@@ -47,44 +47,48 @@ export default class DiscordRcon extends BasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  async init() {
+    this.discordClient.on('message', this.handleOnMessage.bind(this));
+  }
 
-    this.options.discordClient.on('message', async (message) => {
-      // check the author of the message is not a bot and that the channel is the RCON console channel
-      if (message.author.bot || message.channel.id !== this.channelID) return;
+  destroy() {
+    this.discordClient.removeListener('message', this.handleOnMessage);
+  }
 
-      let command = message.content;
+  async handleOnMessage(message) {
+    // check the author of the message is not a bot and that the channel is the RCON console channel
+    if (message.author.bot || message.channel.id !== this.channelID) return;
 
-      // write admin's name into broadcast command if prependAdminNameInBroadcast is enabled
-      if (this.options.prependAdminNameInBroadcast)
-        command = command.replace(
-          /^AdminBroadcast /i,
-          `AdminBroadcast ${message.member.displayName}: `
-        );
+    let command = message.content;
 
-      // check the admin has permissions
-      if (Object.keys(this.options.permissions).length !== 0) {
-        const commandPrefix = command.match(/([^ ]+)/);
+    // write admin's name into broadcast command if prependAdminNameInBroadcast is enabled
+    if (this.options.prependAdminNameInBroadcast)
+      command = command.replace(
+        /^AdminBroadcast /i,
+        `AdminBroadcast ${message.member.displayName}: `
+      );
 
-        let hasPermission = false;
-        for (const [role, allowedCommands] of Object.entries(this.options.permissions)) {
-          if (!message.member._roles.includes(role)) continue;
+    // check the admin has permissions
+    if (Object.keys(this.options.permissions).length !== 0) {
+      const commandPrefix = command.match(/([^ ]+)/);
 
-          for (const allowedCommand of allowedCommands)
-            if (commandPrefix[1].toLowerCase() === allowedCommand.toLowerCase())
-              hasPermission = true;
-        }
+      let hasPermission = false;
+      for (const [role, allowedCommands] of Object.entries(this.options.permissions)) {
+        if (!message.member._roles.includes(role)) continue;
 
-        if (!hasPermission) {
-          await message.reply('you do not have permission to run that command.');
-          return;
-        }
+        for (const allowedCommand of allowedCommands)
+          if (commandPrefix[1].toLowerCase() === allowedCommand.toLowerCase())
+            hasPermission = true;
       }
 
-      // execute command and print response
-      await this.respondToMessage(message, await this.server.rcon.execute(command));
-    });
+      if (!hasPermission) {
+        await message.reply('you do not have permission to run that command.');
+        return;
+      }
+    }
+
+    // execute command and print response
+    await this.respondToMessage(message, await this.server.rcon.execute(command));
   }
 
   async respondToMessage(message, response) {
@@ -99,9 +103,8 @@ export default class DiscordRcon extends BasePlugin {
       if (responseMessages[responseMessages.length - 1].length + line.length > 1994) {
         responseMessages.push(line);
       } else {
-        responseMessages[responseMessages.length - 1] = `${
-          responseMessages[responseMessages.length - 1]
-        }\n${line}`;
+        responseMessages[responseMessages.length - 1] = `${responseMessages[responseMessages.length - 1]
+          }\n${line}`;
       }
     }
 

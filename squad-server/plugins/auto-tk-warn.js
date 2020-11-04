@@ -19,11 +19,15 @@ export default class AutoTKWarn extends BasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  async init() {
+    this.server.on('TEAMKILL', this.onTeamkill.bind(this));
+  }
 
-    this.server.on('TEAMKILL', async (info) => {
-      await this.server.rcon.warn(info.attacker.steamID, this.options.message);
-    });
+  async onTeamkill(info) {
+    await this.server.rcon.warn(info.attacker.steamID, this.options.message);
+  }
+
+  destroy() {
+    this.server.removeListener('TEAMKILL', this.onTeamkill);
   }
 }

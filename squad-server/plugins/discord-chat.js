@@ -37,39 +37,43 @@ export default class DiscordChat extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  async init() {
+    this.server.on('CHAT_MESSAGE', this.handleOnChatMessage.bind(this));
+  }
 
-    this.server.on('CHAT_MESSAGE', async (info) => {
-      if (this.options.ignoreChats.includes(info.chat)) return;
+  destroy() {
+    this.server.removeListener('CHAT_MESSAGE', this.handleOnChatMessage);
+  }
 
-      await this.sendDiscordMessage({
-        embed: {
-          title: info.chat,
-          color: this.options.chatColors[info.chat] || this.options.color,
-          fields: [
-            {
-              name: 'Player',
-              value: info.player.name,
-              inline: true
-            },
-            {
-              name: 'SteamID',
-              value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.steamID})`,
-              inline: true
-            },
-            {
-              name: 'Team & Squad',
-              value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
-            },
-            {
-              name: 'Message',
-              value: `${info.message}`
-            }
-          ],
-          timestamp: info.time.toISOString()
-        }
-      });
+  async handleOnChatMessage(info) {
+    if (this.options.ignoreChats.includes(info.chat)) return;
+
+    await this.sendDiscordMessage({
+      embed: {
+        title: info.chat,
+        color: this.options.chatColors[info.chat] || this.options.color,
+        fields: [
+          {
+            name: 'Player',
+            value: info.player.name,
+            inline: true
+          },
+          {
+            name: 'SteamID',
+            value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.steamID})`,
+            inline: true
+          },
+          {
+            name: 'Team & Squad',
+            value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
+          },
+          {
+            name: 'Message',
+            value: `${info.message}`
+          }
+        ],
+        timestamp: info.time.toISOString()
+      }
     });
   }
 }

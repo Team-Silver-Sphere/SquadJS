@@ -36,19 +36,31 @@ export default class ChatCommands extends BasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  async init () {
+    this.options.commands.forEach(commandSettings => {
+      if (commandSettings.type === 'broadcast')
+        this.server.on(`CHAT_COMMAND:${commandSettings.command}`, this.handleChatCommandBroadcast.bind(this, commandSettings));
+      else  (commandSettings.type === 'warn')
+        this.server.on(`CHAT_COMMAND:${commandSettings.command}`, this.handleChatCommandWarning.bind(this, commandSettings));
+    });
+  }
 
-    for (const command of this.options.commands) {
-      this.server.on(`CHAT_COMMAND:${command.command}`, async (data) => {
-        if (command.ignoreChats.includes(data.chat)) return;
+  destroy() {
+    this.options.commands.forEach(commandSettings => {
+      if (commandSettings.type === 'broadcast')
+        this.server.removeListener(`CHAT_COMMAND:${commandSettings.command}`, this.handleChatCommandBroadcast);
+      else (commandSettings.type === 'warn')
+      this.server.removeListener(`CHAT_COMMAND:${commandSettings.command}`, this.handleChatCommandWarning);
+    });
+  }
 
-        if (command.type === 'broadcast') {
-          await this.server.rcon.broadcast(command.response);
-        } else if (command.type === 'warn') {
-          await this.server.rcon.warn(data.player.steamID, command.response);
-        }
-      });
-    }
+  async handleChatCommandBroadcast(command, data) {
+    if (command.ignoreChats.includes(data.chat)) return;
+    await this.server.rcon.broadcast(command.response);
+  }
+
+  async handleChatCommandWarning(command, data) {
+    if (command.ignoreChats.includes(data.chat)) return;
+    await this.server.rcon.warn(data.player.steamID, command.response);
   }
 }

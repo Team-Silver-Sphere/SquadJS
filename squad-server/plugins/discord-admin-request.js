@@ -61,64 +61,72 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
     super(server, options, optionsRaw);
 
     this.lastPing = Date.now() - this.pingDelay;
+  }
 
-    this.server.on(`CHAT_COMMAND:${this.options.command}`, async (info) => {
-      if (this.options.ignoreChats.includes(info.chat)) return;
+  async init() {
+    this.server.on(`CHAT_COMMAND:${this.options.command}`, this.handleOnChatCommand.bind(this));
+  }
 
-      for (const ignorePhrase of this.options.ignorePhrases) {
-        if (info.message.includes(ignorePhrase)) return;
-      }
+  destroy() {
+    this.server.removeListener(`CHAT_COMMAND:${this.options.command}`, this.handleOnChatCommand);
+  }
 
-      if (info.message.length === 0) {
-        await this.server.rcon.warn(
-          info.player.steamID,
-          `Please specify what you would like help with when requesting an admin.`
-        );
-        return;
-      }
+  async handleOnChatCommand(info) {
+    if (this.options.ignoreChats.includes(info.chat)) return;
 
-      const message = {
-        embed: {
-          title: `${info.player.name} has requested admin support!`,
-          color: this.options.color,
-          fields: [
-            {
-              name: 'Player',
-              value: info.player.name,
-              inline: true
-            },
-            {
-              name: 'SteamID',
-              value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
-              inline: true
-            },
-            {
-              name: 'Team & Squad',
-              value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
-            },
-            {
-              name: 'Message',
-              value: info.message
-            }
-          ],
-          timestamp: info.time.toISOString()
-        }
-      };
+    for (const ignorePhrase of this.options.ignorePhrases) {
+      if (info.message.includes(ignorePhrase)) return;
+    }
 
-      if (
-        this.options.pingGroups.length > 0 &&
-        Date.now() - this.options.pingDelay > this.lastPing
-      ) {
-        message.content = this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');
-        this.lastPing = Date.now();
-      }
-
-      await this.sendDiscordMessage(message);
-
+    if (info.message.length === 0) {
       await this.server.rcon.warn(
         info.player.steamID,
-        `An admin has been notified, please wait for us to get back to you.`
+        `Please specify what you would like help with when requesting an admin.`
       );
-    });
+      return;
+    }
+
+    const message = {
+      embed: {
+        title: `${info.player.name} has requested admin support!`,
+        color: this.options.color,
+        fields: [
+          {
+            name: 'Player',
+            value: info.player.name,
+            inline: true
+          },
+          {
+            name: 'SteamID',
+            value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+            inline: true
+          },
+          {
+            name: 'Team & Squad',
+            value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
+          },
+          {
+            name: 'Message',
+            value: info.message
+          }
+        ],
+        timestamp: info.time.toISOString()
+      }
+    };
+
+    if (
+      this.options.pingGroups.length > 0 &&
+      Date.now() - this.options.pingDelay > this.lastPing
+    ) {
+      message.content = this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');
+      this.lastPing = Date.now();
+    }
+
+    await this.sendDiscordMessage(message);
+
+    await this.server.rcon.warn(
+      info.player.steamID,
+      `An admin has been notified, please wait for us to get back to you.`
+    );
   }
 }

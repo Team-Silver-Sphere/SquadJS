@@ -43,40 +43,58 @@ export default class SquadServer extends EventEmitter {
 
     // move squadLayers pull to the SquadLayers constructor ?
     this.squadLayers.pull();
-    this.setupPlugins(config.plugins);
+    this.setupPlugins(config.plugins).then(pluginInstances => {
+      this.plugins = pluginInstances;
+      
+      Logger.verbose('SquadServer', 1, `Number of Plugins online [${this.plugins.length}]`);
+      this.plugins.forEach(plugin => {
+        Logger.verbose('SquadServer', 2, `Plugin online: ${plugin.constructor.name}`);
+      });
+    });
   }
 
   async setupPlugins(pluginsConfig) {
     Logger.verbose('SquadServer', 1, 'Seting up plugins...');
     // Get all potential plugin files from plugin directory
-    glob.sync('./plugins/*.js', { cwd: './squad-server/'}).reduce(async (plugins, file) => {
+    return await glob.sync('./plugins/*.js', { cwd: './squad-server/'}).reduce(async (plugins, file) => {
       // import potential plugin class from file name
       const { default: plugin } = await import(file);
       plugins = await plugins;
 
-      try {
-        // check if BasePlugin is implemented to make shore its a plugin
-        if (plugin.optionsSpecification) {
-          // recover plugins configuration
-          const currentConf = pluginsConfig.find(singleConfig => singleConfig.plugin === plugin.name);
+      // check if BasePlugin is implemented to make shore its a plugin
+      if (plugin.hasOwnProperty('optionsSpecification')) {
+        // recover plugins configuration
+        const currentConf = pluginsConfig.find(singleConfig => singleConfig.plugin === plugin.name);
 
-          // if config is absent plugin is disabled or unconfigured
-          if (currentConf) {
-            const pluginOptions = await this.buildPluginOptions(plugin.optionsSpecification, currentConf);
-
+        // if config is absent plugin is disabled or unconfigured
+        if (currentConf) {
+          const pluginOptions = await this.buildPluginOptions(plugin.optionsSpecification, currentConf);
+          var pluginInstance;
+          // try creating plugin instance
+          // if failed dont crash the aplication just log and proceed with next plugin
+          try {
             Logger.verbose('SquadServer', 1, `Creating ${plugin.name}...`);
-            return [...(await plugins), new plugin(this, pluginOptions, currentConf)];
-          } else {
-            Logger.verbose('SquadServer', 2, `Plugin ${plugin.name} disabled or unconfigured.`);
+            pluginInstance = new plugin(this, pluginOptions, currentConf);
+            await pluginInstance.init();
+            plugins.push(pluginInstance);
+          } catch (e) {
+            // if pligins initialisation fails try to destroy what you can and dont add it to the plugins list
+            pluginInstance.destroy();
+            // this may or may not accelerate the GC passage
+            pluginInstance = null;
+            Logger.error('SquadServer', `Unable to create plugin instance of ${plugin.name}.`, e.stack);
           }
+
+          return plugins;
         } else {
-          Logger.error('SquadServer', 2, `Plugin ${plugin.name} unimplemented.`);
+          Logger.verbose('SquadServer', 2, `No configuration found for ${plugin.name}, could be disabled or missing.`);
         }
-      } catch (e) {
-        Logger.error('SquadServer', 2, `Plugin ${plugin.name} unimplemented.`, e);
+      } else {
+        Logger.verbose('SquadServer', 2, `${file} is not a plugin`);
       }
+
       return plugins;
-    }, []).then(result => this.plugins = result);
+    }, []);
   }
 
   async buildPluginOptions(optionsSpecification, pluginConfig) {
@@ -446,50 +464,6 @@ export default class SquadServer extends EventEmitter {
   async unwatch() {
     await this.rcon.disconnect();
     await this.logParser.unwatch();
-  }
-
-  static async buildFromConfig(config) {
-
-    // const server = new SquadServer(config.server);
-
-    // pull layers read to use to create layer filter connectors
-
-    
-
-
-    Logger.verbose('SquadServer', 1, 'Applying plugins to SquadServer...');
-    for (const pluginConfig of config.plugins) {
-      if (!pluginConfig.enabled) continue;
-
-      if (!plugins[pluginConfig.plugin])
-        throw new Error(`Plugin ${pluginConfig.plugin} does not exist.`);
-
-      const Plugin = plugins[pluginConfig.plugin];
-
-      Logger.verbose('SquadServer', 1, `Initialising ${Plugin.name}...`);
-
-      const options = {};
-      for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
-        if (option.connector) {
-          options[optionName] = connectors[pluginConfig[optionName]];
-        } else {
-          if (option.required) {
-            if (!(optionName in pluginConfig))
-              throw new Error(`${Plugin.name}: ${optionName} is required but missing.`);
-            if (option.default === pluginConfig[optionName])
-              throw new Error(
-                `${Plugin.name}: ${optionName} is required but is the default value.`
-              );
-          }
-
-          options[optionName] = pluginConfig[optionName] || option.default;
-        }
-      }
-
-      server.plugins.push(new Plugin(server, options, pluginConfig));
-    }
-
-    return server;
   }
 
   static buildFromConfigString(configString) {

@@ -26,23 +26,27 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  async init() {
+    this.server.on('NEW_GAME', this.handleOnNewGame.bind(this));
+  }
 
-    this.server.on('NEW_GAME', async (info) => {
-      await this.sendDiscordMessage({
-        embed: {
-          title: 'Round Winner',
-          color: this.options.color,
-          fields: [
-            {
-              name: 'Message',
-              value: `${info.winner} won on ${info.layer}.`
-            }
-          ],
-          timestamp: info.time.toISOString()
-        }
-      });
+  destroy() {
+    this.server.removeListener('NEW_GAME', this.handleOnNewGame);
+  }
+
+  async handleOnNewGame(info) {
+    await this.sendDiscordMessage({
+      embed: {
+        title: 'Round Winner',
+        color: this.options.color,
+        fields: [
+          {
+            name: 'Message',
+            value: `${info.winner} won on ${info.layer}.`
+          }
+        ],
+        timestamp: info.time.toISOString()
+      }
     });
   }
 }
