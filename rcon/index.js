@@ -319,7 +319,7 @@ export default class Rcon extends EventEmitter {
           Logger.verbose(
             'RCON',
             2,
-            `Processing complete response: ${response.replace(/\r\n|\r|\n/g, '\\n')}`
+            `Returning complete response: ${response.replace(/\r\n|\r|\n/g, '\\n')}`
           );
 
           resolve(response);
