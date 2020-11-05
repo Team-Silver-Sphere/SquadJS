@@ -46,14 +46,18 @@ export default class Rcon extends EventEmitter {
     this.autoReconnect = false;
     this.autoReconnectTimeout = null;
 
-    this.responseActionQueue = [];
-    this.responsePacketQueue = [];
+    this.incomingData = Buffer.from([]);
+    this.incomingResponse = [];
+
+    this.responseCallbackQueue = [];
   }
 
-  onData(buf) {
-    Logger.verbose('RCON', 4, `Got data: ${this.bufToHexString(buf)}`);
+  onData(data) {
+    Logger.verbose('RCON', 4, `Got data: ${this.bufToHexString(data)}`);
 
-    const packets = this.splitPackets(buf);
+    // the logic in this method simply splits data sent via the data event into packets regardless of how they're
+    // distributed in the event calls
+    const packets = this.decodeData(data);
 
     for (const packet of packets) {
       Logger.verbose('RCON', 4, `Processing packet: ${this.bufToHexString(packet)}`);
@@ -65,68 +69,85 @@ export default class Rcon extends EventEmitter {
         `Processing decoded packet: ${this.decodedPacketToString(decodedPacket)}`
       );
 
-      if (decodedPacket.type === SERVERDATA_RESPONSE_VALUE)
-        this.processResponsePacket(decodedPacket);
-      else if (decodedPacket.type === SERVERDATA_AUTH_RESPONSE)
-        this.processAuthPacket(decodedPacket);
-      else if (decodedPacket.type === SERVERDATA_CHAT_VALUE) this.processChatPacket(decodedPacket);
-      else
-        Logger.verbose(
-          'RCON',
-          2,
-          `Unknown packet type ${decodedPacket.type} in: ${this.decodedPacketToString(
-            decodedPacket
-          )}`
-        );
+      switch (decodedPacket.type) {
+        case SERVERDATA_RESPONSE_VALUE:
+        case SERVERDATA_AUTH_RESPONSE:
+          switch (decodedPacket.id) {
+            case MID_PACKET_ID:
+              this.incomingResponse.push(decodedPacket);
+              break;
+            case END_PACKET_ID:
+              this.responseCallbackQueue.shift()(
+                this.incomingResponse.map((packet) => packet.body).join()
+              );
+              this.incomingResponse = [];
+              break;
+            default:
+              Logger.verbose(
+                'RCON',
+                1,
+                `Unknown packet ID ${decodedPacket.id} in: ${this.decodedPacketToString(
+                  decodedPacket
+                )}`
+              );
+          }
+          break;
+
+        case SERVERDATA_CHAT_VALUE:
+          this.processChatPacket(decodedPacket);
+          break;
+
+        default:
+          Logger.verbose(
+            'RCON',
+            1,
+            `Unknown packet type ${decodedPacket.type} in: ${this.decodedPacketToString(
+              decodedPacket
+            )}`
+          );
+      }
     }
   }
 
-  splitPackets(buf) {
+  decodeData(data) {
+    this.incomingData = Buffer.concat([this.incomingData, data]);
+
     const packets = [];
 
-    let offset = 0;
+    while (this.incomingData.byteLength > 0) {
+      const size = this.incomingData.readInt32LE(0);
+      const packetSize = size + 4;
 
-    while (offset < buf.byteLength) {
-      const size = buf.readInt32LE(offset);
+      // The packet following an empty packet will report to be 10 long (14 including the size header bytes), but in
+      // it should report 17 long (21 including the size header bytes). Therefore, if the packet is 10 in size
+      // and there's enough data for it to be a longer packet then we need to probe to check it's this broken packet.
+      const probeSize = 17;
+      const probePacketSize = 21;
 
-      const endOfPacket = offset + size + 4;
-
-      // The packet following an empty pocked will appear to be 10 long, it's not.
-      if (size === 10) {
-        // it's 21 bytes long (or 17 when ignoring the 4 size bytes), 7 bytes longer than it should be.
-        const probeEndOfPacket = endOfPacket + 7;
-
-        // check that there is room for the packet to be longer than it claims to be
-        if (probeEndOfPacket <= buf.byteLength) {
-          // it is, so probe that section of the buffer
-          const probeBuf = buf.slice(offset, probeEndOfPacket);
-
-          // we decode to see it's contents
-          const decodedProbePacket = this.decodePacket(probeBuf);
-
-          // if it matches this body then it's the broken length packet
-          if (decodedProbePacket.body === '\x00\x00\x00\x01\x00\x00\x00') {
-            // update the offset with the new correct length, then skip this packet as we don't care about it anyway
-            offset = endOfPacket + 7;
-            Logger.verbose('RCON', 4, `Ignoring some data: ${this.bufToHexString(probeBuf)}`);
-            continue;
-          }
+      if (size === 10 && this.incomingData.byteLength >= probeSize) {
+        // copy the section of the incoming data of interest
+        const probeBuf = this.incomingData.slice(0, probePacketSize);
+        // decode it
+        const decodedProbePacket = this.decodePacket(probeBuf);
+        // check whether body matches
+        if (decodedProbePacket.body === '\x00\x00\x00\x01\x00\x00\x00') {
+          // it does so it's the broken packet
+          // remove the broken packet from the incoming data
+          this.incomingData = this.incomingData.slice(probePacketSize);
+          Logger.verbose('RCON', 4, `Ignoring some data: ${this.bufToHexString(probeBuf)}`);
+          continue;
         }
       }
 
-      const packet = buf.slice(offset, endOfPacket);
+      if (this.incomingData.byteLength < packetSize) {
+        Logger.verbose('RCON', 4, `Waiting for more data...`);
+        break;
+      }
 
+      const packet = this.incomingData.slice(0, packetSize);
       packets.push(packet);
 
-      offset = endOfPacket;
-    }
-
-    if (packets.length !== 0) {
-      Logger.verbose(
-        'RCON',
-        4,
-        `Split data into packets: ${packets.map(this.bufToHexString).join(', ')}`
-      );
+      this.incomingData = this.incomingData.slice(packetSize);
     }
 
     return packets;
@@ -139,46 +160,6 @@ export default class Rcon extends EventEmitter {
       type: packet.readInt32LE(8),
       body: packet.toString('utf8', 12, packet.byteLength - 2)
     };
-  }
-
-  processResponsePacket(decodedPacket) {
-    if (decodedPacket.id === MID_PACKET_ID) {
-      Logger.verbose(
-        'RCON',
-        3,
-        `Pushing packet to queue: ${this.decodedPacketToString(decodedPacket)}`
-      );
-      this.responsePacketQueue.push(decodedPacket);
-    } else if (decodedPacket.id === END_PACKET_ID) {
-      Logger.verbose('RCON', 3, 'Initiating processing of packet queue.');
-      this.processCompleteResponse(this.responsePacketQueue);
-      this.responsePacketQueue = [];
-      this.ignoreNextResponsePacket = true;
-    } else {
-      Logger.verbose(
-        'RCON',
-        1,
-        `Unknown packet id ${decodedPacket.id} in: ${this.decodedPacketToString(decodedPacket)}`
-      );
-    }
-  }
-
-  processCompleteResponse(decodedPackets) {
-    Logger.verbose(
-      'RCON',
-      3,
-      `Processing complete decoded packet response: ${decodedPackets
-        .map(this.decodedPacketToString)
-        .join(', ')}`
-    );
-
-    const response = decodedPackets.map((packet) => packet.body).join();
-
-    this.responseActionQueue.shift()(response);
-  }
-
-  processAuthPacket(decodedPacket) {
-    this.responseActionQueue.shift()(decodedPacket);
   }
 
   processChatPacket(decodedPacket) {
@@ -301,9 +282,10 @@ export default class Rcon extends EventEmitter {
 
       const encodedPacket = this.encodePacket(
         type,
-        type === SERVERDATA_AUTH ? END_PACKET_ID : MID_PACKET_ID,
+        type !== SERVERDATA_AUTH ? MID_PACKET_ID : END_PACKET_ID,
         body
       );
+
       const encodedEmptyPacket = this.encodePacket(type, END_PACKET_ID, '');
 
       if (this.maximumPacketSize < encodedPacket.length) {
@@ -311,9 +293,16 @@ export default class Rcon extends EventEmitter {
         return;
       }
 
-      let onResponse;
+      const onError = (err) => {
+        Logger.verbose('RCON', 1, 'Error occurred. Wiping response action queue.', err);
+        this.responseCallbackQueue = [];
+        reject(err);
+      };
+
+      // the auth packet also sends a normal response, so we add an extra empty action to ignore it
       if (type === SERVERDATA_AUTH) {
-        onResponse = (decodedPacket) => {
+        this.responseCallbackQueue.push(() => {});
+        this.responseCallbackQueue.push((decodedPacket) => {
           this.client.removeListener('error', onError);
           if (decodedPacket.id === -1) {
             Logger.verbose('RCON', 1, 'Authentication failed.');
@@ -322,31 +311,20 @@ export default class Rcon extends EventEmitter {
             Logger.verbose('RCON', 1, 'Authentication succeeded.');
             resolve();
           }
-        };
+        });
       } else {
-        onResponse = (response) => {
+        this.responseCallbackQueue.push((response) => {
           this.client.removeListener('error', onError);
 
           Logger.verbose(
             'RCON',
             2,
-            `Processing complete response: ${response.replace(/\r\n|\r|\n/g, '\\n')}`
+            `Returning complete response: ${response.replace(/\r\n|\r|\n/g, '\\n')}`
           );
 
           resolve(response);
-        };
+        });
       }
-
-      const onError = (err) => {
-        Logger.verbose('RCON', 1, 'Error occurred. Wiping response action queue.', err);
-        this.responseActionQueue = [];
-        reject(err);
-      };
-
-      // the auth packet also sends a normal response, so we add an extra empty action to ignore it
-      if (type === SERVERDATA_AUTH) this.responseActionQueue.push(() => {});
-
-      this.responseActionQueue.push(onResponse);
 
       this.client.once('error', onError);
 
