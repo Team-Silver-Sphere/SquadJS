@@ -471,6 +471,9 @@ export default class SquadServer extends EventEmitter {
     for (const pluginConfig of config.plugins) {
       if (!pluginConfig.enabled) continue;
 
+      if (!(pluginConfig.plugin in plugins))
+        throw new Error(`Plugin "${pluginConfig.plugin}" in config file is not found.`);
+
       const Plugin = plugins[pluginConfig.plugin];
 
       for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
