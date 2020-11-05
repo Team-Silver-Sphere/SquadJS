@@ -14,9 +14,9 @@
   ],
   "scripts": {
     "lint": "eslint --fix . && prettier --write \"./**/*.js\"",
-    "build-config": "node squad-server/scripts/build-config.js",
+    "build-config": "node squad-server/scripts/build-config-file.js",
     "build-readme": "node squad-server/scripts/build-readme.js",
-    "build-all": "node squad-server/scripts/build-config.js && node squad-server/scripts/build-readme.js"
+    "build-all": "node squad-server/scripts/build-config-file.js && node squad-server/scripts/build-readme.js"
   },
   "type": "module",
   "dependencies": {

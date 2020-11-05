@@ -17,7 +17,9 @@ export default class LogParser extends EventEmitter {
     this.eventStore = {};
 
     this.linesPerMinute = 0;
-    this.linesPerMinuteInterval = null;
+    this.matchingLinesPerMinute = 0;
+    this.matchingLatency = 0;
+    this.parsingStatsInterval = null;
 
     this.queue = async.queue(async (line) => {
       Logger.verbose('LogParser', 4, `Matching on line: ${line}`);
@@ -32,6 +34,9 @@ export default class LogParser extends EventEmitter {
         match[2] = parseInt(match[2]);
 
         rule.onMatch(match, this);
+
+        this.matchingLinesPerMinute++;
+        this.matchingLatency += Date.now() - match[1];
 
         break;
       }
@@ -56,15 +61,27 @@ export default class LogParser extends EventEmitter {
     await this.logReader.watch();
     Logger.verbose('LogParser', 1, 'Watching log file...');
 
-    this.linesPerMinuteInterval = setInterval(() => {
-      Logger.verbose('LogParser', 1, `Processing ${this.linesPerMinute} lines per minute.`);
+    this.parsingStatsInterval = setInterval(() => {
+      Logger.verbose(
+        'LogParser',
+        1,
+        `Lines parsed per minute: ${
+          this.linesPerMinute
+        } lines per minute | Matching lines per minute: ${
+          this.matchingLinesPerMinute
+        } matching lines per minute | Average matching latency: ${
+          this.matchingLatency / this.matchingLinesPerMinute
+        }ms`
+      );
       this.linesPerMinute = 0;
+      this.matchingLinesPerMinute = 0;
+      this.matchingLatency = 0;
     }, 60 * 1000);
   }
 
   async unwatch() {
     await this.logReader.unwatch();
 
-    clearInterval(this.linesPerMinuteInterval);
+    clearInterval(this.parsingStatsInterval);
   }
 }
