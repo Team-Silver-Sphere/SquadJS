@@ -114,7 +114,9 @@ export default class Rcon extends EventEmitter {
 
     const packets = [];
 
-    while (this.incomingData.byteLength > 0) {
+    // we check that it's greater than 4 as if it's not then the length header is not fully present which breaks the
+    // rest of the code. We just need to wait for more data.
+    while (this.incomingData.byteLength >= 4) {
       const size = this.incomingData.readInt32LE(0);
       const packetSize = size + 4;
 
