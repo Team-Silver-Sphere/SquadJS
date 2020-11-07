@@ -68,7 +68,7 @@ export default class AutoKickUnassigned extends BasePlugin {
    *    kickTimerID: <timeoutID>
    *  }
    */
-  constructor(server, options) {
+  constructor(server, options, rawOptions) {
     super(server, options, rawOptions);
 
     this.admins = server.getAdminsWithPermission('canseeadminchat');
