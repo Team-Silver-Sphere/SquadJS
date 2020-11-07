@@ -12,12 +12,6 @@ export default class AutoKickUnassigned extends BasePlugin {
 
   static get optionsSpecification() {
     return {
-      adminList: {
-        required: true,
-        description: 'List of server admins.',
-        connector: 'remoteAdminLists',
-        default: 'remoteAdminLists'
-      },
       warningMessage: {
         required: false,
         description: 'Message SquadJS will send to players warning them they will be kicked',
@@ -81,10 +75,10 @@ export default class AutoKickUnassigned extends BasePlugin {
    *  }
    */
   constructor(server, options) {
-    super();
+    super(server, options, rawOptions);
 
-    this.server = server;
-    this.options = options;
+    this.admins = server.getAdminsWithPermission('canseeadminchat');
+    this.whitelist = server.getAdminsWithPermission('reserve');
 
     this.kickTimeout = options.unassignedTimer * 60 * 1000;
     this.warningInterval = options.frequencyOfWarnings * 1000;
@@ -152,8 +146,8 @@ export default class AutoKickUnassigned extends BasePlugin {
     for (const player of this.server.players) {
       const isTracked     = player.steamID in this.trackedPlayers;
       const isUnassigned  = player.squadID === null;
-      const isAdmin       = player.steamID in this.options.adminList.admins;
-      const isWhitelist   = player.steamID in this.options.adminList.whitelist;
+      const isAdmin       = player.steamID in this.admins;
+      const isWhitelist   = player.steamID in this.whitelist;
 
       if (isUnassigned && isAdmin) Logger.verbose('AutoKick', 2, `Admin is Unassigned: ${player.name}`);
       if (isUnassigned && isWhitelist) Logger.verbose('AutoKick', 2, `Whitelist player is Unassigned: ${player.name}`);
