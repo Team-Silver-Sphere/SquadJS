@@ -18,6 +18,7 @@ import { SQUADJS_VERSION } from './utils/constants.js';
 import { SquadLayers } from './utils/squad-layers.js';
 
 import plugins from './plugins/index.js';
+import { fetchAdminLists } from './utils/admin-lists.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -41,6 +42,7 @@ export default class SquadServer extends EventEmitter {
 
     this.setupRCON();
     this.setupLogParser();
+    this.admins = fetchAdminLists(options.adminLists);
 
     this.updatePlayerList = this.updatePlayerList.bind(this);
     this.updatePlayerListInterval = 30 * 1000;
@@ -252,46 +254,16 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.watch();
   }
 
-  async setupAdminList(remoteAdminLists) {
-    try {
-      const remoteAdmins = {
-        admins: {},
-        whitelist: {},
-        groups: {}
-      };
-
-      for (let idx = 0; idx < remoteAdminLists.length; idx++) {
-        const list = remoteAdminLists[idx];
-
-        const resp = await axios({
-          method: 'GET',
-          url: `${list}`
-        });
-
-        const rawData = resp.data;
-
-        const groupRgx = /(?<=Group=)(.*?):(.*)(?=\n)/g;
-        const adminRgx = /(?<=Admin=)(\d+):(\S+)(?=\s)/g;
-
-        /* eslint-disable no-unused-vars */
-        for (const [match, groupID, groupPerms] of rawData.matchAll(groupRgx)) {
-          remoteAdmins.groups[`${idx}-${groupID}`] = groupPerms.split(',');
-        }
-        for (const [match, steamID, groupID] of rawData.matchAll(adminRgx)) {
-          const perms = remoteAdmins.groups[`${idx}-${groupID}`];
-          if (!(perms.includes('reserve') && perms.length === 1)) {
-            remoteAdmins.admins[steamID] = `${idx}-${groupID}`;
-          } else {
-            remoteAdmins.whitelist[steamID] = `${idx}-${groupID}`;
-          }
-        }
-        /* eslint-enable no-unused-vars */
-      }
-      Logger.verbose('SquadServer', 3, 'RemoteAdmins:', remoteAdmins);
-      return remoteAdmins;
-    } catch (err) {
-      console.log(err);
+  async getAdminBySteamID(steamID){
+    return this.admins[steamID];
+  }
+  
+  async getAdminsWithPermission(perm){
+    let ret = [];
+    for( const [steamID, perms] of Object.entries(this.admins) ){
+      if(perm in perms) ret.push(this.admins[steamID])
     }
+    return ret
   }
 
   async updatePlayerList() {
@@ -311,7 +283,7 @@ export default class SquadServer extends EventEmitter {
       for (const player of this.players) {
         if (typeof oldPlayerInfo[player.steamID] === 'undefined') continue;
         if (player.teamID !== oldPlayerInfo[player.steamID].teamID)
-          this.emit('PLAYER_TEAM_CHANGE', player);
+          this.emit('PLAYER_TEAM_CHANGE', {player:player, old:oldPlayerInfo[player.steamID].teamID, new:player.teamID });
         if (player.squadID !== oldPlayerInfo[player.steamID].squadID)
           this.emit('PLAYER_SQUAD_CHANGE', player);
       }
@@ -509,9 +481,6 @@ export default class SquadServer extends EventEmitter {
             connectorConfig.filter,
             connectorConfig.activeLayerFilter
           );
-        } else if (option.connector === 'remoteAdminLists') {
-          Logger.verbose('SquadServer', 1, `Starting remoteAdminList connector...`);
-          connectors[connectorName] = await server.setupAdminList(connectorConfig);
         } else {
           throw new Error(`${option.connector} is an unsupported connector type.`);
         }
