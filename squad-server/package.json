@@ -15,6 +15,7 @@
   },
   "exports": {
     ".": "./index.js",
+    "./factory": "./factory.js",
     "./logo": "./utils/print-logo.js",
     "./plugins": "./plugins/index.js"
   }

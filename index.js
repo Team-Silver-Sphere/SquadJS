@@ -1,4 +1,4 @@
-import SquadServer from 'squad-server';
+import SquadServerFactory from 'squad-server/factory';
 import printLogo from 'squad-server/logo';
 
 async function main() {
@@ -9,8 +9,8 @@ async function main() {
   if (config && configPath) throw new Error('Cannot accept both a config and config path.');
 
   const server = config
-    ? await SquadServer.buildFromConfigString(config)
-    : await SquadServer.buildFromConfigFile(configPath || './config.json');
+    ? await SquadServerFactory.buildFromConfigString(config)
+    : await SquadServerFactory.buildFromConfigFile(configPath || './config.json');
 
   await server.watch();
 }
