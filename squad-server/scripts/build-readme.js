@@ -1,5 +1,5 @@
-import SquadServer from '../index.js';
+import SquadServerFactory from '../factory.js';
 
 console.log('Building readme...');
-SquadServer.buildReadmeFile();
+SquadServerFactory.buildReadmeFile();
 console.log('Done.');

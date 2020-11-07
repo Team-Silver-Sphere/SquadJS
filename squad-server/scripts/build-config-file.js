@@ -1,5 +1,5 @@
-import SquadServer from '../index.js';
+import SquadServerFactory from '../factory.js';
 
 console.log('Building config...');
-SquadServer.buildConfigFile();
+SquadServerFactory.buildConfigFile();
 console.log('Done.');
