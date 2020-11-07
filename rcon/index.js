@@ -371,7 +371,7 @@ export default class Rcon extends EventEmitter {
     await this.execute(`AdminKick "${steamID}" ${reason}`);
   }
 
-  async switchTeam(steamID) {
+  async forceTeamChange(steamID) {
     await this.execute(`AdminForceTeamChange "${steamID}"`);
   }
 }
