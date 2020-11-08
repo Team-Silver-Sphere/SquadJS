@@ -113,8 +113,8 @@ export default class AutoKickUnassigned extends BasePlugin {
   runConditions() {
     // return true; // force run for testing
     const countMet =
-      this.options.playerCountThreshold > 0 &&
-      this.options.playerCountThreshold < this.server.players.count;
+      this.options.playerThreshold > 0 &&
+      this.options.playerThreshold < this.server.players.length;
     const run = !this.betweenRounds && countMet;
 
     Logger.verbose('AutoKick', 3, `RUN?: ${run} = ${!this.betweenRounds} &&  ${countMet}`);
