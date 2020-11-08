@@ -12,7 +12,7 @@ import Rcon from 'rcon/squad';
 import { SQUADJS_VERSION } from './utils/constants.js';
 import { SquadLayers } from './utils/squad-layers.js';
 
-import { fetchAdminLists } from './utils/admin-lists.js';
+import fetchAdminLists from './utils/admin-lists.js';
 
 export default class SquadServer extends EventEmitter {
   constructor(options = {}) {
@@ -54,7 +54,11 @@ export default class SquadServer extends EventEmitter {
   }
 
   async watch() {
-    Logger.verbose('SquadServer', 1, `Beginning to watch ${this.options.host}:${this.options.queryPort}...`);
+    Logger.verbose(
+      'SquadServer',
+      1,
+      `Beginning to watch ${this.options.host}:${this.options.queryPort}...`
+    );
     await this.squadLayers.pull();
 
     await this.rcon.connect();
@@ -247,16 +251,16 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.watch();
   }
 
-  async getAdminBySteamID(steamID){
+  async getAdminBySteamID(steamID) {
     return this.admins[steamID];
   }
-  
-  async getAdminsWithPermission(perm){
-    let ret = [];
-    for( const [steamID, perms] of Object.entries(this.admins) ){
-      if(perm in perms) ret.push(this.admins[steamID])
+
+  async getAdminsWithPermission(perm) {
+    const ret = [];
+    for (const [steamID, perms] of Object.entries(this.admins)) {
+      if (perm in perms) ret.push(this.admins[steamID]);
     }
-    return ret
+    return ret;
   }
 
   async updatePlayerList() {
@@ -276,7 +280,11 @@ export default class SquadServer extends EventEmitter {
       for (const player of this.players) {
         if (typeof oldPlayerInfo[player.steamID] === 'undefined') continue;
         if (player.teamID !== oldPlayerInfo[player.steamID].teamID)
-          this.emit('PLAYER_TEAM_CHANGE', {player:player, old:oldPlayerInfo[player.steamID].teamID, new:player.teamID });
+          this.emit('PLAYER_TEAM_CHANGE', {
+            player: player,
+            old: oldPlayerInfo[player.steamID].teamID,
+            new: player.teamID
+          });
         if (player.squadID !== oldPlayerInfo[player.steamID].squadID)
           this.emit('PLAYER_SQUAD_CHANGE', player);
       }

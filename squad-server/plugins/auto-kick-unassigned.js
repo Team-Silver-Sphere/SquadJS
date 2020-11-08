@@ -51,7 +51,8 @@ export default class AutoKickUnassigned extends BasePlugin {
       },
       ignoreWhitelist: {
         required: false,
-        description: 'Whether or not players in the whitelist will be auto kicked for being unassigned',
+        description:
+          'Whether or not players in the whitelist will be auto kicked for being unassigned',
         default: false
       }
     };
@@ -116,11 +117,7 @@ export default class AutoKickUnassigned extends BasePlugin {
       this.options.playerCountThreshold < this.server.players.count;
     const run = !this.betweenRounds && countMet;
 
-    Logger.verbose(
-      'AutoKick',
-      3,
-      `RUN?: ${run} = ${!this.betweenRounds} &&  ${countMet}`
-    );
+    Logger.verbose('AutoKick', 3, `RUN?: ${run} = ${!this.betweenRounds} &&  ${countMet}`);
     return run;
   }
 
@@ -135,23 +132,27 @@ export default class AutoKickUnassigned extends BasePlugin {
 
     // loop through players on server and start tracking players not in a squad
     for (const player of this.server.players) {
-      const isTracked     = player.steamID in this.trackedPlayers;
-      const isUnassigned  = player.squadID === null;
-      const isAdmin       = player.steamID in this.admins;
-      const isWhitelist   = player.steamID in this.whitelist;
-      
+      const isTracked = player.steamID in this.trackedPlayers;
+      const isUnassigned = player.squadID === null;
+      const isAdmin = player.steamID in this.admins;
+      const isWhitelist = player.steamID in this.whitelist;
+
       // tracked player joined a squad remove them (redundant afer adding PLAYER_SQUAD_CHANGE, keeping for now)
       if (!isUnassigned && isTracked) this.untrackPlayer(player.steamID);
-      
+
       if (!isUnassigned) continue;
 
       if (isAdmin) Logger.verbose('AutoKick', 2, `Admin is Unassigned: ${player.name}`);
-      if (isWhitelist) Logger.verbose('AutoKick', 2, `Whitelist player is Unassigned: ${player.name}`);
+      if (isWhitelist)
+        Logger.verbose('AutoKick', 2, `Whitelist player is Unassigned: ${player.name}`);
 
       // start tracking player
-      if (!isTracked && !(isAdmin && this.options.ignoreAdmins) && !(isWhitelist && this.options.ignoreWhitelist))
+      if (
+        !isTracked &&
+        !(isAdmin && this.options.ignoreAdmins) &&
+        !(isWhitelist && this.options.ignoreWhitelist)
+      )
         this.trackedPlayers[player.steamID] = this.trackPlayer(player);
-
     }
   }
 
