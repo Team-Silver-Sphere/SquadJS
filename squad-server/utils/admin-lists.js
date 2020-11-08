@@ -2,6 +2,8 @@ import axios from 'axios';
 import Logger from 'core/logger';
 
 export default async function fetchAdminLists(adminLists) {
+  Logger.verbose('SquadServer', 2, `Fetching Admin Lists...`);
+
   const groups = {};
   const admins = {};
 
@@ -44,6 +46,6 @@ export default async function fetchAdminLists(adminLists) {
     }
     /* eslint-enable no-unused-vars */
   }
-  Logger.verbose('SquadServer', 2, `${Object.keys(admins).length} admins loaded`);
+  Logger.verbose('SquadServer', 2, `${Object.keys(admins).length} admins loaded...`);
   return admins;
 }
