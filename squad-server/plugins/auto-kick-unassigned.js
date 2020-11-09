@@ -115,9 +115,9 @@ export default class AutoKickUnassigned extends BasePlugin {
     const countMet =
       this.options.playerThreshold > 0 &&
       this.options.playerThreshold < this.server.players.length;
-    const run = !this.betweenRounds && countMet;
+    const run = (!this.betweenRounds) && countMet;
 
-    Logger.verbose('AutoKick', 3, `RUN?: ${run} = ${!this.betweenRounds} &&  ${countMet}`);
+    Logger.verbose('AutoKick', 3, `RUN?: betweenRounds:${this.betweenRounds} | ${countMet}:${this.options.playerThreshold}<${this.server.players.length}`);
     return run;
   }
 
@@ -166,7 +166,7 @@ export default class AutoKickUnassigned extends BasePlugin {
   }
 
   trackPlayer(player) {
-    Logger.verbose('AutoKick', 1, `Tracking: ${player.name}`);
+    Logger.verbose('AutoKick', 2, `Tracking: ${player.name}`);
 
     const tracker = {
       player: player,
@@ -183,7 +183,7 @@ export default class AutoKickUnassigned extends BasePlugin {
 
       const timeLeft = this.msFormat(msLeft);
       this.server.rcon.warn(tracker.player.steamID, `${this.options.warningMessage} - ${timeLeft}`);
-      Logger.verbose('AutoKick', 1, `Warning: ${tracker.player.name} (${timeLeft})`);
+      Logger.verbose('AutoKick', 2, `Warning: ${tracker.player.name} (${timeLeft})`);
       tracker.warnings++;
     }, this.warningInterval);
 
@@ -209,6 +209,6 @@ export default class AutoKickUnassigned extends BasePlugin {
     clearInterval(tracker.warnTimerID);
     clearTimeout(tracker.kickTimerID);
     delete this.trackedPlayers[steamID];
-    Logger.verbose('AutoKick', 1, `unTrack: ${tracker.player.name}`);
+    Logger.verbose('AutoKick', 2, `unTrack: ${tracker.player.name}`);
   }
 }
