@@ -247,6 +247,8 @@ export default class SquadServer extends EventEmitter {
   async updatePlayerList() {
     if (this.updatePlayerListTimeout) clearTimeout(this.updatePlayerListTimeout);
 
+    Logger.verbose('SquadServer', 1, `Updating player list...`);
+
     try {
       const oldPlayerInfo = {};
       for (const player of this.players) {
@@ -261,11 +263,15 @@ export default class SquadServer extends EventEmitter {
       Logger.verbose('SquadServer', 1, 'Failed to update player list.', err);
     }
 
+    Logger.verbose('SquadServer', 1, `Updated player list.`);
+
     this.updatePlayerListTimeout = setTimeout(this.updatePlayerList, this.updatePlayerListInterval);
   }
 
   async updateLayerInformation() {
     if (this.updateLayerInformationTimeout) clearTimeout(this.updateLayerInformationTimeout);
+
+    Logger.verbose('SquadServer', 1, `Updating layer information...`);
 
     try {
       const layerInfo = await this.rcon.getLayerInfo();
@@ -282,6 +288,8 @@ export default class SquadServer extends EventEmitter {
       Logger.verbose('SquadServer', 1, 'Failed to update layer information.', err);
     }
 
+    Logger.verbose('SquadServer', 1, `Updated layer information.`);
+
     this.updateLayerInformationTimeout = setTimeout(
       this.updateLayerInformation,
       this.updateLayerInformationInterval
@@ -290,6 +298,8 @@ export default class SquadServer extends EventEmitter {
 
   async updateA2SInformation() {
     if (this.updateA2SInformationTimeout) clearTimeout(this.updateA2SInformationTimeout);
+
+    Logger.verbose('SquadServer', 1, `Updating A2S information...`);
 
     try {
       const data = await Gamedig.query({
@@ -313,6 +323,8 @@ export default class SquadServer extends EventEmitter {
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update A2S information.', err);
     }
+
+    Logger.verbose('SquadServer', 1, `Updated A2S information.`);
 
     this.updateA2SInformationTimeout = setTimeout(
       this.updateA2SInformation,
