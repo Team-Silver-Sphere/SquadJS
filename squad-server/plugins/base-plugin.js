@@ -1,3 +1,5 @@
+import Logger from 'core/logger';
+
 export default class BasePlugin {
   static get description() {
     throw new Error('Plugin missing "static get description()" method.');
@@ -15,5 +17,9 @@ export default class BasePlugin {
     this.server = server;
     this.options = options;
     this.optionsRaw = optionsRaw;
+  }
+
+  verbose(...args) {
+    Logger.verbose(this.constructor.name, ...args);
   }
 }
