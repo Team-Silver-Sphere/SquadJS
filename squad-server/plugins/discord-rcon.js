@@ -52,7 +52,7 @@ export default class DiscordRcon extends BasePlugin {
 
     this.options.discordClient.on('message', async (message) => {
       // check the author of the message is not a bot and that the channel is the RCON console channel
-      if (message.author.bot || message.channel.id !== this.channelID) return;
+      if (message.author.bot || message.channel.id !== this.options.channelID) return;
 
       let command = message.content;
 
