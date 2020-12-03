@@ -124,12 +124,6 @@
       "events": []
     },
     {
-      "plugin": "DiscordPlaceholder",
-      "enabled": true,
-      "discordClient": "discord",
-      "command": "!placeholder"
-    },
-    {
       "plugin": "DiscordRcon",
       "enabled": false,
       "discordClient": "discord",

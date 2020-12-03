@@ -48,21 +48,31 @@ export default class SeedingMode extends BasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  constructor(server, options, connectors) {
+    super(server, options, connectors);
 
-    setInterval(async () => {
-      if (
-        this.server.a2sPlayerCount !== 0 &&
-        this.server.a2sPlayerCount < this.options.liveThreshold
-      )
-        await this.server.rcon.broadcast(this.options.seedingMessage);
-      else if (
-        this.server.a2sPlayerCount !== 0 &&
-        this.options.liveEnabled &&
-        this.server.a2sPlayerCount < this.options.liveThreshold
-      )
-        await this.server.rcon.broadcast(this.options.liveMessage);
-    }, this.options.interval);
+    this.broadcast = this.broadcast.bind(this);
+  }
+
+  mount() {
+    this.interval =  setInterval(this.broadcast, this.options.interval);
+  }
+
+  unmount() {
+    clearInterval(this.interval);
+  }
+
+  async broadcast() {
+    if (
+      this.server.a2sPlayerCount !== 0 &&
+      this.server.a2sPlayerCount < this.options.liveThreshold
+    )
+      await this.server.rcon.broadcast(this.options.seedingMessage);
+    else if (
+      this.server.a2sPlayerCount !== 0 &&
+      this.options.liveEnabled &&
+      this.server.a2sPlayerCount < this.options.liveThreshold
+    )
+      await this.server.rcon.broadcast(this.options.liveMessage);
   }
 }

@@ -1,6 +1,31 @@
 import Logger from 'core/logger';
 
 export default class BasePlugin {
+  constructor(server, options, connectors) {
+    this.server = server;
+    this.options = {};
+    this.rawOptions = options;
+
+    for (const [optionName, option] of Object.entries(this.constructor.optionsSpecification)) {
+      if (option.connector) {
+        this.options[optionName] = connectors[this.rawOptions[optionName]];
+      } else {
+        if (option.required) {
+          if (!(optionName in this.rawOptions)) throw new Error(`${this.constructor.name}: ${optionName} is required but missing.`);
+          if (option.default === this.rawOptions[optionName]) throw new Error(`${this.constructor.name}: ${optionName} is required but is the default value.`);
+        }
+
+        this.options[optionName] = this.rawOptions[optionName] || option.default;
+      }
+    }
+  }
+
+  async prepareToMount() {}
+
+  mount() {}
+
+  unmount() {}
+
   static get description() {
     throw new Error('Plugin missing "static get description()" method.');
   }
@@ -11,12 +36,6 @@ export default class BasePlugin {
 
   static get optionsSpecification() {
     throw new Error('Plugin missing "static get optionSpecification()" method.');
-  }
-
-  constructor(server, options = {}, optionsRaw = {}) {
-    this.server = server;
-    this.options = options;
-    this.optionsRaw = optionsRaw;
   }
 
   verbose(...args) {

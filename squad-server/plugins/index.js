@@ -5,7 +5,6 @@ import DiscordAdminCamLogs from './discord-admin-cam-logs.js';
 import DiscordAdminRequest from './discord-admin-request.js';
 import DiscordChat from './discord-chat.js';
 import DiscordDebug from './discord-debug.js';
-import DiscordPlaceholder from './discord-placeholder.js';
 import DiscordRcon from './discord-rcon.js';
 import DiscordRoundWinner from './discord-round-winner.js';
 import DiscordServerStatus from './discord-server-status.js';
@@ -22,7 +21,6 @@ const plugins = [
   DiscordAdminRequest,
   DiscordChat,
   DiscordDebug,
-  DiscordPlaceholder,
   DiscordRcon,
   DiscordRoundWinner,
   DiscordServerStatus,
