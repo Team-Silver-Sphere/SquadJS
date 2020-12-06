@@ -264,6 +264,8 @@ export default class SquadServer extends EventEmitter {
         ...oldPlayerInfo[player.steamID],
         ...player
       }));
+
+      this.emit('UPDATED_PLAYER_INFORMATION');
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update player list.', err);
     }
@@ -289,6 +291,8 @@ export default class SquadServer extends EventEmitter {
       }
 
       this.nextLayer = layerInfo.nextLayer;
+
+      this.emit('UPDATED_LAYER_INFORMATION');
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update layer information.', err);
     }
@@ -325,6 +329,8 @@ export default class SquadServer extends EventEmitter {
 
       this.matchTimeout = parseFloat(data.raw.rules.MatchTimeout_f);
       this.gameVersion = data.raw.version;
+
+      this.emit('UPDATED_A2S_INFORMATION');
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update A2S information.', err);
     }

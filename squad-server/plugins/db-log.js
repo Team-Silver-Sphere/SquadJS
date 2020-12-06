@@ -57,13 +57,44 @@ export default class DBLog extends BasePlugin {
       }
     });
 
+    this.createModel('PlayerCount', {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      time: {
+        type: DataTypes.DATE,
+        notNull: true,
+        defaultValue: DataTypes.NOW
+      },
+      players: {
+        type: DataTypes.INTEGER,
+        notNull: true
+      },
+      publicQueue: {
+        type: DataTypes.INTEGER,
+        notNull: true
+      },
+      reserveQueue: {
+        type: DataTypes.INTEGER,
+        notNull: true
+      }
+    });
+
     this.models.Server.hasMany(this.models.TickRate, {
+      foreignKey: { name: 'server', allowNull: false },
+      onDelete: 'CASCADE'
+    });
+
+    this.models.Server.hasMany(this.models.PlayerCount, {
       foreignKey: { name: 'server', allowNull: false },
       onDelete: 'CASCADE'
     });
 
     await this.models.Server.sync();
     await this.models.TickRate.sync();
+    await this.models.PlayerCount.sync();
 
     let server = await this.models.Server.findOne({ id: this.server.id });
     if (server === null) {
@@ -74,7 +105,9 @@ export default class DBLog extends BasePlugin {
   }
 
   createModel(name, schema) {
-    this.models[name] = this.options.database.define(`DBLog_${name}`, schema);
+    this.models[name] = this.options.database.define(`DBLog_${name}`, schema, {
+      timestamps: false
+    });
   }
 
   constructor(server, options, connectors) {
@@ -83,14 +116,17 @@ export default class DBLog extends BasePlugin {
     this.models = {};
 
     this.onTickRate = this.onTickRate.bind(this);
+    this.onUpdatedA2SInformation = this.onUpdatedA2SInformation.bind(this);
   }
 
   mount() {
     this.server.on('TICK_RATE', this.onTickRate);
+    this.server.on('UPDATED_A2S_INFORMATION', this.onUpdatedA2SInformation);
   }
 
   unmount() {
     this.server.removeEventListener('TICK_RATE', this.onTickRate);
+    this.server.removeEventListener('UPDATED_A2S_INFORMATION', this.onTickRate);
   }
 
   async onTickRate(info) {
@@ -98,6 +134,15 @@ export default class DBLog extends BasePlugin {
       server: this.server.id,
       time: info.time,
       tickRate: info.tickRate
+    });
+  }
+
+  async onUpdatedA2SInformation() {
+    await this.models.PlayerCount.create({
+      server: this.server.id,
+      players: this.server.a2sPlayerCount,
+      publicQueue: this.server.publicQueue,
+      reserveQueue: this.server.reserveQueue
     });
   }
 }
