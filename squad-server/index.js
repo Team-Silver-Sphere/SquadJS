@@ -137,11 +137,10 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('NEW_GAME', (data) => {
-      let layer;
-      if (data.layer) layer = this.squadLayers.getLayerByLayerName(data.layer);
-      else layer = this.squadLayers.getLayerByLayerClassname(data.layerClassname);
+      if (data.layer) data.layer = this.squadLayers.getLayerByLayerName(data.layer);
+      else data.layer = this.squadLayers.getLayerByLayerClassname(data.layerClassname);
 
-      this.layerHistory.unshift({ ...layer, time: data.time });
+      this.layerHistory.unshift({ ...data.layer, time: data.time });
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
 
       this.emit('NEW_GAME', data);
