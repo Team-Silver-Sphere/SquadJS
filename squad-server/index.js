@@ -19,6 +19,7 @@ export default class SquadServer extends EventEmitter {
     for (const option of ['host', 'queryPort'])
       if (!(option in options)) throw new Error(`${option} must be specified.`);
 
+    this.id = options.id;
     this.options = options;
 
     this.layerHistory = [];

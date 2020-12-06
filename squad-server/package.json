@@ -9,8 +9,14 @@
     "discord.js": "^12.3.1",
     "gamedig": "^2.0.20",
     "log-parser": "1.0.0",
-    "mysql": "^2.18.1",
+    "mariadb": "^2.5.1",
+    "mysql2": "^2.2.5",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
     "rcon": "1.0.0",
+    "sequelize": "^6.3.5",
+    "sqlite3": "^5.0.0",
+    "tedious": "^9.2.1",
     "tinygradient": "^1.1.2"
   },
   "exports": {

@@ -53,12 +53,12 @@
       }
     },
     "mysql": {
-      "connectionLimit": 10,
       "host": "host",
       "port": 3306,
-      "user": "squadjs",
+      "username": "squadjs",
       "password": "password",
-      "database": "squadjs"
+      "database": "squadjs",
+      "dialect": "mysql"
     }
   },
   "plugins": [
@@ -78,6 +78,12 @@
           "ignoreChats": []
         }
       ]
+    },
+    {
+      "plugin": "DBLog",
+      "enabled": true,
+      "database": "mysql",
+      "overrideServerID": null
     },
     {
       "plugin": "DiscordAdminBroadcast",

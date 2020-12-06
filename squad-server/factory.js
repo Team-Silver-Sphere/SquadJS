@@ -3,12 +3,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import Discord from 'discord.js';
-import mysql from 'mysql';
+import sequelize from 'sequelize';
 
 import Logger from 'core/logger';
 
 import SquadServer from './index.js';
 import plugins from './plugins/index.js';
+
+const { Sequelize } = sequelize;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -78,18 +80,20 @@ export default class SquadServerFactory {
   static async createConnector(server, type, connectorName, connectorConfig) {
     Logger.verbose('SquadServerFactory', 1, `Starting ${type} connector ${connectorName}...`);
 
+    if (type === 'squadlayerpool') {
+      return server.squadLayers[connectorConfig.type](connectorConfig.filter, connectorConfig.activeLayerFilter);
+    }
+
     if (type === 'discord') {
       const connector = new Discord.Client();
       await connector.login(connectorConfig);
       return connector;
     }
 
-    if (type === 'mysql') {
-      return mysql.createPool(connectorConfig);
-    }
-
-    if (type === 'squadlayerpool') {
-      return server.squadLayers[connectorConfig.type](connectorConfig.filter, connectorConfig.activeLayerFilter);
+    if (type === 'sequelize') {
+      const connector = new Sequelize(connectorConfig);
+      await connector.authenticate();
+      return connector;
     }
 
     throw new Error(`${type.connector} is an unsupported connector type.`);

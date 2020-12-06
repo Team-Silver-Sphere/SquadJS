@@ -218,6 +218,23 @@ The following is a list of plugins built into SquadJS, you can click their title
         </details>
 
 <details>
+          <summary>DBLog</summary>
+          <h2>DBLog</h2>
+          <p>The <code>DBLog</code> plugin will log server information to a Sequlize compatible DB.</p>
+          <h3>Options</h3>
+          <h4>database (Required)</h4>
+           <h6>Description</h6>
+           <p>The Sequelize connector to log server information to.</p>
+           <h6>Default</h6>
+           <pre><code>mysql</code></pre>
+<h4>overrideServerID</h4>
+           <h6>Description</h6>
+           <p>A overridden server ID.</p>
+           <h6>Default</h6>
+           <pre><code>null</code></pre>
+        </details>
+
+<details>
           <summary>DiscordAdminBroadcast</summary>
           <h2>DiscordAdminBroadcast</h2>
           <p>The <code>DiscordAdminBroadcast</code> plugin will send a copy of admin broadcasts made in game to a Discord channel.</p>
