@@ -19,7 +19,8 @@ export default class DiscordBasePlugin extends BasePlugin {
   }
 
   async sendDiscordMessage(message) {
-    if (typeof message === 'object' && 'embed' in message) message.embed.footer = { text: COPYRIGHT_MESSAGE };
+    if (typeof message === 'object' && 'embed' in message)
+      message.embed.footer = { text: COPYRIGHT_MESSAGE };
 
     await this.channel.send(message);
   }

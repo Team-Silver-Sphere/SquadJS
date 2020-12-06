@@ -72,7 +72,12 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
   }
 
   async onPlayerUnPossess(info) {
-    if (info.player === null || info.switchPossess === true || !(info.player.steamID in this.adminsInCam)) return;
+    if (
+      info.player === null ||
+      info.switchPossess === true ||
+      !(info.player.steamID in this.adminsInCam)
+    )
+      return;
 
     await this.sendDiscordMessage({
       embed: {

@@ -55,7 +55,7 @@ export default class SeedingMode extends BasePlugin {
   }
 
   mount() {
-    this.interval =  setInterval(this.broadcast, this.options.interval);
+    this.interval = setInterval(this.broadcast, this.options.interval);
   }
 
   unmount() {
@@ -63,10 +63,7 @@ export default class SeedingMode extends BasePlugin {
   }
 
   async broadcast() {
-    if (
-      this.server.a2sPlayerCount !== 0 &&
-      this.server.a2sPlayerCount < this.options.liveThreshold
-    )
+    if (this.server.a2sPlayerCount !== 0 && this.server.a2sPlayerCount < this.options.liveThreshold)
       await this.server.rcon.broadcast(this.options.seedingMessage);
     else if (
       this.server.a2sPlayerCount !== 0 &&

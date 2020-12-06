@@ -83,8 +83,7 @@ export default class DiscordRcon extends BasePlugin {
         if (!message.member._roles.includes(role)) continue;
 
         for (const allowedCommand of allowedCommands)
-          if (commandPrefix[1].toLowerCase() === allowedCommand.toLowerCase())
-            hasPermission = true;
+          if (commandPrefix[1].toLowerCase() === allowedCommand.toLowerCase()) hasPermission = true;
       }
 
       if (!hasPermission) {

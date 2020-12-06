@@ -52,7 +52,11 @@ export default class SquadServer extends EventEmitter {
   }
 
   async watch() {
-    Logger.verbose('SquadServer', 1, `Beginning to watch ${this.options.host}:${this.options.queryPort}...`);
+    Logger.verbose(
+      'SquadServer',
+      1,
+      `Beginning to watch ${this.options.host}:${this.options.queryPort}...`
+    );
     await this.squadLayers.pull();
 
     await this.rcon.connect();

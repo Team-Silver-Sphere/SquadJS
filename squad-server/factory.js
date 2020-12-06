@@ -41,7 +41,10 @@ export default class SquadServerFactory {
         if (!option.connector) continue;
 
         // check the connector is listed in the options
-        if (!(optionName in pluginConfig)) throw new Error(`${Plugin.name}: ${optionName} (${option.connector} connector) is missing.`);
+        if (!(optionName in pluginConfig))
+          throw new Error(
+            `${Plugin.name}: ${optionName} (${option.connector} connector) is missing.`
+          );
 
         // get the name of the connector
         const connectorName = pluginConfig[optionName];
@@ -50,17 +53,23 @@ export default class SquadServerFactory {
         if (connectors[connectorName]) continue;
 
         // create the connector
-        connectors[connectorName] = await SquadServerFactory.createConnector(server, option.connector, connectorName, config.connectors[connectorName])
+        connectors[connectorName] = await SquadServerFactory.createConnector(
+          server,
+          option.connector,
+          connectorName,
+          config.connectors[connectorName]
+        );
       }
     }
 
     // initialise plugins
     Logger.verbose('SquadServerFactory', 1, 'Initialising plugins...');
 
-    for(const pluginConfig of config.plugins) {
+    for (const pluginConfig of config.plugins) {
       if (!pluginConfig.enabled) continue;
 
-      if (!plugins[pluginConfig.plugin]) throw new Error(`Plugin ${pluginConfig.plugin} does not exist.`);
+      if (!plugins[pluginConfig.plugin])
+        throw new Error(`Plugin ${pluginConfig.plugin} does not exist.`);
 
       const Plugin = plugins[pluginConfig.plugin];
 
@@ -81,7 +90,10 @@ export default class SquadServerFactory {
     Logger.verbose('SquadServerFactory', 1, `Starting ${type} connector ${connectorName}...`);
 
     if (type === 'squadlayerpool') {
-      return server.squadLayers[connectorConfig.type](connectorConfig.filter, connectorConfig.activeLayerFilter);
+      return server.squadLayers[connectorConfig.type](
+        connectorConfig.filter,
+        connectorConfig.activeLayerFilter
+      );
     }
 
     if (type === 'discord') {
@@ -169,18 +181,18 @@ export default class SquadServerFactory {
            <p>${option.description}</p>
            <h6>Default</h6>
            <pre><code>${
-          typeof option.default === 'object'
-            ? JSON.stringify(option.default, null, 2)
-            : option.default
-        }</code></pre>`;
+             typeof option.default === 'object'
+               ? JSON.stringify(option.default, null, 2)
+               : option.default
+           }</code></pre>`;
 
         if (option.example)
           optionInfo += `<h6>Example</h6>
            <pre><code>${
-            typeof option.example === 'object'
-              ? JSON.stringify(option.example, null, 2)
-              : option.example
-          }</code></pre>`;
+             typeof option.example === 'object'
+               ? JSON.stringify(option.example, null, 2)
+               : option.example
+           }</code></pre>`;
 
         options.push(optionInfo);
       }

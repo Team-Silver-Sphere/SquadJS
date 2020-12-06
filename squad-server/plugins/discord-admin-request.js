@@ -70,7 +70,7 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
   }
 
   unmount() {
-    this.server.removeEventListener(`CHAT_COMMAND:${this.options.command}`, this.onChatCommand)
+    this.server.removeEventListener(`CHAT_COMMAND:${this.options.command}`, this.onChatCommand);
   }
 
   async onChatCommand(info) {
@@ -116,10 +116,7 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
       }
     };
 
-    if (
-      this.options.pingGroups.length > 0 &&
-      Date.now() - this.options.pingDelay > this.lastPing
-    ) {
+    if (this.options.pingGroups.length > 0 && Date.now() - this.options.pingDelay > this.lastPing) {
       message.content = this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');
       this.lastPing = Date.now();
     }

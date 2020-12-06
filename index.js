@@ -17,7 +17,7 @@ async function main() {
   await server.watch();
 
   // now mount the plugins
-  server.plugins.forEach(plugin => plugin.mount());
+  server.plugins.forEach((plugin) => plugin.mount());
 }
 
 main();

@@ -44,7 +44,7 @@ export default class DiscordServerStatus extends BasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
 
-   this.update = this.update.bind(this);
+    this.update = this.update.bind(this);
   }
 
   mount() {

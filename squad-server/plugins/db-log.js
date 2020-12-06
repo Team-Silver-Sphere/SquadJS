@@ -30,43 +30,37 @@ export default class DBLog extends BasePlugin {
   }
 
   async prepareToMount() {
-    this.createModel(
-      'Server',
-      {
-        id: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true
-        },
-        name: {
-          type: DataTypes.STRING
-        }
+    this.createModel('Server', {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      name: {
+        type: DataTypes.STRING
       }
-    );
+    });
 
-    this.createModel(
-      'TickRate',
-      {
-        id: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true
-        },
-        time: {
-          type: DataTypes.DATE,
-          notNull: true
-        },
-        tickRate: {
-          type: DataTypes.FLOAT,
-          notNull: true
-        }
+    this.createModel('TickRate', {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      time: {
+        type: DataTypes.DATE,
+        notNull: true
+      },
+      tickRate: {
+        type: DataTypes.FLOAT,
+        notNull: true
       }
-    );
+    });
 
-    this.models.Server.hasMany(
-      this.models.TickRate,
-      { foreignKey: { name: 'server', allowNull: false },  onDelete: 'CASCADE' }
-    );
+    this.models.Server.hasMany(this.models.TickRate, {
+      foreignKey: { name: 'server', allowNull: false },
+      onDelete: 'CASCADE'
+    });
 
     await this.models.Server.sync();
     await this.models.TickRate.sync();
@@ -96,10 +90,14 @@ export default class DBLog extends BasePlugin {
   }
 
   unmount() {
-    this.server.removeEventListener('TICK_RATE', this.onTickRate)
+    this.server.removeEventListener('TICK_RATE', this.onTickRate);
   }
 
   async onTickRate(info) {
-    await this.models.TickRate.create({ server: this.server.id, time: info.time, tickRate: info.tickRate});
+    await this.models.TickRate.create({
+      server: this.server.id,
+      time: info.time,
+      tickRate: info.tickRate
+    });
   }
 }

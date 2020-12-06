@@ -11,8 +11,12 @@ export default class BasePlugin {
         this.options[optionName] = connectors[this.rawOptions[optionName]];
       } else {
         if (option.required) {
-          if (!(optionName in this.rawOptions)) throw new Error(`${this.constructor.name}: ${optionName} is required but missing.`);
-          if (option.default === this.rawOptions[optionName]) throw new Error(`${this.constructor.name}: ${optionName} is required but is the default value.`);
+          if (!(optionName in this.rawOptions))
+            throw new Error(`${this.constructor.name}: ${optionName} is required but missing.`);
+          if (option.default === this.rawOptions[optionName])
+            throw new Error(
+              `${this.constructor.name}: ${optionName} is required but is the default value.`
+            );
         }
 
         this.options[optionName] = this.rawOptions[optionName] || option.default;

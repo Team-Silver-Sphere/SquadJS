@@ -39,7 +39,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
     this.onMessage = this.onMessage.bind(this);
   }
 
-  mount(){
+  mount() {
     this.options.discordClient.on('message', this.onMessage);
   }
 
@@ -69,6 +69,4 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
       message.reply('restarted the SquadJS LogParser subsystem.');
     }
   }
-
-
 }
