@@ -1,4 +1,5 @@
 import AutoTKWarn from './auto-tk-warn.js';
+import AutoKickUnassigned from './auto-kick-unassigned.js';
 import ChatCommands from './chat-commands.js';
 import DBLog from './db-log.js';
 import DiscordAdminBroadcast from './discord-admin-broadcast.js';
@@ -16,6 +17,7 @@ import TeamRandomizer from './team-randomizer.js';
 
 const plugins = [
   AutoTKWarn,
+  AutoKickUnassigned,
   ChatCommands,
   DBLog,
   DiscordAdminBroadcast,

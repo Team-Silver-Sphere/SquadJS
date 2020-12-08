@@ -15,6 +15,7 @@
   },
   "connectors": {
     "discord": "Discord Login Token",
+    "remoteAdminLists": [],
     "squadlayerpool": {
       "type": "buildPoolFromFilter",
       "filter": {
@@ -66,6 +67,20 @@
       "plugin": "AutoTKWarn",
       "enabled": true,
       "message": "Please apologise for ALL TKs in ALL chat!"
+    },
+    {
+      "plugin": "AutoKickUnassigned",
+      "enabled": true,
+      "adminList": "remoteAdminLists",
+      "warningMessage": "Join a squad, you are are unassigned and will be kicked",
+      "kickMessage": "Unassigned - automatically removed",
+      "frequencyOfWarnings": 30,
+      "unassignedTimer": 6,
+      "playerThreshold": 93,
+      "queueThreshold": -1,
+      "roundStartDelay": 15,
+      "ignoreAdmins": false,
+      "ignoreWhitelist": false
     },
     {
       "plugin": "ChatCommands",
