@@ -3,16 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "exports": {
-    "./squad-layers": "./squad-layers/index.js",
-
-    "./utils/print-logo": "./utils/print-logo.js",
-    "./utils/scbl": "./utils/scbl.js",
-    "./utils/sleep": "./utils/sleep.js",
-
-    "./constants": "./constants.js"
+    "./constants": "./constants.js",
+    "./logger": "./logger.js"
   },
   "dependencies": {
-    "didyoumean": "^1.2.1",
-    "graphql-request": "^1.8.2"
+    "chalk": "^4.1.0"
   }
 }

@@ -1,0 +1,77 @@
+{
+  "server": {
+    "id": 1,
+
+    "host": "xxx.xxx.xxx.xxx",
+    "queryPort": 27165,
+    "rconPort": 21114,
+    "rconPassword": "password",
+    "rconVerbose": true,
+
+    "logReaderMode": "tail",
+    "logDir": "C:/path/to/squad/log/folder",
+    "ftpPort": 21,
+    "ftpUser": "FTP Username",
+    "ftpPassword": "FTP Password",
+    "ftpUseListForSize": false,
+    "adminLists": []
+  },
+  "connectors": {
+    "discord": "Discord Login Token",
+    "squadlayerpool": {
+      "type": "buildPoolFromFilter",
+      "filter": {
+        "whitelistedLayers": null,
+        "blacklistedLayers": null,
+        "whitelistedMaps": null,
+        "blacklistedMaps": null,
+        "whitelistedGamemodes": null,
+        "blacklistedGamemodes": ["Training"],
+        "flagCountMin": null,
+        "flagCountMax": null,
+        "hasCommander": null,
+        "hasTanks": null,
+        "hasHelicopters": null
+      },
+      "activeLayerFilter": {
+        "historyResetTime": 18000000,
+        "layerHistoryTolerance": 8,
+        "mapHistoryTolerance": 4,
+        "gamemodeHistoryTolerance": {
+          "Invasion": 4
+        },
+        "gamemodeRepetitiveTolerance": {
+          "Invasion": 4
+        },
+        "playerCountComplianceEnabled": true,
+        "factionComplianceEnabled": true,
+        "factionHistoryTolerance": {
+          "RUS": 4
+        },
+        "factionRepetitiveTolerance": {
+          "RUS": 4
+        }
+      }
+    },
+    "mysql": {
+      "host": "host",
+      "port": 3306,
+      "username": "squadjs",
+      "password": "password",
+      "database": "squadjs",
+      "dialect": "mysql"
+    }
+  },
+  "plugins": [],
+  "loggerVerboseness": {
+    "SquadServer": 1,
+    "LogParser": 1,
+    "RCON": 1
+  },
+  "loggerColors": {
+    "SquadServer": "yellowBright",
+    "SquadServerFactory": "yellowBright",
+    "LogParser": "blueBright",
+    "RCON": "redBright"
+  }
+}

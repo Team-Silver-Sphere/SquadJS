@@ -5,17 +5,19 @@
     "queryPort": 27165,
     "rconPort": 21114,
     "rconPassword": "password",
+    "rconVerbose": true,
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
     "ftpPort": 21,
     "ftpUser": "FTP Username",
     "ftpPassword": "FTP Password",
-    "rconVerbose": true
+    "ftpUseListForSize": false,
+    "adminLists": []
   },
   "connectors": {
     "discord": "Discord Login Token",
-    "layerFilter": {
-      "type": "buildFromFilter",
+    "squadlayerpool": {
+      "type": "buildPoolFromFilter",
       "filter": {
         "whitelistedLayers": null,
         "blacklistedLayers": null,
@@ -52,26 +54,38 @@
       }
     },
     "mysql": {
-      "connectionLimit": 10,
       "host": "host",
       "port": 3306,
-      "user": "squadjs",
+      "username": "squadjs",
       "password": "password",
-      "database": "squadjs"
+      "database": "squadjs",
+      "dialect": "mysql"
     }
   },
   "plugins": [
     {
-      "plugin": "auto-tk-warn",
+      "plugin": "AutoKickUnassigned",
+      "enabled": true,
+      "warningMessage": "Join a squad, you are are unassigned and will be kicked",
+      "kickMessage": "Unassigned - automatically removed",
+      "frequencyOfWarnings": 30,
+      "unassignedTimer": 6,
+      "playerThreshold": 93,
+      "roundStartDelay": 15,
+      "ignoreAdmins": false,
+      "ignoreWhitelist": false
+    },
+    {
+      "plugin": "AutoTKWarn",
       "enabled": true,
       "message": "Please apologise for ALL TKs in ALL chat!"
     },
     {
-      "plugin": "chat-commands",
+      "plugin": "ChatCommands",
       "enabled": true,
       "commands": [
         {
-          "command": "!squadjs",
+          "command": "squadjs",
           "type": "warn",
           "response": "This server is powered by SquadJS.",
           "ignoreChats": []
@@ -79,137 +93,115 @@
       ]
     },
     {
-      "plugin": "discord-admin-broadcast",
-      "enabled": true,
+      "plugin": "DBLog",
+      "enabled": false,
+      "database": "mysql",
+      "overrideServerID": null
+    },
+    {
+      "plugin": "DiscordAdminBroadcast",
+      "enabled": false,
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867
     },
     {
-      "plugin": "discord-admin-cam-logs",
-      "enabled": true,
+      "plugin": "DiscordAdminCamLogs",
+      "enabled": false,
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867
     },
     {
-      "plugin": "discord-chat",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "ignoreChats": [
-        "ChatSquad"
-      ],
-      "chatColors": {},
-      "color": 16761867
-    },
-    {
-      "plugin": "discord-admin-request",
+      "plugin": "DiscordAdminRequest",
       "enabled": true,
       "discordClient": "discord",
       "channelID": "",
       "ignoreChats": [],
       "ignorePhrases": [],
-      "adminPrefix": "!admin",
+      "command": "admin",
       "pingGroups": [],
       "pingDelay": 60000,
       "color": 16761867
     },
     {
-      "plugin": "discord-debug",
+      "plugin": "DiscordChat",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "chatColors": {},
+      "color": 16761867,
+      "ignoreChats": [
+        "ChatSquad"
+      ]
+    },
+    {
+      "plugin": "DiscordDebug",
       "enabled": false,
       "discordClient": "discord",
       "channelID": "",
       "events": []
     },
     {
-      "plugin": "discord-rcon",
-      "enabled": true,
+      "plugin": "DiscordRcon",
+      "enabled": false,
       "discordClient": "discord",
       "channelID": "",
+      "permissions": {},
       "prependAdminNameInBroadcast": false
     },
     {
-      "plugin": "discord-round-winner",
+      "plugin": "DiscordRoundWinner",
       "enabled": true,
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867
     },
     {
-      "plugin": "discord-server-status",
-      "enabled": true,
+      "plugin": "DiscordServerStatus",
+      "enabled": false,
       "discordClient": "discord",
-      "color": 16761867,
-      "colorGradient": true,
-      "connectLink": true,
-      "command": "!server",
+      "messageIDs": [],
+      "updateInterval": 60000,
       "disableStatus": false
     },
     {
-      "plugin": "discord-teamkill",
-      "enabled": true,
+      "plugin": "DiscordSubsystemRestarter",
+      "enabled": false,
       "discordClient": "discord",
-      "channelID": "",
-      "teamkillColor": 16761867,
-      "suicideColor": 16761867,
-      "ignoreSuicides": false,
-      "disableSCBL": false
+      "role": ""
     },
     {
-      "plugin": "intervalled-broadcasts",
+      "plugin": "IntervalledBroadcasts",
       "enabled": false,
-      "broadcasts": [
-        "Server powered by SquadJS."
-      ],
+      "broadcasts": [],
       "interval": 300000
     },
     {
-      "plugin": "mapvote-123",
-      "enabled": false,
-      "minVoteCount": null
-    },
-    {
-      "plugin": "mapvote-did-you-mean",
-      "enabled": false,
-      "layerFilter": "layerFilter",
-      "alwaysOn": true,
-      "minPlayerCount": null,
-      "minVoteCount": null
-    },
-    {
-      "plugin": "mysql-log",
-      "enabled": false,
-      "mysqlPool": "mysql",
-      "overrideServerID": null
-    },
-    {
-      "plugin": "seeding-message",
+      "plugin": "SeedingMode",
       "enabled": true,
-      "mode": "interval",
       "interval": 150000,
-      "delay": 45000,
       "seedingThreshold": 50,
       "seedingMessage": "Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!",
       "liveEnabled": true,
-      "liveThreshold": 2,
-      "liveMessage": "Live"
+      "liveThreshold": 52,
+      "liveMessage": "Live!"
     },
     {
-      "plugin": "skipmap",
-      "enabled": false,
-      "command": "!skipmap",
-      "voteDuration": 300000,
-      "startTimer": 900000,
-      "endTimer": 1800000,
-      "pastVoteTimer": 600000,
-      "minimumVotes": 20,
-      "reminderInterval": 120000
-    },
-    {
-      "plugin": "team-randomizer",
+      "plugin": "TeamRandomizer",
       "enabled": true,
-      "command": "!randomize"
+      "command": "randomize"
     }
-  ]
+  ],
+  "loggerVerboseness": {
+    "SquadServer": 1,
+    "LogParser": 1,
+    "RCON": 1
+  },
+  "loggerColors": {
+    "SquadServer": "yellowBright",
+    "SquadServerFactory": "yellowBright",
+    "LogParser": "blueBright",
+    "RCON": "redBright"
+  }
 }

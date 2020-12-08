@@ -1,6 +1,6 @@
 {
   "name": "SquadJS",
-  "version": "1.4.8",
+  "version": "2.0.0-beta1",
   "repository": "https://github.com/Thomas-Smyth/SquadJS.git",
   "author": "Thomas Smyth <https://github.com/Thomas-Smyth>",
   "license": "BSL-1.0",
@@ -8,20 +8,19 @@
   "workspaces": [
     "assets",
     "core",
-    "factory",
-    "plugins",
+    "log-parser",
+    "rcon",
     "squad-server"
   ],
   "scripts": {
     "lint": "eslint --fix . && prettier --write \"./**/*.js\"",
-    "build-config": "node factory/build-config.js",
-    "build-readme": "node factory/build-readme.js",
-    "build-all": "node factory/build-config.js && node factory/build-readme.js"
+    "build-config": "node squad-server/scripts/build-config-file.js",
+    "build-readme": "node squad-server/scripts/build-readme.js",
+    "build-all": "node squad-server/scripts/build-config-file.js && node squad-server/scripts/build-readme.js"
   },
   "type": "module",
   "dependencies": {
-    "core": "1.0.0",
-    "factory": "1.0.0"
+    "squad-server": "1.0.0"
   },
   "devDependencies": {
     "eslint": "^7.6.0",
