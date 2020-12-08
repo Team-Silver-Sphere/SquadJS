@@ -21,11 +21,11 @@ export default class SquadServerFactory {
     }
 
     // setup logging levels
-    for (const [module, verboseness] of Object.entries(config.loggerVerboseness)) {
+    for (const [module, verboseness] of Object.entries(config.logger.verboseness)) {
       Logger.setVerboseness(module, verboseness);
     }
 
-    for (const [module, color] of Object.entries(config.loggerColors)) {
+    for (const [module, color] of Object.entries(config.logger.colors)) {
       Logger.setColor(module, color);
     }
 
