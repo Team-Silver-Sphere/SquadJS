@@ -196,7 +196,7 @@ export default class AutoKickUnassigned extends BasePlugin {
       if (!(tracker.player.steamID in this.trackedPlayers)) return;
 
       this.server.rcon.kick(player.steamID, this.options.kickMessage);
-      this.server.emit('PLAYER_AUTO_KICKED', tracker);
+      this.server.emit('PLAYER_AUTO_KICKED',  {player:tracker.player, warnings:tracker.warnings, startTime:tracker.startTime});
       Logger.verbose('AutoKick', 1, `Kicked: ${tracker.player.name}`);
       this.untrackPlayer(tracker.player.steamID);
     }, this.kickTimeout);
