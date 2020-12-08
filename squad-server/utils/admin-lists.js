@@ -22,13 +22,13 @@ export default async function fetchAdminLists(adminLists) {
         case 'remote': {
           const resp = await axios({
             method: 'GET',
-            url: `${list.loc}`
+            url: `${list.source}`
           });
           data = resp.data;
           break;
         }
         case 'local': {
-          const listPath = path.resolve(__dirname, '../../../', list.loc);
+          const listPath = path.resolve(__dirname, '../../../', list.source);
           if (!fs.existsSync(listPath)) throw new Error(`Could not find Admin List at ${listPath}`);
           data = fs.readFileSync(listPath, 'utf8');
           break;
@@ -69,7 +69,7 @@ export default async function fetchAdminLists(adminLists) {
       Logger.verbose(
         'SquadServer',
         1,
-        `Error fetching ${list.type} admin list: ${list.loc}`,
+        `Error fetching ${list.type} admin list: ${list.source}`,
         error
       );
     }
