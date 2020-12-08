@@ -62,6 +62,7 @@
       "dialect": "mysql"
     }
   },
+  "plugins": [],
   "logger": {
     "verboseness": {
       "SquadServer": 1,
@@ -74,4 +75,5 @@
       "LogParser": "blueBright",
       "RCON": "redBright"
     }
+  }
 }
