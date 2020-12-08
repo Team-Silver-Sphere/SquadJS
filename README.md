@@ -677,14 +677,11 @@ function aPluginToLogPlayerCountEvery60Seconds(server){
 A more common approach in this version of SquadJS is to react to an event happening:
 ```js
 function aPluginToLogTeamkills(server){
-  server.on(TEAMKILL, info => {
+  server.on('TEAMKILL', info => {
     console.log(info);
   });
 }
 ```
-
-A complete list of events that you can listen for and the information included within each is found [here](https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/events.js).
-
 Various actions can be completed in a plugin. Most of these will involve outside system, e.g. Discord.js to run a Discord bot, so they are not documented here. However, you may run RCON commands using `server.rcon.execute("Command");`.
 
 If you're struggling to create a plugin, the existing [`plugins`](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins) are a good place to go for examples or feel free to ask for help in the Squad RCON Discord. 
@@ -701,12 +698,12 @@ Below is a list of scenarios we know may cause some information to be inaccurate
 
 ## Credits
 SquadJS would not be possible without the support of so many individuals and organisations. My thanks goes out to:
+ * [SquadJS's contributors](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors).
+ * [My GitHub sponsors](https://github.com/sponsors/Thomas-Smyth)!
  * subtlerod for proposing the initial log parsing idea, helping to design the log parsing process and for providing multiple servers to test with.
  * Fourleaf, Mex and various other members of ToG / ToG-L for helping to stage logs and participate in small scale tests.
- * The Coalition community, including those that participate in Wednesday Fight Night, for participating in larger scale tests and for providing feedback on plugins.
- * My GitHub sponsors!
- * Everyone in the Squad RCON Discord and others who have submitted bug reports, suggestions and feedback.
- * iDronee for providing Linux Squad server logs to ensure log parsing regexes support the OS.
+ * Various Squad servers/communities for participating in larger scale tests and for providing feedback on plugins.
+ * Everyone in the Squad RCON Discord and others who have submitted bug reports, suggestions, feedback and provided logs.
 
 ## License
 ```
