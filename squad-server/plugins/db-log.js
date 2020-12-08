@@ -261,7 +261,7 @@ export default class DBLog extends BasePlugin {
         type: DataTypes.BOOLEAN
       },
       reviverName: {
-        type: DataTypes.BOOLEAN
+        type: DataTypes.STRING
       },
       reviverTeamID: {
         type: DataTypes.INTEGER
