@@ -64,7 +64,7 @@ The following section of the configuration contains information about your Squad
  * `rconPort` - The RCON port of the server.
  * `rconPassword` - The RCON password of the server.
  * `logReaderMode` - `tail` will read from a local log file. `ftp` will read from a remote log file using the FTP protocol.
- * `logDir` - The folder where your Squad logs are saved. Most likely will be `C:/servers/squad_server/SquadGame/Saved/Logs`
+ * `logDir` - The folder where your Squad logs are saved. Most likely will be `C:/servers/squad_server/SquadGame/Saved/Logs`.
  * `ftpPort` - The FTP port of the server. Only required for `ftp` `logReaderMode`.
  * `ftpUser` - The FTP user of the server. Only required for `ftp` `logReaderMode`.
  * `ftpPassword` - The FTP password of the server. Only required for `ftp` `logReaderMode`.
