@@ -55,6 +55,39 @@ export default class DBLog extends BasePlugin {
       }
     });
 
+    this.createModel('Match', {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      dlc: {
+        type: DataTypes.STRING
+      },
+      mapClassname: {
+        type: DataTypes.STRING
+      },
+      layerClassname: {
+        type: DataTypes.STRING
+      },
+      map: {
+        type: DataTypes.STRING
+      },
+      layer: {
+        type: DataTypes.STRING
+      },
+      startTime: {
+        type: DataTypes.DATE,
+        notNull: true
+      },
+      endTime: {
+        type: DataTypes.DATE
+      },
+      winner: {
+        type: DataTypes.STRING
+      }
+    });
+
     this.createModel('TickRate', {
       id: {
         type: DataTypes.INTEGER,
@@ -93,39 +126,6 @@ export default class DBLog extends BasePlugin {
       reserveQueue: {
         type: DataTypes.INTEGER,
         notNull: true
-      }
-    });
-
-    this.createModel('Match', {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-      },
-      dlc: {
-        type: DataTypes.STRING
-      },
-      mapClassname: {
-        type: DataTypes.STRING
-      },
-      layerClassname: {
-        type: DataTypes.STRING
-      },
-      map: {
-        type: DataTypes.STRING
-      },
-      layer: {
-        type: DataTypes.STRING
-      },
-      startTime: {
-        type: DataTypes.DATE,
-        notNull: true
-      },
-      endTime: {
-        type: DataTypes.DATE
-      },
-      winner: {
-        type: DataTypes.STRING
       }
     });
 
@@ -336,6 +336,16 @@ export default class DBLog extends BasePlugin {
       onDelete: 'CASCADE'
     });
 
+    this.models.Match.hasMany(this.models.TickRate, {
+      foreignKey: { name: 'match' },
+      onDelete: 'CASCADE'
+    });
+
+    this.models.Match.hasMany(this.models.PlayerCount, {
+      foreignKey: { name: 'match' },
+      onDelete: 'CASCADE'
+    });
+
     this.models.Match.hasMany(this.models.Wound, {
       foreignKey: { name: 'match' },
       onDelete: 'CASCADE'
@@ -367,9 +377,9 @@ export default class DBLog extends BasePlugin {
 
   async prepareToMount() {
     await this.models.Server.sync();
+    await this.models.Match.sync();
     await this.models.TickRate.sync();
     await this.models.PlayerCount.sync();
-    await this.models.Match.sync();
     await this.models.SteamUser.sync();
     await this.models.Wound.sync();
     await this.models.Death.sync();
@@ -406,6 +416,7 @@ export default class DBLog extends BasePlugin {
   async onTickRate(info) {
     await this.models.TickRate.create({
       server: this.options.overrideServerID || this.server.id,
+      match: this.match ? this.match.id : null,
       time: info.time,
       tickRate: info.tickRate
     });
@@ -414,6 +425,7 @@ export default class DBLog extends BasePlugin {
   async onUpdatedA2SInformation() {
     await this.models.PlayerCount.create({
       server: this.options.overrideServerID || this.server.id,
+      match: this.match ? this.match.id : null,
       players: this.server.a2sPlayerCount,
       publicQueue: this.server.publicQueue,
       reserveQueue: this.server.reserveQueue
