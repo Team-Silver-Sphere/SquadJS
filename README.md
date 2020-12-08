@@ -22,6 +22,8 @@
 SquadJS is a scripting framework, designed for Squad servers, that aims to handle all communication and data collection to and from the servers. Using SquadJS as the base to any of your scripting projects allows you to easily write complex plugins without having to worry about the hassle of RCON or log parsing. However, for your convenience SquadJS comes shipped with multiple plugins already built for you allowing you to experience the power of SquadJS right away.
 
 ## Using SquadJS
+SquadJS relies on being able to access the Squad server log directory in order to parse logs live to collect information. Thus, SquadJS must be hosted on the same server box as your Squad server or be connected to your Squad server via FTP.
+
 ### Prerequisites
  * Git
  * [Node.js](https://nodejs.org/en/) (Current) - [Download](https://nodejs.org/en/)
