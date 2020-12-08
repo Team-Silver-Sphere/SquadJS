@@ -29,23 +29,33 @@ export default class DiscordAdminBroadcast extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  constructor(server, options, connectors) {
+    super(server, options, connectors);
 
-    this.server.on('ADMIN_BROADCAST', async (info) => {
-      await this.sendDiscordMessage({
-        embed: {
-          title: 'Admin Broadcast',
-          color: this.options.color,
-          fields: [
-            {
-              name: 'Message',
-              value: `${info.message}`
-            }
-          ],
-          timestamp: info.time.toISOString()
-        }
-      });
+    this.onAdminBroadcast = this.onAdminBroadcast.bind(this);
+  }
+
+  async mount() {
+    this.server.on('ADMIN_BROADCAST', this.onAdminBroadcast);
+  }
+
+  async unmount() {
+    this.server.removeEventListener('ADMIN_BROADCAST', this.onAdminBroadcast);
+  }
+
+  async onAdminBroadcast(info) {
+    await this.sendDiscordMessage({
+      embed: {
+        title: 'Admin Broadcast',
+        color: this.options.color,
+        fields: [
+          {
+            name: 'Message',
+            value: `${info.message}`
+          }
+        ],
+        timestamp: info.time.toISOString()
+      }
     });
   }
 }

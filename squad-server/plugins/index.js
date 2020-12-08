@@ -1,12 +1,12 @@
 import AutoTKWarn from './auto-tk-warn.js';
 import AutoKickUnassigned from './auto-kick-unassigned.js';
 import ChatCommands from './chat-commands.js';
+import DBLog from './db-log.js';
 import DiscordAdminBroadcast from './discord-admin-broadcast.js';
 import DiscordAdminCamLogs from './discord-admin-cam-logs.js';
 import DiscordAdminRequest from './discord-admin-request.js';
 import DiscordChat from './discord-chat.js';
 import DiscordDebug from './discord-debug.js';
-import DiscordPlaceholder from './discord-placeholder.js';
 import DiscordRcon from './discord-rcon.js';
 import DiscordRoundWinner from './discord-round-winner.js';
 import DiscordServerStatus from './discord-server-status.js';
@@ -19,12 +19,12 @@ const plugins = [
   AutoTKWarn,
   AutoKickUnassigned,
   ChatCommands,
+  DBLog,
   DiscordAdminBroadcast,
   DiscordAdminCamLogs,
   DiscordAdminRequest,
   DiscordChat,
   DiscordDebug,
-  DiscordPlaceholder,
   DiscordRcon,
   DiscordRoundWinner,
   DiscordServerStatus,

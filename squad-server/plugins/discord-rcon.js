@@ -47,44 +47,53 @@ export default class DiscordRcon extends BasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  constructor(server, options, connectors) {
+    super(server, options, connectors);
 
-    this.options.discordClient.on('message', async (message) => {
-      // check the author of the message is not a bot and that the channel is the RCON console channel
-      if (message.author.bot || message.channel.id !== this.channelID) return;
+    this.onMessage = this.onMessage.bind(this);
+  }
 
-      let command = message.content;
+  async mount() {
+    this.options.discordClient.on('message', this.onMessage);
+  }
 
-      // write admin's name into broadcast command if prependAdminNameInBroadcast is enabled
-      if (this.options.prependAdminNameInBroadcast)
-        command = command.replace(
-          /^AdminBroadcast /i,
-          `AdminBroadcast ${message.member.displayName}: `
-        );
+  async unmount() {
+    this.options.discordClient.removeEventListener('message', this.onMessage);
+  }
 
-      // check the admin has permissions
-      if (Object.keys(this.options.permissions).length !== 0) {
-        const commandPrefix = command.match(/([^ ]+)/);
+  async onMessage(message) {
+    // check the author of the message is not a bot and that the channel is the RCON console channel
+    if (message.author.bot || message.channel.id !== this.options.channelID) return;
 
-        let hasPermission = false;
-        for (const [role, allowedCommands] of Object.entries(this.options.permissions)) {
-          if (!message.member._roles.includes(role)) continue;
+    let command = message.content;
 
-          for (const allowedCommand of allowedCommands)
-            if (commandPrefix[1].toLowerCase() === allowedCommand.toLowerCase())
-              hasPermission = true;
-        }
+    // write admin's name into broadcast command if prependAdminNameInBroadcast is enabled
+    if (this.options.prependAdminNameInBroadcast)
+      command = command.replace(
+        /^AdminBroadcast /i,
+        `AdminBroadcast ${message.member.displayName}: `
+      );
 
-        if (!hasPermission) {
-          await message.reply('you do not have permission to run that command.');
-          return;
-        }
+    // check the admin has permissions
+    if (Object.keys(this.options.permissions).length !== 0) {
+      const commandPrefix = command.match(/([^ ]+)/);
+
+      let hasPermission = false;
+      for (const [role, allowedCommands] of Object.entries(this.options.permissions)) {
+        if (!message.member._roles.includes(role)) continue;
+
+        for (const allowedCommand of allowedCommands)
+          if (commandPrefix[1].toLowerCase() === allowedCommand.toLowerCase()) hasPermission = true;
       }
 
-      // execute command and print response
-      await this.respondToMessage(message, await this.server.rcon.execute(command));
-    });
+      if (!hasPermission) {
+        await message.reply('you do not have permission to run that command.');
+        return;
+      }
+    }
+
+    // execute command and print response
+    await this.respondToMessage(message, await this.server.rcon.execute(command));
   }
 
   async respondToMessage(message, response) {

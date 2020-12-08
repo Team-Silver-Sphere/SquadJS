@@ -33,30 +33,40 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  constructor(server, options, connectors) {
+    super(server, options, connectors);
 
-    this.options.discordClient.on('message', async (message) => {
-      // check the author of the message is not a bot
-      if (message.author.bot) return;
+    this.onMessage = this.onMessage.bind(this);
+  }
 
-      if (message.content.match(/!squadjs restartsubsystem rcon/i)) {
-        if (!message.member._roles.includes(this.options.role)) {
-          message.reply('you do not have permission to do that.');
-        }
+  async mount() {
+    this.options.discordClient.on('message', this.onMessage);
+  }
 
-        await this.server.restartRCON();
-        message.reply('restarted the SquadJS RCON subsystem.');
+  async unmount() {
+    this.options.discordClient.removeEventListener('message', this.onMessage);
+  }
+
+  async onMessage(message) {
+    // check the author of the message is not a bot
+    if (message.author.bot) return;
+
+    if (message.content.match(/!squadjs restartsubsystem rcon/i)) {
+      if (!message.member._roles.includes(this.options.role)) {
+        message.reply('you do not have permission to do that.');
       }
 
-      if (message.content.match(/!squadjs restartsubsystem logparser/i)) {
-        if (!message.member._roles.includes(this.options.role)) {
-          message.reply('you do not have permission to do that.');
-        }
+      await this.server.restartRCON();
+      message.reply('restarted the SquadJS RCON subsystem.');
+    }
 
-        await this.server.restartLogParser();
-        message.reply('restarted the SquadJS LogParser subsystem.');
+    if (message.content.match(/!squadjs restartsubsystem logparser/i)) {
+      if (!message.member._roles.includes(this.options.role)) {
+        message.reply('you do not have permission to do that.');
       }
-    });
+
+      await this.server.restartLogParser();
+      message.reply('restarted the SquadJS LogParser subsystem.');
+    }
   }
 }

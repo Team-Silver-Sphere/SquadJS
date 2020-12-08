@@ -26,72 +26,85 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
     };
   }
 
-  constructor(server, options, optionsRaw) {
-    super(server, options, optionsRaw);
+  constructor(server, options, connectors) {
+    super(server, options, connectors);
 
     this.adminsInCam = {};
 
-    this.server.on('PLAYER_POSSESS', async (info) => {
-      if (info.player === null || info.possessClassname !== 'CameraMan') return;
+    this.onPlayerPossess = this.onPlayerPossess.bind(this);
+    this.onPlayerUnPossess = this.onPlayerUnPossess.bind(this);
+  }
 
-      this.adminsInCam[info.player.steamID] = info.time;
+  async mount() {
+    this.server.on('PLAYER_POSSESS', this.onPlayerPossess);
+    this.server.on('PLAYER_UNPOSSESS', this.onPlayerUnPossess);
+  }
 
-      await this.sendDiscordMessage({
-        embed: {
-          title: `Admin Entered Admin Camera`,
-          color: this.options.color,
-          fields: [
-            {
-              name: "Admin's Name",
-              value: info.player.name,
-              inline: true
-            },
-            {
-              name: "Admin's SteamID",
-              value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
-              inline: true
-            }
-          ],
-          timestamp: info.time.toISOString()
-        }
-      });
+  async unmount() {
+    this.server.removeEventListener('PLAYER_POSSESS', this.onPlayerPossess);
+    this.server.removeEventListener('PLAYER_UNPOSSESS', this.onPlayerUnPossess);
+  }
+
+  async onPlayerPossess(info) {
+    if (info.player === null || info.possessClassname !== 'CameraMan') return;
+
+    this.adminsInCam[info.player.steamID] = info.time;
+
+    await this.sendDiscordMessage({
+      embed: {
+        title: `Admin Entered Admin Camera`,
+        color: this.options.color,
+        fields: [
+          {
+            name: "Admin's Name",
+            value: info.player.name,
+            inline: true
+          },
+          {
+            name: "Admin's SteamID",
+            value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+            inline: true
+          }
+        ],
+        timestamp: info.time.toISOString()
+      }
+    });
+  }
+
+  async onPlayerUnPossess(info) {
+    if (
+      info.player === null ||
+      info.switchPossess === true ||
+      !(info.player.steamID in this.adminsInCam)
+    )
+      return;
+
+    await this.sendDiscordMessage({
+      embed: {
+        title: `Admin Left Admin Camera`,
+        color: this.options.color,
+        fields: [
+          {
+            name: "Admin's Name",
+            value: info.player.name,
+            inline: true
+          },
+          {
+            name: "Admin's SteamID",
+            value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+            inline: true
+          },
+          {
+            name: 'Time in Admin Camera',
+            value: `${Math.round(
+              (info.time.getTime() - this.adminsInCam[info.player.steamID].getTime()) / 60000
+            )} mins`
+          }
+        ],
+        timestamp: info.time.toISOString()
+      }
     });
 
-    this.server.on('PLAYER_UNPOSSESS', async (info) => {
-      if (
-        info.player === null ||
-        info.switchPossess === true ||
-        !(info.player.steamID in this.adminsInCam)
-      )
-        return;
-
-      await this.sendDiscordMessage({
-        embed: {
-          title: `Admin Left Admin Camera`,
-          color: this.options.color,
-          fields: [
-            {
-              name: "Admin's Name",
-              value: info.player.name,
-              inline: true
-            },
-            {
-              name: "Admin's SteamID",
-              value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
-              inline: true
-            },
-            {
-              name: 'Time in Admin Camera',
-              value: `${Math.round(
-                (info.time.getTime() - this.adminsInCam[info.player.steamID].getTime()) / 60000
-              )} mins`
-            }
-          ],
-          timestamp: info.time.toISOString()
-        }
-      });
-
-      delete this.adminsInCam[info.player.steamID];
-    });
+    delete this.adminsInCam[info.player.steamID];
   }
 }
