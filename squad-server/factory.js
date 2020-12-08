@@ -16,9 +16,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default class SquadServerFactory {
   static async buildFromConfig(config) {
+    for (const plugin of Object.keys(plugins)) {
+      Logger.setColor(plugin, "magentaBright");
+    }
+
     // setup logging levels
-    for (const [module, verboseness] of Object.entries(config.verboseness)) {
+    for (const [module, verboseness] of Object.entries(config.loggerVerboseness)) {
       Logger.setVerboseness(module, verboseness);
+    }
+
+    for (const [module, color] of Object.entries(config.loggerColors)) {
+      Logger.setColor(module, color);
     }
 
     // create SquadServer

@@ -5,5 +5,8 @@
   "exports": {
     "./constants": "./constants.js",
     "./logger": "./logger.js"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0"
   }
 }

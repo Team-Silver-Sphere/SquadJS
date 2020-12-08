@@ -194,28 +194,11 @@ Plugin options are also specified. A full list of plugin options can be seen bel
 The following is a list of plugins built into SquadJS, you can click their title for more information:
 
 <details>
-          <summary>AutoTKWarn</summary>
-          <h2>AutoTKWarn</h2>
-          <p>The <code>AutoTkWarn</code> plugin will automatically warn players with a message when they teamkill.</p>
-          <h3>Options</h3>
-          <h4>message</h4>
-           <h6>Description</h6>
-           <p>The message to warn players with.</p>
-           <h6>Default</h6>
-           <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre>
-        </details>
-
-<details>
           <summary>AutoKickUnassigned</summary>
           <h2>AutoKickUnassigned</h2>
           <p>The <code>AutoKickUnassigned</code> plugin will automatically kick players that are not in a squad after a specified ammount of time.</p>
           <h3>Options</h3>
-          <h4>adminList (Required)</h4>
-           <h6>Description</h6>
-           <p>List of server admins.</p>
-           <h6>Default</h6>
-           <pre><code>remoteAdminLists</code></pre>
-<h4>warningMessage</h4>
+          <h4>warningMessage</h4>
            <h6>Description</h6>
            <p>Message SquadJS will send to players warning them they will be kicked</p>
            <h6>Default</h6>
@@ -240,11 +223,6 @@ The following is a list of plugins built into SquadJS, you can click their title
            <p>Player count required for AutoKick to start kicking players to disable set to -1 to disable</p>
            <h6>Default</h6>
            <pre><code>93</code></pre>
-<h4>queueThreshold</h4>
-           <h6>Description</h6>
-           <p>The number of players in the queue before AutoKick starts kicking players set to -1 to disable</p>
-           <h6>Default</h6>
-           <pre><code>-1</code></pre>
 <h4>roundStartDelay</h4>
            <h6>Description</h6>
            <p>Time delay in minutes from start of the round before AutoKick starts kicking again</p>
@@ -260,6 +238,18 @@ The following is a list of plugins built into SquadJS, you can click their title
            <p>Whether or not players in the whitelist will be auto kicked for being unassigned</p>
            <h6>Default</h6>
            <pre><code>false</code></pre>
+        </details>
+
+<details>
+          <summary>AutoTKWarn</summary>
+          <h2>AutoTKWarn</h2>
+          <p>The <code>AutoTkWarn</code> plugin will automatically warn players with a message when they teamkill.</p>
+          <h3>Options</h3>
+          <h4>message</h4>
+           <h6>Description</h6>
+           <p>The message to warn players with.</p>
+           <h6>Default</h6>
+           <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre>
         </details>
 
 <details>

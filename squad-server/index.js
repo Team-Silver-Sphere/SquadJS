@@ -283,15 +283,18 @@ export default class SquadServer extends EventEmitter {
         if (player.teamID !== oldPlayerInfo[player.steamID].teamID)
           this.emit('PLAYER_TEAM_CHANGE', {
             player: player,
-            old: oldPlayerInfo[player.steamID].teamID,
-            new: player.teamID
+            oldTeamID: oldPlayerInfo[player.steamID].teamID,
+            newTeamID: player.teamID
           });
         if (player.squadID !== oldPlayerInfo[player.steamID].squadID)
-          this.emit('PLAYER_SQUAD_CHANGE', player);
+          this.emit('PLAYER_SQUAD_CHANGE', {
+            player: player,
+            oldSquadID: oldPlayerInfo[player.steamID].squadID,
+            newSquadID: player.squadID
+          });
       }
 
       this.emit('UPDATED_PLAYER_INFORMATION');
-
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update player list.', err);
     }
@@ -369,13 +372,15 @@ export default class SquadServer extends EventEmitter {
     );
   }
 
-  async getPlayerByCondition(condition, retry = true) {
+  async getPlayerByCondition(condition, forceUpdate = false, retry = true) {
     let matches;
 
-    matches = this.players.filter(condition);
-    if (matches.length === 1) return matches[0];
+    if (!forceUpdate) {
+      matches = this.players.filter(condition);
+      if (matches.length === 1) return matches[0];
 
-    if (!retry) return null;
+      if (!retry) return null;
+    }
 
     await this.updatePlayerList();
 
@@ -385,16 +390,16 @@ export default class SquadServer extends EventEmitter {
     return null;
   }
 
-  async getPlayerBySteamID(steamID) {
-    return this.getPlayerByCondition((player) => player.steamID === steamID);
+  async getPlayerBySteamID(steamID, forceUpdate) {
+    return this.getPlayerByCondition((player) => player.steamID === steamID, forceUpdate);
   }
 
-  async getPlayerByName(name) {
-    return this.getPlayerByCondition((player) => player.name === name);
+  async getPlayerByName(name, forceUpdate) {
+    return this.getPlayerByCondition((player) => player.name === name, forceUpdate);
   }
 
-  async getPlayerByNameSuffix(suffix) {
-    return this.getPlayerByCondition((player) => player.suffix === suffix, false);
+  async getPlayerByNameSuffix(suffix, forceUpdate) {
+    return this.getPlayerByCondition((player) => player.suffix === suffix, forceUpdate, false);
   }
 
   async pingSquadJSAPI() {
