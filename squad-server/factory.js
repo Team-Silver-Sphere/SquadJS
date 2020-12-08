@@ -42,6 +42,9 @@ export default class SquadServerFactory {
     for (const pluginConfig of config.plugins) {
       if (!pluginConfig.enabled) continue;
 
+      if (!plugins[pluginConfig.plugin])
+        throw new Error(`Plugin ${pluginConfig.plugin} does not exist.`);
+
       const Plugin = plugins[pluginConfig.plugin];
 
       for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
