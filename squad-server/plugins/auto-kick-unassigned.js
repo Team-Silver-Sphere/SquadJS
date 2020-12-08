@@ -130,7 +130,12 @@ export default class AutoKickUnassigned extends BasePlugin {
   async updateTrackingList(forceUpdate = false) {
     const run = !(this.betweenRounds || this.server.players.length < this.options.playerThreshold);
 
-    this.verbose(3, `Update Tracking List? ${run} (Between rounds: ${this.betweenRounds}, Below player threshold: ${this.server.players.length < this.options.playerThreshold})`)
+    this.verbose(
+      3,
+      `Update Tracking List? ${run} (Between rounds: ${
+        this.betweenRounds
+      }, Below player threshold: ${this.server.players.length < this.options.playerThreshold})`
+    );
 
     if (!run) {
       for (const steamID of Object.keys(this.trackedPlayers)) this.untrackPlayer(steamID);
@@ -152,8 +157,7 @@ export default class AutoKickUnassigned extends BasePlugin {
       if (!isUnassigned) continue;
 
       if (isAdmin) this.verbose(2, `Admin is Unassigned: ${player.name}`);
-      if (isWhitelist)
-        this.verbose(2, `Whitelist player is Unassigned: ${player.name}`);
+      if (isWhitelist) this.verbose(2, `Whitelist player is Unassigned: ${player.name}`);
 
       // start tracking player
       if (

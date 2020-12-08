@@ -19,7 +19,10 @@ export default class BasePlugin {
             );
         }
 
-        this.options[optionName] = typeof this.rawOptions[optionName] !== 'undefined' ? this.rawOptions[optionName] : option.default;
+        this.options[optionName] =
+          typeof this.rawOptions[optionName] !== 'undefined'
+            ? this.rawOptions[optionName]
+            : option.default;
       }
     }
   }
