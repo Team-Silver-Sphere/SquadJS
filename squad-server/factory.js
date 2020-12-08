@@ -114,7 +114,7 @@ export default class SquadServerFactory {
     }
 
     if (type === 'sequelize') {
-      let mergedConfig = Object.assign(connectorConfig, {logging: msg => Logger.verbose('MySQL', 1, msg)} );
+      let mergedConfig = Object.assign(connectorConfig, {logging: msg => Logger.verbose('Sequelize', 3, msg)} );
       const connector = new Sequelize(mergedConfig);
       await connector.authenticate();
       return connector;
