@@ -47,11 +47,11 @@ export default class DiscordServerStatus extends BasePlugin {
     this.update = this.update.bind(this);
   }
 
-  mount() {
+  async mount() {
     this.interval = setInterval(this.update, this.options.updateInterval);
   }
 
-  unmount() {
+  async unmount() {
     clearInterval(this.interval);
   }
 

@@ -78,13 +78,6 @@ Connectors should be named, for example the above is named `discord`, and should
 
 See below for more details on connectors and their associated config.
 
-##### Discord
-Connects to Discord via `discord.js`.
-```json
-"discord": "Discord Login Token",
-```
-Requires a Discord bot login token.
-
 ##### Squad Layer Filter
 Connects to a filtered list of Squad layers and filters them either by an "initial filter" or an "active filter" that depends on current server information, e.g. player count.
 ```js
@@ -153,19 +146,33 @@ Connects to a filtered list of Squad layers and filters them either by an "initi
    - `factionHistoryTolerance` - A faction can only be played again after this number of layers. Factions can be specified individually inside the object. If they are not listed then the filter is not applied.
    - `factionRepetitiveTolerance` - A faction can only be played this number of times in a row. Factions can be specified individually inside the object. If they are not listed then the filter is not applied.  
 
-##### MySQL
-Connects to a MySQL database.
+##### Discord
+Connects to Discord via `discord.js`.
 ```json
-"mysql": {
-  "connectionLimit": 10,
-  "host": "host",
-  "port": 3306,
-  "user": "squadjs",
-  "password": "password",
-  "database": "squadjs"
+"discord": "Discord Login Token",
+```
+Requires a Discord bot login token.
+
+
+##### Databases
+SquadJS uses [Sequelize](https://sequelize.org/) to connect and use a wide range of SQL databases.
+
+The connector should be configured using any of Sequelize's single argument configuration options.
+
+For example:
+```json
+"mysql": "mysql://user:pass@example.com:5432/dbname"
+```
+
+or:
+```json
+"sqlite": {
+    "dialect": "sqlite",
+    "storage": "path/to/database.sqlite"
 }
 ```
-The config is a set of pool connection options as listed in the [Node.js mysql](https://www.npmjs.com/package/mysql) documentation.
+
+See [Sequelize's documentation](https://sequelize.org/master/manual/getting-started.html#connecting-to-a-database) for more details.
 
 #### Plugins
 The `plugins` section in your config file lists all plugins built into SquadJS, e.g.:
@@ -220,7 +227,14 @@ The following is a list of plugins built into SquadJS, you can click their title
 <details>
           <summary>DBLog</summary>
           <h2>DBLog</h2>
-          <p>The <code>DBLog</code> plugin will log server information to a Sequlize compatible DB.</p>
+          <p>The <code>mysql-log</code> plugin will log various server statistics and events to a database. This is great for server performance monitoring and/or player stat tracking.
+
+Grafana (NOT YET WORKING WITH V2):
+ * [Grafana](https://grafana.com/) is a cool way of viewing server statistics stored in the database.
+ * Install Grafana.
+ * Add your database as a datasource named <code>SquadJS</code>.
+ * Import the [SquadJS Dashboard](https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/SquadJS-Dashboard.json) to get a preconfigured MySQL only Grafana dashboard.
+ * Install any missing Grafana plugins.</p>
           <h3>Options</h3>
           <h4>database (Required)</h4>
            <h6>Description</h6>

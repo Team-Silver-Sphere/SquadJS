@@ -53,11 +53,11 @@ export default class DiscordRcon extends BasePlugin {
     this.onMessage = this.onMessage.bind(this);
   }
 
-  mount() {
+  async mount() {
     this.options.discordClient.on('message', this.onMessage);
   }
 
-  unmount() {
+  async unmount() {
     this.options.discordClient.removeEventListener('message', this.onMessage);
   }
 

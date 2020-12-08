@@ -26,9 +26,9 @@ export default class BasePlugin {
 
   async prepareToMount() {}
 
-  mount() {}
+  async mount() {}
 
-  unmount() {}
+  async unmount() {}
 
   static get description() {
     throw new Error('Plugin missing "static get description()" method.');

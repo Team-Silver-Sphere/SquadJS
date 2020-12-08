@@ -81,7 +81,7 @@
     },
     {
       "plugin": "DBLog",
-      "enabled": true,
+      "enabled": false,
       "database": "mysql",
       "overrideServerID": null
     },

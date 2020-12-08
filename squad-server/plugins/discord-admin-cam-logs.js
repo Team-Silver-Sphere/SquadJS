@@ -35,12 +35,12 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
     this.onPlayerUnPossess = this.onPlayerUnPossess.bind(this);
   }
 
-  mount() {
+  async mount() {
     this.server.on('PLAYER_POSSESS', this.onPlayerPossess);
     this.server.on('PLAYER_UNPOSSESS', this.onPlayerUnPossess);
   }
 
-  unmount() {
+  async unmount() {
     this.server.removeEventListener('PLAYER_POSSESS', this.onPlayerPossess);
     this.server.removeEventListener('PLAYER_UNPOSSESS', this.onPlayerUnPossess);
   }

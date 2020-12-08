@@ -54,11 +54,11 @@ export default class SeedingMode extends BasePlugin {
     this.broadcast = this.broadcast.bind(this);
   }
 
-  mount() {
+  async mount() {
     this.interval = setInterval(this.broadcast, this.options.interval);
   }
 
-  unmount() {
+  async unmount() {
     clearInterval(this.interval);
   }
 

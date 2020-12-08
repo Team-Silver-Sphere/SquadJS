@@ -28,11 +28,11 @@ export default class TeamRandomizer extends BasePlugin {
     this.onChatCommand = this.onChatCommand.bind(this);
   }
 
-  mount() {
+  async mount() {
     this.server.on(`CHAT_COMMAND:${this.options.command}`, this.onChatCommand);
   }
 
-  unmount() {
+  async unmount() {
     this.server.removeEventListener(`CHAT_COMMAND:${this.options.command}`, this.onChatCommand);
   }
 

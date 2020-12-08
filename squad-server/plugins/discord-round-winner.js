@@ -32,11 +32,11 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
     this.onNewGame = this.onNewGame.bind(this);
   }
 
-  mount() {
+  async mount() {
     this.server.on('NEW_GAME', this.onNewGame);
   }
 
-  unmount() {
+  async unmount() {
     this.server.removeEventListener('NEW_GAME', this.onNewGame);
   }
 

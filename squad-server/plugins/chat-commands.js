@@ -36,7 +36,7 @@ export default class ChatCommands extends BasePlugin {
     };
   }
 
-  mount() {
+  async mount() {
     for (const command of this.options.commands) {
       this.server.on(`CHAT_COMMAND:${command.command}`, async (data) => {
         if (command.ignoreChats.includes(data.chat)) return;

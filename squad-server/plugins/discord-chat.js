@@ -43,11 +43,11 @@ export default class DiscordChat extends DiscordBasePlugin {
     this.onChatMessage = this.onChatMessage.bind(this);
   }
 
-  mount() {
+  async mount() {
     this.server.on('CHAT_MESSAGE', this.onChatMessage);
   }
 
-  unmount() {
+  async unmount() {
     this.server.removeEventListener('CHAT_MESSAGE', this.onChatMessage);
   }
 
