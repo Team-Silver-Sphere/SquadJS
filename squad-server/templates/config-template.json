@@ -62,7 +62,7 @@
       "dialect": "mysql"
     }
   },
-  "logger"{
+  "logger": {
     "verboseness": {
       "SquadServer": 1,
       "LogParser": 1,
