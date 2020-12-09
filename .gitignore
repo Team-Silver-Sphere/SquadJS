@@ -1,7 +1,7 @@
 # Project Files
 *.tmp
 
-config-test.json
+config-test*.json
 
 # Dependencies
 node_modules/
