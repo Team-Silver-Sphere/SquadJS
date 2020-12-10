@@ -1,3 +1,5 @@
+import LogParser from 'core/log-parser';
+
 import AdminBroadcast from './admin-broadcast.js';
 import NewGame from './new-game.js';
 import PlayerConnected from './player-connected.js';
@@ -11,17 +13,25 @@ import RoundWinner from './round-winner.js';
 import ServerTickRate from './server-tick-rate.js';
 import SteamIDConnected from './steamid-connected.js';
 
-export default [
-  AdminBroadcast,
-  NewGame,
-  PlayerConnected,
-  PlayerDamaged,
-  PlayerDied,
-  PlayerPossess,
-  PlayerRevived,
-  PlayerUnPossess,
-  PlayerWounded,
-  RoundWinner,
-  ServerTickRate,
-  SteamIDConnected
-];
+export default class SquadLogParser extends LogParser {
+  constructor(options) {
+    super('SquadGame.log', options);
+  }
+
+  getRules() {
+    return [
+      AdminBroadcast,
+      NewGame,
+      PlayerConnected,
+      PlayerDamaged,
+      PlayerDied,
+      PlayerPossess,
+      PlayerRevived,
+      PlayerUnPossess,
+      PlayerWounded,
+      RoundWinner,
+      ServerTickRate,
+      SteamIDConnected
+    ];
+  }
+}

@@ -16,7 +16,7 @@ export default class TailLogReader {
       encoding: 'utf8',
       verbose: options.verbose,
 
-      path: path.join(options.logDir, 'SquadGame.log'),
+      path: path.join(options.logDir, options.filename),
 
       fetchInterval: options.fetchInterval || 0,
       maxTempFileSize: options.maxTempFileSize || 5 * 1000 * 1000, // 5 MB

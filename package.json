@@ -8,7 +8,6 @@
   "workspaces": [
     "assets",
     "core",
-    "log-parser",
     "squad-server"
   ],
   "scripts": {

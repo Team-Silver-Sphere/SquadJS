@@ -6,7 +6,7 @@ import Gamedig from 'gamedig';
 import Logger from 'core/logger';
 import { SQUADJS_API_DOMAIN } from 'core/constants';
 
-import LogParser from 'log-parser';
+import LogParser from './log-parser/index.js';
 import Rcon from './rcon.js';
 
 import { SQUADJS_VERSION } from './utils/constants.js';
