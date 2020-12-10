@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import net from 'net';
 import util from 'util';
 
-import Logger from 'core/logger';
+import Logger from './logger.js';
 
 const SERVERDATA_EXECCOMMAND = 0x02;
 const SERVERDATA_RESPONSE_VALUE = 0x00;
@@ -164,20 +164,7 @@ export default class Rcon extends EventEmitter {
     };
   }
 
-  processChatPacket(decodedPacket) {
-    const match = decodedPacket.body.match(
-      /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[SteamID:([0-9]{17})] (.+?) : (.*)/
-    );
-
-    this.emit('CHAT_MESSAGE', {
-      raw: decodedPacket.body,
-      chat: match[1],
-      steamID: match[2],
-      name: match[3],
-      message: match[4],
-      time: new Date()
-    });
-  }
+  processChatPacket(decodedPacket) {}
 
   onClose(hadError) {
     this.connected = false;

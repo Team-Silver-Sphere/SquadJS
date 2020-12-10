@@ -9,7 +9,6 @@
     "assets",
     "core",
     "log-parser",
-    "rcon",
     "squad-server"
   ],
   "scripts": {

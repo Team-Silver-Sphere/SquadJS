@@ -1,6 +1,21 @@
-import Rcon from './index.js';
+import Rcon from 'core/rcon';
 
 export default class SquadRcon extends Rcon {
+  processChatPacket(decodedPacket) {
+    const match = decodedPacket.body.match(
+      /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[SteamID:([0-9]{17})] (.+?) : (.*)/
+    );
+
+    this.emit('CHAT_MESSAGE', {
+      raw: decodedPacket.body,
+      chat: match[1],
+      steamID: match[2],
+      name: match[3],
+      message: match[4],
+      time: new Date()
+    });
+  }
+
   async broadcast(message) {
     await this.execute(`AdminBroadcast ${message}`);
   }

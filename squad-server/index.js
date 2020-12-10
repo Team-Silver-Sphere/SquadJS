@@ -7,7 +7,7 @@ import Logger from 'core/logger';
 import { SQUADJS_API_DOMAIN } from 'core/constants';
 
 import LogParser from 'log-parser';
-import Rcon from 'rcon/squad';
+import Rcon from './rcon.js';
 
 import { SQUADJS_VERSION } from './utils/constants.js';
 import { SquadLayers } from './utils/squad-layers.js';

@@ -4,7 +4,8 @@
   "type": "module",
   "exports": {
     "./constants": "./constants.js",
-    "./logger": "./logger.js"
+    "./logger": "./logger.js",
+    "./rcon": "./rcon.js"
   },
   "dependencies": {
     "chalk": "^4.1.0"
