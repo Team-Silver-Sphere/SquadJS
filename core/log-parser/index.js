@@ -14,7 +14,7 @@ export default class LogParser extends EventEmitter {
 
     options.filename = filename;
 
-    this.eventStrore = {};
+    this.eventStore = {};
 
     this.linesPerMinute = 0;
     this.matchingLinesPerMinute = 0;
