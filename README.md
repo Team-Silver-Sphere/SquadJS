@@ -277,7 +277,7 @@ The following is a list of plugins built into SquadJS, you can click their title
 <details>
           <summary>DBLog</summary>
           <h2>DBLog</h2>
-          <p>The <code>DBLog</code> plugin will log various server statistics and events to a database. This is great for server performance monitoring and/or player stat tracking.
+          <p>The <code>mysql-log</code> plugin will log various server statistics and events to a database. This is great for server performance monitoring and/or player stat tracking.
 
 Grafana (NOT YET WORKING WITH V2):
  * [Grafana](https://grafana.com/) is a cool way of viewing server statistics stored in the database.
@@ -688,104 +688,7 @@ function aPluginToLogTeamkills(server){
 Various actions can be completed in a plugin. Most of these will involve outside system, e.g. Discord.js to run a Discord bot, so they are not documented here. However, you may run RCON commands using `server.rcon.execute("Command");`.
 
 If you're struggling to create a plugin, the existing [`plugins`](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins) are a good place to go for examples or feel free to ask for help in the Squad RCON Discord. 
-
-
-### Updating your old SquadJS v1 database to v2
-
-### 1 Before you start
-You will need to make an `mysqldump` of your existing data.
-Before we start please take an extra `backup` of that dump file. <br>
-Once you have your `mysql-dump.sql` file you will `clear` the squadjs database and make it empty. <br>
-
-### 2 Updating the table names and data
-<details>
-<summary>Updating table: Match</summary>
-<p>
-Search (<code>CTRL+F</code>) for the <code>INSERT</code> query of the <code>Match</code> table.
-It will look something like this:
-<pre><code>
-INSERT INTO `Match` VALUES (1,1,'Game','Belaya_Pass','Belaya_RAAS_v1','Belaya','Belaya RAAS v1','2020-10-23 16:42:45','2020-10-23 17:23:17','United States Army'),...
-</code></pre>
-Once you have found it you will:
-- Change every `Match` to `DBLog_Matches`
-- Manually add the column names: 
-  <pre><code>
-  (id, server, dlc, mapClassname, layerClassname, map, layer, startTime, endTime, winner) 
-  </code></pre>
-At the end it should look like this:
-<pre><code>
-INSERT INTO `DBLog_Matches` (id, server, dlc, mapClassname, layerClassname, map, layer, startTime, endTime, winner) VALUES (1,1,'Game','Belaya_Pass','Belaya_RAAS_v1','Belaya','Belaya RAAS v1','2020-10-23 16:42:45','2020-10-23 17:23:17','United States Army')
-</code></pre>
-</p>
-</details>
-
-<details>
-<summary>Updating table: PlayerCount</summary>
-<p>
-Search (<code>CTRL+F</code>) for the <code>INSERT</code> query of the <code>PlayerCount</code> table.
-It will look something like this:
-<pre><code>
-INSERT INTO `PlayerCount` VALUES (94,1,'2020-10-23 16:19:25',99),...
-</code></pre>
-Once you have found it you will:
-- Change every `PlayerCount` to `DBLog_PlayerCounts`
-- Manually add the column names: 
-  <pre><code>
-  (id, server, time, players) 
-  </code></pre>
-Once done that you will press `CTRL+F` and search with this regex: <code>\d{1,8},\d,'</code> after change the find values with <code>DEFAULT,1,'</code>
-
-At the end it should look like this:
-<pre><code>
-INSERT INTO `DBLog_PlayerCounts` (id, server, time, players) VALUES (DEFAULT,1,'2020-10-23 16:19:25',99),...
-</code></pre>
-</p>
-</details>
-
-<details>
-<summary>Updating table: PlayerDied</summary>
-<p>
-TODO
-</p>
-</details>
-
-<details>
-<summary>Updating table: PlayerRevived</summary>
-<p>
-TODO
-</p>
-</details>
-
-<details>
-<summary>Updating table: PlayerWounded</summary>
-<p>
-TODO
-</p>
-</details>
-
-<details>
-<summary>Updating table: Server</summary>
-<p>
-TODO
-</p>
-</details>
-
-<details>
-<summary>Updating table: ServerTickRate</summary>
-<p>
-TODO
-</p>
-</details>
-
-<details>
-<summary>Updating table: SteamUser</summary>
-<p>
-TODO
-</p>
-</details>
-
-
-
+ 
 ## Statement on Accuracy
 Some of the information SquadJS collects from Squad servers was never intended or designed to be collected. As a result, it is impossible for any framework to collect the same information with 100% accuracy. SquadJS aims to get as close as possible to that figure, however, it acknowledges that this is not possible in some specific scenarios.
 
