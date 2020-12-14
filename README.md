@@ -575,6 +575,34 @@ Grafana (NOT YET WORKING WITH V2):
         </details>
 
 <details>
+          <summary>DiscordTeamkill</summary>
+          <h2>DiscordTeamkill</h2>
+          <p>The <code>DiscordTeamkill</code> plugin logs teamkills and related information to a Discord channel for admins to review.</p>
+          <h3>Options</h3>
+          <h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre>
+<h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to log teamkills to.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<h4>color</h4>
+           <h6>Description</h6>
+           <p>The color of the embeds.</p>
+           <h6>Default</h6>
+           <pre><code>16761867</code></pre>
+<h4>disableSCBL</h4>
+           <h6>Description</h6>
+           <p>Disable Squad Community Ban List information.</p>
+           <h6>Default</h6>
+           <pre><code>false</code></pre>
+        </details>
+
+<details>
           <summary>IntervalledBroadcasts</summary>
           <h2>IntervalledBroadcasts</h2>
           <p>The <code>IntervalledBroadcasts</code> plugin allows you to set broadcasts, which will be broadcasted at preset intervals</p>
