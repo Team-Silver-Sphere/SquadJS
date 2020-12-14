@@ -2,6 +2,7 @@
   "server": {
     "id": 1,
     "host": "xxx.xxx.xxx.xxx",
+    "rconHost": "",
     "queryPort": 27165,
     "rconPort": 21114,
     "rconPassword": "password",
