@@ -19,13 +19,11 @@
 </div>
 
 ## **About**
----
 SquadJS is a scripting framework, designed for Squad servers, that aims to handle all communication and data collection to and from the servers. Using SquadJS as the base to any of your scripting projects allows you to easily write complex plugins without having to worry about the hassle of RCON or log parsing. However, for your convenience SquadJS comes shipped with multiple plugins already built for you allowing you to experience the power of SquadJS right away.
 
 <br>
 
 ## **Using SquadJS**
----
 SquadJS relies on being able to access the Squad server log directory in order to parse logs live to collect information. Thus, SquadJS must be hosted on the same server box as your Squad server or be connected to your Squad server via FTP.
 
 #### Prerequisites
@@ -44,7 +42,6 @@ SquadJS relies on being able to access the Squad server log directory in order t
 <br>
 
 ## **Configuring SquadJS**
----
 SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS and is named [config.json](https://github.com/Thomas-Smyth/SquadJS/blob/master/config.json).
 
 The config file needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
@@ -261,7 +258,6 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
 <br><br>
 
 ## **Plugins**
----
 The following is a list of plugins built into SquadJS, you can click their title for more information:
 
 Intrested in creating your own plugin? [See more here](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/_readme.md)
@@ -272,7 +268,6 @@ Intrested in creating your own plugin? [See more here](https://github.com/Thomas
 <br><br>
 
 ## Statement on Accuracy
----
 Some of the information SquadJS collects from Squad servers was never intended or designed to be collected. As a result, it is impossible for any framework to collect the same information with 100% accuracy. SquadJS aims to get as close as possible to that figure, however, it acknowledges that this is not possible in some specific scenarios.
 
 Below is a list of scenarios we know may cause some information to be inaccurate:
@@ -283,7 +278,6 @@ Below is a list of scenarios we know may cause some information to be inaccurate
  * Duplicated Player Names - If two or more players have the same name or suffix name (see above) then SquadJS will be unable to identify them in the logs. When this occurs event logs will show the player as `null`. Be on the watch for groups of players who try to abuse this in order to TK or complete other malicious actions without being detected by SquadJS plugins. 
 
 ## Credits
----
 SquadJS would not be possible without the support of so many individuals and organisations. My thanks goes out to:
  * [SquadJS's contributors](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors).
  * [My GitHub sponsors](https://github.com/sponsors/Thomas-Smyth)!
@@ -293,7 +287,6 @@ SquadJS would not be possible without the support of so many individuals and org
  * Everyone in the Squad RCON Discord and others who have submitted bug reports, suggestions, feedback and provided logs.
 
 ## License
----
 ```
 Boost Software License - Version 1.0 - August 17th, 2003
 
