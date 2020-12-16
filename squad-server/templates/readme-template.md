@@ -251,7 +251,7 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
 </details>
 
 
-<br><br>
+<br>
 
 ## **Plugins**
 The following is a list of plugins built into SquadJS, you can click their title for more information:
@@ -261,7 +261,7 @@ Intrested in creating your own plugin? [See more here](https://github.com/Thomas
 //PLUGIN-INFO//
 
 
-<br><br>
+<br>
 
 ## Statement on Accuracy
 Some of the information SquadJS collects from Squad servers was never intended or designed to be collected. As a result, it is impossible for any framework to collect the same information with 100% accuracy. SquadJS aims to get as close as possible to that figure, however, it acknowledges that this is not possible in some specific scenarios.
