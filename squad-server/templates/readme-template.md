@@ -38,7 +38,6 @@ SquadJS relies on being able to access the Squad server log directory in order t
 3. Configure the `config.json` file. See below for more details.
 4. Start SquadJS: `node index.js`.
 
-
 <br>
 
 ## **Configuring SquadJS**
@@ -250,7 +249,6 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
   ---
 </details>
 
-
 <br>
 
 ## **Plugins**
@@ -259,7 +257,6 @@ The following is a list of plugins built into SquadJS, you can click their title
 Interested in creating your own plugin? [See more here](./squad-server/plugins/_readme.md)
 
 //PLUGIN-INFO//
-
 
 <br>
 

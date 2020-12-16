@@ -201,7 +201,7 @@ export default class SquadServerFactory {
 
       const options = [];
       for (const [optionName, option] of Object.entries(Plugin.optionsSpecification)) {
-        let optionInfo = `<h4>${optionName}${option.required ? ' (Required)' : ''}</h4>
+        let optionInfo = `<li><h4>${optionName}${option.required ? ' (Required)' : ''}</h4>
            <h6>Description</h6>
            <p>${option.description}</p>
            <h6>Default</h6>
@@ -209,7 +209,7 @@ export default class SquadServerFactory {
              typeof option.default === 'object'
                ? JSON.stringify(option.default, null, 2)
                : option.default
-           }</code></pre>`;
+           }</code></pre></li>`;
 
         if (option.example)
           optionInfo += `<h6>Example</h6>
@@ -228,7 +228,7 @@ export default class SquadServerFactory {
           <h2>${Plugin.name}</h2>
           <p>${Plugin.description}</p>
           <h3>Options</h3>
-          ${options.join('\n')}
+          <ul>${options.join('\n')}</ul>
         </details>`
       );
     }
