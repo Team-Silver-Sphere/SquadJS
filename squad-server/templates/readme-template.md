@@ -49,7 +49,6 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
 <details>
   <summary>Server</summary>
 
-  ---
   ## Server Configuration
 
   The following section of the configuration contains information about your Squad server.
@@ -91,7 +90,6 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
 <details>
   <summary>Connectors</summary>
   
-  ---
   ## Connector Configuration
 
   Connectors allow SquadJS to communicate with external resources.
@@ -206,7 +204,6 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
 <details>
   <summary>Plugins</summary>
   
-  ---
   ## Plugin Configuration
 
   The `plugins` section in your config file lists all plugins built into SquadJS
@@ -230,7 +227,6 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
 <details>
   <summary>Verboseness</summary>
   
-  ---
   ## Console Output Configuration
 
   The `logger` section configures how verbose a module of SquadJS will be as well as the displayed color.
