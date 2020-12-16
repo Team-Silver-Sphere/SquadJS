@@ -340,11 +340,11 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/_
           <p>The <code>mysql-log</code> plugin will log various server statistics and events to a database. This is great for server performance monitoring and/or player stat tracking.
 
 Grafana (NOT YET WORKING WITH V2):
- * [Grafana](https://grafana.com/) is a cool way of viewing server statistics stored in the database.
- * Install Grafana.
- * Add your database as a datasource named <code>SquadJS</code>.
- * Import the [SquadJS Dashboard](https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/SquadJS-Dashboard.json) to get a preconfigured MySQL only Grafana dashboard.
- * Install any missing Grafana plugins.</p>
+<ul><li> <a href="https://grafana.com/">Grafana</a> is a cool way of viewing server statistics stored in the database.</li>
+<li>Install Grafana.</li>
+<li>Add your database as a datasource named <code>SquadJS</code>.</li>
+<li>Import the <a href="https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/SquadJS-Dashboard.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>
+<li>Install any missing Grafana plugins.</li></ul></p>
           <h3>Options</h3>
           <ul><li><h4>database (Required)</h4>
            <h6>Description</h6>
