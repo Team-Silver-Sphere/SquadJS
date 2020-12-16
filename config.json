@@ -5,7 +5,6 @@
     "queryPort": 27165,
     "rconPort": 21114,
     "rconPassword": "password",
-    "rconVerbose": true,
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
     "ftp": {
