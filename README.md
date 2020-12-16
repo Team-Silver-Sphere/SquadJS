@@ -42,7 +42,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 <br>
 
 ## **Configuring SquadJS**
-SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS and is named [config.json](https://github.com/Thomas-Smyth/SquadJS/blob/master/config.json).
+SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS and is named [config.json](./config.json).
 
 The config file needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
 
@@ -256,7 +256,7 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
 ## **Plugins**
 The following is a list of plugins built into SquadJS, you can click their title for more information:
 
-Intrested in creating your own plugin? [See more here](https://github.com/Thomas-Smyth/SquadJS/tree/master/plugins/_readme.md)
+Intrested in creating your own plugin? [See more here](./squad-server/plugins/_readme.md)
 
 <details>
           <summary>AutoKickUnassigned</summary>
