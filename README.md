@@ -160,7 +160,7 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
     - `buildPoolFromLayerNames` - Builds the Squad layers list from a list of layers. `filter` should be a list of layers, e.g. `"filter": ["Sumari AAS v1", "Fool's Road AAS v1"]`.
   * `filter` - Described above.
   * `activeLayerFilter` - Filters layers live as server information updates, e.g. if the player count exceeds a certain amount a layer may no longer be in the filter.
-    - `historyResetTime` - After this number of miliseconds the layer history is no longer considered.
+    - `historyResetTime` - After this number of milliseconds the layer history is no longer considered.
     - `layerHistoryTolerance` - A layer can only be played again after this number of layers.
     - `mapHistoryTolerance` - A map can only be played again after this number of layers.
     - `gamemodeHistoryTolerance` - A gamemode can only be played again after this number of layers. Gamemodes can be specified individually inside the object. If they are not listed then the filter is not applied.
@@ -256,7 +256,7 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
 ## **Plugins**
 The following is a list of plugins built into SquadJS, you can click their title for more information:
 
-Intrested in creating your own plugin? [See more here](./squad-server/plugins/_readme.md)
+Interested in creating your own plugin? [See more here](./squad-server/plugins/_readme.md)
 
 <details>
           <summary>AutoKickUnassigned</summary>
