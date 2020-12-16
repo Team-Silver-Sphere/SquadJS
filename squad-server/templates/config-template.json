@@ -10,10 +10,12 @@
 
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
-    "ftpPort": 21,
-    "ftpUser": "FTP Username",
-    "ftpPassword": "FTP Password",
-    "ftpUseListForSize": false,
+    "ftp":{
+      "port": 21,
+      "user": "FTP Username",
+      "password": "FTP Password",
+      "useListForSize": false
+    },
     "adminLists": []
   },
   "connectors": {

@@ -117,23 +117,13 @@ export default class SquadServer extends EventEmitter {
   }
 
   setupLogParser() {
-    this.logParser = new LogParser({
-      mode: this.options.logReaderMode,
-      logDir: this.options.logDir,
-
-      host: this.options.ftpHost || this.options.host,
-      port: this.options.ftpPort,
-      user: this.options.ftpUser,
-      password: this.options.ftpPassword,
-      secure: this.options.ftpSecure,
-      timeout: this.options.ftpTimeout,
-      verbose: this.options.ftpVerbose,
-      fetchInterval: this.options.ftpFetchInterval,
-      maxTempFileSize: this.options.ftpMaxTempFileSize,
-
-      // enable this for FTP servers that do not support SIZE
-      useListForSize: this.options.ftpUseListForSize
-    });
+    this.logParser = new LogParser(
+      Object.assign(this.options.ftp, {
+        mode: this.options.logReaderMode,
+        logDir: this.options.logDir,
+        host: this.options.ftp.host || this.options.host
+      })
+    );
 
     this.logParser.on('ADMIN_BROADCAST', (data) => {
       this.emit('ADMIN_BROADCAST', data);
