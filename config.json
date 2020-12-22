@@ -71,8 +71,9 @@
       "kickMessage": "Unassigned - automatically removed",
       "frequencyOfWarnings": 30,
       "unassignedTimer": 6,
+      "unassignedTimer": 360,
       "playerThreshold": 93,
-      "roundStartDelay": 15,
+      "roundStartDelay": 900,
       "ignoreAdmins": false,
       "ignoreWhitelist": false
     },

@@ -218,9 +218,9 @@ The following is a list of plugins built into SquadJS, you can click their title
            <pre><code>30</code></pre>
 <h4>unassignedTimer</h4>
            <h6>Description</h6>
-           <p>How long in <b>Minutes</b> to wait before a unassigned player is kicked</p>
+           <p>How long in <b>Seconds</b> to wait before a unassigned player is kicked</p>
            <h6>Default</h6>
-           <pre><code>6</code></pre>
+           <pre><code>360</code></pre>
 <h4>playerThreshold</h4>
            <h6>Description</h6>
            <p>Player count required for AutoKick to start kicking players, set to -1 to disable</p>
@@ -228,9 +228,9 @@ The following is a list of plugins built into SquadJS, you can click their title
            <pre><code>93</code></pre>
 <h4>roundStartDelay</h4>
            <h6>Description</h6>
-           <p>Time delay in <b>Minutes</b> from start of the round before AutoKick starts kicking again</p>
+           <p>Time delay in <b>Seconds</b> from start of the round before AutoKick starts kicking again</p>
            <h6>Default</h6>
-           <pre><code>15</code></pre>
+           <pre><code>900</code></pre>
 <h4>ignoreAdmins</h4>
            <h6>Description</h6>
            <p><ul><li><code>true</code>: Admins will <b>NOT</b> be kicked</li><li><code>false</code>: Admins <b>WILL</b> be kicked</li></ul></p>

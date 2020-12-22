@@ -32,8 +32,8 @@ export default class AutoKickUnassigned extends BasePlugin {
       },
       unassignedTimer: {
         required: false,
-        description: 'How long in <b>Minutes</b> to wait before a unassigned player is kicked',
-        default: 6
+        description: 'How long in <b>Seconds</b> to wait before a unassigned player is kicked',
+        default: 360
       },
       playerThreshold: {
         required: false,
@@ -44,8 +44,8 @@ export default class AutoKickUnassigned extends BasePlugin {
       roundStartDelay: {
         required: false,
         description:
-          'Time delay in <b>Minutes</b> from start of the round before AutoKick starts kicking again',
-        default: 15
+          'Time delay in <b>Seconds</b> from start of the round before AutoKick starts kicking again',
+        default: 900
       },
       ignoreAdmins: {
         required: false,
@@ -85,9 +85,9 @@ export default class AutoKickUnassigned extends BasePlugin {
     this.admins = server.getAdminsWithPermission('canseeadminchat');
     this.whitelist = server.getAdminsWithPermission('reserve');
 
-    this.kickTimeout = options.unassignedTimer * 60 * 1000;
+    this.kickTimeout = options.unassignedTimer * 1000;
     this.warningInterval = options.frequencyOfWarnings * 1000;
-    this.gracePeriod = options.roundStartDelay * 60 * 1000;
+    this.gracePeriod = options.roundStartDelay * 1000;
 
     this.trackingListUpdateFrequency = 1 * 60 * 1000; // 1min
     this.cleanUpFrequency = 20 * 60 * 1000; // 20min
