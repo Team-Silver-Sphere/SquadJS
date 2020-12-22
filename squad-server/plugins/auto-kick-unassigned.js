@@ -26,35 +26,43 @@ export default class AutoKickUnassigned extends BasePlugin {
       },
       frequencyOfWarnings: {
         required: false,
-        description: 'How often in seconds should we warn the player about being unassigned?',
+        description:
+          'How often in <b>Seconds</b> should we warn the player about being unassigned?',
         default: 30
       },
       unassignedTimer: {
         required: false,
-        description: 'How long in minutes to wait before a player that is unassigned is kicked',
+        description: 'How long in <b>Minutes</b> to wait before a unassigned player is kicked',
         default: 6
       },
       playerThreshold: {
         required: false,
         description:
-          'Player count required for AutoKick to start kicking players to disable set to -1 to disable',
+          'Player count required for AutoKick to start kicking players, set to -1 to disable',
         default: 93
       },
       roundStartDelay: {
         required: false,
         description:
-          'Time delay in minutes from start of the round before AutoKick starts kicking again',
+          'Time delay in <b>Minutes</b> from start of the round before AutoKick starts kicking again',
         default: 15
       },
       ignoreAdmins: {
         required: false,
-        description: 'Whether or not admins will be auto kicked for being unassigned',
+        description:
+          '<ul>' +
+          '<li><code>true</code>: Admins will <b>NOT</b> be kicked</li>' +
+          '<li><code>false</code>: Admins <b>WILL</b> be kicked</li>' +
+          '</ul>',
         default: false
       },
       ignoreWhitelist: {
         required: false,
         description:
-          'Whether or not players in the whitelist will be auto kicked for being unassigned',
+          '<ul>' +
+          '<li><code>true</code>: Reserve slot players will <b>NOT</b> be kicked</li>' +
+          '<li><code>false</code>: Reserve slot players <b>WILL</b> be kicked</li>' +
+          '</ul>',
         default: false
       }
     };
