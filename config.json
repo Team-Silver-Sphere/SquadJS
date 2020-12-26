@@ -70,7 +70,6 @@
       "warningMessage": "Join a squad, you are are unassigned and will be kicked",
       "kickMessage": "Unassigned - automatically removed",
       "frequencyOfWarnings": 30,
-      "unassignedTimer": 6,
       "unassignedTimer": 360,
       "playerThreshold": 93,
       "roundStartDelay": 900,
