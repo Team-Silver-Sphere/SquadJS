@@ -273,32 +273,32 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/_
            <pre><code>Unassigned - automatically removed</code></pre></li>
 <li><h4>frequencyOfWarnings</h4>
            <h6>Description</h6>
-           <p>How often in seconds should we warn the player about being unassigned?</p>
+           <p>How often in <b>Seconds</b> should we warn the player about being unassigned?</p>
            <h6>Default</h6>
            <pre><code>30</code></pre></li>
 <li><h4>unassignedTimer</h4>
            <h6>Description</h6>
-           <p>How long in minutes to wait before a player that is unassigned is kicked</p>
+           <p>How long in <b>Seconds</b> to wait before a unassigned player is kicked</p>
            <h6>Default</h6>
-           <pre><code>6</code></pre></li>
+           <pre><code>360</code></pre></li>
 <li><h4>playerThreshold</h4>
            <h6>Description</h6>
-           <p>Player count required for AutoKick to start kicking players to disable set to -1 to disable</p>
+           <p>Player count required for AutoKick to start kicking players, set to -1 to disable</p>
            <h6>Default</h6>
            <pre><code>93</code></pre></li>
 <li><h4>roundStartDelay</h4>
            <h6>Description</h6>
-           <p>Time delay in minutes from start of the round before AutoKick starts kicking again</p>
+           <p>Time delay in <b>Seconds</b> from start of the round before AutoKick starts kicking again</p>
            <h6>Default</h6>
-           <pre><code>15</code></pre></li>
+           <pre><code>900</code></pre></li>
 <li><h4>ignoreAdmins</h4>
            <h6>Description</h6>
-           <p>Whether or not admins will be auto kicked for being unassigned</p>
+           <p><ul><li><code>true</code>: Admins will <b>NOT</b> be kicked</li><li><code>false</code>: Admins <b>WILL</b> be kicked</li></ul></p>
            <h6>Default</h6>
            <pre><code>false</code></pre></li>
 <li><h4>ignoreWhitelist</h4>
            <h6>Description</h6>
-           <p>Whether or not players in the whitelist will be auto kicked for being unassigned</p>
+           <p><ul><li><code>true</code>: Reserve slot players will <b>NOT</b> be kicked</li><li><code>false</code>: Reserve slot players <b>WILL</b> be kicked</li></ul></p>
            <h6>Default</h6>
            <pre><code>false</code></pre></li></ul>
         </details>
