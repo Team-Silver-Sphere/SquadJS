@@ -11,11 +11,11 @@ export default class DBLog extends BasePlugin {
       'for server performance monitoring and/or player stat tracking.' +
       '\n\n' +
       'Grafana (NOT YET WORKING WITH V2):\n' +
-      ' * [Grafana](https://grafana.com/) is a cool way of viewing server statistics stored in the database.\n' +
-      ' * Install Grafana.\n' +
-      ' * Add your database as a datasource named <code>SquadJS</code>.\n' +
-      ' * Import the [SquadJS Dashboard](https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/SquadJS-Dashboard.json) to get a preconfigured MySQL only Grafana dashboard.\n' +
-      ' * Install any missing Grafana plugins.'
+      '<ul><li> <a href="https://grafana.com/">Grafana</a> is a cool way of viewing server statistics stored in the database.</li>\n' +
+      '<li>Install Grafana.</li>\n' +
+      '<li>Add your database as a datasource named <code>SquadJS</code>.</li>\n' +
+      '<li>Import the <a href="https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/SquadJS-Dashboard.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>\n' +
+      '<li>Install any missing Grafana plugins.</li></ul>'
     );
   }
 
