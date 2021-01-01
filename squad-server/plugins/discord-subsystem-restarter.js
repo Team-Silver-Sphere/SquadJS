@@ -54,6 +54,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
     if (message.content.match(/!squadjs restartsubsystem rcon/i)) {
       if (!message.member._roles.includes(this.options.role)) {
         message.reply('you do not have permission to do that.');
+        return;
       }
 
       await this.server.restartRCON();
@@ -63,6 +64,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
     if (message.content.match(/!squadjs restartsubsystem logparser/i)) {
       if (!message.member._roles.includes(this.options.role)) {
         message.reply('you do not have permission to do that.');
+        return;
       }
 
       await this.server.restartLogParser();
