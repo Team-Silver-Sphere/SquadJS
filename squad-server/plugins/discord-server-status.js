@@ -112,7 +112,7 @@ export default class DiscordServerStatus extends BasePlugin {
             { color: '#ffff00', pos: 0.5 },
             { color: '#00ff00', pos: 1 }
           ])
-            .rgbAt(this.server.a2sPlayerCount / this.server.publicSlots)
+            .rgbAt(this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots))
             .toHex(),
           16
         ),
