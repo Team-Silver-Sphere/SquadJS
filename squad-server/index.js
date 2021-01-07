@@ -35,7 +35,6 @@ export default class SquadServer extends EventEmitter {
 
     this.setupRCON();
     this.setupLogParser();
-    this.admins = fetchAdminLists(options.adminLists);
 
     this.updatePlayerList = this.updatePlayerList.bind(this);
     this.updatePlayerListInterval = 30 * 1000;
@@ -61,6 +60,7 @@ export default class SquadServer extends EventEmitter {
       `Beginning to watch ${this.options.host}:${this.options.queryPort}...`
     );
     await this.squadLayers.pull();
+    this.admins = await fetchAdminLists(this.options.adminLists);
 
     await this.rcon.connect();
     await this.logParser.watch();

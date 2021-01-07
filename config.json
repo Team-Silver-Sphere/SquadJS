@@ -187,6 +187,13 @@
       "interval": 300000
     },
     {
+      "plugin": "SCBLInfo",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "threshold": 6
+    },
+    {
       "plugin": "SeedingMode",
       "enabled": true,
       "interval": 150000,

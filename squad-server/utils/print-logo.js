@@ -54,8 +54,14 @@ export default async function () {
 ${COPYRIGHT_MESSAGE}
 GitHub: https://github.com/Thomas-Smyth/SquadJS
 
-Latest Version: ${outdated ? '\x1b[31m' : '\x1b[32m'}${branch === 'master' ? masterData.version : betaData.version}\x1b[0m, Installed Version: \x1b[32m${SQUADJS_VERSION}\x1b[0m
-${outdated ? '\x1b[31mYour SquadJS version is outdated, please consider updating.' : '\x1b[32mYour SquadJS version is up to date.'}\x1b[0m
+Latest Version: ${outdated ? '\x1b[31m' : '\x1b[32m'}${
+      branch === 'master' ? masterData.version : betaData.version
+    }\x1b[0m, Installed Version: \x1b[32m${SQUADJS_VERSION}\x1b[0m
+${
+  outdated
+    ? '\x1b[31mYour SquadJS version is outdated, please consider updating.'
+    : '\x1b[32mYour SquadJS version is up to date.'
+}\x1b[0m
 
 \x1b[33mLooking for ways to help protect your server from harmful players?
 Checkout the Squad Community Ban List: https://squad-community-ban-list.com/\x1b[0m

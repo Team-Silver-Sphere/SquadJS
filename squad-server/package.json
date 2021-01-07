@@ -8,6 +8,8 @@
     "didyoumean": "^1.2.1",
     "discord.js": "^12.3.1",
     "gamedig": "^2.0.20",
+    "graphql": "^15.4.0",
+    "graphql-request": "^3.4.0",
     "mariadb": "^2.5.1",
     "mysql2": "^2.2.5",
     "pg": "^8.5.1",
