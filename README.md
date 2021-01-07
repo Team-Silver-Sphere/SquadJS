@@ -67,7 +67,13 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
       "password": "FTP Password",
       "useListForSize": false
     },
-    "adminLists": []
+    "adminLists": [
+      {
+        "type": "",
+        "source": ""
+      }
+    ]
+  },
   },
   ```
   * `id` - An integer ID to uniquely identify the server.
@@ -80,7 +86,7 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
   * `ftp:port` - The FTP port of the server. Only required for `ftp` `logReaderMode`.
   * `ftp:user` - The FTP user of the server. Only required for `ftp` `logReaderMode`.
   * `ftp:password` - The FTP password of the server. Only required for `ftp` `logReaderMode`.
-  * `adminLists` - Sources for identifying an admins on the server.
+  * `adminLists` - Sources for identifying an admins on the server, either remote or local.
 
   ---
 </details>
