@@ -67,15 +67,15 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
       "password": "FTP Password",
       "useListForSize": false
     },
-      "adminLists": [
-     {
-         "type": "local",
-         "source": "C:/Users/Administrator/Desktop/Servers/sq_arty_party/SquadGame/ServerConfig/Admins.cfg",
-     },
-     {
-         "type": "remote",
-         "source": "http://yourWebsite.com/Server1/Admins.cfg",
-     }
+    "adminLists": [
+      {
+        "type": "local",
+        "source": "C:/Users/Administrator/Desktop/Servers/sq_arty_party/SquadGame/ServerConfig/Admins.cfg",
+      },
+      {
+        "type": "remote",
+        "source": "http://yourWebsite.com/Server1/Admins.cfg",
+      }
     ]
   },
   ```
