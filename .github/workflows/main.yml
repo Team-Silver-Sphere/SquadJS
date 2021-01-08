@@ -22,7 +22,7 @@ jobs:
         run: yarn run build-all
 
       - name: Update source code
-        run: yarn run eslint . --fix
+        run: yarn run lint
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v6
