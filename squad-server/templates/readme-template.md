@@ -86,6 +86,18 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
   * `ftp:user` - The FTP user of the server. Only required for `ftp` `logReaderMode`.
   * `ftp:password` - The FTP password of the server. Only required for `ftp` `logReaderMode`.
   * `adminLists` - Sources for identifying an admins on the server, either remote or local.
+    An example: 
+      "adminLists": [
+     {
+         "type": "local",
+         "source": "C:/Users/Administrator/Desktop/Servers/sq_arty_party/SquadGame/ServerConfig/Admins.cfg",
+     },
+     {
+         "type": "remote",
+         "source": "http://yourWebsite.com/Server1/Admins.cfg",
+     }
+    ]
+
 
   ---
 </details>
