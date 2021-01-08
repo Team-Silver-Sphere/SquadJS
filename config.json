@@ -13,7 +13,12 @@
       "password": "FTP Password",
       "useListForSize": false
     },
-    "adminLists": []
+    "adminLists": [
+      {
+        "type": "",
+        "source": ""
+      }
+    ]
   },
   "connectors": {
     "discord": "Discord Login Token",
