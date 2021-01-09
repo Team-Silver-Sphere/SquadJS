@@ -396,26 +396,28 @@ export default class SquadServer extends EventEmitter {
 
     Logger.verbose('SquadServer', 1, 'Pinging SquadJS API...');
 
-    const config = {
-      // send minimal information on server
+    const payload = {
+      // Send information about the server.
       server: {
         host: this.options.host,
         queryPort: this.options.queryPort,
-        logReaderMode: this.options.logReaderMode
+
+        name: this.serverName,
+        playerCount: this.players.length
       },
 
-      // we send all plugin information as none of that is sensitive.
-      plugins: this.plugins.map((plugin) => ({
-        ...plugin.optionsRaw,
-        plugin: plugin.constructor.name
-      })),
+      // Send information about SquadJS.
+      squadjs: {
+        version: SQUADJS_VERSION,
+        logReaderMode: this.options.logReaderMode,
 
-      // send additional information about SquadJS
-      version: SQUADJS_VERSION
+        // Send the plugin config so we can see what plugins they're using (none of the config is sensitive).
+        plugins: this.plugins.map((plugin) => ({ ...plugin.rawOptions, plugin: plugin.constructor.name }))
+      }
     };
 
     try {
-      const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', { config });
+      const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', payload);
 
       if (data.error)
         Logger.verbose(
