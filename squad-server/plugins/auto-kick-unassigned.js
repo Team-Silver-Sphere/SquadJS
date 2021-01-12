@@ -159,7 +159,7 @@ export default class AutoKickUnassigned extends BasePlugin {
     for (const player of this.server.players) {
       const isTracked = player.steamID in this.trackedPlayers;
       const isUnassigned = player.squadID === null;
-      const isAdmin =  admins.includes(player.steamID);
+      const isAdmin = admins.includes(player.steamID);
       const isWhitelist = whitelist.includes(player.steamID);
 
       // tracked player joined a squad remove them (redundant afer adding PLAYER_SQUAD_CHANGE, keeping for now)
