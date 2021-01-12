@@ -168,15 +168,13 @@ export default class AutoKickUnassigned extends BasePlugin {
       if (!isUnassigned) continue;
 
       if (isAdmin) this.verbose(2, `Admin is Unassigned: ${player.name}`);
+      if (isAdmin && this.options.ignoreAdmins) continue;
+
       if (isWhitelist) this.verbose(2, `Whitelist player is Unassigned: ${player.name}`);
+      if (isWhitelist && this.options.ignoreWhitelist) continue;
 
       // start tracking player
-      if (
-        !isTracked &&
-        !(isAdmin && this.options.ignoreAdmins) &&
-        !(isWhitelist && this.options.ignoreWhitelist)
-      )
-        this.trackedPlayers[player.steamID] = this.trackPlayer({ player });
+      if (!isTracked) this.trackedPlayers[player.steamID] = this.trackPlayer({ player });
     }
   }
 
