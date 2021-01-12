@@ -152,8 +152,8 @@ export default class AutoKickUnassigned extends BasePlugin {
 
     if (forceUpdate) await this.server.updatePlayerList();
 
-    const admins = await this.server.getAdminsWithPermission(this.adminPermission);
-    const whitelist = await this.server.getAdminsWithPermission(this.whitelistPermission);
+    const admins = this.server.getAdminsWithPermission(this.adminPermission);
+    const whitelist = this.server.getAdminsWithPermission(this.whitelistPermission);
 
     // loop through players on server and start tracking players not in a squad
     for (const player of this.server.players) {

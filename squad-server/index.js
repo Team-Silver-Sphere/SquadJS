@@ -241,11 +241,11 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.watch();
   }
 
-  async getAdminPermsBySteamID(steamID) {
+  getAdminPermsBySteamID(steamID) {
     return this.admins[steamID];
   }
 
-  async getAdminsWithPermission(perm) {
+  getAdminsWithPermission(perm) {
     const ret = [];
     for (const [steamID, perms] of Object.entries(this.admins)) {
       if (perm in perms) ret.push(steamID);
