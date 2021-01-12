@@ -82,8 +82,8 @@ export default class AutoKickUnassigned extends BasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
 
-    this.admins = server.getAdminsWithPermission('canseeadminchat');
-    this.whitelist = server.getAdminsWithPermission('reserve');
+    this.admins = [];
+    this.whitelist = [];
 
     this.kickTimeout = options.unassignedTimer * 1000;
     this.warningInterval = options.frequencyOfWarnings * 1000;
@@ -103,6 +103,9 @@ export default class AutoKickUnassigned extends BasePlugin {
   }
 
   async mount() {
+    this.admins = await this.server.getAdminsWithPermission('canseeadminchat');
+    this.whitelist = await this.server.getAdminsWithPermission('reserve');
+
     this.server.on('NEW_GAME', this.onNewGame);
     this.server.on('PLAYER_SQUAD_CHANGE', this.onPlayerSquadChange);
     this.updateTrackingListInterval = setInterval(
