@@ -29,6 +29,8 @@ export default class SquadServer extends EventEmitter {
 
     this.players = [];
 
+    this.admins = {};
+
     this.plugins = [];
 
     this.squadLayers = new SquadLayers(options.squadLayersSource);
@@ -239,14 +241,14 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.watch();
   }
 
-  async getAdminBySteamID(steamID) {
+  getAdminPermsBySteamID(steamID) {
     return this.admins[steamID];
   }
 
-  async getAdminsWithPermission(perm) {
+  getAdminsWithPermission(perm) {
     const ret = [];
     for (const [steamID, perms] of Object.entries(this.admins)) {
-      if (perm in perms) ret.push(this.admins[steamID]);
+      if (perm in perms) ret.push(steamID);
     }
     return ret;
   }
