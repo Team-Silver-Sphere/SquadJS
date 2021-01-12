@@ -263,7 +263,7 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
 ## **Plugins**
 The following is a list of plugins built into SquadJS, you can click their title for more information:
 
-Interested in creating your own plugin? [See more here](./squad-server/plugins/_readme.md)
+Interested in creating your own plugin? [See more here](./squad-server/plugins/readme.md)
 
 //PLUGIN-INFO//
 
