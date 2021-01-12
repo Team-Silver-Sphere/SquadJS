@@ -29,6 +29,8 @@ export default class SquadServer extends EventEmitter {
 
     this.players = [];
 
+    this.admins = {};
+
     this.plugins = [];
 
     this.squadLayers = new SquadLayers(options.squadLayersSource);

@@ -82,8 +82,8 @@ export default class AutoKickUnassigned extends BasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
 
-    this.admins = [];
-    this.whitelist = [];
+    this.adminPermission = 'canseeadminchat';
+    this.whitelistPermission = 'reserve';
 
     this.kickTimeout = options.unassignedTimer * 1000;
     this.warningInterval = options.frequencyOfWarnings * 1000;
@@ -103,9 +103,6 @@ export default class AutoKickUnassigned extends BasePlugin {
   }
 
   async mount() {
-    this.admins = await this.server.getAdminsWithPermission('canseeadminchat');
-    this.whitelist = await this.server.getAdminsWithPermission('reserve');
-
     this.server.on('NEW_GAME', this.onNewGame);
     this.server.on('PLAYER_SQUAD_CHANGE', this.onPlayerSquadChange);
     this.updateTrackingListInterval = setInterval(
@@ -155,12 +152,15 @@ export default class AutoKickUnassigned extends BasePlugin {
 
     if (forceUpdate) await this.server.updatePlayerList();
 
+    const admins = await this.server.getAdminsWithPermission(this.adminPermission);
+    const whitelist = await this.server.getAdminsWithPermission(this.whitelistPermission);
+
     // loop through players on server and start tracking players not in a squad
     for (const player of this.server.players) {
       const isTracked = player.steamID in this.trackedPlayers;
       const isUnassigned = player.squadID === null;
-      const isAdmin = player.steamID in this.admins;
-      const isWhitelist = player.steamID in this.whitelist;
+      const isAdmin = player.steamID in admins;
+      const isWhitelist = player.steamID in whitelist;
 
       // tracked player joined a squad remove them (redundant afer adding PLAYER_SQUAD_CHANGE, keeping for now)
       if (!isUnassigned && isTracked) this.untrackPlayer(player.steamID);
