@@ -67,7 +67,16 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
       "password": "FTP Password",
       "useListForSize": false
     },
-    "adminLists": []
+    "adminLists": [
+      {
+        "type": "local",
+        "source": "C:/Users/Administrator/Desktop/Servers/sq_arty_party/SquadGame/ServerConfig/Admins.cfg",
+      },
+      {
+        "type": "remote",
+        "source": "http://yourWebsite.com/Server1/Admins.cfg",
+      }
+    ]
   },
   ```
   * `id` - An integer ID to uniquely identify the server.
@@ -80,7 +89,7 @@ The config file needs to be valid JSON syntax. If an error is thrown saying the 
   * `ftp:port` - The FTP port of the server. Only required for `ftp` `logReaderMode`.
   * `ftp:user` - The FTP user of the server. Only required for `ftp` `logReaderMode`.
   * `ftp:password` - The FTP password of the server. Only required for `ftp` `logReaderMode`.
-  * `adminLists` - Sources for identifying an admins on the server.
+  * `adminLists` - Sources for identifying an admins on the server, either remote or local.
 
   ---
 </details>
@@ -680,6 +689,29 @@ Grafana (NOT YET WORKING WITH V2):
            <p>Frequency of the broadcasts in milliseconds.</p>
            <h6>Default</h6>
            <pre><code>300000</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>SCBLInfo</summary>
+          <h2>SCBLInfo</h2>
+          <p>The <code>SCBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based on data from the <a href="https://squad-community-ban-list.com/">Squad Community Ban List</a>.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to alert admins through.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>threshold</h4>
+           <h6>Description</h6>
+           <p>Admins will be alerted when a player has this or more reputation points. For more information on reputation points, see the <a href="https://squad-community-ban-list.com/faq">Squad Community Ban List's FAQ</a></p>
+           <h6>Default</h6>
+           <pre><code>6</code></pre></li></ul>
         </details>
 
 <details>

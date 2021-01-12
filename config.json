@@ -13,7 +13,12 @@
       "password": "FTP Password",
       "useListForSize": false
     },
-    "adminLists": []
+    "adminLists": [
+      {
+        "type": "",
+        "source": ""
+      }
+    ]
   },
   "connectors": {
     "discord": "Discord Login Token",
@@ -185,6 +190,13 @@
       "enabled": false,
       "broadcasts": [],
       "interval": 300000
+    },
+    {
+      "plugin": "SCBLInfo",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "threshold": 6
     },
     {
       "plugin": "SeedingMode",

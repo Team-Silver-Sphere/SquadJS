@@ -13,6 +13,7 @@ import DiscordServerStatus from './discord-server-status.js';
 import DiscordSubsystemRestarter from './discord-subsystem-restarter.js';
 import DiscordTeamkill from './discord-teamkill.js';
 import IntervalledBroadcasts from './intervalled-broadcasts.js';
+import SCBLInfo from './scbl-info.js';
 import SeedingMode from './seeding-mode.js';
 import TeamRandomizer from './team-randomizer.js';
 
@@ -32,6 +33,7 @@ const plugins = [
   DiscordSubsystemRestarter,
   DiscordTeamkill,
   IntervalledBroadcasts,
+  SCBLInfo,
   SeedingMode,
   TeamRandomizer
 ];

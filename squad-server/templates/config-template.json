@@ -7,13 +7,18 @@
     "rconPassword": "password",
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
-    "ftp":{
+    "ftp": {
       "port": 21,
       "user": "FTP Username",
       "password": "FTP Password",
       "useListForSize": false
     },
-    "adminLists": []
+    "adminLists": [
+      {
+        "type": "",
+        "source": ""
+      }
+    ]
   },
   "connectors": {
     "discord": "Discord Login Token",
