@@ -92,11 +92,14 @@ export default class SCBLInfo extends DiscordBasePlugin {
         2,
         `Player ${info.name} (Steam ID: ${info.steamID}) is not listed in the Squad Community Ban List.`
       );
-    if (data.steamUser.reputationPoints < this.options.threshold)
+
+    if (data.steamUser.reputationPoints < this.options.threshold) {
       this.verbose(
         2,
         `Player ${info.name} (Steam ID: ${info.steamID}) has a reputation below the threshold.`
       );
+      return;
+    }
 
     await this.sendDiscordMessage({
       embed: {
