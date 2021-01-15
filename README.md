@@ -788,7 +788,7 @@ SquadJS would not be possible without the support of so many individuals and org
 ```
 Boost Software License - Version 1.0 - August 17th, 2003
 
-Copyright (c) 2020 Thomas Smyth
+Copyright (c) 2021 Thomas Smyth
 
 Permission is hereby granted, free of charge, to any person or organization
 obtaining a copy of the software and accompanying documentation covered by
