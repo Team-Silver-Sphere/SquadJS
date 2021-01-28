@@ -1,6 +1,0 @@
-version: "1"
-rules:
-  - base: master
-    upstream: Thomas-Smyth:beta
-    mergeMethod: squash
-conflictLabel: "merge-conflict"
