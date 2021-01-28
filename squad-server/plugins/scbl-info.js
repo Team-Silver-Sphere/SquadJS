@@ -51,101 +51,112 @@ export default class SCBLInfo extends DiscordBasePlugin {
   }
 
   async onPlayerConnected(info) {
-    const data = await request(
-      'https://squad-community-ban-list.com/graphql',
-      gql`
-        query Search($id: String!) {
-          steamUser(id: $id) {
-            id
-            name
-            avatarFull
-            reputationPoints
-            riskRating
-            reputationRank
-            lastRefreshedInfo
-            lastRefreshedReputationPoints
-            lastRefreshedReputationRank
-            activeBans: bans(orderBy: "created", orderDirection: DESC, expired: false) {
-              edges {
-                cursor
-                node {
-                  id
+    try {
+      const data = await request(
+        'https://squad-community-ban-list.com/graphql',
+        gql`
+          query Search($id: String!) {
+            steamUser(id: $id) {
+              id
+              name
+              avatarFull
+              reputationPoints
+              riskRating
+              reputationRank
+              lastRefreshedInfo
+              lastRefreshedReputationPoints
+              lastRefreshedReputationRank
+              activeBans: bans(orderBy: "created", orderDirection: DESC, expired: false) {
+                edges {
+                  cursor
+                  node {
+                    id
+                  }
                 }
               }
-            }
-            expiredBans: bans(orderBy: "created", orderDirection: DESC, expired: true) {
-              edges {
-                cursor
-                node {
-                  id
+              expiredBans: bans(orderBy: "created", orderDirection: DESC, expired: true) {
+                edges {
+                  cursor
+                  node {
+                    id
+                  }
                 }
               }
             }
           }
-        }
-      `,
-      { id: info.player.steamID }
-    );
-
-    if (!data.steamUser)
-      this.verbose(
-        2,
-        `Player ${info.name} (Steam ID: ${info.steamID}) is not listed in the Squad Community Ban List.`
-      );
-    if (data.steamUser.reputationPoints < this.options.threshold)
-      this.verbose(
-        2,
-        `Player ${info.name} (Steam ID: ${info.steamID}) has a reputation below the threshold.`
+        `,
+        { id: info.player.steamID }
       );
 
-    await this.sendDiscordMessage({
-      embed: {
-        title: `${info.player.name} is a potentially harmful player!`,
-        author: {
-          name: 'Squad Community Ban List',
-          url: 'https://squad-community-ban-list.com/',
-          icon_url:
-            'https://raw.githubusercontent.com/Thomas-Smyth/Squad-Community-Ban-List/master/client/src/assets/img/brand/scbl-logo-square.png'
-        },
-        thumbnail: {
-          url: data.steamUser.avatarFull
-        },
-        description: `[${info.player.name}](https://squad-community-ban-list.com/search/${info.player.steamID}) has ${data.steamUser.reputationPoints} reputation points on the Squad Community Ban List and is therefore a potentially harmful player.`,
-        fields: [
-          {
-            name: 'Reputation Points',
-            value: `${data.steamUser.reputationPoints} (${
-              data.steamUser.reputationPointsMonthChange || 0
-            } from this month)`,
-            inline: true
-          },
-          {
-            name: 'Risk Rating',
-            value: `${data.steamUser.riskRating} / 10`,
-            inline: true
-          },
-          {
-            name: 'Reputation Rank',
-            value: `#${data.steamUser.reputationRank}`,
-            inline: true
-          },
-          {
-            name: 'Active Bans',
-            value: `${data.steamUser.activeBans.edges.length}`,
-            inline: true
-          },
-          {
-            name: 'Expired Bans',
-            value: `${data.steamUser.expiredBans.edges.length}`,
-            inline: true
-          }
-        ],
-        color: '#ffc40b',
-        timestamp: info.time.toISOString(),
-        footer: {
-          text: 'Powered by SquadJS and the Squad Community Ban List'
-        }
+      if (!data.steamUser)
+        this.verbose(
+          2,
+          `Player ${info.name} (Steam ID: ${info.steamID}) is not listed in the Squad Community Ban List.`
+        );
+
+      if (data.steamUser.reputationPoints < this.options.threshold) {
+        this.verbose(
+          2,
+          `Player ${info.name} (Steam ID: ${info.steamID}) has a reputation below the threshold.`
+        );
+        return;
       }
-    });
+
+      await this.sendDiscordMessage({
+        embed: {
+          title: `${info.player.name} is a potentially harmful player!`,
+          author: {
+            name: 'Squad Community Ban List',
+            url: 'https://squad-community-ban-list.com/',
+            icon_url:
+              'https://raw.githubusercontent.com/Thomas-Smyth/Squad-Community-Ban-List/master/client/src/assets/img/brand/scbl-logo-square.png'
+          },
+          thumbnail: {
+            url: data.steamUser.avatarFull
+          },
+          description: `[${info.player.name}](https://squad-community-ban-list.com/search/${info.player.steamID}) has ${data.steamUser.reputationPoints} reputation points on the Squad Community Ban List and is therefore a potentially harmful player.`,
+          fields: [
+            {
+              name: 'Reputation Points',
+              value: `${data.steamUser.reputationPoints} (${
+                data.steamUser.reputationPointsMonthChange || 0
+              } from this month)`,
+              inline: true
+            },
+            {
+              name: 'Risk Rating',
+              value: `${data.steamUser.riskRating} / 10`,
+              inline: true
+            },
+            {
+              name: 'Reputation Rank',
+              value: `#${data.steamUser.reputationRank}`,
+              inline: true
+            },
+            {
+              name: 'Active Bans',
+              value: `${data.steamUser.activeBans.edges.length}`,
+              inline: true
+            },
+            {
+              name: 'Expired Bans',
+              value: `${data.steamUser.expiredBans.edges.length}`,
+              inline: true
+            }
+          ],
+          color: '#ffc40b',
+          timestamp: info.time.toISOString(),
+          footer: {
+            text: 'Powered by SquadJS and the Squad Community Ban List'
+          }
+        }
+      });
+    } catch (err) {
+      this.verbose(
+        1,
+        `Failed to fetch Squad Community Ban List data for player ${info.name} (Steam ID: ${info.steamID}): `,
+        err
+      );
+    }
   }
 }
