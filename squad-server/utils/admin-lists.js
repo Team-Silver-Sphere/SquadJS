@@ -13,11 +13,9 @@ export default async function fetchAdminLists(adminLists) {
   const groups = {};
   const admins = {};
 
-  for (let idx = 0; idx < adminLists.length; idx++) {
-    const list = adminLists[idx];
+  for (const [idx, list] of adminLists.entries()) {
+    let data = '';
     try {
-      let data = '';
-
       switch (list.type) {
         case 'remote': {
           const resp = await axios({
@@ -36,18 +34,32 @@ export default async function fetchAdminLists(adminLists) {
         default:
           throw new Error(`Unsupported AdminList type:${list.type}`);
       }
+    } catch (error) {
+      Logger.verbose(
+        'SquadServer',
+        1,
+        `Error fetching ${list.type} admin list: ${list.source}`,
+        error
+      );
+    }
 
-      const groupRgx = /(?<=Group=)(.*?):(.*)(?=(?:\r\n|\r|\n))/g;
-      const adminRgx = /(?<=Admin=)(\d+):(\S+)(?=\s)/g;
+    const groupRgx = /(?<=^Group=)(?<groupID>.*?):(?<groupPerms>.*?)(?=(?:\r\n|\r|\n|\s+\/\/))/gm;
+    const adminRgx = /(?<=^Admin=)(?<steamID>\d+):(?<groupID>\S+)/gm;
 
-      /* eslint-disable no-unused-vars */
-      for (const [match, groupID, groupPerms] of data.matchAll(groupRgx)) {
-        groups[`${idx}-${groupID}`] = groupPerms.split(',');
-      }
-      for (const [match, steamID, groupID] of data.matchAll(adminRgx)) {
-        const perms = {};
-        for (const perm of groups[`${idx}-${groupID}`]) perms[perm] = true;
+    for (const m of data.matchAll(groupRgx)) {
+      groups[`${idx}-${m.groups.groupID}`] = m.groups.groupPerms.split(',');
+    }
+    for (const m of data.matchAll(adminRgx)) {
+      try {
+        const group = groups[`${idx}-${m.groups.groupID}`];
+        const perms = Object.assign(
+          {},
+          ...group.map((p) => {
+            return { [p]: true };
+          })
+        );
 
+        const steamID = m.groups.steamID;
         if (steamID in admins) {
           admins[steamID] = Object.assign(admins[steamID], perms);
           Logger.verbose(
@@ -63,15 +75,14 @@ export default async function fetchAdminLists(adminLists) {
             `Added Admin ${steamID} with ${Object.keys(admins[steamID])}`
           );
         }
+      } catch (error) {
+        Logger.verbose(
+          'SquadServer',
+          1,
+          `Error parsing admin group ${m.groups.groupID} from admin list: ${list.source}`,
+          error
+        );
       }
-      /* eslint-enable no-unused-vars */
-    } catch (error) {
-      Logger.verbose(
-        'SquadServer',
-        1,
-        `Error fetching ${list.type} admin list: ${list.source}`,
-        error
-      );
     }
   }
   Logger.verbose('SquadServer', 1, `${Object.keys(admins).length} admins loaded...`);
