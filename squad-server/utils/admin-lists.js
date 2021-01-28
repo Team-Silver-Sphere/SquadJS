@@ -52,12 +52,8 @@ export default async function fetchAdminLists(adminLists) {
     for (const m of data.matchAll(adminRgx)) {
       try {
         const group = groups[`${idx}-${m.groups.groupID}`];
-        const perms = Object.assign(
-          {},
-          ...group.map((p) => {
-            return { [p]: true };
-          })
-        );
+        const perms = {};
+        for (const groupPerm of group) perms[groupPerm] = true;
 
         const steamID = m.groups.steamID;
         if (steamID in admins) {
