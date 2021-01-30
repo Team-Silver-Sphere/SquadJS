@@ -19,8 +19,7 @@
 </div>
 
 ## **About**
-SquadJS is a scripting framework, designed for Squad servers, that aims to handle all communication and data collection to and from the servers. Using SquadJS as the base to any of your scripting projects allows you to easily write complex plugins without having to worry about the hassle of RCON or log parsing. However, for your convenience SquadJS comes shipped with multiple plugins already built for you allowing you to experience the power of SquadJS right away.
-
+SquadJS is an open source framework, designed for Squad servers, that aims to make communicating with Squad servers simple. Unlike other tools, that only collect data through limited means, SquadJS employs a more advanced data collection techniques allowing it to expose a greater variety of data points, such as kill logs. Shipped with SquadJS are a number of different plugins, built by our community, that do a range of different tasks, such as map voting and player statistics. However, SquadJS is designed to be easy to build upon allowing you to easily create plugins for tasks you want automated.
 <br>
 
 ## **Using SquadJS**
