@@ -247,8 +247,10 @@ export default class SquadServer extends EventEmitter {
 
   getAdminsWithPermission(perm) {
     const ret = [];
-    for (const [steamID, perms] of Object.entries(this.admins)) {
-      if (perm in perms) ret.push(steamID);
+    if(this.admins) {
+      for (const [steamID, perms] of Object.entries(this.admins)) {
+        if (perm in perms) ret.push(steamID);
+      }
     }
     return ret;
   }
