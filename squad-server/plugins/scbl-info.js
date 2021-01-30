@@ -88,7 +88,7 @@ export default class SCBLInfo extends DiscordBasePlugin {
         { id: info.player.steamID }
       );
 
-      if (!data.steamUser){
+      if (!data.steamUser) {
         this.verbose(
           2,
           `Player ${info.name} (Steam ID: ${info.steamID}) is not listed in the Squad Community Ban List.`
