@@ -1,5 +1,8 @@
 import SquadServerFactory from '../factory.js';
 
 console.log('Building config...');
-SquadServerFactory.buildConfigFile();
-console.log('Done.');
+SquadServerFactory.buildConfigFile()
+  .then(() => {
+    console.log('Done.');
+  })
+  .catch(console.log);
