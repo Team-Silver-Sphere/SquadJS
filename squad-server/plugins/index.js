@@ -17,15 +17,20 @@ class Plugins {
     this.plugins = {};
 
     const dir = await fs.promises.opendir(path.join(__dirname, './'));
+
+    const pluginFilenames = [];
     for await (const dirent of dir) {
       if (!dirent.isFile()) continue;
       if (
         ['index.js', 'base-plugin.js', 'discord-base-plugin.js', 'readme.md'].includes(dirent.name)
       )
         continue;
-      Logger.verbose('Plugins', 1, `Loading plugin file ${dirent.name}...`);
-      const { default: Plugin } = await import(`./${dirent.name}`);
+      pluginFilenames.push(dirent.name);
+    }
 
+    for (const pluginFilename of pluginFilenames) {
+      Logger.verbose('Plugins', 1, `Loading plugin file ${pluginFilename}...`);
+      const { default: Plugin } = await import(`./${pluginFilename}`);
       this.plugins[Plugin.name] = Plugin;
     }
 
