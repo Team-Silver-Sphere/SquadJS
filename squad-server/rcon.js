@@ -16,14 +16,19 @@ export default class SquadRcon extends Rcon {
     });
   }
 
-  async broadcast(message) {
-    await this.execute(`AdminBroadcast ${message}`);
+  async getCurrentMap() {
+    const response = await this.execute('ShowCurrentMap');
+    const match = response.match(/^Current level is (.*), layer is (.*)/);
+    return { level: match[1], layer: match[2] };
   }
 
-  async getLayerInfo() {
+  async getNextMap() {
     const response = await this.execute('ShowNextMap');
-    const match = response.match(/^Current map is (.+), Next map is (.*)/);
-    return { currentLayer: match[1], nextLayer: match[2].length === 0 ? null : match[2] };
+    const match = response.match(/^Next level is (.*), layer is (.*)/);
+    return {
+      level: match[1] !== '' ? match[1] : null,
+      layer: match[2] !== 'To be voted' ? match[2] : null
+    };
   }
 
   async getListPlayers() {
@@ -47,6 +52,10 @@ export default class SquadRcon extends Rcon {
     }
 
     return players;
+  }
+
+  async broadcast(message) {
+    await this.execute(`AdminBroadcast ${message}`);
   }
 
   async warn(steamID, message) {

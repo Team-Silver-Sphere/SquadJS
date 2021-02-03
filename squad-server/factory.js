@@ -35,9 +35,6 @@ export default class SquadServerFactory {
     Logger.verbose('SquadServerFactory', 1, 'Creating SquadServer...');
     const server = new SquadServer(config.server);
 
-    // pull layers read to use to create layer filter connectors
-    await server.squadLayers.pull();
-
     // initialise connectors
     Logger.verbose('SquadServerFactory', 1, 'Preparing connectors...');
     const connectors = {};
@@ -101,13 +98,6 @@ export default class SquadServerFactory {
 
   static async createConnector(server, type, connectorName, connectorConfig) {
     Logger.verbose('SquadServerFactory', 1, `Starting ${type} connector ${connectorName}...`);
-
-    if (type === 'squadlayerpool') {
-      return server.squadLayers[connectorConfig.type](
-        connectorConfig.filter,
-        connectorConfig.activeLayerFilter
-      );
-    }
 
     if (type === 'discord') {
       const connector = new Discord.Client();
