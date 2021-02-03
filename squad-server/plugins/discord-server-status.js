@@ -98,7 +98,8 @@ export default class DiscordServerStatus extends BasePlugin {
       {
         name: 'Next Layer',
         value: `\`\`\`${
-          this.server.nextLayer.name || (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
+          this.server.nextLayer?.name ||
+          (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
         }\`\`\``,
         inline: true
       }

@@ -12,6 +12,8 @@ class Layers {
   async pull(force = false) {
     if (this.pulled && !force) return;
 
+    this.layers = [];
+
     const response = await axios.get(
       'https://raw.githubusercontent.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data/dev/completed_output/2.0/finished_2.0.json'
     );
