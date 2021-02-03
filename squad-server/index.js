@@ -31,6 +31,7 @@ export default class SquadServer extends EventEmitter {
     this.players = [];
 
     this.admins = {};
+    this.adminsInAdminCam = {};
 
     this.plugins = [];
 
@@ -100,6 +101,23 @@ export default class SquadServer extends EventEmitter {
           ...data,
           message: command[2].trim()
         });
+    });
+
+    this.rcon.on('POSSESSED_ADMIN_CAMERA', async (data) => {
+      data.player = await this.getPlayerBySteamID(data.steamID);
+
+      this.adminsInAdminCam[data.steamID] = data.time;
+
+      this.emit('POSSESSED_ADMIN_CAMERA', data);
+    });
+
+    this.rcon.on('UNPOSSESSED_ADMIN_CAMERA', async (data) => {
+      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.duration = data.time.getTime() - this.adminsInAdminCam[data.steamID].getTime();
+
+      delete this.adminsInAdminCam[data.steamID];
+
+      this.emit('UNPOSSESSED_ADMIN_CAMERA', data);
     });
 
     this.rcon.on('RCON_ERROR', (data) => {

@@ -1,19 +1,53 @@
+import Logger from 'core/logger';
 import Rcon from 'core/rcon';
 
 export default class SquadRcon extends Rcon {
   processChatPacket(decodedPacket) {
-    const match = decodedPacket.body.match(
+    const matchChat = decodedPacket.body.match(
       /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[SteamID:([0-9]{17})] (.+?) : (.*)/
     );
+    if (matchChat) {
+      Logger.verbose('SquadRcon', 2, `Matched chat message: ${decodedPacket.body}`);
 
-    this.emit('CHAT_MESSAGE', {
-      raw: decodedPacket.body,
-      chat: match[1],
-      steamID: match[2],
-      name: match[3],
-      message: match[4],
-      time: new Date()
-    });
+      this.emit('CHAT_MESSAGE', {
+        raw: decodedPacket.body,
+        chat: matchChat[1],
+        steamID: matchChat[2],
+        name: matchChat[3],
+        message: matchChat[4],
+        time: new Date()
+      });
+
+      return;
+    }
+
+    const matchPossessedAdminCam = decodedPacket.body.match(
+      /\[SteamID:([0-9]{17})] (.+?) has possessed admin camera./
+    );
+    if (matchPossessedAdminCam) {
+      Logger.verbose('SquadRcon', 2, `Matched admin camera possessed: ${decodedPacket.body}`);
+      this.emit('POSSESSED_ADMIN_CAMERA', {
+        raw: decodedPacket.body,
+        steamID: matchPossessedAdminCam[1],
+        name: matchPossessedAdminCam[2],
+        time: new Date()
+      });
+
+      return;
+    }
+
+    const matchUnpossessedAdminCam = decodedPacket.body.match(
+      /\[SteamID:([0-9]{17})] (.+?) has unpossessed admin camera./
+    );
+    if (matchUnpossessedAdminCam) {
+      Logger.verbose('SquadRcon', 2, `Matched admin camera possessed: ${decodedPacket.body}`);
+      this.emit('UNPOSSESSED_ADMIN_CAMERA', {
+        raw: decodedPacket.body,
+        steamID: matchUnpossessedAdminCam[1],
+        name: matchUnpossessedAdminCam[2],
+        time: new Date()
+      });
+    }
   }
 
   async getCurrentMap() {
