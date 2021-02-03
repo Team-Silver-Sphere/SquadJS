@@ -150,6 +150,14 @@ export default class SquadServer extends EventEmitter {
       this.emit('ADMIN_BROADCAST', data);
     });
 
+    this.logParser.on('DEPLOYABLE_TAKE_DAMAGE', async (data) => {
+      data.player = await this.getPlayerByNameSuffix(data.playerSuffix);
+
+      delete data.playerSuffix;
+
+      this.emit('DEPLOYABLE_TAKE_DAMAGE', data);
+    });
+
     this.logParser.on('NEW_GAME', async (data) => {
       data.layer = await Layers.getLayerByClassname(data.layerClassname);
 
