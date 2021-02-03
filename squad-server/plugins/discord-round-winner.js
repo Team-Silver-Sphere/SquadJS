@@ -48,7 +48,7 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
         fields: [
           {
             name: 'Message',
-            value: `${info.winner} won on ${info.layer.name}.`
+            value: `${info.winner} won on ${this.server.layerHistory[1].layer.name}.`
           }
         ],
         timestamp: info.time.toISOString()
