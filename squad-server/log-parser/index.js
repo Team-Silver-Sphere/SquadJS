@@ -1,7 +1,7 @@
 import LogParser from 'core/log-parser';
 
 import AdminBroadcast from './admin-broadcast.js';
-import DeployableTakeDamage from './deployable-take-damage.js';
+import DeployableDamaged from './deployable-damaged.js';
 import NewGame from './new-game.js';
 import PlayerConnected from './player-connected.js';
 import PlayerDamaged from './player-damaged.js';
@@ -22,7 +22,7 @@ export default class SquadLogParser extends LogParser {
   getRules() {
     return [
       AdminBroadcast,
-      DeployableTakeDamage,
+      DeployableDamaged,
       NewGame,
       PlayerConnected,
       PlayerDamaged,
