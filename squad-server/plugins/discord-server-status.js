@@ -92,12 +92,15 @@ export default class DiscordServerStatus extends BasePlugin {
       },
       {
         name: 'Current Layer',
-        value: `\`\`\`${this.server.layerHistory[0].layer || 'Unknown'}\`\`\``,
+        value: `\`\`\`${this.server.currentLayer.name || 'Unknown'}\`\`\``,
         inline: true
       },
       {
         name: 'Next Layer',
-        value: `\`\`\`${this.server.nextLayer || 'Unknown'}\`\`\``,
+        value: `\`\`\`${
+          this.server.nextLayer?.name ||
+          (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
+        }\`\`\``,
         inline: true
       }
     ];
