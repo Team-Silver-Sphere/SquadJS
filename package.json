@@ -1,6 +1,6 @@
 {
   "name": "SquadJS",
-  "version": "1.4.8",
+  "version": "2.0.0",
   "repository": "https://github.com/Thomas-Smyth/SquadJS.git",
   "author": "Thomas Smyth <https://github.com/Thomas-Smyth>",
   "license": "BSL-1.0",
@@ -8,31 +8,28 @@
   "workspaces": [
     "assets",
     "core",
-    "factory",
-    "plugins",
     "squad-server"
   ],
   "scripts": {
     "lint": "eslint --fix . && prettier --write \"./**/*.js\"",
-    "build-config": "node factory/build-config.js",
-    "build-readme": "node factory/build-readme.js",
-    "build-all": "node factory/build-config.js && node factory/build-readme.js"
+    "build-config": "node squad-server/scripts/build-config-file.js",
+    "build-readme": "node squad-server/scripts/build-readme.js",
+    "build-all": "node squad-server/scripts/build-config-file.js && node squad-server/scripts/build-readme.js"
   },
   "type": "module",
   "dependencies": {
-    "core": "1.0.0",
-    "factory": "1.0.0"
+    "squad-server": "1.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.6.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint": "^7.17.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5"
+    "eslint-plugin-standard": "^5.0.0",
+    "husky": "^4.3.7",
+    "lint-staged": "^10.5.3",
+    "prettier": "^2.2.1"
   }
 }

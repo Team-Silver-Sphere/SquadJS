@@ -1,8 +1,7 @@
 # Project Files
 *.tmp
 
-index-test.js
-config-test.json
+config-test*.json
 
 # Dependencies
 node_modules/
