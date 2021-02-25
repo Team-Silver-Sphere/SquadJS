@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import Logger from 'core/logger';
+
 import Layer from './layer.js';
 
 class Layers {
@@ -10,17 +12,22 @@ class Layers {
   }
 
   async pull(force = false) {
-    if (this.pulled && !force) return;
+    if (this.pulled && !force) {
+      Logger.verbose('Layers', 1, 'Already pulled layers.');
+      return;
+    }
 
-    this.layers = [];
-
+    Logger.verbose('Layers', 1, 'Pulling layers...');
     const response = await axios.get(
       'https://raw.githubusercontent.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data/dev/completed_output/2.0/finished_2.0.json'
     );
 
+    this.layers = [];
     for (const layer of response.data.Maps) {
       this.layers.push(new Layer(layer));
     }
+
+    Logger.verbose('Layers', 1, `Pulled ${this.layers.length} layers.`);
 
     return this.layers;
   }
