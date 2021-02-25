@@ -32,10 +32,9 @@ class Layers {
       Logger.verbose('Layers', 1, `Pulled ${this.layers.length} layers.`);
 
       this.pulled = true;
-
     } catch (error) {
       Logger.verbose('Layers', 1, `Error pulling layers: ${error.message}`);
-      Logger.verbose('Layers', 3, 'ERROR:', error)
+      Logger.verbose('Layers', 3, 'ERROR:', error);
     }
 
     return this.layers;
