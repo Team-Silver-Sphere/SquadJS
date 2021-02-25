@@ -38,8 +38,6 @@ SquadJS relies on being able to access the Squad server log directory in order t
 3. Configure the `config.json` file. See below for more details.
 4. Start SquadJS: `node index.js`.
 
-**Note** - We use Yarn Workspaces so `npm install` will not work and will break stuff!
-
 <br>
 
 ## **Configuring SquadJS**
