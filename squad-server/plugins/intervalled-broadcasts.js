@@ -44,6 +44,6 @@ export default class IntervalledBroadcasts extends BasePlugin {
 
   async broadcast() {
     await this.server.rcon.broadcast(this.options.broadcasts[0]);
-    this.broadcasts.push(this.options.broadcasts.shift());
+    this.options.broadcasts.push(this.options.broadcasts.shift());
   }
 }
