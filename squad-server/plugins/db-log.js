@@ -443,8 +443,8 @@ export default class DBLog extends BasePlugin {
       dlc: info.dlc,
       mapClassname: info.mapClassname,
       layerClassname: info.layerClassname,
-      map: info.layer ? info.layer.map : null,
-      layer: info.layer ? info.layer.layer : null,
+      map: info.layer ? info.layer.map.name : null,
+      layer: info.layer ? info.layer.name : null,
       startTime: info.time
     });
   }

@@ -6,11 +6,12 @@ import Gamedig from 'gamedig';
 import Logger from 'core/logger';
 import { SQUADJS_API_DOMAIN } from 'core/constants';
 
+import { Layers } from './layers/index.js';
+
 import LogParser from './log-parser/index.js';
 import Rcon from './rcon.js';
 
 import { SQUADJS_VERSION } from './utils/constants.js';
-import { SquadLayers } from './utils/squad-layers.js';
 
 import fetchAdminLists from './utils/admin-lists.js';
 
@@ -30,10 +31,9 @@ export default class SquadServer extends EventEmitter {
     this.players = [];
 
     this.admins = {};
+    this.adminsInAdminCam = {};
 
     this.plugins = [];
-
-    this.squadLayers = new SquadLayers(options.squadLayersSource);
 
     this.setupRCON();
     this.setupLogParser();
@@ -61,7 +61,9 @@ export default class SquadServer extends EventEmitter {
       1,
       `Beginning to watch ${this.options.host}:${this.options.queryPort}...`
     );
-    await this.squadLayers.pull();
+
+    await Layers.pull();
+
     this.admins = await fetchAdminLists(this.options.adminLists);
 
     await this.rcon.connect();
@@ -101,6 +103,23 @@ export default class SquadServer extends EventEmitter {
         });
     });
 
+    this.rcon.on('POSSESSED_ADMIN_CAMERA', async (data) => {
+      data.player = await this.getPlayerBySteamID(data.steamID);
+
+      this.adminsInAdminCam[data.steamID] = data.time;
+
+      this.emit('POSSESSED_ADMIN_CAMERA', data);
+    });
+
+    this.rcon.on('UNPOSSESSED_ADMIN_CAMERA', async (data) => {
+      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.duration = data.time.getTime() - this.adminsInAdminCam[data.steamID].getTime();
+
+      delete this.adminsInAdminCam[data.steamID];
+
+      this.emit('UNPOSSESSED_ADMIN_CAMERA', data);
+    });
+
     this.rcon.on('RCON_ERROR', (data) => {
       this.emit('RCON_ERROR', data);
     });
@@ -131,12 +150,21 @@ export default class SquadServer extends EventEmitter {
       this.emit('ADMIN_BROADCAST', data);
     });
 
-    this.logParser.on('NEW_GAME', (data) => {
-      data.layer = this.squadLayers.getLayerByLayerClassname(data.layerClassname);
+    this.logParser.on('DEPLOYABLE_DAMAGED', async (data) => {
+      data.player = await this.getPlayerByNameSuffix(data.playerSuffix);
 
-      this.layerHistory.unshift({ ...data.layer, time: data.time });
+      delete data.playerSuffix;
+
+      this.emit('DEPLOYABLE_DAMAGED', data);
+    });
+
+    this.logParser.on('NEW_GAME', async (data) => {
+      data.layer = await Layers.getLayerByClassname(data.layerClassname);
+
+      this.layerHistory.unshift({ layer: data.layer, time: data.time });
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
 
+      this.currentLayer = data.layer;
       this.emit('NEW_GAME', data);
     });
 
@@ -301,16 +329,21 @@ export default class SquadServer extends EventEmitter {
     Logger.verbose('SquadServer', 1, `Updating layer information...`);
 
     try {
-      const layerInfo = await this.rcon.getLayerInfo();
+      const currentMap = await this.rcon.getCurrentMap();
+      const nextMap = await this.rcon.getNextMap();
+      const nextMapToBeVoted = nextMap === 'To be voted';
+
+      const currentLayer = await Layers.getLayerByName(currentMap.layer);
+      const nextLayer = nextMapToBeVoted ? null : await Layers.getLayerByName(nextMap.layer);
 
       if (this.layerHistory.length === 0) {
-        const layer = this.squadLayers.getLayerByLayerName(layerInfo.currentLayer);
-
-        this.layerHistory.unshift({ ...layer, time: Date.now() });
+        this.layerHistory.unshift({ layer: currentLayer, time: Date.now() });
         this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
       }
 
-      this.nextLayer = layerInfo.nextLayer;
+      this.currentLayer = currentLayer;
+      this.nextLayer = nextLayer;
+      this.nextLayerToBeVoted = nextMapToBeVoted;
 
       this.emit('UPDATED_LAYER_INFORMATION');
     } catch (err) {

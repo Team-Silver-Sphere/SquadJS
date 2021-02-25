@@ -8,7 +8,7 @@ import Logger from 'core/logger';
 const __dirname = fileURLToPath(import.meta.url);
 
 export default async function fetchAdminLists(adminLists) {
-  Logger.verbose('SquadServer', 2, `Fetching Admin Lists...`);
+  Logger.verbose('SquadServer', 1, `Fetching Admin Lists...`);
 
   const groups = {};
   const admins = {};
