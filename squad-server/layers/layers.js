@@ -13,29 +13,25 @@ class Layers {
 
   async pull(force = false) {
     if (this.pulled && !force) {
-      Logger.verbose('Layers', 1, 'Already pulled layers.');
+      Logger.verbose('Layers', 2, 'Already pulled layers.');
       return;
     }
+    if (force) Logger.verbose('Layers', 1, 'Forcing update to layer information...');
 
     this.layers = [];
 
-    try {
-      Logger.verbose('Layers', 1, 'Pulling layers...');
-      const response = await axios.get(
-        'https://raw.githubusercontent.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data/dev/completed_output/2.0/finished_2.0.json'
-      );
+    Logger.verbose('Layers', 1, 'Pulling layers...');
+    const response = await axios.get(
+      'https://raw.githubusercontent.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data/dev/completed_output/2.0/finished_2.0.json'
+    );
 
-      for (const layer of response.data.Maps) {
-        this.layers.push(new Layer(layer));
-      }
-
-      Logger.verbose('Layers', 1, `Pulled ${this.layers.length} layers.`);
-
-      this.pulled = true;
-    } catch (error) {
-      Logger.verbose('Layers', 1, `Error pulling layers: ${error.message}`);
-      Logger.verbose('Layers', 3, 'ERROR:', error);
+    for (const layer of response.data.Maps) {
+      this.layers.push(new Layer(layer));
     }
+
+    Logger.verbose('Layers', 1, `Pulled ${this.layers.length} layers.`);
+
+    this.pulled = true;
 
     return this.layers;
   }
