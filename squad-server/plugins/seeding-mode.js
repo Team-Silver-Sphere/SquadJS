@@ -63,7 +63,10 @@ export default class SeedingMode extends BasePlugin {
   }
 
   async broadcast() {
-    if (this.server.a2sPlayerCount !== 0 && this.server.a2sPlayerCount < this.options.liveThreshold)
+    if (
+      this.server.a2sPlayerCount !== 0 &&
+      this.server.a2sPlayerCount < this.options.seedingThreshold
+    )
       await this.server.rcon.broadcast(this.options.seedingMessage);
     else if (
       this.server.a2sPlayerCount !== 0 &&
