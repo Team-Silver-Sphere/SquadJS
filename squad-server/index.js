@@ -470,7 +470,7 @@ export default class SquadServer extends EventEmitter {
           `Successfully pinged the SquadJS API. Got back message: ${data.message}`
         );
     } catch (err) {
-      Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err);
+      Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err.message);
     }
 
     this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
