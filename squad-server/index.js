@@ -438,7 +438,7 @@ export default class SquadServer extends EventEmitter {
         queryPort: this.options.queryPort,
 
         name: this.serverName,
-        playerCount: this.players.length
+        playerCount: this.a2sPlayerCount
       },
 
       // Send information about SquadJS.
