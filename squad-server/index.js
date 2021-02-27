@@ -438,7 +438,7 @@ export default class SquadServer extends EventEmitter {
         queryPort: this.options.queryPort,
 
         name: this.serverName,
-        playerCount: this.players.length
+        playerCount: this.a2sPlayerCount + this.publicQueue + this.reserveQueue
       },
 
       // Send information about SquadJS.
@@ -470,7 +470,7 @@ export default class SquadServer extends EventEmitter {
           `Successfully pinged the SquadJS API. Got back message: ${data.message}`
         );
     } catch (err) {
-      Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err);
+      Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err.message);
     }
 
     this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
