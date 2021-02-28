@@ -33,6 +33,12 @@
   },
   "plugins": [
     {
+      "plugin": "DiscordPlaceholder",
+      "enabled": true,
+      "discordClient": "discord",
+      "command": "!placeholder"
+    },
+    {
       "plugin": "DiscordSubsystemRestarter",
       "enabled": false,
       "discordClient": "discord",

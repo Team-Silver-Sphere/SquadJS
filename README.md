@@ -268,6 +268,23 @@ The following is a list of plugins built into SquadJS, you can click their title
 Interested in creating your own plugin? [See more here](./squad-server/plugins/readme.md)
 
 <details>
+          <summary>DiscordPlaceholder</summary>
+          <h2>DiscordPlaceholder</h2>
+          <p>The <code>DiscordPlaceholder</code> plugin allows you to make your bot create placeholder messages that can be used when configuring other plugins.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>command</h4>
+           <h6>Description</h6>
+           <p>Command to create Discord placeholder.</p>
+           <h6>Default</h6>
+           <pre><code>!placeholder</code></pre></li></ul>
+        </details>
+
+<details>
           <summary>DiscordSubsystemRestarter</summary>
           <h2>DiscordSubsystemRestarter</h2>
           <p>The <code>DiscordSubSystemRestarter</code> plugin allows you to manually restart SquadJS subsystems in case an issues arises with them.<ul><li><code>!squadjs restartsubsystem rcon</code></li><li><code>!squadjs restartsubsystem logparser</code></li></ul></p>
@@ -615,7 +632,7 @@ Grafana (NOT YET WORKING WITH V2):
 <ul><li> <a href="https://grafana.com/">Grafana</a> is a cool way of viewing server statistics stored in the database.</li>
 <li>Install Grafana.</li>
 <li>Add your database as a datasource named <code>SquadJS</code>.</li>
-<li>Import the <a href="https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/SquadJS-Dashboard.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>
+<li>Import the <a href="https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/templates/SquadJS-Dashboard-v2.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>
 <li>Install any missing Grafana plugins.</li></ul></p>
           <h3>Options</h3>
           <ul><li><h4>database (Required)</h4>
@@ -778,11 +795,11 @@ Below is a list of scenarios we know may cause some information to be inaccurate
  * Duplicated Player Names - If two or more players have the same name or suffix name (see above) then SquadJS will be unable to identify them in the logs. When this occurs event logs will show the player as `null`. Be on the watch for groups of players who try to abuse this in order to TK or complete other malicious actions without being detected by SquadJS plugins. 
 
 ## Credits
-SquadJS would not be possible without the support of so many individuals and organisations. My thanks goes out to:
- * [SquadJS's contributors](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors).
- * [My GitHub sponsors](https://github.com/sponsors/Thomas-Smyth)!
+SquadJS would not be possible without the support of so many individuals and organisations. Our thanks goes out to:
+ * [SquadJS's contributors](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors)
+ * [Thomas Smyth's GitHub sponsors](https://github.com/sponsors/Thomas-Smyth)
  * subtlerod for proposing the initial log parsing idea, helping to design the log parsing process and for providing multiple servers to test with.
- * Fourleaf, Mex and various other members of ToG / ToG-L for helping to stage logs and participate in small scale tests.
+ * Fourleaf, Mex, various members of ToG / ToG-L and others that helped to stage logs and participate in small scale tests.
  * Various Squad servers/communities for participating in larger scale tests and for providing feedback on plugins.
  * Everyone in the Squad RCON Discord and others who have submitted bug reports, suggestions, feedback and provided logs.
 
