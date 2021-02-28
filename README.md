@@ -795,11 +795,11 @@ Below is a list of scenarios we know may cause some information to be inaccurate
  * Duplicated Player Names - If two or more players have the same name or suffix name (see above) then SquadJS will be unable to identify them in the logs. When this occurs event logs will show the player as `null`. Be on the watch for groups of players who try to abuse this in order to TK or complete other malicious actions without being detected by SquadJS plugins. 
 
 ## Credits
-SquadJS would not be possible without the support of so many individuals and organisations. My thanks goes out to:
- * [SquadJS's contributors](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors).
- * [My GitHub sponsors](https://github.com/sponsors/Thomas-Smyth)!
+SquadJS would not be possible without the support of so many individuals and organisations. Our thanks goes out to:
+ * [SquadJS's contributors](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors)
+ * [Thomas Smyth's GitHub sponsors](https://github.com/sponsors/Thomas-Smyth)
  * subtlerod for proposing the initial log parsing idea, helping to design the log parsing process and for providing multiple servers to test with.
- * Fourleaf, Mex and various other members of ToG / ToG-L for helping to stage logs and participate in small scale tests.
+ * Fourleaf, Mex, various members of ToG / ToG-L and others that helped to stage logs and participate in small scale tests.
  * Various Squad servers/communities for participating in larger scale tests and for providing feedback on plugins.
  * Everyone in the Squad RCON Discord and others who have submitted bug reports, suggestions, feedback and provided logs.
 
