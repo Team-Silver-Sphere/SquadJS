@@ -615,7 +615,7 @@ Grafana (NOT YET WORKING WITH V2):
 <ul><li> <a href="https://grafana.com/">Grafana</a> is a cool way of viewing server statistics stored in the database.</li>
 <li>Install Grafana.</li>
 <li>Add your database as a datasource named <code>SquadJS</code>.</li>
-<li>Import the <a href="https://github.com/Thomas-Smyth/SquadJS/blob/master/plugins/mysql-log/SquadJS-Dashboard.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>
+<li>Import the <a href="https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/templates/SquadJS-Dashboard-v2.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>
 <li>Install any missing Grafana plugins.</li></ul></p>
           <h3>Options</h3>
           <ul><li><h4>database (Required)</h4>
