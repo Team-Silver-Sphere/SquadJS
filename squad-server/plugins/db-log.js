@@ -137,6 +137,9 @@ export default class DBLog extends BasePlugin {
       lastName: {
         type: DataTypes.STRING
       }
+    }, {
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci'
     });
 
     this.createModel('Wound', {
@@ -176,6 +179,9 @@ export default class DBLog extends BasePlugin {
       teamkill: {
         type: DataTypes.BOOLEAN
       }
+    }, {
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci'
     });
 
     this.createModel('Death', {
@@ -218,6 +224,9 @@ export default class DBLog extends BasePlugin {
       teamkill: {
         type: DataTypes.BOOLEAN
       }
+    }, {
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci'
     });
 
     this.createModel('Revive', {
@@ -269,6 +278,9 @@ export default class DBLog extends BasePlugin {
       reviverSquadID: {
         type: DataTypes.INTEGER
       }
+    }, {
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci'
     });
 
     this.models.Server.hasMany(this.models.TickRate, {

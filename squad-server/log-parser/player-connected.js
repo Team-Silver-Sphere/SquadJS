@@ -9,6 +9,7 @@ export default {
       steamID: logParser.eventStore['steamid-connected']
     };
 
+    logParser.eventStore[`player-name-tracker-${data.steamID}`] = data.playerSuffix;
     logParser.emit('PLAYER_CONNECTED', data);
   }
 };
