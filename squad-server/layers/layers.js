@@ -20,10 +20,23 @@ class Layers {
 
     this.layers = [];
 
-    Logger.verbose('Layers', 1, 'Pulling layers...');
-    const response = await axios.get(
-      'https://raw.githubusercontent.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data/dev/completed_output/_Current%20Version/finished.json'
-    );
+    Logger.verbose('Layers', 1, 'Pulling layers from GitHub...');
+    let response = await axios
+      .get(
+        'https://raw.githubusercontent.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data/dev/completed_output/_Current%20Version/finished.json'
+      )
+      .catch(() => {
+        Logger.verbose('Layers', 1, 'Failed to pull layers from GitHub moving to JSDelivr');
+      });
+    if (!response?.data) {
+      response = await axios
+        .get(
+          'https://cdn.jsdelivr.net/gh/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data@dev/completed_output/_Current%20Version/finished.json'
+        )
+        .catch(() => {
+          throw new Error('Failed to pull layers from Github and JSDelivr!');
+        });
+    }
 
     for (const layer of response.data.Maps) {
       this.layers.push(new Layer(layer));
