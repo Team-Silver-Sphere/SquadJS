@@ -53,12 +53,20 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
         required: false,
         description: 'The color of the embed.',
         default: 16761867
+      },
+      warnInGameAdmins: {
+        required: false,
+        description:
+          'Should in-game admins be warned after a players uses the command and should we tell how much admins are active in-game right now.',
+        default: false
       }
     };
   }
 
   constructor(server, options, connectors) {
     super(server, options, connectors);
+
+    this.amountAdmins = 0;
 
     this.lastPing = Date.now() - this.options.pingDelay;
 
@@ -123,9 +131,39 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
 
     await this.sendDiscordMessage(message);
 
-    await this.server.rcon.warn(
-      info.player.steamID,
-      `An admin has been notified, please wait for us to get back to you.`
-    );
+    await this.server.updatePlayerList;
+    let admins = await this.server.getAdminsWithPermission('canseeadminchat');
+
+    if (this.options.warnInGameAdmins) {
+      for (const player of this.server.players) {
+        if (admins.includes(player.steamID)) {
+          this.amountAdmins++;
+
+          await this.server.rcon.warn(player.steamID, `[${info.player.name}] - ${info.message}`);
+        }
+      }
+
+      if (this.amountAdmins === 0) {
+        await this.server.rcon.warn(
+          info.player.steamID,
+          `There are no in-game admins, however an admin has been notified via discord, please wait for us to get back to you.`
+        );
+      } else {
+        await this.server.rcon.warn(
+          info.player.steamID,
+          `There ${this.amountAdmins > 1 ? 'are' : 'is'} ${this.amountAdmins} in-game admin${
+            this.amountAdmins > 1 ? 's' : ''
+          }. Please wait for us to get back to you.`
+        );
+      }
+    } else {
+      await this.server.rcon.warn(
+        info.player.steamID,
+        `An admin has been notified, please wait for us to get back to you.`
+      );
+    }
+
+    admins = [];
+    this.amountAdmins = 0;
   }
 }

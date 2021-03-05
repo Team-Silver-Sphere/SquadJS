@@ -91,7 +91,8 @@
       "command": "admin",
       "pingGroups": [],
       "pingDelay": 60000,
-      "color": 16761867
+      "color": 16761867,
+      "warnInGameAdmins": false
     },
     {
       "plugin": "DiscordChat",
