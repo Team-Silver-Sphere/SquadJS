@@ -27,11 +27,11 @@ function versionOutOfDate(current, latest) {
 
 export default async function () {
   const { data: masterData } = await axios.get(
-    `https://raw.githubusercontent.com/Thomas-Smyth/SquadJS/master/package.json`
+    `https://cdn.jsdelivr.net/gh/Thomas-Smyth/SquadJS@master/package.json`
   );
 
   const { data: betaData } = await axios.get(
-    `https://raw.githubusercontent.com/Thomas-Smyth/SquadJS/beta/package.json`
+    `https://cdn.jsdelivr.net/gh/Thomas-Smyth/SquadJS@beta/package.json`
   );
 
   const branch = SQUADJS_VERSION.includes('beta') ? 'beta' : 'master';
