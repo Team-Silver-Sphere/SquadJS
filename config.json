@@ -115,7 +115,8 @@
       "plugin": "DiscordPlaceholder",
       "enabled": true,
       "discordClient": "discord",
-      "command": "!placeholder"
+      "command": "!placeholder",
+      "channelID": ""
     },
     {
       "plugin": "DiscordRcon",

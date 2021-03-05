@@ -550,7 +550,12 @@ Grafana (NOT YET WORKING WITH V2):
            <h6>Description</h6>
            <p>Command to create Discord placeholder.</p>
            <h6>Default</h6>
-           <pre><code>!placeholder</code></pre></li></ul>
+           <pre><code>!placeholder</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The bot will only answer with a placeholder on this channel</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li></ul>
         </details>
 
 <details>
