@@ -3,10 +3,10 @@ import { Server } from 'socket.io';
 
 import BasePlugin from './base-plugin.js';
 
-export default class SquadIOAPI extends BasePlugin {
+export default class SocketIOAPI extends BasePlugin {
   static get description() {
     return (
-      'The <code>SquadIOAPI</code> plugin allows remote access to a SquadJS instance via Socket.IO' +
+      'The <code>SocketIOAPI</code> plugin allows remote access to a SquadJS instance via Socket.IO' +
       '<br />As a client example you can use this to connect to the socket.io server;' +
       `<pre><code>
       const socket = io.connect('ws://IP:PORT', {

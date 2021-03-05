@@ -771,9 +771,9 @@ Grafana (NOT YET WORKING WITH V2):
         </details>
 
 <details>
-          <summary>SquadIOAPI</summary>
-          <h2>SquadIOAPI</h2>
-          <p>The <code>SquadIOAPI</code> plugin allows remote access to a SquadJS instance via Socket.IO<br />As a client example you can use this to connect to the socket.io server;<pre><code>
+          <summary>SocketIOAPI</summary>
+          <h2>SocketIOAPI</h2>
+          <p>The <code>SocketIOAPI</code> plugin allows remote access to a SquadJS instance via Socket.IO<br />As a client example you can use this to connect to the socket.io server;<pre><code>
       const socket = io.connect('ws://IP:PORT', {
         withCredentials: true,
         extraHeaders: {

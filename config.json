@@ -178,7 +178,7 @@
       "liveMessage": "Live!"
     },
     {
-      "plugin": "SquadIOAPI",
+      "plugin": "SocketIOAPI",
       "enabled": false,
       "websocketPort": "",
       "securityToken": ""
