@@ -1,7 +1,7 @@
 export default class Layer {
   constructor(data) {
     this.name = data.Name;
-    this.classname = data.rawName;
+    this.classname = data.levelName;
     this.map = {
       name: data.mapName
     };
