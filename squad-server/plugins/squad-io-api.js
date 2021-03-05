@@ -20,8 +20,8 @@ export default class SquadIOAPI extends BasePlugin {
       })
     </code></pre>` +
       'If you need more documentation about socket.io please go ahead and read the following;' +
-      '<br />General Socket.io documentation: <a href="https://socket.io/docs/v3" target="_blanc">Socket.io Docs</a>' +
-      '<br />Authentication and securing your websocket: <a href="https://socket.io/docs/v3/middlewares/#Sending-credentials" target="_blanc">Sending-credentials</a>'
+      '<br />General Socket.io documentation: <a href="https://socket.io/docs/v3" target="_blank">Socket.io Docs</a>' +
+      '<br />Authentication and securing your websocket: <a href="https://socket.io/docs/v3/middlewares/#Sending-credentials" target="_blank">Sending-credentials</a>'
     );
   }
 
