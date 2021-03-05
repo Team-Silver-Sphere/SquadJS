@@ -33,6 +33,17 @@
   },
   "plugins": [
     {
+      "plugin": "AutoTKWarn",
+      "enabled": true,
+      "message": "Please apologise for ALL TKs in ALL chat!"
+    },
+    {
+      "plugin": "DiscordSubsystemRestarter",
+      "enabled": false,
+      "discordClient": "discord",
+      "role": ""
+    },
+    {
       "plugin": "AutoKickUnassigned",
       "enabled": true,
       "warningMessage": "Join a squad, you are are unassigned and will be kicked",
@@ -45,41 +56,24 @@
       "ignoreWhitelist": false
     },
     {
-      "plugin": "AutoTKWarn",
-      "enabled": true,
-      "message": "Please apologise for ALL TKs in ALL chat!"
-    },
-    {
-      "plugin": "ChatCommands",
-      "enabled": true,
-      "commands": [
-        {
-          "command": "squadjs",
-          "type": "warn",
-          "response": "This server is powered by SquadJS.",
-          "ignoreChats": []
-        }
-      ]
-    },
-    {
       "plugin": "DBLog",
       "enabled": false,
       "database": "mysql",
       "overrideServerID": null
     },
     {
-      "plugin": "DiscordAdminBroadcast",
-      "enabled": false,
+      "plugin": "DiscordPlaceholder",
+      "enabled": true,
       "discordClient": "discord",
-      "channelID": "",
-      "color": 16761867
+      "command": "!placeholder"
     },
     {
-      "plugin": "DiscordAdminCamLogs",
-      "enabled": false,
+      "plugin": "DiscordTeamkill",
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "",
-      "color": 16761867
+      "color": 16761867,
+      "disableSCBL": false
     },
     {
       "plugin": "DiscordAdminRequest",
@@ -92,73 +86,6 @@
       "pingGroups": [],
       "pingDelay": 60000,
       "color": 16761867
-    },
-    {
-      "plugin": "DiscordChat",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "chatColors": {},
-      "color": 16761867,
-      "ignoreChats": [
-        "ChatSquad"
-      ]
-    },
-    {
-      "plugin": "DiscordDebug",
-      "enabled": false,
-      "discordClient": "discord",
-      "channelID": "",
-      "events": []
-    },
-    {
-      "plugin": "DiscordPlaceholder",
-      "enabled": true,
-      "discordClient": "discord",
-      "command": "!placeholder"
-    },
-    {
-      "plugin": "DiscordRcon",
-      "enabled": false,
-      "discordClient": "discord",
-      "channelID": "",
-      "permissions": {},
-      "prependAdminNameInBroadcast": false
-    },
-    {
-      "plugin": "DiscordRoundWinner",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "color": 16761867
-    },
-    {
-      "plugin": "DiscordServerStatus",
-      "enabled": false,
-      "discordClient": "discord",
-      "messageIDs": [],
-      "updateInterval": 60000,
-      "disableStatus": false
-    },
-    {
-      "plugin": "DiscordSubsystemRestarter",
-      "enabled": false,
-      "discordClient": "discord",
-      "role": ""
-    },
-    {
-      "plugin": "DiscordTeamkill",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "color": 16761867,
-      "disableSCBL": false
-    },
-    {
-      "plugin": "IntervalledBroadcasts",
-      "enabled": false,
-      "broadcasts": [],
-      "interval": 300000
     },
     {
       "plugin": "SCBLInfo",
@@ -178,9 +105,82 @@
       "liveMessage": "Live!"
     },
     {
+      "plugin": "DiscordAdminBroadcast",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
+      "plugin": "DiscordChat",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "chatColors": {},
+      "color": 16761867,
+      "ignoreChats": [
+        "ChatSquad"
+      ]
+    },
+    {
+      "plugin": "ChatCommands",
+      "enabled": true,
+      "commands": [
+        {
+          "command": "squadjs",
+          "type": "warn",
+          "response": "This server is powered by SquadJS.",
+          "ignoreChats": []
+        }
+      ]
+    },
+    {
       "plugin": "TeamRandomizer",
       "enabled": true,
       "command": "randomize"
+    },
+    {
+      "plugin": "DiscordDebug",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "events": []
+    },
+    {
+      "plugin": "DiscordRoundWinner",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
+      "plugin": "DiscordRcon",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "permissions": {},
+      "prependAdminNameInBroadcast": false
+    },
+    {
+      "plugin": "IntervalledBroadcasts",
+      "enabled": false,
+      "broadcasts": [],
+      "interval": 300000
+    },
+    {
+      "plugin": "DiscordServerStatus",
+      "enabled": false,
+      "discordClient": "discord",
+      "messageIDs": [],
+      "updateInterval": 60000,
+      "disableStatus": false
+    },
+    {
+      "plugin": "DiscordAdminCamLogs",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
     }
   ],
   "logger": {
