@@ -22,7 +22,7 @@ class Layers {
 
     Logger.verbose('Layers', 1, 'Pulling layers...');
     const response = await axios.get(
-      'https://raw.githubusercontent.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data/dev/completed_output/_Current%20Version/finished.json'
+      'https://cdn.jsdelivr.net/gh/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data@dev/completed_output/_Current%20Version/finished.json'
     );
 
     for (const layer of response.data.Maps) {
