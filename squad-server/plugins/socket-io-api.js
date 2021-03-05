@@ -10,10 +10,6 @@ export default class SocketIOAPI extends BasePlugin {
       '<br />As a client example you can use this to connect to the socket.io server;' +
       `<pre><code>
       const socket = io.connect('ws://IP:PORT', {
-        withCredentials: true,
-        extraHeaders: {
-          "squadJS-connection-panel": "extraHeaders are optional"
-        },
         auth: {
           token: "MySecretPassword"
         }
@@ -54,9 +50,7 @@ export default class SocketIOAPI extends BasePlugin {
     this.io = new Server(this.httpServer, {
       cors: {
         origin: 'http://localhost:3000',
-        methods: ['GET', 'POST'],
-        allowedHeaders: ['squadJS-connection-panel'],
-        credentials: true
+        methods: ['GET', 'POST']
       }
     });
 
