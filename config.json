@@ -33,48 +33,15 @@
   },
   "plugins": [
     {
+      "plugin": "AutoTKWarn",
+      "enabled": true,
+      "message": "Please apologise for ALL TKs in ALL chat!"
+    },
+    {
       "plugin": "DiscordSubsystemRestarter",
       "enabled": false,
       "discordClient": "discord",
       "role": ""
-    },
-    {
-      "plugin": "DiscordChat",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "chatColors": {},
-      "color": 16761867,
-      "ignoreChats": [
-        "ChatSquad"
-      ]
-    },
-    {
-      "plugin": "DiscordAdminBroadcast",
-      "enabled": false,
-      "discordClient": "discord",
-      "channelID": "",
-      "color": 16761867
-    },
-    {
-      "plugin": "DiscordAdminRequest",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "ignoreChats": [],
-      "ignorePhrases": [],
-      "command": "admin",
-      "pingGroups": [],
-      "pingDelay": 60000,
-      "color": 16761867
-    },
-    {
-      "plugin": "DiscordServerStatus",
-      "enabled": false,
-      "discordClient": "discord",
-      "messageIDs": [],
-      "updateInterval": 60000,
-      "disableStatus": false
     },
     {
       "plugin": "AutoKickUnassigned",
@@ -89,17 +56,10 @@
       "ignoreWhitelist": false
     },
     {
-      "plugin": "DiscordDebug",
+      "plugin": "DBLog",
       "enabled": false,
-      "discordClient": "discord",
-      "channelID": "",
-      "events": []
-    },
-    {
-      "plugin": "IntervalledBroadcasts",
-      "enabled": false,
-      "broadcasts": [],
-      "interval": 300000
+      "database": "mysql",
+      "overrideServerID": null
     },
     {
       "plugin": "DiscordTeamkill",
@@ -108,6 +68,25 @@
       "channelID": "",
       "color": 16761867,
       "disableSCBL": false
+    },
+    {
+      "plugin": "DiscordAdminRequest",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "ignoreChats": [],
+      "ignorePhrases": [],
+      "command": "admin",
+      "pingGroups": [],
+      "pingDelay": 60000,
+      "color": 16761867
+    },
+    {
+      "plugin": "SCBLInfo",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "threshold": 6
     },
     {
       "plugin": "SeedingMode",
@@ -120,22 +99,22 @@
       "liveMessage": "Live!"
     },
     {
-      "plugin": "AutoTKWarn",
-      "enabled": true,
-      "message": "Please apologise for ALL TKs in ALL chat!"
-    },
-    {
-      "plugin": "DBLog",
+      "plugin": "DiscordAdminBroadcast",
       "enabled": false,
-      "database": "mysql",
-      "overrideServerID": null
-    },
-    {
-      "plugin": "DiscordRoundWinner",
-      "enabled": true,
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867
+    },
+    {
+      "plugin": "DiscordChat",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "chatColors": {},
+      "color": 16761867,
+      "ignoreChats": [
+        "ChatSquad"
+      ]
     },
     {
       "plugin": "ChatCommands",
@@ -150,8 +129,20 @@
       ]
     },
     {
-      "plugin": "DiscordAdminCamLogs",
+      "plugin": "TeamRandomizer",
+      "enabled": true,
+      "command": "randomize"
+    },
+    {
+      "plugin": "DiscordDebug",
       "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "events": []
+    },
+    {
+      "plugin": "DiscordRoundWinner",
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867
@@ -165,16 +156,25 @@
       "prependAdminNameInBroadcast": false
     },
     {
-      "plugin": "TeamRandomizer",
-      "enabled": true,
-      "command": "randomize"
+      "plugin": "IntervalledBroadcasts",
+      "enabled": false,
+      "broadcasts": [],
+      "interval": 300000
     },
     {
-      "plugin": "SCBLInfo",
-      "enabled": true,
+      "plugin": "DiscordServerStatus",
+      "enabled": false,
+      "discordClient": "discord",
+      "messageIDs": [],
+      "updateInterval": 60000,
+      "disableStatus": false
+    },
+    {
+      "plugin": "DiscordAdminCamLogs",
+      "enabled": false,
       "discordClient": "discord",
       "channelID": "",
-      "threshold": 6
+      "color": 16761867
     }
   ],
   "logger": {
