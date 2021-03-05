@@ -59,14 +59,17 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
         description:
           'Should in-game admins be warned after a players uses the command and should we tell how much admins are active in-game right now.',
         default: false
+      },
+      showInGameAdmins: {
+        required: false,
+        description: 'Should players know how much in-game admins there are active/online?',
+        default: true
       }
     };
   }
 
   constructor(server, options, connectors) {
     super(server, options, connectors);
-
-    this.amountAdmins = 0;
 
     this.lastPing = Date.now() - this.options.pingDelay;
 
@@ -131,39 +134,37 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
 
     await this.sendDiscordMessage(message);
 
-    await this.server.updatePlayerList;
-    let admins = await this.server.getAdminsWithPermission('canseeadminchat');
-
+    const admins = await this.server.getAdminsWithPermission('canseeadminchat');
+    let amountAdmins = 0;
     if (this.options.warnInGameAdmins) {
       for (const player of this.server.players) {
-        if (admins.includes(player.steamID)) {
-          this.amountAdmins++;
-
-          await this.server.rcon.warn(player.steamID, `[${info.player.name}] - ${info.message}`);
-        }
+        if (!admins.includes(player.steamID)) continue;
+        amountAdmins++;
+        await this.server.rcon.warn(player.steamID, `[${info.player.name}] - ${info.message}`);
       }
 
-      if (this.amountAdmins === 0) {
+      if (amountAdmins === 0)
         await this.server.rcon.warn(
           info.player.steamID,
           `There are no in-game admins, however an admin has been notified via discord, please wait for us to get back to you.`
         );
-      } else {
+      else if (this.options.showInGameAdmins)
         await this.server.rcon.warn(
           info.player.steamID,
-          `There ${this.amountAdmins > 1 ? 'are' : 'is'} ${this.amountAdmins} in-game admin${
-            this.amountAdmins > 1 ? 's' : ''
+          `There ${amountAdmins > 1 ? 'are' : 'is'} ${amountAdmins} in-game admin${
+            amountAdmins > 1 ? 's' : ''
           }. Please wait for us to get back to you.`
         );
-      }
+      else
+        await this.server.rcon.warn(
+          info.player.steamID,
+          `An admin has been notified, please wait for us to get back to you.`
+        );
     } else {
       await this.server.rcon.warn(
         info.player.steamID,
         `An admin has been notified, please wait for us to get back to you.`
       );
     }
-
-    admins = [];
-    this.amountAdmins = 0;
   }
 }

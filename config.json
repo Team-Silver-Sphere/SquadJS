@@ -92,7 +92,8 @@
       "pingGroups": [],
       "pingDelay": 60000,
       "color": 16761867,
-      "warnInGameAdmins": false
+      "warnInGameAdmins": false,
+      "showInGameAdmins": true
     },
     {
       "plugin": "DiscordChat",
