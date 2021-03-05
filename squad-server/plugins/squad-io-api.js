@@ -5,7 +5,24 @@ import BasePlugin from './base-plugin.js';
 
 export default class SquadIOAPI extends BasePlugin {
   static get description() {
-    return 'The <code>SquadIOAPI</code> plugin allows remote access to a SquadJS instance via Socket.IO';
+    return (
+      'The <code>SquadIOAPI</code> plugin allows remote access to a SquadJS instance via Socket.IO' +
+      '<br />As a client example you can use this to connect to the socket.io server;' +
+      `<pre><code>
+      const socket = io.connect('ws://IP:PORT', {
+        withCredentials: true,
+        extraHeaders: {
+          "squadJS-connection-panel": "extraHeaders are optional"
+        },
+        auth: {
+          token: "MySecretPassword"
+        }
+      })
+    </code></pre>` +
+      'If you need more documentation about socket.io please go ahead and read the following;' +
+      '<br />General Socket.io documentation: <a href="https://socket.io/docs/v3" target="_blanc">Socket.io Docs</a>' +
+      '<br />Authentication and securing your websocket: <a href="https://socket.io/docs/v3/middlewares/#Sending-credentials" target="_blanc">Sending-credentials</a>'
+    );
   }
 
   static get defaultEnabled() {
