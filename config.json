@@ -28,11 +28,7 @@
       "username": "squadjs",
       "password": "password",
       "database": "squadjs",
-      "dialect": "mysql",
-      "define": { 
-        "charset": "utf8mb4", 
-        "collate": "utf8mb4_unicode_ci" 
-      }
+      "dialect": "mysql"
     }
   },
   "plugins": [
