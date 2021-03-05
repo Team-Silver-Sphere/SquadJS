@@ -110,6 +110,10 @@ export default class SquadServerFactory {
 
       if (typeof connectorConfig === 'string') {
         connector = new Sequelize(connectorConfig, {
+          define: {
+            charset: 'utf8mb4',
+            collate: 'utf8mb4_unicode_ci'
+          },
           logging: (msg) => Logger.verbose('Sequelize', 3, msg)
         });
       } else if (typeof connectorConfig === 'object') {
