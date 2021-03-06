@@ -143,7 +143,7 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
         await this.server.rcon.warn(player.steamID, `[${info.player.name}] - ${info.message}`);
       }
 
-      if (amountAdmins === 0)
+      if (amountAdmins === 0 && this.options.showInGameAdmins)
         await this.server.rcon.warn(
           info.player.steamID,
           `There are no in-game admins, however an admin has been notified via discord, please wait for us to get back to you.`
