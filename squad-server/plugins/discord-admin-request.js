@@ -136,12 +136,11 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
 
     const admins = await this.server.getAdminsWithPermission('canseeadminchat');
     let amountAdmins = 0;
-    if (this.options.warnInGameAdmins) {
-      for (const player of this.server.players) {
-        if (!admins.includes(player.steamID)) continue;
-        amountAdmins++;
+    for (const player of this.server.players) {
+      if (!admins.includes(player.steamID)) continue;
+      amountAdmins++;
+      if (this.options.warnInGameAdmins)
         await this.server.rcon.warn(player.steamID, `[${info.player.name}] - ${info.message}`);
-      }
     }
 
     if (amountAdmins === 0 && this.options.showInGameAdmins)
