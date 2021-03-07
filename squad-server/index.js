@@ -464,6 +464,13 @@ export default class SquadServer extends EventEmitter {
     return null;
   }
 
+  async getSquadByID(teamID, squadID) {
+    if (squadID === null) return null;
+    return this.getSquadByCondition(
+      (squad) => squad.teamID === teamID && squad.squadID === squadID
+    );
+  }
+
   async getPlayerBySteamID(steamID, forceUpdate) {
     return this.getPlayerByCondition((player) => player.steamID === steamID, forceUpdate);
   }
