@@ -42,6 +42,10 @@ export default class SquadServer extends EventEmitter {
     this.updatePlayerListInterval = 30 * 1000;
     this.updatePlayerListTimeout = null;
 
+    this.updateSquadList = this.updateSquadList.bind(this);
+    this.updateSquadListInterval = 30 * 1000;
+    this.updateSquadListTimeout = null;
+
     this.updateLayerInformation = this.updateLayerInformation.bind(this);
     this.updateLayerInformationInterval = 30 * 1000;
     this.updateLayerInformationTimeout = null;
@@ -69,6 +73,7 @@ export default class SquadServer extends EventEmitter {
     await this.rcon.connect();
     await this.logParser.watch();
 
+    await this.updateSquadList();
     await this.updatePlayerList();
     await this.updateLayerInformation();
     await this.updateA2SInformation();
@@ -300,10 +305,15 @@ export default class SquadServer extends EventEmitter {
         oldPlayerInfo[player.steamID] = player;
       }
 
-      this.players = (await this.rcon.getListPlayers()).map((player) => ({
-        ...oldPlayerInfo[player.steamID],
-        ...player
-      }));
+      const players = [];
+      for (const player of await this.rcon.getListPlayers())
+        players.push({
+          ...oldPlayerInfo[player.steamID],
+          ...player,
+          squad: await this.getSquadByID(player.teamID, player.squadID)
+        });
+
+      this.players = players;
 
       for (const player of this.players) {
         if (typeof oldPlayerInfo[player.steamID] === 'undefined') continue;
@@ -329,6 +339,22 @@ export default class SquadServer extends EventEmitter {
     Logger.verbose('SquadServer', 1, `Updated player list.`);
 
     this.updatePlayerListTimeout = setTimeout(this.updatePlayerList, this.updatePlayerListInterval);
+  }
+
+  async updateSquadList() {
+    if (this.updateSquadListTimeout) clearTimeout(this.updateSquadListTimeout);
+
+    Logger.verbose('SquadServer', 1, `Updating squad list...`);
+
+    try {
+      this.squads = await this.rcon.getSquads();
+    } catch (err) {
+      Logger.verbose('SquadServer', 1, 'Failed to update squad list.', err);
+    }
+
+    Logger.verbose('SquadServer', 1, `Updated squad list.`);
+
+    this.updateSquadListTimeout = setTimeout(this.updateSquadList, this.updateSquadListInterval);
   }
 
   async updateLayerInformation() {
@@ -420,6 +446,31 @@ export default class SquadServer extends EventEmitter {
     if (matches.length === 1) return matches[0];
 
     return null;
+  }
+
+  async getSquadByCondition(condition, forceUpdate = false, retry = true) {
+    let matches;
+
+    if (!forceUpdate) {
+      matches = this.squads.filter(condition);
+      if (matches.length === 1) return matches[0];
+
+      if (!retry) return null;
+    }
+
+    await this.updateSquadList();
+
+    matches = this.squads.filter(condition);
+    if (matches.length === 1) return matches[0];
+
+    return null;
+  }
+
+  async getSquadByID(teamID, squadID) {
+    if (squadID === null) return null;
+    return this.getSquadByCondition(
+      (squad) => squad.teamID === teamID && squad.squadID === squadID
+    );
   }
 
   async getPlayerBySteamID(steamID, forceUpdate) {

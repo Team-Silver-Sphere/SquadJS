@@ -88,6 +88,36 @@ export default class SquadRcon extends Rcon {
     return players;
   }
 
+  async getSquads() {
+    const responseSquad = await this.execute('ListSquads');
+
+    const squads = [];
+    let teamName;
+    let teamID;
+
+    for (const line of responseSquad.split('\n')) {
+      const match = line.match(
+        /ID: ([0-9]+) \| Name: (.+) \| Size: ([0-9]+) \| Locked: (True|False)/
+      );
+      const matchSide = line.match(/Team ID: (1|2) \((.+)\)/);
+      if (matchSide) {
+        teamID = matchSide[1];
+        teamName = matchSide[2];
+      }
+      if (!match) continue;
+      await squads.push({
+        squadID: match[1],
+        squadName: match[2],
+        size: match[3],
+        locked: match[4],
+        teamID: teamID,
+        teamName: teamName
+      });
+    }
+
+    return squads;
+  }
+
   async broadcast(message) {
     await this.execute(`AdminBroadcast ${message}`);
   }
