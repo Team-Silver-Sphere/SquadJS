@@ -31,12 +31,13 @@ SquadJS relies on being able to access the Squad server log directory in order t
  * [Node.js](https://nodejs.org/en/) (14.x) - [Download](https://nodejs.org/en/)
  * [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
  * Some plugins may have additional requirements.
- 
+
 #### Installation
-1. Clone the repository: `git clone https://github.com/Thomas-Smyth/SquadJS`
-2. Install the dependencies: `yarn install`
-3. Configure the `config.json` file. See below for more details.
-4. Start SquadJS: `node index.js`.
+1. [Download SquadJS](https://github.com/Thomas-Smyth/SquadJS/releases/latest) and unzip the download.
+2. Open the unzipped folder in your terminal.
+3. Install the dependencies by running `yarn install` in your terminal.
+4. Configure the `config.json` file. See below for more details.
+5. Start SquadJS by running `node index.js` in your terminal.
 
 **Note** - We use Yarn Workspaces so `npm install` will not work and will break stuff!
 
