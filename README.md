@@ -28,7 +28,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 
 #### Prerequisites
  * Git
- * [Node.js](https://nodejs.org/en/) (Current) - [Download](https://nodejs.org/en/)
+ * [Node.js](https://nodejs.org/en/) (14.x) - [Download](https://nodejs.org/en/)
  * [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
  * Some plugins may have additional requirements.
  
@@ -382,7 +382,12 @@ Grafana (NOT YET WORKING WITH V2):
            <h6>Description</h6>
            <p>Command to create Discord placeholder.</p>
            <h6>Default</h6>
-           <pre><code>!placeholder</code></pre></li></ul>
+           <pre><code>!placeholder</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The bot will only answer with a placeholder on this channel</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li></ul>
         </details>
 
 <details>
@@ -669,6 +674,31 @@ Grafana (NOT YET WORKING WITH V2):
            <p>The color of the embed.</p>
            <h6>Default</h6>
            <pre><code>16761867</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>SocketIOAPI</summary>
+          <h2>SocketIOAPI</h2>
+          <p>The <code>SocketIOAPI</code> plugin allows remote access to a SquadJS instance via Socket.IO<br />As a client example you can use this to connect to the socket.io server;<pre><code>
+      const socket = io.connect('ws://IP:PORT', {
+        auth: {
+          token: "MySecretPassword"
+        }
+      })
+    </code></pre>If you need more documentation about socket.io please go ahead and read the following;<br />General Socket.io documentation: <a href="https://socket.io/docs/v3" target="_blank">Socket.io Docs</a><br />Authentication and securing your websocket: <a href="https://socket.io/docs/v3/middlewares/#Sending-credentials" target="_blank">Sending-credentials</a></p>
+          <h3>Options</h3>
+          <ul><li><h4>websocketPort (Required)</h4>
+           <h6>Description</h6>
+           <p>The port for the websocket.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>3000</code></pre>
+<li><h4>securityToken (Required)</h4>
+           <h6>Description</h6>
+           <p>Your secret token/password for connecting.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>MySecretPassword</code></pre></ul>
         </details>
 
 <details>

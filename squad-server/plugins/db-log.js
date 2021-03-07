@@ -129,147 +129,175 @@ export default class DBLog extends BasePlugin {
       }
     });
 
-    this.createModel('SteamUser', {
-      steamID: {
-        type: DataTypes.STRING,
-        primaryKey: true
+    this.createModel(
+      'SteamUser',
+      {
+        steamID: {
+          type: DataTypes.STRING,
+          primaryKey: true
+        },
+        lastName: {
+          type: DataTypes.STRING
+        }
       },
-      lastName: {
-        type: DataTypes.STRING
+      {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci'
       }
-    });
+    );
 
-    this.createModel('Wound', {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+    this.createModel(
+      'Wound',
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+        },
+        time: {
+          type: DataTypes.DATE,
+          notNull: true
+        },
+        victimName: {
+          type: DataTypes.STRING
+        },
+        victimTeamID: {
+          type: DataTypes.INTEGER
+        },
+        victimSquadID: {
+          type: DataTypes.INTEGER
+        },
+        attackerName: {
+          type: DataTypes.STRING
+        },
+        attackerTeamID: {
+          type: DataTypes.INTEGER
+        },
+        attackerSquadID: {
+          type: DataTypes.INTEGER
+        },
+        damage: {
+          type: DataTypes.FLOAT
+        },
+        weapon: {
+          type: DataTypes.STRING
+        },
+        teamkill: {
+          type: DataTypes.BOOLEAN
+        }
       },
-      time: {
-        type: DataTypes.DATE,
-        notNull: true
-      },
-      victimName: {
-        type: DataTypes.STRING
-      },
-      victimTeamID: {
-        type: DataTypes.INTEGER
-      },
-      victimSquadID: {
-        type: DataTypes.INTEGER
-      },
-      attackerName: {
-        type: DataTypes.STRING
-      },
-      attackerTeamID: {
-        type: DataTypes.INTEGER
-      },
-      attackerSquadID: {
-        type: DataTypes.INTEGER
-      },
-      damage: {
-        type: DataTypes.FLOAT
-      },
-      weapon: {
-        type: DataTypes.STRING
-      },
-      teamkill: {
-        type: DataTypes.BOOLEAN
+      {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci'
       }
-    });
+    );
 
-    this.createModel('Death', {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+    this.createModel(
+      'Death',
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+        },
+        time: {
+          type: DataTypes.DATE,
+          notNull: true
+        },
+        woundTime: {
+          type: DataTypes.DATE
+        },
+        victimName: {
+          type: DataTypes.STRING
+        },
+        victimTeamID: {
+          type: DataTypes.INTEGER
+        },
+        victimSquadID: {
+          type: DataTypes.INTEGER
+        },
+        attackerName: {
+          type: DataTypes.STRING
+        },
+        attackerTeamID: {
+          type: DataTypes.INTEGER
+        },
+        attackerSquadID: {
+          type: DataTypes.INTEGER
+        },
+        damage: {
+          type: DataTypes.FLOAT
+        },
+        weapon: {
+          type: DataTypes.STRING
+        },
+        teamkill: {
+          type: DataTypes.BOOLEAN
+        }
       },
-      time: {
-        type: DataTypes.DATE,
-        notNull: true
-      },
-      woundTime: {
-        type: DataTypes.DATE
-      },
-      victimName: {
-        type: DataTypes.STRING
-      },
-      victimTeamID: {
-        type: DataTypes.INTEGER
-      },
-      victimSquadID: {
-        type: DataTypes.INTEGER
-      },
-      attackerName: {
-        type: DataTypes.STRING
-      },
-      attackerTeamID: {
-        type: DataTypes.INTEGER
-      },
-      attackerSquadID: {
-        type: DataTypes.INTEGER
-      },
-      damage: {
-        type: DataTypes.FLOAT
-      },
-      weapon: {
-        type: DataTypes.STRING
-      },
-      teamkill: {
-        type: DataTypes.BOOLEAN
+      {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci'
       }
-    });
+    );
 
-    this.createModel('Revive', {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+    this.createModel(
+      'Revive',
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+        },
+        time: {
+          type: DataTypes.DATE,
+          notNull: true
+        },
+        woundTime: {
+          type: DataTypes.DATE
+        },
+        victimName: {
+          type: DataTypes.STRING
+        },
+        victimTeamID: {
+          type: DataTypes.INTEGER
+        },
+        victimSquadID: {
+          type: DataTypes.INTEGER
+        },
+        attackerName: {
+          type: DataTypes.STRING
+        },
+        attackerTeamID: {
+          type: DataTypes.INTEGER
+        },
+        attackerSquadID: {
+          type: DataTypes.INTEGER
+        },
+        damage: {
+          type: DataTypes.FLOAT
+        },
+        weapon: {
+          type: DataTypes.STRING
+        },
+        teamkill: {
+          type: DataTypes.BOOLEAN
+        },
+        reviverName: {
+          type: DataTypes.STRING
+        },
+        reviverTeamID: {
+          type: DataTypes.INTEGER
+        },
+        reviverSquadID: {
+          type: DataTypes.INTEGER
+        }
       },
-      time: {
-        type: DataTypes.DATE,
-        notNull: true
-      },
-      woundTime: {
-        type: DataTypes.DATE
-      },
-      victimName: {
-        type: DataTypes.STRING
-      },
-      victimTeamID: {
-        type: DataTypes.INTEGER
-      },
-      victimSquadID: {
-        type: DataTypes.INTEGER
-      },
-      attackerName: {
-        type: DataTypes.STRING
-      },
-      attackerTeamID: {
-        type: DataTypes.INTEGER
-      },
-      attackerSquadID: {
-        type: DataTypes.INTEGER
-      },
-      damage: {
-        type: DataTypes.FLOAT
-      },
-      weapon: {
-        type: DataTypes.STRING
-      },
-      teamkill: {
-        type: DataTypes.BOOLEAN
-      },
-      reviverName: {
-        type: DataTypes.STRING
-      },
-      reviverTeamID: {
-        type: DataTypes.INTEGER
-      },
-      reviverSquadID: {
-        type: DataTypes.INTEGER
+      {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci'
       }
-    });
+    );
 
     this.models.Server.hasMany(this.models.TickRate, {
       foreignKey: { name: 'server', allowNull: false },
