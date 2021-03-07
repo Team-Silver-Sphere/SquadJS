@@ -2,7 +2,7 @@
 name: SquadJS Bug Report
 about: Please report any bugs in the core SquadJS package using this template...
 title: ''
-labels: bug, core
+labels: core bug
 assignees: ''
 
 ---

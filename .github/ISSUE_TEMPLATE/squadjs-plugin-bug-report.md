@@ -2,7 +2,7 @@
 name: SquadJS Plugin Bug Report
 about: Please report any bugs in the SquadJS plugins using this template...
 title: ''
-labels: bug, core
+labels: plugin bug
 assignees: ''
 
 ---
