@@ -852,6 +852,8 @@ Please note, `{minor}`/`{patch}` releases may still break SquadJS installations,
 
 Release version numbers and changelogs are managed by [Release Drafter](https://github.com/marketplace/actions/release-drafter) which relies on the appropriate labels being applied to pull requests. Version numbers are updated in the `package.json` file manually prior to publishing the release draft.
 
+The above policy was written and put into effect after the release of SquadJS v2.0.5. A major version bump to SquadJS v3.0.0 was made to signify this policy taking affect and to draw a line under the previous poor management of releases and version numbers.
+
 ## Credits
 SquadJS would not be possible without the support of so many individuals and organisations. Our thanks goes out to:
 * [SquadJS's contributors](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors).
