@@ -830,6 +830,7 @@ SquadJS would not be possible without the support of so many individuals and org
  * [SquadJS's contributors](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors)
  * [Thomas Smyth's GitHub sponsors](https://github.com/sponsors/Thomas-Smyth)
  * subtlerod for proposing the initial log parsing idea, helping to design the log parsing process and for providing multiple servers to test with.
+ * Shanomac99 and the rest of the Squad Wiki team for providing us with [layer information](https://github.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data).
  * Fourleaf, Mex, various members of ToG / ToG-L and others that helped to stage logs and participate in small scale tests.
  * Various Squad servers/communities for participating in larger scale tests and for providing feedback on plugins.
  * Everyone in the Squad RCON Discord and others who have submitted bug reports, suggestions, feedback and provided logs.
