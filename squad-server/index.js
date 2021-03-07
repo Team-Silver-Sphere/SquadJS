@@ -180,10 +180,8 @@ export default class SquadServer extends EventEmitter {
 
     this.logParser.on('PLAYER_DISCONNECTED', async (data) => {
       data.player = await this.getPlayerBySteamID(data.steamID);
-      if (data.player) data.player.suffix = data.playerSuffix;
 
       delete data.steamID;
-      delete data.playerSuffix;
 
       this.emit('PLAYER_DISCONNECTED', data);
     });
