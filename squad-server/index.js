@@ -73,8 +73,8 @@ export default class SquadServer extends EventEmitter {
     await this.rcon.connect();
     await this.logParser.watch();
 
-    await this.updatePlayerList();
     await this.updateSquadList();
+    await this.updatePlayerList();
     await this.updateLayerInformation();
     await this.updateA2SInformation();
 
@@ -312,6 +312,8 @@ export default class SquadServer extends EventEmitter {
           ...player,
           squad: await this.getSquadByID(player.teamID, player.squadID)
         });
+
+      this.players = players;
 
       for (const player of this.players) {
         if (typeof oldPlayerInfo[player.steamID] === 'undefined') continue;
