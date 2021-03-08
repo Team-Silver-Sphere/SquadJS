@@ -44,6 +44,16 @@ export default class SeedingMode extends BasePlugin {
         required: false,
         description: '"Live" message to display.',
         default: 'Live!'
+      },
+      waitOnNewGames: {
+        required: false,
+        description: 'Should the plugin wait to be executed on NEW_GAME event.',
+        default: true
+      },
+      waitTimeOnNewGame: {
+        required: false,
+        description: 'The time to wait before check player counts in seconds.',
+        default: 30
       }
     };
   }
@@ -51,28 +61,57 @@ export default class SeedingMode extends BasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
 
+    this.waitOnMapChange = false;
     this.broadcast = this.broadcast.bind(this);
+    this.onNewGame = this.onNewGame.bind(this);
   }
 
   async mount() {
+    if (this.options.waitOnNewGames) {
+      this.server.on('NEW_GAME', this.onNewGame);
+    }
+
     this.interval = setInterval(this.broadcast, this.options.interval);
   }
 
   async unmount() {
     clearInterval(this.interval);
+    this.server.removeEventListener('NEW_GAME', this.onNewGame);
+  }
+
+  onNewGame(info) {
+    this.waitOnMapChange = true;
   }
 
   async broadcast() {
-    if (
-      this.server.a2sPlayerCount !== 0 &&
-      this.server.a2sPlayerCount < this.options.seedingThreshold
-    )
-      await this.server.rcon.broadcast(this.options.seedingMessage);
-    else if (
-      this.server.a2sPlayerCount !== 0 &&
-      this.options.liveEnabled &&
-      this.server.a2sPlayerCount < this.options.liveThreshold
-    )
-      await this.server.rcon.broadcast(this.options.liveMessage);
+    if (this.options.waitOnNewGames && this.waitOnMapChange) {
+      setTimeout(async () => {
+        if (
+          this.server.a2sPlayerCount !== 0 &&
+          this.server.a2sPlayerCount < this.options.seedingThreshold
+        )
+          await this.server.rcon.broadcast(this.options.seedingMessage);
+        else if (
+          this.server.a2sPlayerCount !== 0 &&
+          this.options.liveEnabled &&
+          this.server.a2sPlayerCount < this.options.liveThreshold
+        )
+          await this.server.rcon.broadcast(this.options.liveMessage);
+
+        this.waitOnMapChange = false;
+      }, this.options.waitTimeOnNewGame * 1000);
+    } else {
+      if (
+        this.server.a2sPlayerCount !== 0 &&
+        this.server.a2sPlayerCount < this.options.seedingThreshold
+      )
+        await this.server.rcon.broadcast(this.options.seedingMessage);
+      else if (
+        this.server.a2sPlayerCount !== 0 &&
+        this.options.liveEnabled &&
+        this.server.a2sPlayerCount < this.options.liveThreshold
+      )
+        await this.server.rcon.broadcast(this.options.liveMessage);
+    }
   }
 }

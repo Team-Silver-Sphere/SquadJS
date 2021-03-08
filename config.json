@@ -176,7 +176,9 @@
       "seedingMessage": "Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!",
       "liveEnabled": true,
       "liveThreshold": 52,
-      "liveMessage": "Live!"
+      "liveMessage": "Live!",
+      "waitOnNewGames": true,
+      "waitTimeOnNewGame": 30
     },
     {
       "plugin": "SocketIOAPI",
