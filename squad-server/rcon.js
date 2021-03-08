@@ -51,20 +51,6 @@ export default class SquadRcon extends Rcon {
       return;
     }
 
-    const matchKick = decodedPacket.body.match(/Kicked player \d.?.\s?\[steamid=([0-9]{17})] (.*)/);
-    if (matchKick) {
-      Logger.verbose('SquadRcon', 2, `Matched kick message: ${decodedPacket.body}`);
-
-      this.emit('PLAYER_KICKED', {
-        raw: decodedPacket.body,
-        steamID: matchKick[1],
-        name: matchKick[2],
-        time: new Date()
-      });
-
-      return;
-    }
-
     const matchWarn = decodedPacket.body.match(
       /Remote admin has warned player (.*)\. Message was "(.*)"/
     );
@@ -75,6 +61,20 @@ export default class SquadRcon extends Rcon {
         raw: decodedPacket.body,
         name: matchWarn[1],
         reason: matchWarn[2],
+        time: new Date()
+      });
+
+      return;
+    }
+
+    const matchKick = decodedPacket.body.match(/Kicked player \d.?.\s?\[steamid=([0-9]{17})] (.*)/);
+    if (matchKick) {
+      Logger.verbose('SquadRcon', 2, `Matched kick message: ${decodedPacket.body}`);
+
+      this.emit('PLAYER_KICKED', {
+        raw: decodedPacket.body,
+        steamID: matchKick[1],
+        name: matchKick[2],
         time: new Date()
       });
 
