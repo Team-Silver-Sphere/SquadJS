@@ -773,7 +773,17 @@ Grafana (NOT YET WORKING WITH V2):
            <h6>Description</h6>
            <p>"Live" message to display.</p>
            <h6>Default</h6>
-           <pre><code>Live!</code></pre></li></ul>
+           <pre><code>Live!</code></pre></li>
+<li><h4>waitOnNewGames</h4>
+           <h6>Description</h6>
+           <p>Should the plugin wait to be executed on NEW_GAME event.</p>
+           <h6>Default</h6>
+           <pre><code>false</code></pre></li>
+<li><h4>waitTimeOnNewGame</h4>
+           <h6>Description</h6>
+           <p>The time to wait before check player counts in seconds.</p>
+           <h6>Default</h6>
+           <pre><code>30</code></pre></li></ul>
         </details>
 
 <details>
