@@ -67,7 +67,9 @@ export default class SquadRcon extends Rcon {
       return;
     }
 
-    const matchKick = decodedPacket.body.match(/Kicked player (.*)\. \[steamid=([0-9]{17})] (.*)/);
+    const matchKick = decodedPacket.body.match(
+      /Kicked player ([0-9]+)\. \[steamid=([0-9]{17})] (.*)/
+    );
     if (matchKick) {
       Logger.verbose('SquadRcon', 2, `Matched kick message: ${decodedPacket.body}`);
 
@@ -83,7 +85,7 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchBan = decodedPacket.body.match(
-      /Banned player (\d.*)\. \[steamid=(.*?)\] (.*) for interval (.*)/
+      /Banned player ([0-9]+)\. \[steamid=(.*?)\] (.*) for interval (.*)/
     );
     if (matchBan) {
       Logger.verbose('SquadRcon', 2, `Matched ban message: ${decodedPacket.body}`);
