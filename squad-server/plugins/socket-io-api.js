@@ -3,6 +3,31 @@ import { Server } from 'socket.io';
 
 import BasePlugin from './base-plugin.js';
 
+const eventsToBroadcast = [
+  'CHAT_MESSAGE',
+  'POSSESSED_ADMIN_CAMERA',
+  'UNPOSSESSED_ADMIN_CAMERA',
+  'RCON_ERROR',
+  'ADMIN_BROADCAST',
+  'DEPLOYABLE_DAMAGED',
+  'NEW_GAME',
+  'PLAYER_CONNECTED',
+  'PLAYER_DISCONNECTED',
+  'PLAYER_DAMAGED',
+  'PLAYER_WOUNDED',
+  'PLAYER_DIED',
+  'PLAYER_REVIVED',
+  'TEAMKILL',
+  'PLAYER_POSSESS',
+  'PLAYER_UNPOSSESS',
+  'TICK_RATE',
+  'PLAYER_TEAM_CHANGE',
+  'PLAYER_SQUAD_CHANGE',
+  'UPDATED_PLAYER_INFORMATION',
+  'UPDATED_LAYER_INFORMATION',
+  'UPDATED_A2S_INFORMATION'
+];
+
 export default class SocketIOAPI extends BasePlugin {
   static get description() {
     return (
@@ -66,6 +91,12 @@ export default class SocketIOAPI extends BasePlugin {
       this.verbose(1, 'New Connection Made.');
       this.bindListeners(socket, this.server);
       this.bindListeners(socket, this.server.rcon, 'rcon.');
+      // Events to broadcast
+      for (const eventToBroadcast of eventsToBroadcast) {
+        this.server.on(eventToBroadcast, (...args) => {
+          socket.emit(eventToBroadcast, ...args);
+        });
+      }
     });
   }
 
