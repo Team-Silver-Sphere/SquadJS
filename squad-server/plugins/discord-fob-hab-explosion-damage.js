@@ -46,7 +46,7 @@ export default class DiscordFOBHABExplosionDamage extends DiscordBasePlugin {
   async onDeployableDamaged(info) {
     if (!info.deployable.match(/(?:FOBRadio|Hab)_/i)) return;
     if (!info.weapon.match(/_Deployable_/i)) return;
-    if (!info.attacker) return;
+    if (!info.player) return;
 
     const fields = [
       {
