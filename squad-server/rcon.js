@@ -47,6 +47,54 @@ export default class SquadRcon extends Rcon {
         name: matchUnpossessedAdminCam[2],
         time: new Date()
       });
+
+      return;
+    }
+
+    const matchKick = decodedPacket.body.match(/Kicked player \d.?.\s?\[steamid=([0-9]{17})] (.*)/);
+    if (matchKick) {
+      Logger.verbose('SquadRcon', 2, `Matched kick message: ${decodedPacket.body}`);
+
+      this.emit('PLAYER_KICKED', {
+        raw: decodedPacket.body,
+        steamID: matchKick[1],
+        name: matchKick[2],
+        time: new Date()
+      });
+
+      return;
+    }
+
+    const matchWarn = decodedPacket.body.match(
+      /Remote admin has warned player (.*)\. Message was "(.*)"/
+    );
+    if (matchWarn) {
+      Logger.verbose('SquadRcon', 2, `Matched warn message: ${decodedPacket.body}`);
+
+      this.emit('PLAYER_WARNED', {
+        raw: decodedPacket.body,
+        name: matchWarn[1],
+        reason: matchWarn[2],
+        time: new Date()
+      });
+
+      return;
+    }
+
+    const matchBan = decodedPacket.body.match(
+      /Banned player (.*)\. \[steamid=(.*?)\] (.*) for interval (.*)/
+    );
+    if (matchBan) {
+      Logger.verbose('SquadRcon', 2, `Matched ban message: ${decodedPacket.body}`);
+
+      this.emit('PLAYER_BANNED', {
+        raw: decodedPacket.body,
+        playerID: matchBan[1],
+        steamID: matchBan[2],
+        name: matchBan[3],
+        interval: matchBan[4],
+        time: new Date()
+      });
     }
   }
 
@@ -124,6 +172,11 @@ export default class SquadRcon extends Rcon {
 
   async warn(steamID, message) {
     await this.execute(`AdminWarn "${steamID}" ${message}`);
+  }
+
+  // 0 = Perm | 1m = 1 minute | 1d = 1 Day | 1M = 1 Month | etc...
+  async ban(steamID, banLength, message) {
+    await this.execute(`AdminBan "${steamID}" ${banLength} ${message}`);
   }
 
   async switchTeam(steamID) {
