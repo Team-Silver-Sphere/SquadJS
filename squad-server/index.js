@@ -130,6 +130,24 @@ export default class SquadServer extends EventEmitter {
     this.rcon.on('RCON_ERROR', (data) => {
       this.emit('RCON_ERROR', data);
     });
+
+    this.rcon.on('PLAYER_WARNED', async (data) => {
+      data.player = await this.getPlayerByName(data.name);
+
+      this.emit('PLAYER_WARNED', data);
+    });
+
+    this.rcon.on('PLAYER_KICKED', async (data) => {
+      data.player = await this.getPlayerBySteamID(data.steamID);
+
+      this.emit('PLAYER_KICKED', data);
+    });
+
+    this.rcon.on('PLAYER_BANNED', async (data) => {
+      data.player = await this.getPlayerBySteamID(data.steamID);
+
+      this.emit('PLAYER_BANNED', data);
+    });
   }
 
   async restartRCON() {
