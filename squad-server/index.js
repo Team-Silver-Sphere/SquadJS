@@ -30,6 +30,8 @@ export default class SquadServer extends EventEmitter {
 
     this.players = [];
 
+    this.squads = [];
+
     this.admins = {};
     this.adminsInAdminCam = {};
 
