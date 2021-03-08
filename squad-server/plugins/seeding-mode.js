@@ -45,15 +45,15 @@ export default class SeedingMode extends BasePlugin {
         description: '"Live" message to display.',
         default: 'Live!'
       },
-      waitOnMapChanges: {
+      waitOnNewGames: {
         required: false,
         description: 'Should the plugin wait to be executed on NEW_GAME event.',
-        default: false
+        default: true
       },
       waitTimeOnNewGame: {
         required: false,
         description: 'The time to wait before check player counts in seconds.',
-        default: '30'
+        default: 30
       }
     };
   }
@@ -67,7 +67,7 @@ export default class SeedingMode extends BasePlugin {
   }
 
   async mount() {
-    if (this.options.waitOnMapChanges) {
+    if (this.options.waitOnNewGames) {
       this.server.on('NEW_GAME', this.onNewGame);
     }
 
@@ -84,7 +84,7 @@ export default class SeedingMode extends BasePlugin {
   }
 
   async broadcast() {
-    if (this.options.waitOnMapChanges && !this.waitOnMapChange) {
+    if (this.options.waitOnNewGames && this.waitOnMapChange) {
       setTimeout(async () => {
         if (
           this.server.a2sPlayerCount !== 0 &&

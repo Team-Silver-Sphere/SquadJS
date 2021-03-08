@@ -177,8 +177,8 @@
       "liveEnabled": true,
       "liveThreshold": 52,
       "liveMessage": "Live!",
-      "waitOnMapChanges": false,
-      "waitTimeOnNewGame": "30"
+      "waitOnNewGames": true,
+      "waitTimeOnNewGame": 30
     },
     {
       "plugin": "SocketIOAPI",
