@@ -61,7 +61,7 @@ export default class SeedingMode extends BasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
 
-    this.waitOnMapChange = false;
+    this.stop = false;
     this.broadcast = this.broadcast.bind(this);
     this.onNewGame = this.onNewGame.bind(this);
   }
@@ -79,39 +79,25 @@ export default class SeedingMode extends BasePlugin {
     this.server.removeEventListener('NEW_GAME', this.onNewGame);
   }
 
-  onNewGame(info) {
-    this.waitOnMapChange = true;
+  onNewGame() {
+    this.stop = true;
+    setTimeout(() => {
+      this.stop = false;
+    }, 30 * 1000);
   }
 
   async broadcast() {
-    if (this.options.waitOnNewGames && this.waitOnMapChange) {
-      setTimeout(async () => {
-        if (
-          this.server.a2sPlayerCount !== 0 &&
-          this.server.a2sPlayerCount < this.options.seedingThreshold
-        )
-          await this.server.rcon.broadcast(this.options.seedingMessage);
-        else if (
-          this.server.a2sPlayerCount !== 0 &&
-          this.options.liveEnabled &&
-          this.server.a2sPlayerCount < this.options.liveThreshold
-        )
-          await this.server.rcon.broadcast(this.options.liveMessage);
-
-        this.waitOnMapChange = false;
-      }, this.options.waitTimeOnNewGame * 1000);
-    } else {
-      if (
-        this.server.a2sPlayerCount !== 0 &&
-        this.server.a2sPlayerCount < this.options.seedingThreshold
-      )
-        await this.server.rcon.broadcast(this.options.seedingMessage);
-      else if (
-        this.server.a2sPlayerCount !== 0 &&
-        this.options.liveEnabled &&
-        this.server.a2sPlayerCount < this.options.liveThreshold
-      )
-        await this.server.rcon.broadcast(this.options.liveMessage);
-    }
+    if (this.stop) return;
+    if (
+      this.server.a2sPlayerCount !== 0 &&
+      this.server.a2sPlayerCount < this.options.seedingThreshold
+    )
+      await this.server.rcon.broadcast(this.options.seedingMessage);
+    else if (
+      this.server.a2sPlayerCount !== 0 &&
+      this.options.liveEnabled &&
+      this.server.a2sPlayerCount < this.options.liveThreshold
+    )
+      await this.server.rcon.broadcast(this.options.liveMessage);
   }
 }
