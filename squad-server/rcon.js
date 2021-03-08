@@ -67,9 +67,7 @@ export default class SquadRcon extends Rcon {
       return;
     }
 
-    const matchKick = decodedPacket.body.match(
-      /Kicked player (\d.*).?.\s?\[steamid=([0-9]{17})] (.*)/
-    );
+    const matchKick = decodedPacket.body.match(/Kicked player (.*)\. \[steamid=([0-9]{17})] (.*)/);
     if (matchKick) {
       Logger.verbose('SquadRcon', 2, `Matched kick message: ${decodedPacket.body}`);
 
