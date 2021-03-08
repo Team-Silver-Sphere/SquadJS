@@ -538,6 +538,29 @@ Grafana (NOT YET WORKING WITH V2):
         </details>
 
 <details>
+          <summary>DiscordFOBHABExplosionDamage</summary>
+          <h2>DiscordFOBHABExplosionDamage</h2>
+          <p>The <code>DiscordFOBHABExplosionDamage</code> plugin logs damage done to FOBs and HABs by explosions to help identify engineers blowing up friendly FOBs and HABs.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to log FOB/HAB explosion damage to.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>color</h4>
+           <h6>Description</h6>
+           <p>The color of the embeds.</p>
+           <h6>Default</h6>
+           <pre><code>16761867</code></pre></li></ul>
+        </details>
+
+<details>
           <summary>DiscordPlaceholder</summary>
           <h2>DiscordPlaceholder</h2>
           <p>The <code>DiscordPlaceholder</code> plugin allows you to make your bot create placeholder messages that can be used when configuring other plugins.</p>
