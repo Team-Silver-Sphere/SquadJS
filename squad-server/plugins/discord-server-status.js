@@ -69,7 +69,7 @@ export default class DiscordServerStatus extends BasePlugin {
 
     await this.options.discordClient.user.setActivity(
       `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
-        this.server.layerHistory[0].layer.name || 'Unknown'
+        this.server.currentLayer?.name || 'Unknown'
       }`,
       { type: 'WATCHING' }
     );
@@ -92,7 +92,7 @@ export default class DiscordServerStatus extends BasePlugin {
       },
       {
         name: 'Current Layer',
-        value: `\`\`\`${this.server.currentLayer.name || 'Unknown'}\`\`\``,
+        value: `\`\`\`${this.server.currentLayer?.name || 'Unknown'}\`\`\``,
         inline: true
       },
       {
@@ -122,6 +122,11 @@ export default class DiscordServerStatus extends BasePlugin {
           16
         ),
         fields: fields,
+        image: {
+          url: this.server.currentLayer
+            ? `https://raw.githubusercontent.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data/master/completed_output/_Current%20Version/images/${this.server.currentLayer.classname}.jpg`
+            : undefined
+        },
         timestamp: new Date().toISOString(),
         footer: { text: COPYRIGHT_MESSAGE }
       }

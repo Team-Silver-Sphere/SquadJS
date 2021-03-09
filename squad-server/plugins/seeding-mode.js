@@ -44,6 +44,16 @@ export default class SeedingMode extends BasePlugin {
         required: false,
         description: '"Live" message to display.',
         default: 'Live!'
+      },
+      waitOnNewGames: {
+        required: false,
+        description: 'Should the plugin wait to be executed on NEW_GAME event.',
+        default: true
+      },
+      waitTimeOnNewGame: {
+        required: false,
+        description: 'The time to wait before check player counts in seconds.',
+        default: 30
       }
     };
   }
@@ -51,18 +61,33 @@ export default class SeedingMode extends BasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
 
+    this.stop = false;
     this.broadcast = this.broadcast.bind(this);
+    this.onNewGame = this.onNewGame.bind(this);
   }
 
   async mount() {
+    if (this.options.waitOnNewGames) {
+      this.server.on('NEW_GAME', this.onNewGame);
+    }
+
     this.interval = setInterval(this.broadcast, this.options.interval);
   }
 
   async unmount() {
     clearInterval(this.interval);
+    this.server.removeEventListener('NEW_GAME', this.onNewGame);
+  }
+
+  onNewGame() {
+    this.stop = true;
+    setTimeout(() => {
+      this.stop = false;
+    }, 30 * 1000);
   }
 
   async broadcast() {
+    if (this.stop) return;
     if (
       this.server.a2sPlayerCount !== 0 &&
       this.server.a2sPlayerCount < this.options.seedingThreshold
