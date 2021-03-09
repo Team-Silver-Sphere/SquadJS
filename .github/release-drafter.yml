@@ -1,0 +1,40 @@
+# General options
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
+
+# Release options
+name-template: 'SquadJS v$RESOLVED_VERSION Release'
+tag-template: 'v$RESOLVED_VERSION'
+
+template: |
+  ## Changelog
+  $CHANGES
+
+  ## Credits
+  $CONTRIBUTORS
+
+category-template: '### $TITLE'
+categories:
+  - title: '🚀 Core Features'
+    labels:
+      - 'core feature request'
+  - title: '🐛 Core Bug Fixes'
+    labels:
+      - 'core bug'
+  - title: '🚀 Plugin Features'
+    labels:
+      - 'plugin feature request'
+  - title: '🐛 Plugin Bug Fixes'
+    labels:
+      - 'plugin bug'
+  - title: '🧰 Maintenance'
+    label: 'chore'

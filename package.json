@@ -1,6 +1,6 @@
 {
   "name": "SquadJS",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "repository": "https://github.com/Thomas-Smyth/SquadJS.git",
   "author": "Thomas Smyth <https://github.com/Thomas-Smyth>",
   "license": "BSL-1.0",
@@ -11,7 +11,9 @@
     "squad-server"
   ],
   "scripts": {
+    "prepare": "husky install",
     "lint": "eslint --fix . && prettier --write \"./**/*.js\"",
+    "lint-staged": "lint-staged",
     "build-config": "node squad-server/scripts/build-config-file.js",
     "build-readme": "node squad-server/scripts/build-readme.js",
     "build-all": "node squad-server/scripts/build-config-file.js && node squad-server/scripts/build-readme.js"
@@ -28,8 +30,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0",
-    "husky": "^4.3.7",
-    "lint-staged": "^10.5.3",
+    "husky": "^5.1.3",
+    "lint-staged": "^10.5.4",
     "prettier": "^2.2.1"
   }
 }

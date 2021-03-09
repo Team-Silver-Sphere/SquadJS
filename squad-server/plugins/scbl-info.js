@@ -111,7 +111,7 @@ export default class SCBLInfo extends DiscordBasePlugin {
             name: 'Squad Community Ban List',
             url: 'https://squad-community-ban-list.com/',
             icon_url:
-              'https://raw.githubusercontent.com/Thomas-Smyth/Squad-Community-Ban-List/master/client/src/assets/img/brand/scbl-logo-square.png'
+              'https://cdn.jsdelivr.net/gh/Thomas-Smyth/Squad-Community-Ban-List@master/client/src/assets/img/brand/scbl-logo-square.png'
           },
           thumbnail: {
             url: data.steamUser.avatarFull
