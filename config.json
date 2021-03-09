@@ -142,11 +142,13 @@
     },
     {
       "plugin": "DiscordServerStatus",
-      "enabled": false,
+      "enabled": true,
       "discordClient": "discord",
-      "messageIDs": [],
+      "messageStore": "sqlite",
+      "command": "!status",
+      "disableSubscriptions": false,
       "updateInterval": 60000,
-      "disableStatus": false
+      "setBotStatus": true
     },
     {
       "plugin": "DiscordSubsystemRestarter",
