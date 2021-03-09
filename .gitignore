@@ -1,4 +1,5 @@
 # Project Files
+.sqlite
 *.tmp
 
 config-test*.json
