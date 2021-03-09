@@ -29,7 +29,8 @@
       "password": "password",
       "database": "squadjs",
       "dialect": "mysql"
-    }
+    },
+    "sqlite": "sqlite:database.sqlite"
   },
   "plugins": [],
   "logger": {

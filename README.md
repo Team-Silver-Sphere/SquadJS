@@ -643,34 +643,38 @@ Grafana (NOT YET WORKING WITH V2):
 <details>
           <summary>DiscordServerStatus</summary>
           <h2>DiscordServerStatus</h2>
-          <p>The <code>DiscordServerStatus</code> plugin updates a message in Discord with current server information, e.g. player count.</p>
+          <p>The <code>DiscordServerStatus</code> plugin can be used to get the server status in Discord.</p>
           <h3>Options</h3>
           <ul><li><h4>discordClient (Required)</h4>
            <h6>Description</h6>
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>messageIDs (Required)</h4>
+<li><h4>messageStore (Required)</h4>
            <h6>Description</h6>
-           <p>ID of messages to update.</p>
+           <p>Sequelize connector name.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "channelID": "667741905228136459",
-    "messageID": "766688383043895387"
-  }
-]</code></pre>
+           <pre><code>sqlite</code></pre></li>
+<li><h4>command</h4>
+           <h6>Description</h6>
+           <p>Command name to get message.</p>
+           <h6>Default</h6>
+           <pre><code>!status</code></pre></li>
+<li><h4>disableSubscriptions</h4>
+           <h6>Description</h6>
+           <p>Whether to allow messages to be subscribed to automatic updates.</p>
+           <h6>Default</h6>
+           <pre><code>false</code></pre></li>
 <li><h4>updateInterval</h4>
            <h6>Description</h6>
-           <p>How frequently to update the status in Discord.</p>
+           <p>How frequently to update the time in Discord.</p>
            <h6>Default</h6>
            <pre><code>60000</code></pre></li>
-<li><h4>disableStatus</h4>
+<li><h4>setBotStatus</h4>
            <h6>Description</h6>
-           <p>Disable the bot status.</p>
+           <p>Whether to update the bot's status with server information.</p>
            <h6>Default</h6>
-           <pre><code>false</code></pre></li></ul>
+           <pre><code>true</code></pre></li></ul>
         </details>
 
 <details>
