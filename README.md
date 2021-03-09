@@ -328,6 +328,23 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
         </details>
 
 <details>
+          <summary>AWNTest</summary>
+          <h2>AWNTest</h2>
+          <p>Plugin to Test the AWN API Connector.</p>
+          <h3>Options</h3>
+          <ul><li><h4>awnAPI (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>awnAPI</code></pre></li>
+<li><h4>adminListID (Required)</h4>
+           <h6>Description</h6>
+           <p>AWN Admin List ID to test.</p>
+           <h6>Default</h6>
+           <pre><code>0000</code></pre></li></ul>
+        </details>
+
+<details>
           <summary>ChatCommands</summary>
           <h2>ChatCommands</h2>
           <p>The <code>ChatCommands</code> plugin can be configured to make chat commands that broadcast or warn the caller with present messages.</p>
