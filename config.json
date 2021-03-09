@@ -57,12 +57,6 @@
       "message": "Please apologise for ALL TKs in ALL chat!"
     },
     {
-      "plugin": "AWNTest",
-      "enabled": false,
-      "awnAPI": "awnAPI",
-      "adminListID": "0000"
-    },
-    {
       "plugin": "ChatCommands",
       "enabled": true,
       "commands": [
