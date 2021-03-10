@@ -470,7 +470,17 @@ Grafana (NOT YET WORKING WITH V2):
            <h6>Description</h6>
            <p>The color of the embed.</p>
            <h6>Default</h6>
-           <pre><code>16761867</code></pre></li></ul>
+           <pre><code>16761867</code></pre></li>
+<li><h4>warnInGameAdmins</h4>
+           <h6>Description</h6>
+           <p>Should in-game admins be warned after a players uses the command and should we tell how much admins are active in-game right now.</p>
+           <h6>Default</h6>
+           <pre><code>false</code></pre></li>
+<li><h4>showInGameAdmins</h4>
+           <h6>Description</h6>
+           <p>Should players know how much in-game admins there are active/online?</p>
+           <h6>Default</h6>
+           <pre><code>true</code></pre></li></ul>
         </details>
 
 <details>
