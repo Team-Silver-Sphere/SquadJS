@@ -22,6 +22,7 @@
   },
   "connectors": {
     "discord": "Discord Login Token",
+    "awnAPI": {"orgID":"YourOrgID", "creds": {"username":"AwnUsername", "password":"AwnPassword"}},
     "mysql": {
       "host": "host",
       "port": 3306,
@@ -29,7 +30,8 @@
       "password": "password",
       "database": "squadjs",
       "dialect": "mysql"
-    }
+    },
+    "sqlite": "sqlite:database.sqlite"
   },
   "plugins": [],
   "logger": {

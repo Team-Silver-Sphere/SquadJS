@@ -22,6 +22,13 @@
   },
   "connectors": {
     "discord": "Discord Login Token",
+    "awnAPI": {
+      "orgID": "YourOrgID",
+      "creds": {
+        "username": "AwnUsername",
+        "password": "AwnPassword"
+      }
+    },
     "mysql": {
       "host": "host",
       "port": 3306,
@@ -29,7 +36,8 @@
       "password": "password",
       "database": "squadjs",
       "dialect": "mysql"
-    }
+    },
+    "sqlite": "sqlite:database.sqlite"
   },
   "plugins": [
     {
@@ -71,9 +79,8 @@
       "plugin": "DiscordAdminBroadcast",
       "enabled": false,
       "discordClient": "discord",
-      "messageIDs": [],
-      "updateInterval": 60000,
-      "disableStatus": false
+      "channelID": "",
+      "color": 16761867
     },
     {
       "plugin": "DiscordAdminCamLogs",
@@ -106,9 +113,11 @@
       ]
     },
     {
-      "plugin": "AutoTKWarn",
-      "enabled": true,
-      "message": "Please apologise for ALL TKs in ALL chat!"
+      "plugin": "DiscordDebug",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "events": []
     },
     {
       "plugin": "DiscordFOBHABExplosionDamage",
@@ -137,15 +146,17 @@
       "enabled": true,
       "discordClient": "discord",
       "channelID": "",
-      "threshold": 6
+      "color": 16761867
     },
     {
       "plugin": "DiscordServerStatus",
-      "enabled": false,
+      "enabled": true,
       "discordClient": "discord",
-      "messageIDs": [],
+      "messageStore": "sqlite",
+      "command": "!status",
+      "disableSubscriptions": false,
       "updateInterval": 60000,
-      "disableStatus": false
+      "setBotStatus": true
     },
     {
       "plugin": "DiscordSubsystemRestarter",
@@ -168,20 +179,8 @@
       "interval": 300000
     },
     {
-      "plugin": "AutoKickUnassigned",
+      "plugin": "SCBLInfo",
       "enabled": true,
-      "warningMessage": "Join a squad, you are are unassigned and will be kicked",
-      "kickMessage": "Unassigned - automatically removed",
-      "frequencyOfWarnings": 30,
-      "unassignedTimer": 360,
-      "playerThreshold": 93,
-      "roundStartDelay": 900,
-      "ignoreAdmins": false,
-      "ignoreWhitelist": false
-    },
-    {
-      "plugin": "DiscordSubsystemRestarter",
-      "enabled": false,
       "discordClient": "discord",
       "channelID": "",
       "threshold": 6
