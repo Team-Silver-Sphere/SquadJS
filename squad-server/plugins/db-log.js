@@ -10,7 +10,7 @@ export default class DBLog extends BasePlugin {
       'The <code>mysql-log</code> plugin will log various server statistics and events to a database. This is great ' +
       'for server performance monitoring and/or player stat tracking.' +
       '\n\n' +
-      'Grafana (NOT YET WORKING WITH V2):\n' +
+      'Grafana:\n' +
       '<ul><li> <a href="https://grafana.com/">Grafana</a> is a cool way of viewing server statistics stored in the database.</li>\n' +
       '<li>Install Grafana.</li>\n' +
       '<li>Add your database as a datasource named <code>SquadJS</code>.</li>\n' +
