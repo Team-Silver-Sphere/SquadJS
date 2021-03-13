@@ -53,7 +53,7 @@ export default async function fetchAdminLists(adminLists) {
       try {
         const group = groups[`${idx}-${m.groups.groupID}`];
         const perms = {};
-        for (const groupPerm of group) perms[groupPerm] = true;
+        for (const groupPerm of group) perms[groupPerm.toLowerCase()] = true;
 
         const steamID = m.groups.steamID;
         if (steamID in admins) {
