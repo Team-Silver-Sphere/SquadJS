@@ -99,6 +99,15 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
       return;
     }
 
+    const admins = await this.server.getAdminsWithPermission('canseeadminchat');
+    let amountAdmins = 0;
+    for (const player of this.server.players) {
+      if (!admins.includes(player.steamID)) continue;
+      amountAdmins++;
+      if (this.options.warnInGameAdmins)
+        await this.server.rcon.warn(player.steamID, `[${info.player.name}] - ${info.message}`);
+    }
+
     const message = {
       embed: {
         title: `${info.player.name} has requested admin support!`,
@@ -121,6 +130,10 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
           {
             name: 'Message',
             value: info.message
+          },
+          {
+            name: 'Admins Online',
+            value: amountAdmins
           }
         ],
         timestamp: info.time.toISOString()
@@ -133,15 +146,6 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
     }
 
     await this.sendDiscordMessage(message);
-
-    const admins = await this.server.getAdminsWithPermission('canseeadminchat');
-    let amountAdmins = 0;
-    for (const player of this.server.players) {
-      if (!admins.includes(player.steamID)) continue;
-      amountAdmins++;
-      if (this.options.warnInGameAdmins)
-        await this.server.rcon.warn(player.steamID, `[${info.player.name}] - ${info.message}`);
-    }
 
     if (amountAdmins === 0 && this.options.showInGameAdmins)
       await this.server.rcon.warn(
