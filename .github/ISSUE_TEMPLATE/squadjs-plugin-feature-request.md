@@ -2,7 +2,7 @@
 name: SquadJS Plugin Feature Request
 about: Please request any additions to the SquadJS plugins using this template...
 title: ''
-labels: feature request, plugin
+labels: plugin feature request
 assignees: ''
 
 ---

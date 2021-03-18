@@ -1,42 +1,36 @@
+import Discord from 'discord.js';
 import tinygradient from 'tinygradient';
-import BasePlugin from './base-plugin.js';
+
 import { COPYRIGHT_MESSAGE } from '../utils/constants.js';
 
-export default class DiscordServerStatus extends BasePlugin {
+import DiscordBaseMessageUpdater from './discord-base-message-updater.js';
+
+export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
   static get description() {
-    return (
-      'The <code>DiscordServerStatus</code> plugin updates a message in Discord with current server information, ' +
-      'e.g. player count.'
-    );
+    return 'The <code>DiscordServerStatus</code> plugin can be used to get the server status in Discord.';
   }
 
   static get defaultEnabled() {
-    return false;
+    return true;
   }
 
   static get optionsSpecification() {
     return {
-      discordClient: {
-        required: true,
-        description: 'Discord connector name.',
-        connector: 'discord',
-        default: 'discord'
-      },
-      messageIDs: {
-        required: true,
-        description: 'ID of messages to update.',
-        default: [],
-        example: [{ channelID: '667741905228136459', messageID: '766688383043895387' }]
+      ...DiscordBaseMessageUpdater.optionsSpecification,
+      command: {
+        required: false,
+        description: 'Command name to get message.',
+        default: '!status'
       },
       updateInterval: {
         required: false,
-        description: 'How frequently to update the status in Discord.',
+        description: 'How frequently to update the time in Discord.',
         default: 60 * 1000
       },
-      disableStatus: {
+      setBotStatus: {
         required: false,
-        description: 'Disable the bot status.',
-        default: false
+        description: "Whether to update the bot's status with server information.",
+        default: true
       }
     };
   }
@@ -44,38 +38,29 @@ export default class DiscordServerStatus extends BasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
 
-    this.update = this.update.bind(this);
+    this.updateMessages = this.updateMessages.bind(this);
+    this.updateStatus = this.updateStatus.bind(this);
   }
 
   async mount() {
-    this.interval = setInterval(this.update, this.options.updateInterval);
+    await super.mount();
+    this.updateInterval = setInterval(this.updateMessages, this.options.updateInterval);
+    this.updateStatusInterval = setInterval(this.updateStatus, this.options.updateInterval);
   }
 
   async unmount() {
-    clearInterval(this.interval);
+    await super.unmount();
+    clearInterval(this.updateInterval);
+    clearInterval(this.updateStatusInterval);
   }
 
-  async update() {
-    for (const messageID of this.options.messageIDs) {
-      try {
-        const channel = await this.options.discordClient.channels.fetch(messageID.channelID);
-        const message = await channel.messages.fetch(messageID.messageID);
+  async generateMessage() {
+    const embed = new Discord.MessageEmbed();
 
-        await message.edit(this.getEmbed());
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    // Set embed title.
+    embed.setTitle(this.server.serverName);
 
-    await this.options.discordClient.user.setActivity(
-      `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
-        this.server.currentLayer.name || 'Unknown'
-      }`,
-      { type: 'WATCHING' }
-    );
-  }
-
-  getEmbed() {
+    // Set player embed field.
     let players = '';
 
     players += `${this.server.a2sPlayerCount}`;
@@ -85,46 +70,60 @@ export default class DiscordServerStatus extends BasePlugin {
     players += ` / ${this.server.publicSlots}`;
     if (this.server.reserveSlots > 0) players += ` (+${this.server.reserveSlots})`;
 
-    const fields = [
-      {
-        name: 'Players',
-        value: `\`\`\`${players}\`\`\``
-      },
-      {
-        name: 'Current Layer',
-        value: `\`\`\`${this.server.currentLayer.name || 'Unknown'}\`\`\``,
-        inline: true
-      },
-      {
-        name: 'Next Layer',
-        value: `\`\`\`${
-          this.server.nextLayer?.name ||
-          (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
-        }\`\`\``,
-        inline: true
-      }
-    ];
+    embed.addField('Players', players);
 
-    return {
-      content: '',
-      embed: {
-        title: this.server.serverName,
-        color: parseInt(
-          tinygradient([
-            { color: '#ff0000', pos: 0 },
-            { color: '#ffff00', pos: 0.5 },
-            { color: '#00ff00', pos: 1 }
-          ])
-            .rgbAt(
-              this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots)
-            )
-            .toHex(),
-          16
-        ),
-        fields: fields,
-        timestamp: new Date().toISOString(),
-        footer: { text: COPYRIGHT_MESSAGE }
-      }
-    };
+    // Set layer embed fields.
+    embed.addField(
+      'Current Layer',
+      `\`\`\`${this.server.currentLayer?.name || 'Unknown'}\`\`\``,
+      true
+    );
+    embed.addField(
+      'Next Layer',
+      `\`\`\`${
+        this.server.nextLayer?.name || (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
+      }\`\`\``,
+      true
+    );
+
+    // Set layer image.
+    embed.setImage(
+      this.server.currentLayer
+        ? `https://raw.githubusercontent.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data/master/completed_output/_Current%20Version/images/${this.server.currentLayer.classname}.jpg`
+        : undefined
+    );
+
+    // Set timestamp.
+    embed.setTimestamp(new Date());
+
+    // Set footer.
+    embed.setFooter(COPYRIGHT_MESSAGE);
+
+    // Set gradient embed color.
+    embed.setColor(
+      parseInt(
+        tinygradient([
+          { color: '#ff0000', pos: 0 },
+          { color: '#ffff00', pos: 0.5 },
+          { color: '#00ff00', pos: 1 }
+        ])
+          .rgbAt(this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots))
+          .toHex(),
+        16
+      )
+    );
+
+    return embed;
+  }
+
+  async updateStatus() {
+    if (!this.options.setBotStatus) return;
+
+    await this.options.discordClient.user.setActivity(
+      `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
+        this.server.currentLayer?.name || 'Unknown'
+      }`,
+      { type: 'WATCHING' }
+    );
   }
 }

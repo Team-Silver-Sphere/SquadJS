@@ -30,6 +30,8 @@ export default class SquadServer extends EventEmitter {
 
     this.players = [];
 
+    this.squads = [];
+
     this.admins = {};
     this.adminsInAdminCam = {};
 
@@ -41,6 +43,10 @@ export default class SquadServer extends EventEmitter {
     this.updatePlayerList = this.updatePlayerList.bind(this);
     this.updatePlayerListInterval = 30 * 1000;
     this.updatePlayerListTimeout = null;
+
+    this.updateSquadList = this.updateSquadList.bind(this);
+    this.updateSquadListInterval = 30 * 1000;
+    this.updateSquadListTimeout = null;
 
     this.updateLayerInformation = this.updateLayerInformation.bind(this);
     this.updateLayerInformationInterval = 30 * 1000;
@@ -69,6 +75,7 @@ export default class SquadServer extends EventEmitter {
     await this.rcon.connect();
     await this.logParser.watch();
 
+    await this.updateSquadList();
     await this.updatePlayerList();
     await this.updateLayerInformation();
     await this.updateA2SInformation();
@@ -122,6 +129,24 @@ export default class SquadServer extends EventEmitter {
 
     this.rcon.on('RCON_ERROR', (data) => {
       this.emit('RCON_ERROR', data);
+    });
+
+    this.rcon.on('PLAYER_WARNED', async (data) => {
+      data.player = await this.getPlayerByName(data.name);
+
+      this.emit('PLAYER_WARNED', data);
+    });
+
+    this.rcon.on('PLAYER_KICKED', async (data) => {
+      data.player = await this.getPlayerBySteamID(data.steamID);
+
+      this.emit('PLAYER_KICKED', data);
+    });
+
+    this.rcon.on('PLAYER_BANNED', async (data) => {
+      data.player = await this.getPlayerBySteamID(data.steamID);
+
+      this.emit('PLAYER_BANNED', data);
     });
   }
 
@@ -180,10 +205,8 @@ export default class SquadServer extends EventEmitter {
 
     this.logParser.on('PLAYER_DISCONNECTED', async (data) => {
       data.player = await this.getPlayerBySteamID(data.steamID);
-      if (data.player) data.player.suffix = data.playerSuffix;
 
       delete data.steamID;
-      delete data.playerSuffix;
 
       this.emit('PLAYER_DISCONNECTED', data);
     });
@@ -302,10 +325,15 @@ export default class SquadServer extends EventEmitter {
         oldPlayerInfo[player.steamID] = player;
       }
 
-      this.players = (await this.rcon.getListPlayers()).map((player) => ({
-        ...oldPlayerInfo[player.steamID],
-        ...player
-      }));
+      const players = [];
+      for (const player of await this.rcon.getListPlayers())
+        players.push({
+          ...oldPlayerInfo[player.steamID],
+          ...player,
+          squad: await this.getSquadByID(player.teamID, player.squadID)
+        });
+
+      this.players = players;
 
       for (const player of this.players) {
         if (typeof oldPlayerInfo[player.steamID] === 'undefined') continue;
@@ -333,6 +361,22 @@ export default class SquadServer extends EventEmitter {
     this.updatePlayerListTimeout = setTimeout(this.updatePlayerList, this.updatePlayerListInterval);
   }
 
+  async updateSquadList() {
+    if (this.updateSquadListTimeout) clearTimeout(this.updateSquadListTimeout);
+
+    Logger.verbose('SquadServer', 1, `Updating squad list...`);
+
+    try {
+      this.squads = await this.rcon.getSquads();
+    } catch (err) {
+      Logger.verbose('SquadServer', 1, 'Failed to update squad list.', err);
+    }
+
+    Logger.verbose('SquadServer', 1, `Updated squad list.`);
+
+    this.updateSquadListTimeout = setTimeout(this.updateSquadList, this.updateSquadListInterval);
+  }
+
   async updateLayerInformation() {
     if (this.updateLayerInformationTimeout) clearTimeout(this.updateLayerInformationTimeout);
 
@@ -341,7 +385,7 @@ export default class SquadServer extends EventEmitter {
     try {
       const currentMap = await this.rcon.getCurrentMap();
       const nextMap = await this.rcon.getNextMap();
-      const nextMapToBeVoted = nextMap === 'To be voted';
+      const nextMapToBeVoted = nextMap.layer === 'To be voted';
 
       const currentLayer = await Layers.getLayerByName(currentMap.layer);
       const nextLayer = nextMapToBeVoted ? null : await Layers.getLayerByName(nextMap.layer);
@@ -422,6 +466,31 @@ export default class SquadServer extends EventEmitter {
     if (matches.length === 1) return matches[0];
 
     return null;
+  }
+
+  async getSquadByCondition(condition, forceUpdate = false, retry = true) {
+    let matches;
+
+    if (!forceUpdate) {
+      matches = this.squads.filter(condition);
+      if (matches.length === 1) return matches[0];
+
+      if (!retry) return null;
+    }
+
+    await this.updateSquadList();
+
+    matches = this.squads.filter(condition);
+    if (matches.length === 1) return matches[0];
+
+    return null;
+  }
+
+  async getSquadByID(teamID, squadID) {
+    if (squadID === null) return null;
+    return this.getSquadByCondition(
+      (squad) => squad.teamID === teamID && squad.squadID === squadID
+    );
   }
 
   async getPlayerBySteamID(steamID, forceUpdate) {

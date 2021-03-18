@@ -91,7 +91,7 @@ export default class SCBLInfo extends DiscordBasePlugin {
       if (!data.steamUser) {
         this.verbose(
           2,
-          `Player ${info.name} (Steam ID: ${info.steamID}) is not listed in the Squad Community Ban List.`
+          `Player ${info.player.name} (Steam ID: ${info.player.steamID}) is not listed in the Squad Community Ban List.`
         );
         return;
       }
@@ -99,7 +99,7 @@ export default class SCBLInfo extends DiscordBasePlugin {
       if (data.steamUser.reputationPoints < this.options.threshold) {
         this.verbose(
           2,
-          `Player ${info.name} (Steam ID: ${info.steamID}) has a reputation below the threshold.`
+          `Player ${info.player.name} (Steam ID: ${info.player.steamID}) has a reputation below the threshold.`
         );
         return;
       }
@@ -111,7 +111,7 @@ export default class SCBLInfo extends DiscordBasePlugin {
             name: 'Squad Community Ban List',
             url: 'https://squad-community-ban-list.com/',
             icon_url:
-              'https://raw.githubusercontent.com/Thomas-Smyth/Squad-Community-Ban-List/master/client/src/assets/img/brand/scbl-logo-square.png'
+              'https://cdn.jsdelivr.net/gh/Thomas-Smyth/Squad-Community-Ban-List@master/client/src/assets/img/brand/scbl-logo-square.png'
           },
           thumbnail: {
             url: data.steamUser.avatarFull

@@ -2,7 +2,7 @@
 name: SquadJS Feature Request
 about: Please request any additions to the core SquadJS package using this template...
 title: ''
-labels: feature request, core
+labels: core feature request
 assignees: ''
 
 ---
