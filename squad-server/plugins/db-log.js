@@ -43,6 +43,7 @@ export default class DBLog extends BasePlugin {
     super(server, options, connectors);
 
     this.models = {};
+    this.playerTimes = {};
 
     this.createModel('Server', {
       id: {
@@ -138,6 +139,20 @@ export default class DBLog extends BasePlugin {
         },
         lastName: {
           type: DataTypes.STRING
+        },
+        firstSeen: {
+          type: DataTypes.DATE,
+        },
+        lastSeen: {
+          type: DataTypes.DATE,
+        },
+        totalTime: {
+          type: DataTypes.INTEGER,
+          default: 0
+        },
+        lastSessionTime: {
+          type: DataTypes.INTEGER,
+          default: 0
         }
       },
       {
@@ -395,6 +410,8 @@ export default class DBLog extends BasePlugin {
     this.onPlayerWounded = this.onPlayerWounded.bind(this);
     this.onPlayerDied = this.onPlayerDied.bind(this);
     this.onPlayerRevived = this.onPlayerRevived.bind(this);
+    this.onPlayerConnected = this.onPlayerConnected.bind(this);
+    this.onPlayerDisconnected = this.onPlayerDisconnected.bind(this);
   }
 
   createModel(name, schema) {
@@ -430,6 +447,8 @@ export default class DBLog extends BasePlugin {
     this.server.on('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.on('PLAYER_DIED', this.onPlayerDied);
     this.server.on('PLAYER_REVIVED', this.onPlayerRevived);
+    this.server.on('PLAYER_CONNECTED', this.onPlayerConnected);
+    this.server.on('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
   }
 
   async unmount() {
@@ -439,6 +458,8 @@ export default class DBLog extends BasePlugin {
     this.server.removeEventListener('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.removeEventListener('PLAYER_DIED', this.onPlayerDied);
     this.server.removeEventListener('PLAYER_REVIVED', this.onPlayerRevived);
+    this.server.removeEventListener('PLAYER_CONNECTED', this.onPlayerConnected);
+    this.server.removeEventListener('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
   }
 
   async onTickRate(info) {
@@ -481,12 +502,14 @@ export default class DBLog extends BasePlugin {
     if (info.attacker)
       await this.models.SteamUser.upsert({
         steamID: info.attacker.steamID,
-        lastName: info.attacker.name
+        lastName: info.attacker.name,
+        lastSeen: info.time
       });
     if (info.victim)
       await this.models.SteamUser.upsert({
         steamID: info.victim.steamID,
-        lastName: info.victim.name
+        lastName: info.victim.name,
+        lastSeen: info.time
       });
 
     await this.models.Wound.create({
@@ -511,12 +534,14 @@ export default class DBLog extends BasePlugin {
     if (info.attacker)
       await this.models.SteamUser.upsert({
         steamID: info.attacker.steamID,
-        lastName: info.attacker.name
+        lastName: info.attacker.name,
+        lastSeen: info.time
       });
     if (info.victim)
       await this.models.SteamUser.upsert({
         steamID: info.victim.steamID,
-        lastName: info.victim.name
+        lastName: info.victim.name,
+        lastSeen: info.time
       });
 
     await this.models.Death.create({
@@ -542,17 +567,20 @@ export default class DBLog extends BasePlugin {
     if (info.attacker)
       await this.models.SteamUser.upsert({
         steamID: info.attacker.steamID,
-        lastName: info.attacker.name
+        lastName: info.attacker.name,
+        lastSeen: info.time
       });
     if (info.victim)
       await this.models.SteamUser.upsert({
         steamID: info.victim.steamID,
-        lastName: info.victim.name
+        lastName: info.victim.name,
+        lastSeen: info.time
       });
     if (info.reviver)
       await this.models.SteamUser.upsert({
         steamID: info.reviver.steamID,
-        lastName: info.reviver.name
+        lastName: info.reviver.name,
+        lastSeen: info.time
       });
 
     await this.models.Revive.create({
@@ -576,5 +604,72 @@ export default class DBLog extends BasePlugin {
       reviverTeamID: info.reviver ? info.reviver.teamID : null,
       reviverSquadID: info.reviver ? info.reviver.squadID : null
     });
+  }
+
+  async onPlayerConnected(info) {
+    if(!info || !info.player)
+      return;
+
+    let player = await this.models.SteamUser.findOne({ where: { steamID: info.player.steamID } });
+
+    // First connection
+    // We need this in order to set firstSeen
+    if (!player) {
+      await this.models.SteamUser.create({
+        steamID: info.player.steamID,
+        lastName: info.player.name,
+        firstSeen: info.time,
+        lastSeen: info.time
+      });
+    } else {
+      await this.models.SteamUser.upsert({
+        steamID: info.player.steamID,
+        lastName: info.player.name,
+        lastSeen: info.time
+      });
+    }
+
+    this.startTrackingPlayerTime(info.player.steamID);
+  }
+
+  async onPlayerDisconnected(info) {
+    let player = await this.models.SteamUser.findOne({ where: { steamID: info.player.steamID } });
+
+    // If the bot was started in the middle of the match and player was not added
+    // Edge case (new players just before the map switch)
+    if (!player) {
+      await this.models.SteamUser.create({
+        steamID: info.player.steamID,
+        lastName: info.player.name,
+        firstSeen: info.time,
+        lastSeen: info.time,
+        totalTime: 0,
+        lastSessionTime: 0
+      });
+
+      return;
+    }
+
+    await this.models.SteamUser.upsert({
+      steamID: info.player.steamID,
+      lastName: info.player.name,
+      lastSeen: info.time,
+      totalTime: player.totalTime + this.getPlayerSessionTime(info.player.steamID),
+      lastSessionTime: this.getPlayerSessionTime(info.player.steamID)
+    });
+
+    this.stopTrackingPlayerTime(info.player.steamID);
+  }
+
+  getPlayerSessionTime(steamID) {
+    return !this.playerTimes[steamID] ? 0 : Date.now() - this.playerTimes[steamID];
+  }
+
+  startTrackingPlayerTime(steamID) {
+    this.playerTimes[steamID] = Date.now();
+  }
+
+  stopTrackingPlayerTime(steamID) {
+    delete this.playerTimes[steamID];
   }
 }
