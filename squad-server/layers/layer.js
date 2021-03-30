@@ -16,8 +16,6 @@ export default class Layer {
       classname: data.lightingLevel
     };
     this.teams = [];
-    this.tanks = [];
-    this.helicopters = [];
     for (const t of ['team1', 'team2']) {
       this.teams.push({
         faction: data[t].faction,
@@ -30,18 +28,14 @@ export default class Layer {
           count: vehicle.count,
           spawnDelay: vehicle.delay,
           respawnDelay: vehicle.respawnTime
-        }))
-      });
-      this.tanks.push(
-        data[t].vehicles.filter((v) => {
+        })),
+        numberOfTanks: data[t].vehicles.filter((v) => {
           return v.icon.match(/tank/);
-        }).length
-      );
-      this.helicopters.push(
-        data[t].vehicles.filter((v) => {
+        }).length,
+        numberOfHelicopters: data[t].vehicles.filter((v) => {
           return v.icon.match(/helo/);
         }).length
-      );
+      });
     }
   }
 }
