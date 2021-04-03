@@ -43,7 +43,7 @@ export default class DBLog extends BasePlugin {
     super(server, options, connectors);
 
     this.models = {};
-    this.playerTimes = {};
+    this.playerSession = {};
 
     this.createModel('Server', {
       id: {
@@ -139,20 +139,41 @@ export default class DBLog extends BasePlugin {
         },
         lastName: {
           type: DataTypes.STRING
-        },
-        firstSeen: {
-          type: DataTypes.DATE,
-        },
-        lastSeen: {
-          type: DataTypes.DATE,
-        },
-        totalTime: {
+        }
+      },
+      {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci'
+      }
+    );
+
+    this.createModel(
+      'PlaySession',
+      {
+        id: {
           type: DataTypes.INTEGER,
-          default: 0
+          primaryKey: true,
+          autoIncrement: true
         },
-        lastSessionTime: {
-          type: DataTypes.INTEGER,
-          default: 0
+
+        steamID: {
+          type: DataTypes.STRING
+        },
+
+        lastName: {
+          type: DataTypes.STRING
+        },
+
+        timePlayed: {
+          type: DataTypes.INTEGER
+        },
+
+        start: {
+          type: DataTypes.DATE
+        },
+
+        end: {
+          type: DataTypes.DATE
         }
       },
       {
@@ -344,6 +365,11 @@ export default class DBLog extends BasePlugin {
       onDelete: 'CASCADE'
     });
 
+    this.models.Server.hasMany(this.models.PlaySession, {
+      foreignKey: { name: 'server', allowNull: false },
+      onDelete: 'CASCADE'
+    });
+
     this.models.SteamUser.hasMany(this.models.Wound, {
       foreignKey: { name: 'attacker' },
       onDelete: 'CASCADE'
@@ -412,6 +438,8 @@ export default class DBLog extends BasePlugin {
     this.onPlayerRevived = this.onPlayerRevived.bind(this);
     this.onPlayerConnected = this.onPlayerConnected.bind(this);
     this.onPlayerDisconnected = this.onPlayerDisconnected.bind(this);
+    this.startSession = this.startSession.bind(this);
+    this.saveSession = this.saveSession.bind(this);
   }
 
   createModel(name, schema) {
@@ -426,6 +454,7 @@ export default class DBLog extends BasePlugin {
     await this.models.TickRate.sync();
     await this.models.PlayerCount.sync();
     await this.models.SteamUser.sync();
+    await this.models.PlaySession.sync();
     await this.models.Wound.sync();
     await this.models.Death.sync();
     await this.models.Revive.sync();
@@ -449,6 +478,9 @@ export default class DBLog extends BasePlugin {
     this.server.on('PLAYER_REVIVED', this.onPlayerRevived);
     this.server.on('PLAYER_CONNECTED', this.onPlayerConnected);
     this.server.on('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
+
+    for (const steamID of Object.keys(this.playerSession))
+      await this.startSession(steamID, this.playerSession[steamID].name, new Date());
   }
 
   async unmount() {
@@ -460,6 +492,9 @@ export default class DBLog extends BasePlugin {
     this.server.removeEventListener('PLAYER_REVIVED', this.onPlayerRevived);
     this.server.removeEventListener('PLAYER_CONNECTED', this.onPlayerConnected);
     this.server.removeEventListener('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
+
+    for (const steamID of Object.keys(this.playerSession))
+      await this.saveSession(steamID, new Date(), false);
   }
 
   async onTickRate(info) {
@@ -502,14 +537,12 @@ export default class DBLog extends BasePlugin {
     if (info.attacker)
       await this.models.SteamUser.upsert({
         steamID: info.attacker.steamID,
-        lastName: info.attacker.name,
-        lastSeen: info.time
+        lastName: info.attacker.name
       });
     if (info.victim)
       await this.models.SteamUser.upsert({
         steamID: info.victim.steamID,
-        lastName: info.victim.name,
-        lastSeen: info.time
+        lastName: info.victim.name
       });
 
     await this.models.Wound.create({
@@ -534,14 +567,12 @@ export default class DBLog extends BasePlugin {
     if (info.attacker)
       await this.models.SteamUser.upsert({
         steamID: info.attacker.steamID,
-        lastName: info.attacker.name,
-        lastSeen: info.time
+        lastName: info.attacker.name
       });
     if (info.victim)
       await this.models.SteamUser.upsert({
         steamID: info.victim.steamID,
-        lastName: info.victim.name,
-        lastSeen: info.time
+        lastName: info.victim.name
       });
 
     await this.models.Death.create({
@@ -567,20 +598,17 @@ export default class DBLog extends BasePlugin {
     if (info.attacker)
       await this.models.SteamUser.upsert({
         steamID: info.attacker.steamID,
-        lastName: info.attacker.name,
-        lastSeen: info.time
+        lastName: info.attacker.name
       });
     if (info.victim)
       await this.models.SteamUser.upsert({
         steamID: info.victim.steamID,
-        lastName: info.victim.name,
-        lastSeen: info.time
+        lastName: info.victim.name
       });
     if (info.reviver)
       await this.models.SteamUser.upsert({
         steamID: info.reviver.steamID,
-        lastName: info.reviver.name,
-        lastSeen: info.time
+        lastName: info.reviver.name
       });
 
     await this.models.Revive.create({
@@ -607,69 +635,53 @@ export default class DBLog extends BasePlugin {
   }
 
   async onPlayerConnected(info) {
-    if(!info || !info.player)
-      return;
+    if (!info || !info.player) return;
 
-    let player = await this.models.SteamUser.findOne({ where: { steamID: info.player.steamID } });
-
-    // First connection
-    // We need this in order to set firstSeen
-    if (!player) {
-      await this.models.SteamUser.create({
-        steamID: info.player.steamID,
-        lastName: info.player.name,
-        firstSeen: info.time,
-        lastSeen: info.time
-      });
-    } else {
-      await this.models.SteamUser.upsert({
-        steamID: info.player.steamID,
-        lastName: info.player.name,
-        lastSeen: info.time
-      });
-    }
-
-    this.startTrackingPlayerTime(info.player.steamID);
+    await this.startSession(info.player.steamID, info.player.name, info.time);
   }
 
   async onPlayerDisconnected(info) {
-    let player = await this.models.SteamUser.findOne({ where: { steamID: info.player.steamID } });
+    if (!info || !info.player) return;
+
+    await this.saveSession(info.player.steamID, info.time);
+  }
+
+  async startSession(steamID, name, startTime) {
+    const session = await this.models.PlaySession.create({
+      server: this.options.overrideServerID || this.server.id,
+      steamID,
+      lastName: name,
+      timePlayed: 0,
+      start: startTime,
+      end: startTime
+    });
+
+    this.playerSession[steamID] = {
+      sessionId: session.id,
+      name,
+      start: Math.floor(Date.now() / 1000)
+    };
+  }
+
+  async saveSession(steamID, endTime, deleteFromMemory = true) {
+    const session = this.playerSession[steamID];
 
     // If the bot was started in the middle of the match and player was not added
-    // Edge case (new players just before the map switch)
-    if (!player) {
-      await this.models.SteamUser.create({
-        steamID: info.player.steamID,
-        lastName: info.player.name,
-        firstSeen: info.time,
-        lastSeen: info.time,
-        totalTime: 0,
-        lastSessionTime: 0
-      });
+    // Eg. bot has crashed and was restarted by PM2
+    if (!session) return;
 
+    const dbSession = await this.models.PlaySession.findOne({ where: { id: session.sessionId } });
+
+    if (!dbSession) {
+      delete this.playerSession[steamID];
       return;
     }
 
-    await this.models.SteamUser.upsert({
-      steamID: info.player.steamID,
-      lastName: info.player.name,
-      lastSeen: info.time,
-      totalTime: player.totalTime + this.getPlayerSessionTime(info.player.steamID),
-      lastSessionTime: this.getPlayerSessionTime(info.player.steamID)
-    });
+    dbSession.timePlayed = dbSession.timePlayed + (Math.floor(Date.now() / 1000) - session.start);
+    dbSession.end = endTime;
 
-    this.stopTrackingPlayerTime(info.player.steamID);
-  }
+    await dbSession.save();
 
-  getPlayerSessionTime(steamID) {
-    return !this.playerTimes[steamID] ? 0 : Date.now() - this.playerTimes[steamID];
-  }
-
-  startTrackingPlayerTime(steamID) {
-    this.playerTimes[steamID] = Date.now();
-  }
-
-  stopTrackingPlayerTime(steamID) {
-    delete this.playerTimes[steamID];
+    if (deleteFromMemory) delete this.playerSession[steamID];
   }
 }
