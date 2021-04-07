@@ -477,9 +477,6 @@ export default class DBLog extends BasePlugin {
     this.server.on('PLAYER_REVIVED', this.onPlayerRevived);
     this.server.on('PLAYER_CONNECTED', this.onPlayerConnected);
     this.server.on('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
-
-    for (const steamID of Object.keys(this.playerSession))
-      await this.startSession(steamID, this.playerSession[steamID].name, new Date());
   }
 
   async unmount() {
@@ -491,9 +488,6 @@ export default class DBLog extends BasePlugin {
     this.server.removeEventListener('PLAYER_REVIVED', this.onPlayerRevived);
     this.server.removeEventListener('PLAYER_CONNECTED', this.onPlayerConnected);
     this.server.removeEventListener('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
-
-    for (const steamID of Object.keys(this.playerSession))
-      await this.saveSession(steamID, new Date(), false);
   }
 
   async onTickRate(info) {
