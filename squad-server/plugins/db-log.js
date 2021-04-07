@@ -156,24 +156,18 @@ export default class DBLog extends BasePlugin {
           autoIncrement: true
         },
 
-        steamID: {
+        name: {
           type: DataTypes.STRING
         },
 
-        lastName: {
-          type: DataTypes.STRING
-        },
-
-        timePlayed: {
-          type: DataTypes.INTEGER
-        },
-
-        start: {
+        startTime: {
           type: DataTypes.DATE
         },
 
-        end: {
-          type: DataTypes.DATE
+        endTime: {
+          type: DataTypes.DATE,
+          allowNull: true,
+          defaultValue: null
         }
       },
       {
@@ -402,6 +396,11 @@ export default class DBLog extends BasePlugin {
 
     this.models.SteamUser.hasMany(this.models.Revive, {
       foreignKey: { name: 'reviver' },
+      onDelete: 'CASCADE'
+    });
+
+    this.models.SteamUser.hasMany(this.models.PlaySession, {
+      foreignKey: { name: 'steamID', allowNull: false },
       onDelete: 'CASCADE'
     });
 
@@ -647,40 +646,29 @@ export default class DBLog extends BasePlugin {
   }
 
   async startSession(steamID, name, startTime) {
-    const session = await this.models.PlaySession.create({
+    this.playerSession[steamID] = {
       server: this.options.overrideServerID || this.server.id,
       steamID,
-      lastName: name,
-      timePlayed: 0,
-      start: startTime,
-      end: startTime
-    });
-
-    this.playerSession[steamID] = {
-      sessionId: session.id,
       name,
-      start: Math.floor(Date.now() / 1000)
+      startTime
     };
+
+    await this.models.PlaySession.create(this.playerSession[steamID]);
   }
 
   async saveSession(steamID, endTime, deleteFromMemory = true) {
-    const session = this.playerSession[steamID];
+    if (!this.playerSession[steamID]) return;
 
-    // If the bot was started in the middle of the match and player was not added
-    // Eg. bot has crashed and was restarted by PM2
-    if (!session) return;
-
-    const dbSession = await this.models.PlaySession.findOne({ where: { id: session.sessionId } });
-
-    if (!dbSession) {
-      delete this.playerSession[steamID];
-      return;
-    }
-
-    dbSession.timePlayed = dbSession.timePlayed + (Math.floor(Date.now() / 1000) - session.start);
-    dbSession.end = endTime;
-
-    await dbSession.save();
+    await this.models.PlaySession.update(
+      { endTime },
+      {
+        where: {
+          server: this.options.overrideServerID || this.server.id,
+          steamID,
+          endTime: null
+        }
+      }
+    );
 
     if (deleteFromMemory) delete this.playerSession[steamID];
   }
