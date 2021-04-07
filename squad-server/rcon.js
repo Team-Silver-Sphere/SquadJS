@@ -173,6 +173,10 @@ export default class SquadRcon extends Rcon {
     await this.execute(`AdminBroadcast ${message}`);
   }
 
+  async setFogOfWar(mode) {
+    await this.execute(`AdminSetFogOfWar ${mode}`);
+  }
+
   async warn(steamID, message) {
     await this.execute(`AdminWarn "${steamID}" ${message}`);
   }

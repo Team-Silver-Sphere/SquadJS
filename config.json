@@ -175,6 +175,12 @@
       "disableSCBL": false
     },
     {
+      "plugin": "FogOfWar",
+      "enabled": false,
+      "mode": 1,
+      "delay": 10000
+    },
+    {
       "plugin": "IntervalledBroadcasts",
       "enabled": false,
       "broadcasts": [],
