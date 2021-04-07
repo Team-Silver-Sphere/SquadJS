@@ -734,6 +734,23 @@ Grafana:
         </details>
 
 <details>
+          <summary>FogOfWar</summary>
+          <h2>FogOfWar</h2>
+          <p>The <code>FogOfWar</code> plugin can be used to automate setting fog of war mode.</p>
+          <h3>Options</h3>
+          <ul><li><h4>mode</h4>
+           <h6>Description</h6>
+           <p>Fog of war mode to set.</p>
+           <h6>Default</h6>
+           <pre><code>1</code></pre></li>
+<li><h4>delay</h4>
+           <h6>Description</h6>
+           <p>Delay before setting fog of war mode.</p>
+           <h6>Default</h6>
+           <pre><code>10000</code></pre></li></ul>
+        </details>
+
+<details>
           <summary>IntervalledBroadcasts</summary>
           <h2>IntervalledBroadcasts</h2>
           <p>The <code>IntervalledBroadcasts</code> plugin allows you to set broadcasts, which will be broadcasted at preset intervals</p>
