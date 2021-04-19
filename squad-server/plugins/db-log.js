@@ -182,6 +182,9 @@ export default class DBLog extends BasePlugin {
         weapon: {
           type: DataTypes.STRING
         },
+        role: {
+          type: DataTypes.STRING
+        },
         teamkill: {
           type: DataTypes.BOOLEAN
         }
@@ -229,6 +232,9 @@ export default class DBLog extends BasePlugin {
           type: DataTypes.FLOAT
         },
         weapon: {
+          type: DataTypes.STRING
+        },
+        role: {
           type: DataTypes.STRING
         },
         teamkill: {
@@ -503,6 +509,7 @@ export default class DBLog extends BasePlugin {
       attackerSquadID: info.attacker ? info.attacker.squadID : null,
       damage: info.damage,
       weapon: info.weapon,
+      role: info.role,
       teamkill: info.teamkill
     });
   }
@@ -534,6 +541,7 @@ export default class DBLog extends BasePlugin {
       attackerSquadID: info.attacker ? info.attacker.squadID : null,
       damage: info.damage,
       weapon: info.weapon,
+      role: info.role,
       teamkill: info.teamkill
     });
   }

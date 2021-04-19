@@ -10,7 +10,7 @@ export default {
       victimName: args[3],
       damage: parseFloat(args[4]),
       attackerPlayerController: args[5],
-      weapon: args[6]
+      role: args[6]
     };
 
     logParser.eventStore[args[3]] = data;
