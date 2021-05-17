@@ -151,7 +151,9 @@ export default class DiscordBaseMessageUpdater extends BasePlugin {
     const generatedMessage = await this.generateMessage();
 
     // Get subscribed messages.
-    const subscribedMessages = await this.SubscribedMessage.findAll();
+    const subscribedMessages = await this.SubscribedMessage.findAll({
+      where: { server: this.server.id }
+    });
 
     // Update each message.
     this.verbose(1, `Updating ${subscribedMessages.length} messages...`);
