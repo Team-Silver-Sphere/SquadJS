@@ -209,10 +209,14 @@ export default class AutoKickUnassigned extends BasePlugin {
       if (msLeft < this.warningInterval + 1) clearInterval(tracker.warnTimerID);
 
       const timeLeft = this.msFormat(msLeft);
-      this.server.rcon.warn(tracker.player.steamID, `${this.options.warningMessage} - ${timeLeft}`);
-      this.verbose(2, `Warning: ${tracker.player.name} (${timeLeft})`);
+      if (tracker.player.steamID in this.trackedPlayers) {
+        this.server.rcon.warn(
+          tracker.player.steamID,
+          `${this.options.warningMessage} - ${timeLeft}`
+        );
+        this.verbose(2, `Warning: ${tracker.player.name} (${timeLeft})`);
+      }
       tracker.warnings++;
-    }, this.warningInterval);
 
     // set timeout to kick player
     tracker.kickTimerID = setTimeout(async () => {
