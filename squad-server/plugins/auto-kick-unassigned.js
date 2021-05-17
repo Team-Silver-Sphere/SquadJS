@@ -217,7 +217,7 @@ export default class AutoKickUnassigned extends BasePlugin {
         this.verbose(2, `Warning: ${tracker.player.name} (${timeLeft})`);
       }
       tracker.warnings++;
-   }, this.warningInterval);
+    }, this.warningInterval);
 
     // set timeout to kick player
     tracker.kickTimerID = setTimeout(async () => {
