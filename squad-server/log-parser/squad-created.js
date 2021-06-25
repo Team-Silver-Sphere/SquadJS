@@ -7,8 +7,8 @@ export default {
       chainID: args[2],
       playerName: args[3],
       playerSteamID: args[4],
-      squadNumber: args[5],
-      squadID: args[6],
+      squadID: args[5],
+      squadName: args[6],
       teamName: args[7]
     };
 	
