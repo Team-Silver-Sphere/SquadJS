@@ -288,6 +288,10 @@ export default class SquadServer extends EventEmitter {
     this.logParser.on('TICK_RATE', (data) => {
       this.emit('TICK_RATE', data);
     });
+
+    this.logParser.on('SQUAD_CREATED', (data) => {
+      this.emit('SQUAD_CREATED', data);
+    });
   }
 
   async restartLogParser() {
