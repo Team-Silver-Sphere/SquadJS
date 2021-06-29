@@ -14,6 +14,7 @@ import PlayerWounded from './player-wounded.js';
 import RoundWinner from './round-winner.js';
 import ServerTickRate from './server-tick-rate.js';
 import SteamIDConnected from './steamid-connected.js';
+import SquadCreated from './squad-created.js';
 
 export default class SquadLogParser extends LogParser {
   constructor(options) {
@@ -35,7 +36,8 @@ export default class SquadLogParser extends LogParser {
       PlayerWounded,
       RoundWinner,
       ServerTickRate,
-      SteamIDConnected
+      SteamIDConnected,
+      SquadCreated
     ];
   }
 }
