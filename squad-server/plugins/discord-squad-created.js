@@ -56,7 +56,7 @@ export default class DiscordSquadCreated extends DiscordBasePlugin {
                 fields: [
                 {
                     name: 'Player',
-                    value: info.playerName,
+                    value: info.player.name,
                     inline: true
                 },
                 {
@@ -66,7 +66,7 @@ export default class DiscordSquadCreated extends DiscordBasePlugin {
                 },
                 {
                     name: 'Squad Number & Squad Name',
-                    value: `${info.squadID} : ${info.squadName}`
+                    value: `${info.player.squadID} : ${info.squadName}`
                 }
                 ],
                 timestamp: info.time.toISOString()
@@ -75,7 +75,7 @@ export default class DiscordSquadCreated extends DiscordBasePlugin {
 
     } else {
 
-        await this.sendDiscordMessage(` \`\`\`Player: ${info.playerName}\n created Squad ${info.squadID} : ${info.squadName}\n on ${info.teamName}\`\`\` `)
+        await this.sendDiscordMessage(` \`\`\`Player: ${info.player.name}\n created Squad ${info.player.squadID} : ${info.squadName}\n on ${info.teamName}\`\`\` `)
     }
   }
 }

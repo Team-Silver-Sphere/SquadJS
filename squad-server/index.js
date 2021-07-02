@@ -290,6 +290,13 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('SQUAD_CREATED', (data) => {
+
+      data.player = await this.getPlayerBySteamID(data.playerSteamID)
+      data.player.squadID = data.squadID
+      delete data.playerName
+      delete data.playerSteamID
+      delete data.squadID
+
       this.emit('SQUAD_CREATED', data);
     });
   }
