@@ -288,6 +288,16 @@ export default class SquadServer extends EventEmitter {
     this.logParser.on('TICK_RATE', (data) => {
       this.emit('TICK_RATE', data);
     });
+
+    this.logParser.on('SQUAD_CREATED', (data) => {
+
+      data.player = await this.getPlayerBySteamID(data.playerSteamID, true)
+      delete data.playerName
+      delete data.playerSteamID
+      delete data.squadID
+
+      this.emit('SQUAD_CREATED', data);
+    });
   }
 
   async restartLogParser() {
