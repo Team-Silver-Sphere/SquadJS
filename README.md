@@ -688,6 +688,34 @@ Grafana:
         </details>
 
 <details>
+          <summary>DiscordSquadCreated</summary>
+          <h2>DiscordSquadCreated</h2>
+          <p>The <code>SquadCreated</code> plugin will log Squad Creation events to a Discord channel.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to log Squad Creation events to.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>color</h4>
+           <h6>Description</h6>
+           <p>The color of the embed.</p>
+           <h6>Default</h6>
+           <pre><code>16761867</code></pre></li>
+<li><h4>useEmbed</h4>
+           <h6>Description</h6>
+           <p>Send message as Embed</p>
+           <h6>Default</h6>
+           <pre><code>true</code></pre></li></ul>
+        </details>
+
+<details>
           <summary>DiscordSubsystemRestarter</summary>
           <h2>DiscordSubsystemRestarter</h2>
           <p>The <code>DiscordSubSystemRestarter</code> plugin allows you to manually restart SquadJS subsystems in case an issues arises with them.<ul><li><code>!squadjs restartsubsystem rcon</code></li><li><code>!squadjs restartsubsystem logparser</code></li></ul></p>
@@ -849,7 +877,7 @@ Grafana:
           token: "MySecretPassword"
         }
       })
-    </code></pre>If you need more documentation about socket.io please go ahead and read the following;<br />General Socket.io documentation: <a href="https://socket.io/docs/v3" target="_blank">Socket.io Docs</a><br />Authentication and securing your websocket: <a href="https://socket.io/docs/v3/middlewares/#Sending-credentials" target="_blank">Sending-credentials</a></p>
+    </code></pre>If you need more documentation about socket.io please go ahead and read the following;<br />General Socket.io documentation: <a href="https://socket.io/docs/v3" target="_blank">Socket.io Docs</a><br />Authentication and securing your websocket: <a href="https://socket.io/docs/v3/middlewares/#Sending-credentials" target="_blank">Sending-credentials</a><br />How to use, install and configure a socketIO-client: <a href="https://github.com/11TStudio/SocketIO-Examples-for-SquadJS" target="_blank">Usage Guide with Examples</a></p>
           <h3>Options</h3>
           <ul><li><h4>websocketPort (Required)</h4>
            <h6>Description</h6>

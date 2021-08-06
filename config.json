@@ -161,6 +161,14 @@
       "setBotStatus": true
     },
     {
+      "plugin": "DiscordSquadCreated",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867,
+      "useEmbed": true
+    },
+    {
       "plugin": "DiscordSubsystemRestarter",
       "enabled": false,
       "discordClient": "discord",
