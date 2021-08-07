@@ -436,9 +436,9 @@ export default class SquadServer extends EventEmitter {
 
       data.serverName = data.name,
 
-      data.maxPlayers  = parseInt(data.maxplayers),
-      data.publicSlots  = parseInt(data.raw.rules.NUMPUBCONN),
-      data.reserveSlots  = parseInt(data.raw.rules.NUMPRIVCONN),
+      data.maxPlayers = parseInt(data.maxplayers),
+      data.publicSlots = parseInt(data.raw.rules.NUMPUBCONN),
+      data.reserveSlots = parseInt(data.raw.rules.NUMPRIVCONN),
 
       data.a2sPlayerCount = parseInt(data.raw.rules.PlayerCount_i),
       data.publicQueue = parseInt(data.raw.rules.PublicQueue_i),
