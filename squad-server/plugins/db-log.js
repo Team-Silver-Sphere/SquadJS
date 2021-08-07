@@ -450,13 +450,13 @@ export default class DBLog extends BasePlugin {
     });
   }
 
-  async onUpdatedA2SInformation() {
+  async onUpdatedA2SInformation(info) {
     await this.models.PlayerCount.create({
       server: this.options.overrideServerID || this.server.id,
       match: this.match ? this.match.id : null,
-      players: this.server.a2sPlayerCount,
-      publicQueue: this.server.publicQueue,
-      reserveQueue: this.server.reserveQueue
+      players: info.a2sPlayerCount,
+      publicQueue: info.publicQueue,
+      reserveQueue: info.reserveQueue
     });
   }
 
