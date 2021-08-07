@@ -447,7 +447,23 @@ export default class SquadServer extends EventEmitter {
       this.matchTimeout = parseFloat(data.raw.rules.MatchTimeout_f);
       this.gameVersion = data.raw.version;
 
-      this.emit('UPDATED_A2S_INFORMATION');
+      const info = {
+        raw: data.raw,
+        serverName: data.name,
+
+        maxPlayers: parseInt(data.maxplayers),
+        publicSlots: parseInt(data.raw.rules.NUMPUBCONN),
+        reserveSlots: parseInt(data.raw.rules.NUMPRIVCONN),
+
+        a2sPlayerCount: parseInt(data.raw.rules.PlayerCount_i),
+        publicQueue: parseInt(data.raw.rules.PublicQueue_i),
+        reserveQueue: parseInt(data.raw.rules.ReservedQueue_i),
+
+        matchTimeout: parseFloat(data.raw.rules.MatchTimeout_f),
+        gameVersion: data.raw.version
+      };
+
+      this.emit('UPDATED_A2S_INFORMATION', info);
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update A2S information.', err);
     }
