@@ -434,36 +434,33 @@ export default class SquadServer extends EventEmitter {
         port: this.options.queryPort
       });
 
-      const info = {
-        raw: data.raw,
-        serverName: data.name,
+      data.serverName = data.name,
 
-        maxPlayers: parseInt(data.maxplayers),
-        publicSlots: parseInt(data.raw.rules.NUMPUBCONN),
-        reserveSlots: parseInt(data.raw.rules.NUMPRIVCONN),
+      data.maxPlayers  = parseInt(data.maxplayers),
+      data.publicSlots  = parseInt(data.raw.rules.NUMPUBCONN),
+      data.reserveSlots  = parseInt(data.raw.rules.NUMPRIVCONN),
 
-        a2sPlayerCount: parseInt(data.raw.rules.PlayerCount_i),
-        publicQueue: parseInt(data.raw.rules.PublicQueue_i),
-        reserveQueue: parseInt(data.raw.rules.ReservedQueue_i),
+      data.a2sPlayerCount = parseInt(data.raw.rules.PlayerCount_i),
+      data.publicQueue = parseInt(data.raw.rules.PublicQueue_i),
+      data.reserveQueue =parseInt(data.raw.rules.ReservedQueue_i),
 
-        matchTimeout: parseFloat(data.raw.rules.MatchTimeout_f),
-        gameVersion: data.raw.version
-      };
+      data.matchTimeout = parseFloat(data.raw.rules.MatchTimeout_f),
+      data.gameVersion = data.raw.version
 
-      this.serverName = info.serverName;
+      this.serverName = data.serverName;
 
-      this.maxPlayers = info.maxPlayers;
-      this.publicSlots = info.publicSlots;
-      this.reserveSlots = info.reserveSlots;
+      this.maxPlayers = data.maxPlayers;
+      this.publicSlots = data.publicSlots;
+      this.reserveSlots = data.reserveSlots;
 
-      this.a2sPlayerCount = info.a2sPlayerCount;
-      this.publicQueue = info.publicQueue;
-      this.reserveQueue = info.reserveQueue;
+      this.a2sPlayerCount = data.a2sPlayerCount;
+      this.publicQueue = data.publicQueue;
+      this.reserveQueue = data.reserveQueue;
 
-      this.matchTimeout = info.matchTimeout;
-      this.gameVersion = info.raw.version;
+      this.matchTimeout = data.matchTimeout;
+      this.gameVersion = data.raw.version;
 
-      this.emit('UPDATED_A2S_INFORMATION', info);
+      this.emit('UPDATED_A2S_INFORMATION', data);
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update A2S information.', err);
     }
