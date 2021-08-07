@@ -461,7 +461,7 @@ export default class SquadServer extends EventEmitter {
       this.reserveQueue = info.reserveQueue;
 
       this.matchTimeout = info.matchTimeout;
-      this.gameVersion = info.raw.version;
+      this.gameVersion = info.gameVersion;
 
       this.emit('UPDATED_A2S_INFORMATION', info);
     } catch (err) {
