@@ -189,4 +189,9 @@ export default class SquadRcon extends Rcon {
   async switchTeam(steamID) {
     await this.execute(`AdminForceTeamChange "${steamID}"`);
   }
+  
+  // Will allow socketIO to execute direct rcon commands
+  async execute(...args) {
+    return super.execute(...args);
+  };
 }
