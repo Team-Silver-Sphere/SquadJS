@@ -129,6 +129,14 @@
       "color": 16761867
     },
     {
+      "plugin": "DiscordKillFeed",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867,
+      "disableSCBL": false
+    },
+    {
       "plugin": "DiscordPlaceholder",
       "enabled": true,
       "discordClient": "discord",
