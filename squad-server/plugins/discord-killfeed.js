@@ -9,7 +9,7 @@ export default class DiscordKillFeed extends DiscordBasePlugin {
   }
 
   static get defaultEnabled() {
-    return true;
+    return false;
   }
 
   static get optionsSpecification() {
