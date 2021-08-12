@@ -101,12 +101,14 @@ export default class SquadRcon extends Rcon {
     }
   }
 
+  // Returns the current layer
   async getCurrentMap() {
     const response = await this.execute('ShowCurrentMap');
     const match = response.match(/^Current level is (.*), layer is (.*)/);
     return { level: match[1], layer: match[2] };
   }
 
+  // Returns the next layer
   async getNextMap() {
     const response = await this.execute('ShowNextMap');
     const match = response.match(/^Next level is (.*), layer is (.*)/);
@@ -116,6 +118,7 @@ export default class SquadRcon extends Rcon {
     };
   }
 
+  // Returns a list with current players
   async getListPlayers() {
     const response = await this.execute('ListPlayers');
 
@@ -139,6 +142,7 @@ export default class SquadRcon extends Rcon {
     return players;
   }
 
+  // Returns a list with current squads
   async getSquads() {
     const responseSquad = await this.execute('ListSquads');
 
@@ -169,24 +173,84 @@ export default class SquadRcon extends Rcon {
     return squads;
   }
 
+  // Broadcasts a message on the server
   async broadcast(message) {
     await this.execute(`AdminBroadcast ${message}`);
   }
 
+  // Sets the mode for the FoW
   async setFogOfWar(mode) {
     await this.execute(`AdminSetFogOfWar ${mode}`);
   }
 
+  // Warns the player with a reason
   async warn(steamID, message) {
     await this.execute(`AdminWarn "${steamID}" ${message}`);
   }
 
+  // Bans the player from the server for a predefined time and reason
   // 0 = Perm | 1m = 1 minute | 1d = 1 Day | 1M = 1 Month | etc...
   async ban(steamID, banLength, message) {
     await this.execute(`AdminBan "${steamID}" ${banLength} ${message}`);
   }
 
+  // Kicks the player from the server with a reason
+  async kick(steamID, reason) {
+    await this.execute(`AdminKick "${steamID}" ${reason}`);
+  }
+
+  // Force switches the player from teams/side
   async switchTeam(steamID) {
     await this.execute(`AdminForceTeamChange "${steamID}"`);
+  }
+
+  // Ends the match
+  async endMatch() {
+    await this.execute('AdminEndMatch');
+  }
+
+  // Change the map and travel to it immediately
+  async changeLayer(layer) {
+    await this.execute(`AdminChangeLayer ${layer}`);
+  }
+
+  // Set the next map to travel to after this match ends
+  async setNextLayer(layer) {
+    await this.execute(`AdminSetNextLayer ${layer}`);
+  }
+
+  // Set the maximum number of players for this server
+  async setMaxPlayers(maxPlayers) {
+    await this.execute(`AdminSetMaxNumPlayers ${maxPlayers}`);
+  }
+
+  // Set the clock speed on the server 0.1 is 10% of normal speed 2.0 is twice the normal speed
+  async setSlomo(timeDilation) {
+    await this.execute(`AdminSlomo ${timeDilation}`);
+  }
+
+  // List recently disconnected player ids with associated player name and SteamId
+  async listDisconnectedPlayers() {
+    await this.execute(`AdminListDisconnectedPlayers`);
+  }
+
+  // Demote a commander specified by player name or Steam Id
+  async demoteCommander(steamID) {
+    await this.execute(`AdminDemoteCommander "${steamID}"`);
+  }
+
+  // Disbands the specified Squad (Which team 1 or 2 you will see on the team screen)
+  async disbandSquad(teamID, squadID) {
+    await this.execute(`AdminDisbandSquad ${teamID} ${squadID}`);
+  }
+
+  // Remove a player from their squad without kicking them
+  async removePlayerFromSquad(steamID) {
+    await this.execute(`AdminRemovePlayerFromSquad "${steamID}"`);
+  }
+
+  // Tell the server to restart the match
+  async restartMatch() {
+    await this.execute(`AdminRestartMatch`);
   }
 }
