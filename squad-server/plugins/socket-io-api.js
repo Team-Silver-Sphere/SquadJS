@@ -26,7 +26,10 @@ const eventsToBroadcast = [
   'UPDATED_PLAYER_INFORMATION',
   'UPDATED_LAYER_INFORMATION',
   'UPDATED_A2S_INFORMATION',
-  'PLAYER_AUTO_KICKED'
+  'PLAYER_AUTO_KICKED',
+  'PLAYER_WARNED',
+  'PLAYER_KICKED',
+  'PLAYER_BANNED'
 ];
 
 export default class SocketIOAPI extends BasePlugin {
