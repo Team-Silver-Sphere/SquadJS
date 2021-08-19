@@ -1,7 +1,10 @@
 # Project Files
-*.sqlite
 *.tmp
+*.log
+*.sqlite
 
+# Ignore test scripts and configs that may have credentials in.
+index-test*.js
 config-test*.json
 
 # Dependencies

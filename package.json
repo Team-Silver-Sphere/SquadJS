@@ -1,35 +1,58 @@
 {
   "name": "SquadJS",
-  "version": "3.0.0",
+  "version": "4.0.0-beta1",
   "repository": "https://github.com/Thomas-Smyth/SquadJS.git",
   "author": "Thomas Smyth <https://github.com/Thomas-Smyth>",
   "license": "BSL-1.0",
   "private": true,
-  "workspaces": [
-    "assets",
-    "core",
-    "squad-server"
-  ],
+  "type": "module",
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint --fix . && prettier --write \"./**/*.js\"",
-    "lint-staged": "lint-staged",
-    "build-config": "node squad-server/scripts/build-config-file.js",
-    "build-readme": "node squad-server/scripts/build-readme.js",
-    "build-all": "node squad-server/scripts/build-config-file.js && node squad-server/scripts/build-readme.js"
+    "lint-staged": "lint-staged"
   },
-  "type": "module",
+  "eslintConfig": {
+    "env": {
+      "es2021": true,
+      "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-unused-vars": [
+        "error",
+        {
+          "vars": "all",
+          "args": "none",
+          "ignoreRestSiblings": false
+        }
+      ]
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 100,
+    "trailingComma": "none"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix .",
+      "prettier --write \"./**/*.js\"",
+      "git add"
+    ]
+  },
   "dependencies": {
-    "squad-server": "1.0.0"
+    "async": "^3.2.1",
+    "ftp-tail": "^2.0.1",
+    "gamedig": "^3.0.5",
+    "moment": "^2.29.1",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^7.17.0",
-    "eslint-config-prettier": "^7.1.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^5.0.0",
+    "eslint": "^7.27.0",
     "husky": "^5.1.3",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1"

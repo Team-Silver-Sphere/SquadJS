@@ -1,23 +1,39 @@
-import SquadServerFactory from 'squad-server/factory';
-import printLogo from 'squad-server/logo';
+import SquadPlugin from './squad/plugin.js';
+import SquadServer from './squad/server.js';
 
-async function main() {
-  await printLogo();
+// Setup server.
+const server = new SquadServer({
+  host: 'xxx.xxx.xxx.xxx',
 
-  const config = process.env.config;
-  const configPath = process.argv[2];
-  if (config && configPath) throw new Error('Cannot accept both a config and config path.');
+  a2sOptions: {
+    port: 27175
+  },
 
-  // create a SquadServer instance
-  const server = config
-    ? await SquadServerFactory.buildFromConfigString(config)
-    : await SquadServerFactory.buildFromConfigFile(configPath || './config.json');
+  rconOptions: {
+    port: 21114,
+    password: 'password'
+  },
 
-  // watch the server
-  await server.watch();
+  fileSystemHandler: 'ftp',
+  fileSystemHandlerOptions: {
+    ftp: {
+      port: 21,
+      user: 'user',
+      password: 'password'
+    }
+  }
+});
 
-  // now mount the plugins
-  await Promise.all(server.plugins.map(async (plugin) => await plugin.mount()));
+// Setup example plugin.
+class ExamplePlugin extends SquadPlugin {
+  async onSquadCreated(event) {
+    await event.server.rcon.execute(
+      `AdminWarn "${event.squad.creator.steamID}" Please make sure you have the SL kit!`
+    );
+  }
 }
 
-main();
+server.mountPlugin(new ExamplePlugin());
+
+// Watch the server.
+server.watch();

@@ -2,6 +2,3 @@
 . "$(dirname "$0")/_/husky.sh"
 
 yarn run lint-staged
-yarn run build-all
-git add README.md
-git add config.json
