@@ -1,0 +1,21 @@
+version: "3.9"
+   
+services:
+
+  app:
+    container_name: squadjs
+    image: squadjs
+    restart: unless-stopped
+    volumes:
+      - ./database:/usr/src/app/database
+    environment:
+      HOST: xxx.xxx.xxx.xxx
+      QUERY_PORT: 27165
+      RCON_PORT: 21114
+      RCON_PASSWORD: password
+      LOG_DIR: C:/path/to/squad/log/folder
+      FTP_PORT: 21
+      FTP_USER: FTPUsername
+      FTP_PASSWORD: FTPPassword
+      DISCORD_TOKEN: token
+      ADMIN_LIST_URL: http://remoteadminlist.com/remoteadmin.php

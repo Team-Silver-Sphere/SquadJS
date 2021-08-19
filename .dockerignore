@@ -1,0 +1,30 @@
+# Respository Files
+.github/
+.husky/
+LICENSE
+*.md
+
+# Project Files
+*.sqlite
+*.tmp
+*.log
+database/
+
+config-test*.json
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Sample Config
+config.json
+
+# IDEs
+.idea/
+
+# Docker Files
+.dockerignore
+docker-build.sh
+docker-compose.yml
+Dockerfile

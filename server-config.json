@@ -1,0 +1,407 @@
+{
+  "server": {
+    "id": 1,
+    "host": "<placeholder>",
+    "queryPort": 12345,
+    "rconPort": 12345,
+    "rconPassword": "<placeholder>",
+    "logReaderMode": "ftp",
+    "logDir": "<placeholder>",
+    "ftp": {
+      "port": 12345,
+      "user": "<placeholder>",
+      "password": "<placeholder>",
+      "useListForSize": false,
+      "timeout": 20000
+    },
+    "adminLists": [
+      {
+        "type": "remote",
+        "source": "<placeholder>"
+      }
+    ]
+  },
+  "connectors": {
+    "discord": "<placeholder>",
+    "sqlite": {
+      "dialect": "sqlite",
+      "storage": "./database/database.sqlite"
+    }
+  },
+  "plugins": [
+    {
+      "plugin": "AutoKickUnassigned",
+      "enabled": true,
+      "warningMessage": "Join a squad, you are are unassigned and will be kicked",
+      "kickMessage": "Unassigned - Kicked to make space for others",
+      "frequencyOfWarnings": 60,
+      "unassignedTimer": 360,
+      "playerThreshold": 93,
+      "roundStartDelay": 900,
+      "ignoreAdmins": false,
+      "ignoreWhitelist": false
+    },
+    {
+      "plugin": "AutoTKWarn",
+      "enabled": true,
+      "message": "Please apologise for ALL TKs in ALL chat!"
+    },
+    {
+      "plugin": "ChatCommands",
+      "enabled": true,
+      "commands": [
+        {
+          "command": "admin",
+          "type": "broadcast",
+          "response": "Need an admin? Head to our #Contact_an_Admin on our discord https://discord.gg/Jvyyh8wXnb",
+          "ignoreChats": [
+            "squad",
+            "admin",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "tk",
+          "type": "broadcast",
+          "response": "Please apologize for accidental TKs in all chat",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "discord",
+          "type": "broadcast",
+          "response": "Join our Discord at https://discord.gg/Jvyyh8wXnb",
+          "ignoreChats": [
+            "broadcast"
+          ]
+        },
+        {
+          "command": "rules",
+          "type": "broadcast",
+          "response": "Visit our discord for full list of Rules at https://discord.gg/Jvyyh8wXnb",
+          "ignoreChats": [
+            "broadcast"
+          ]
+        },
+        {
+          "command": "ptfo",
+          "type": "broadcast",
+          "response": "Please play for active objectives that are relevant to the game, i.e. active caps / enemy FOBs / enemy vehicles",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "afk",
+          "type": "broadcast",
+          "response": "Please join/create a squad - If you are unassigned, you will be considered AFK and kicked to free slots on the server",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "claim",
+          "type": "broadcast",
+          "response": "Please respect claims on assets by specialised squads. ( SIMIR KORNET / TOW MRAP / MBT / TANK / 30MM / BRADLEY etc.)",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "mbt",
+          "type": "broadcast",
+          "response": "MBTs require a 3-man crew at all times; if you lose crew members, cease engagement and RTB / replace crew",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "apc",
+          "type": "broadcast",
+          "response": "APCs / IFVs require a 2-man crew at all times; if you lose crew members, cease engagement and RTB / replace crew",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "locked",
+          "type": "broadcast",
+          "response": "Please do not lock general infantry squads at less than 4 people minimum; asset-based squads can lock at less",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "asset",
+          "type": "broadcast",
+          "response": "Name your squad after the asset / asset class you wish to claim, e.g. BTR / APC / ARMOUR and other generic names won't be considered as a valid claim",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "slkit",
+          "type": "broadcast",
+          "response": "All Squadleaders require a SL kit, if you do not have one please find a way to get one ASAP",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "sl",
+          "type": "broadcast",
+          "response": "Do not create a squad unless you intend to lead it",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "seed1",
+          "type": "broadcast",
+          "response": "Do not take out enemy HABs / FOBs. Keep fighting to the middle caps",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "seed2",
+          "type": "broadcast",
+          "response": "Don't build FOBs / HABs on middle caps (as those will be fought over)",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "seed2",
+          "type": "broadcast",
+          "response": "Don't build FOBs / HABs on middle caps (as those will be fought over)",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "seed3",
+          "type": "broadcast",
+          "response": "Do not use offensive vehicles. Only use transport and logistics vehicles",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "seed4",
+          "type": "broadcast",
+          "response": "Do not use mortar tubes, HMG emplacements, or other offensive FOB emplacements",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        },
+        {
+          "command": "seed5",
+          "type": "broadcast",
+          "response": "Do not cross the red line that is drawn close to the middle cap!",
+          "ignoreChats": [
+            "all",
+            "team",
+            "squad",
+            "broadcast"
+          ]
+        }
+      ]
+    },
+    {
+      "plugin": "DBLog",
+      "enabled": false,
+      "database": "mysql",
+      "overrideServerID": null
+    },
+    {
+      "plugin": "DiscordAdminBroadcast",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
+      "plugin": "DiscordAdminCamLogs",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "876479727035113502",
+      "color": 16761867
+    },
+    {
+      "plugin": "DiscordAdminRequest",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "ignoreChats": [],
+      "ignorePhrases": [],
+      "command": "admin",
+      "pingGroups": [],
+      "pingDelay": 60000,
+      "color": 16761867
+    },
+    {
+      "plugin": "DiscordChat",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "876473499156361276",
+      "chatColors": {
+         "ChatAll": 16777215,
+         "ChatTeam": 243703,
+         "ChatSquad": 3594496
+       },
+      "color": 16761867,
+      "ignoreChats": []
+    },
+    {
+      "plugin": "DiscordDebug",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "events": []
+    },
+    {
+      "plugin": "DiscordPlaceholder",
+      "enabled": false,
+      "discordClient": "discord",
+      "command": "!placeholder",
+      "channelID": ""
+    },
+    {
+      "plugin": "DiscordRcon",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "permissions": {},
+      "prependAdminNameInBroadcast": false
+    },
+    {
+      "plugin": "DiscordRoundWinner",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
+      "plugin": "DiscordServerStatus",
+      "enabled": true,
+      "discordClient": "discord",
+      "messageStore": "sqlite",
+      "updateInterval": 60000,
+      "setBotStatus": true
+    },
+    {
+      "plugin": "DiscordSquadCreated",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "876478998677430332"
+    },
+    {
+      "plugin": "DiscordSubsystemRestarter",
+      "enabled": false,
+      "discordClient": "discord",
+      "role": ""
+    },
+    {
+      "plugin": "DiscordTeamkill",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "876473315827544145",
+      "color": 16761867,
+      "disableSCBL": false
+    },
+    {
+      "plugin": "IntervalledBroadcasts",
+      "enabled": false,
+      "broadcasts": [],
+      "interval": 300000
+    },
+    {
+      "plugin": "SCBLInfo",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "threshold": 6
+    },
+    {
+      "plugin": "SeedingMode",
+      "enabled": true,
+      "interval": 150000,
+      "seedingThreshold": 49,
+      "seedingMessage": "Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!",
+      "liveEnabled": true,
+      "liveThreshold": 50,
+      "liveMessage": "Server is Live!"
+    },
+    {
+      "plugin": "SocketIOAPI",
+      "enabled": false,
+      "websocketPort": "",
+      "securityToken": ""
+    },
+    {
+      "plugin": "TeamRandomizer",
+      "enabled": true,
+      "command": "randomize"
+    }
+  ],
+  "logger": {
+    "verboseness": {
+      "SquadServer": 1,
+      "LogParser": 1,
+      "RCON": 1
+    },
+    "colors": {
+      "SquadServer": "yellowBright",
+      "SquadServerFactory": "yellowBright",
+      "LogParser": "blueBright",
+      "RCON": "redBright"
+    }
+  }
+}
