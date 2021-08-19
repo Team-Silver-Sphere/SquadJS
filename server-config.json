@@ -33,7 +33,7 @@
       "plugin": "AutoKickUnassigned",
       "enabled": true,
       "warningMessage": "Join a squad, you are are unassigned and will be kicked",
-      "kickMessage": "Unassigned - Kicked to make space for others",
+      "kickMessage": "Unassigned/AFK - Thank you for choosing [S&G]!",
       "frequencyOfWarnings": 60,
       "unassignedTimer": 360,
       "playerThreshold": 93,
