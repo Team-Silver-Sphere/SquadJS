@@ -12,7 +12,7 @@
       "user": "<placeholder>",
       "password": "<placeholder>",
       "useListForSize": false,
-      "timeout": 20000
+      "timeout": 45000
     },
     "adminLists": [
       {
