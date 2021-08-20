@@ -363,6 +363,15 @@
       "interval": 300000
     },
     {
+      "plugin": "SelectiveFogOfWar",
+      "enabled": true,
+      "mode": 0,
+      "delay": 10000,
+      "layers": [
+        "RAAS"
+      ]
+    },
+    {
       "plugin": "SCBLInfo",
       "enabled": false,
       "discordClient": "discord",
