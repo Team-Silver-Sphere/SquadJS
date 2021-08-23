@@ -190,6 +190,7 @@ export default class SquadServer extends EventEmitter {
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
 
       this.currentLayer = data.layer;
+      this.currentLayerClassname = data.layerClassname;
       this.emit('NEW_GAME', data);
     });
 
@@ -406,7 +407,9 @@ export default class SquadServer extends EventEmitter {
       }
 
       this.currentLayer = currentLayer;
+      this.currentLayerClassname = currentMap.layer;
       this.nextLayer = nextLayer;
+      this.nextLayerClassname = nextMap.layer;
       this.nextLayerToBeVoted = nextMapToBeVoted;
 
       this.emit('UPDATED_LAYER_INFORMATION');
