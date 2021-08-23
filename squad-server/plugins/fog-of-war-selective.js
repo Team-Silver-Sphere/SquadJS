@@ -44,11 +44,13 @@ export default class SelectiveFogOfWar extends BasePlugin {
   }
 
   async onNewGame() {
-    this.verbose(1, `New Layer: ${this.server.currentLayer?.name}` );
+    const layerName = this.server.currentLayer?.name || this.server.currentLayerClassname;
+
+    this.verbose(1, `New Layer: ${layerName}` );
     this.verbose(1, `Layer Filter: ${this.options.layers?.length > 0 ? this.options.layers?.map(l => `'${l}'`).join(', ') : 'All'}`)
 
     if (this.options.layers?.length > 0 && 
-       !this.options.layers?.some(l => this.server.currentLayer?.name?.toUpperCase().includes(l.toUpperCase()))) {
+       !this.options.layers?.some(l => layerName?.toUpperCase().includes(l.toUpperCase()))) {
           this.verbose(1, 'Not matched');
           return;
     }
