@@ -92,7 +92,7 @@ Attacker: ${info.attacker.name}
 Victim:   ${info.victim.name}
 Weapon:   ${info.weapon}
 \`\`\``
-    })
+    });
 
     await this.sendDiscordMessage({
       embed: {

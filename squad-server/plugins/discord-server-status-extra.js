@@ -65,6 +65,7 @@ export default class DiscordServerStatusExtra extends DiscordBaseMessageUpdater 
 
   async onNewGame(info) {
     this.isOffline = false;
+    this.layerClassname = info.layerClassname;
     this.roundStart = new Date();
   }
 
@@ -102,7 +103,7 @@ export default class DiscordServerStatusExtra extends DiscordBaseMessageUpdater 
 
     embed.addField(
       'Current Layer',
-      `\`\`\`${this.server.currentLayer?.name || 'Unknown'}\`\`\``
+      `\`\`\`${this.server.currentLayer?.name || this.layerClassname?.replaceAll('_', ' ') || 'Unknown'}\`\`\``
     );
     embed.addField(
       'Next Layer',
@@ -131,7 +132,7 @@ export default class DiscordServerStatusExtra extends DiscordBaseMessageUpdater 
 
     await this.options.discordClient.user.setActivity(
       `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
-        this.server.currentLayer?.name || 'Unknown'
+        this.server.currentLayer?.name || this.layerClassname?.replaceAll('_', ' ') || 'Unknown'
       }`,
       { type: 'WATCHING' }
     );

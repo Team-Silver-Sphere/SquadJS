@@ -340,7 +340,7 @@
       "events": []
     },
     {
-      "plugin": "DiscordFOBHABExplosionDamage",
+      "plugin": "DiscordFOBHABExplosionDamageExtra",
       "enabled": true,
       "discordClient": "discord",
       "channelID": "879053891864522792"
