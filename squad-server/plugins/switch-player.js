@@ -5,7 +5,7 @@ export default class SwitchPlayer extends DiscordBasePlugin {
     return (
       'The <code>SwitchPlayer</code> can be used by a player to switch from one team to another. ' +
       'This plugin will enforce the OWI rule of team balance not exceeding 2 to 3 players difference per team.' +
-      'It can be run by typing, by default, <code>!switch</code> into in-game chat. Ex: !switchme'
+      'It can be run by typing, by default, <code>!switch</code> into in-game chat. Ex: !switch'
     );
   }
 
