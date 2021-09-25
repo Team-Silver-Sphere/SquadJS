@@ -25,10 +25,46 @@ export default class SeedingMode extends BasePlugin {
         description: 'Player count required for server not to be in seeding mode.',
         default: 50
       },
-      seedingMessage: {
+      seedingMessage1: {
         required: false,
         description: 'Seeding message to display.',
-        default: 'Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!'
+        default:
+          'Seeding Rules Active! No shooting logies, fight over the middle point, stay on your side of the red line.'
+      },
+      seedingMessage2: {
+        required: false,
+        description: 'Seeding message to display.',
+        default:
+          'No hab hunting or hab camping, no emplaced guns, no vehicles that require a crewman kit.'
+      },
+      seedingMessage3: {
+        required: false,
+        description: 'Seeding message to display.',
+        default: 'Each side gets one radio to be placed on certain coordinates.'
+      },
+      seedingMessageFallujahSkirmishv1: {
+        required: false,
+        description: 'Seeding message to display.',
+        default:
+          'Seeding Rules Active! Cap the two flags closest to your home base, fight ONLY over Main District, and stay on your side of the RED line'
+      },
+      seedingMessageJensens1: {
+        required: false,
+        description: 'Seeding message to display.',
+        default:
+          'Jensens Range Rules: Be Respectful. No Spawn camping. Do NOT destroy Heli\'s on Heli Pads. Do not mine armor area.'
+      },
+      seedingMessageJensens2: {
+        required: false,
+        description: 'Seeding message to display.',
+        default:
+          'Jensens Range Rules: Let Heli\'s safely take off. Then they are fair game. Fly Heli\'s at your own risk.'
+      },
+      seedingMessageJensens3: {
+        required: false,
+        description: 'Seeding message to display.',
+        default:
+          'Jensens Range Rules: Absolutly NO Heli Spawn area killing will be tolerated!'
       },
       liveEnabled: {
         required: false,
@@ -91,13 +127,27 @@ export default class SeedingMode extends BasePlugin {
     if (
       this.server.a2sPlayerCount !== 0 &&
       this.server.a2sPlayerCount < this.options.seedingThreshold
-    )
-      await this.server.rcon.broadcast(this.options.seedingMessage);
-    else if (
+    ) {
+      const currentMap = await this.server.rcon.getCurrentMap();
+
+      if (currentMap.layer.includes("Jensen")) {
+        await this.server.rcon.broadcast(this.options.seedingMessageJensens1);
+        await this.server.rcon.broadcast(this.options.seedingMessageJensens2);
+        await this.server.rcon.broadcast(this.options.seedingMessageJensens3);
+      }
+      else if (currentMap.layer === 'Fallujah Skirmish v1') {
+        await this.server.rcon.broadcast(this.options.seedingMessageFallujahSkirmishv1);
+      } else {
+        await this.server.rcon.broadcast(this.options.seedingMessage1);
+        await this.server.rcon.broadcast(this.options.seedingMessage2);
+        await this.server.rcon.broadcast(this.options.seedingMessage3);
+      }
+    } else if (
       this.server.a2sPlayerCount !== 0 &&
       this.options.liveEnabled &&
       this.server.a2sPlayerCount < this.options.liveThreshold
-    )
+    ) {
       await this.server.rcon.broadcast(this.options.liveMessage);
+    }
   }
 }
