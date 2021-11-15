@@ -203,6 +203,12 @@
       "interval": 300000
     },
     {
+      "plugin": "MapVote",
+      "enabled": false,
+      "minimumVotes": 10,
+      "autoStartMapVoteSeconds": 0
+    },
+    {
       "plugin": "SCBLInfo",
       "enabled": true,
       "discordClient": "discord",

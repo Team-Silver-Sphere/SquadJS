@@ -827,6 +827,23 @@ Grafana:
         </details>
 
 <details>
+          <summary>MapVote</summary>
+          <h2>MapVote</h2>
+          <p>The <code>MapVote</code> plugin allows to start mapvotes to choose next layer</p>
+          <h3>Options</h3>
+          <ul><li><h4>minimumVotes</h4>
+           <h6>Description</h6>
+           <p>Minimum number of votes for mapvote to succeed</p>
+           <h6>Default</h6>
+           <pre><code>10</code></pre></li>
+<li><h4>autoStartMapVoteSeconds</h4>
+           <h6>Description</h6>
+           <p>Number of seconds after round startet to begin auto mapvote (if 0 - only manual start)</p>
+           <h6>Default</h6>
+           <pre><code>0</code></pre></li></ul>
+        </details>
+
+<details>
           <summary>SCBLInfo</summary>
           <h2>SCBLInfo</h2>
           <p>The <code>SCBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based on data from the <a href="https://squad-community-ban-list.com/">Squad Community Ban List</a>.</p>
