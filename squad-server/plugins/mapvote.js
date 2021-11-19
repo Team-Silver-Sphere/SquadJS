@@ -70,7 +70,7 @@ export default class MapVote extends BasePlugin {
     }
     if (!this.mapVote) {
       const layersList = await this.getLayers();
-      Logger.verbose('Initializing map vote', 1, `getLayers: ${layersList}`);
+      Logger.verbose('MapVote', 1, `initMapVote for getLayers: ${layersList}`);
       this.mapVote = {
         layers: layersList,
         votes: {},
@@ -106,7 +106,9 @@ export default class MapVote extends BasePlugin {
         return b.votes - a.votes; // max votes first
       });
 
-    Logger.verbose('MapVote', 1, `Final mapvote result: ${sortedResults}`);
+    const resultLog = sortedResults.map((el) => el.layer + ':' + el.votes).join(', ');
+    Logger.verbose('MapVote', 1, `Final mapvote result: ${resultLog}`);
+
     this.mapVote.result = sortedResults[0].layerName;
 
     if (sortedResults[0].votes >= this.options.minimumVotes) {
