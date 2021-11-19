@@ -206,8 +206,8 @@
       "plugin": "MapVote",
       "enabled": false,
       "voteDurationSeconds": 60,
-      "minimumVotes": 0,
-      "autoStartMapVoteSeconds": 0
+      "minimumVotes": 1,
+      "autoStartMapVoteSeconds": 60
     },
     {
       "plugin": "SCBLInfo",

@@ -1,4 +1,3 @@
-// import layers from '../layers/layers.js';
 import BasePlugin from './base-plugin.js';
 import Logger from 'core/logger';
 
@@ -13,6 +12,7 @@ export default class MapVote extends BasePlugin {
     this.onChatMessage = this.onChatMessage.bind(this);
     this.onNewGame = this.onNewGame.bind(this);
     this.mapVoteTimeout = null;
+    this.autoStartMapVoteTimeout = null;
   }
 
   static get defaultEnabled() {
@@ -28,14 +28,18 @@ export default class MapVote extends BasePlugin {
       },
       minimumVotes: {
         required: false,
-        default: 0,
+        default: 1,
         description: 'Minimum number of votes for mapvote to succeed'
       },
       autoStartMapVoteSeconds: {
         required: false,
-        default: 0,
+        default: 60,
         description:
           'Number of seconds after round startet to begin auto mapvote (if 0 - only manual start)'
+      },
+      layers: {
+        required: true,
+        description: 'Layer names to include in map rotation'
       }
     };
   }
@@ -51,7 +55,7 @@ export default class MapVote extends BasePlugin {
   }
 
   async onChatMessage(info) {
-    if (info.message.match(/!mapvote/)) this.initMapVote(info);
+    if (info.message.match(/!mapvote/)) this.initMapVote(info.player.steamID);
     if (this.mapVote) {
       const voteMessage = info.message.match(/^(!vote)?\s*([1-5]){1}$/m);
       if (voteMessage) {
@@ -60,16 +64,19 @@ export default class MapVote extends BasePlugin {
     }
   }
 
-  async initMapVote(info) {
+  async initMapVote(steamID) {
+    if (this.autoStartMapVoteTimeout) clearTimeout(this.autoStartMapVoteTimeout);
     if (this.mapVote && this.mapVote.result) {
-      await this.server.rcon.warn(
-        info.player.steamID,
-        `Vote already finished! Vote result: ${this.mapVote.result}`
-      );
+      if (steamID) {
+        await this.server.rcon.warn(
+          steamID,
+          `Vote already finished! Vote result: ${this.mapVote.result}`
+        );
+      }
       return;
     }
     if (!this.mapVote) {
-      const layersList = await this.getLayers();
+      const layersList = await this.getRandomLayers(5);
       Logger.verbose('MapVote', 1, `initMapVote for getLayers: ${layersList}`);
       this.mapVote = {
         layers: layersList,
@@ -107,13 +114,12 @@ export default class MapVote extends BasePlugin {
       });
 
     const resultLog = sortedResults.map((el) => el.layer + ':' + el.votes).join(', ');
-    Logger.verbose('MapVote', 1, `Final mapvote result: ${resultLog}`);
-
-    this.mapVote.result = sortedResults[0].layerName;
+    this.mapVote.result = sortedResults[0].layer;
+    Logger.verbose('MapVote', 1, `Map vote finished: ${resultLog}`);
 
     if (sortedResults[0].votes >= this.options.minimumVotes) {
-      this.server.rcon.broadcast(`Vote finished, next layer: ${this.mapVote.result}`);
-      // todo - set next layer
+      this.server.rcon.broadcast(`Vote finished, next map: ${this.mapVote.result}`);
+      this.server.rcon.execute(`AdminSetNextLayer ${this.mapVote.result}`);
     } else {
       this.server.rcon.broadcast('Vote finished, none of the layers got enough votes');
     }
@@ -124,13 +130,16 @@ export default class MapVote extends BasePlugin {
     await this.server.rcon.warn(steamID, `You voted for: ${this.mapVote.votes[steamID]}`);
   }
 
-  async getLayers() {
-    // todo - get 5 actual layers for vote from layers list
-    return ['layerA', 'layerB', 'layerC', 'layerD', 'layerE'];
+  async getRandomLayers(count) {
+    // todo: memorize last N layers to ensure non-repeating vote items
+    return this.options.layers.sort(() => 0.5 / Math.random()).slice(0, count);
   }
 
   async onNewGame() {
     this.mapVoteTimeout = null;
     this.mapVote = null;
+    this.autoStartMapVoteTimeout = setTimeout(() => {
+      this.initMapVote(null);
+    }, this.options.autoStartMapVoteSeconds);
   }
 }
