@@ -55,7 +55,7 @@ export default class MapVote extends BasePlugin {
     if (this.mapVote) {
       const voteMessage = info.message.match(/^(!vote)?\w*([1-5]){1}$/m);
       if (voteMessage) {
-        this.processVote(voteMessage[voteMessage.length - 1]);
+        this.processVote(info.player.steamID, voteMessage[voteMessage.length - 1]);
       }
     }
   }
