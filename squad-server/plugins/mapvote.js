@@ -71,10 +71,11 @@ export default class MapVote extends BasePlugin {
       setTimeout(this.finishMapVote, this.options.voteDurationSeconds * 1000);
     }
 
-    const messageLayers = this.mapVote.layers
+    const layersMessage = this.mapVote.layers
       .map((layerName, index) => `${index + 1} - ${layerName}`)
       .join(', ');
-    await this.server.rcon.broadcast(`MapVote: ${messageLayers}`);
+    console.log(`Map vote: ${layersMessage}`);
+    // await this.server.rcon.broadcast(`Map vote: ${messageLayers}`);
   }
 
   async finishMapVote() {
