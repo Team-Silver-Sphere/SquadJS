@@ -835,15 +835,15 @@ Grafana:
            <h6>Description</h6>
            <p>Map vote duration in seconds</p>
            <h6>Default</h6>
-           <pre><code>60</code></pre></li>
+           <pre><code>300</code></pre></li>
 <li><h4>minimumVotes</h4>
            <h6>Description</h6>
-           <p>Minimum number of votes for mapvote to succeed</p>
+           <p>Minimum number of votes for a map to win</p>
            <h6>Default</h6>
            <pre><code>1</code></pre></li>
 <li><h4>autoStartMapVoteSeconds</h4>
            <h6>Description</h6>
-           <p>Number of seconds after round startet to begin auto mapvote (if 0 - only manual start)</p>
+           <p>Number of seconds after round is started to begin auto map vote</p>
            <h6>Default</h6>
            <pre><code>60</code></pre></li>
 <li><h4>layers (Required)</h4>

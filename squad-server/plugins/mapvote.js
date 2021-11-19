@@ -23,19 +23,18 @@ export default class MapVote extends BasePlugin {
     return {
       voteDurationSeconds: {
         required: false,
-        default: 60,
+        default: 300,
         description: 'Map vote duration in seconds'
       },
       minimumVotes: {
         required: false,
         default: 1,
-        description: 'Minimum number of votes for mapvote to succeed'
+        description: 'Minimum number of votes for a map to win'
       },
       autoStartMapVoteSeconds: {
         required: false,
         default: 60,
-        description:
-          'Number of seconds after round startet to begin auto mapvote (if 0 - only manual start)'
+        description: 'Number of seconds after round is started to begin auto map vote'
       },
       layers: {
         required: true,
@@ -56,7 +55,7 @@ export default class MapVote extends BasePlugin {
 
   async onChatMessage(info) {
     if (info.message.match(/!mapvote/)) this.initMapVote(info.player.steamID);
-    if (this.mapVote) {
+    if (this.mapVote && !this.mapVote.result) {
       const voteMessage = info.message.match(/^(!vote)?\s*([1-5]){1}$/m);
       if (voteMessage) {
         this.processVote(info.player.steamID, voteMessage[voteMessage.length - 1]);
@@ -121,7 +120,7 @@ export default class MapVote extends BasePlugin {
       this.server.rcon.broadcast(`Vote finished, next map: ${this.mapVote.result}`);
       this.server.rcon.execute(`AdminSetNextLayer ${this.mapVote.result}`);
     } else {
-      this.server.rcon.broadcast('Vote finished, none of the layers got enough votes');
+      this.server.rcon.broadcast('Vote finished, none of the maps have enough votes');
     }
   }
 
@@ -136,6 +135,7 @@ export default class MapVote extends BasePlugin {
   }
 
   async onNewGame() {
+    Logger.verbose('MapVote', 1, 'onNewGame');
     this.mapVoteTimeout = null;
     this.mapVote = null;
     this.autoStartMapVoteTimeout = setTimeout(() => {
