@@ -62,18 +62,19 @@ export default class MapVote extends BasePlugin {
       return;
     }
     if (!this.mapVote) {
+      const layersList = this.getLayers();
       this.mapVote = {
-        layers: this.getLayers(),
+        layers: layersList,
         votes: {},
         result: null
       };
       setTimeout(this.finishMapVote, this.options.voteDurationSeconds * 1000);
     }
-    await this.server.rcon.warn(info.player.steamID, 'Type number in chat to vote for:');
-    await this.server.rcon.warn(
-      info.player.steamID,
-      this.mapVote.layers.map((layerName, index) => `${index + 1} - ${layerName}`).join('\n')
-    );
+
+    const messageLayers = this.mapVote.layers
+      .map((layerName, index) => `${index + 1} - ${layerName}`)
+      .join(', ');
+    await this.server.rcon.broadcast(`MapVote: ${messageLayers}`);
   }
 
   async finishMapVote() {
