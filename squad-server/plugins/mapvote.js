@@ -52,12 +52,11 @@ export default class MapVote extends BasePlugin {
   async onChatMessage(info) {
     Logger.verbose('MapVote', 1, `onChatMessage(${info.message})`);
     if (info.message.match(/!mapvote/)) this.initMapVote(info);
-    if (this.mapVote && info.message.match(/^[1-5]{1}/)) this.processVote(info);
+    if (this.mapVote && info.message.match(/^(!vote)+[1-5]{1}$/)) this.processVote(info);
   }
 
   async initMapVote(info) {
     if (this.mapVote && this.mapVote.result) {
-      Logger.verbose('MapVote', 1, `Map vote already in progress`);
       await this.server.rcon.warn(
         info.player.steamID,
         `Vote already finished! Vote result: ${this.mapVote.result}`
@@ -65,27 +64,19 @@ export default class MapVote extends BasePlugin {
       return;
     }
     if (!this.mapVote) {
-      Logger.verbose('MapVote', 1, `No map vote found - initializing...`);
-      const layersList = this.getLayers();
-      Logger.verbose('MapVote', 1, `getLayers: ${layersList}`);
+      const layersList = await this.getLayers();
+      Logger.verbose('Initializing map vote', 1, `getLayers: ${layersList}`);
       this.mapVote = {
         layers: layersList,
         votes: {},
         result: null
       };
-      Logger.verbose(
-        'MapVote',
-        1,
-        `Setting callback after ${this.options.voteDurationSeconds} seconds`
-      );
       setTimeout(this.finishMapVote, this.options.voteDurationSeconds * 1000);
     }
-    console.log(this.mapVote.layers);
-    Logger.verbose('MapVote', 1, `Layers: ${this.mapVote.layers}`);
-    await this.server.rcon.broadcast('Map vote started');
-    // const layersMessage = this.mapVote.layers
-    //   .map((layerName, index) => `${index + 1} - ${layerName}`)
-    //   .join(', ');
+    const layersMessage = this.mapVote.layers
+      .map((layerName, index) => `${index + 1} - ${layerName}`)
+      .join(', ');
+    await this.server.rcon.broadcast(`Map vote in progress: ${layersMessage}`);
   }
 
   async finishMapVote() {
