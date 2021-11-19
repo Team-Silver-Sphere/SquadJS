@@ -55,8 +55,7 @@ export default class MapVote extends BasePlugin {
     if (this.mapVote) {
       const voteMessage = info.message.match(/^(!vote)?\w*([1-5]){1}$/m);
       if (voteMessage) {
-        Logger.verbose('MapVote', 1, `processVote(${voteMessage[0]})`);
-        // this.processVote(voteMessage[1]);
+        this.processVote(voteMessage[2]);
       }
     }
   }
