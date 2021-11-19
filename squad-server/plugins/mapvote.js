@@ -52,7 +52,7 @@ export default class MapVote extends BasePlugin {
   async onChatMessage(info) {
     Logger.verbose('MapVote', 1, `onChatMessage(${info.message})`);
     if (info.message.match(/!mapvote/)) this.initMapVote(info);
-    if (this.mapVote && info.message.match(/^(!vote)+[1-5]{1}$/)) this.processVote(info);
+    if (this.mapVote && info.message.match(/^(!vote)?[1-5]{1}$/)) this.processVote(info);
   }
 
   async initMapVote(info) {
