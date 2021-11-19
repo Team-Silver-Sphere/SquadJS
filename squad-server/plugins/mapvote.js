@@ -1,5 +1,6 @@
 // import layers from '../layers/layers.js';
 import BasePlugin from './base-plugin.js';
+import Logger from 'core/logger';
 
 export default class MapVote extends BasePlugin {
   static get description() {
@@ -49,12 +50,14 @@ export default class MapVote extends BasePlugin {
   }
 
   async onChatMessage(info) {
+    Logger.verbose('MapVote', 1, `onChatMessage(${info.message})`);
     if (info.message.match(/!mapvote/)) this.initMapVote(info);
     if (this.mapVote && info.message.match(/^[1-5]{1}/)) this.processVote(info);
   }
 
   async initMapVote(info) {
     if (this.mapVote && this.mapVote.result) {
+      Logger.verbose('MapVote', 1, `Map vote already in progress`);
       await this.server.rcon.warn(
         info.player.steamID,
         `Vote already finished! Vote result: ${this.mapVote.result}`
@@ -62,20 +65,27 @@ export default class MapVote extends BasePlugin {
       return;
     }
     if (!this.mapVote) {
+      Logger.verbose('MapVote', 1, `No map vote found - initializing...`);
       const layersList = this.getLayers();
+      Logger.verbose('MapVote', 1, `getLayers: ${layersList}`);
       this.mapVote = {
         layers: layersList,
         votes: {},
         result: null
       };
+      Logger.verbose(
+        'MapVote',
+        1,
+        `Setting callback after ${this.options.voteDurationSeconds} seconds`
+      );
       setTimeout(this.finishMapVote, this.options.voteDurationSeconds * 1000);
     }
-
-    const layersMessage = this.mapVote.layers
-      .map((layerName, index) => `${index + 1} - ${layerName}`)
-      .join(', ');
-    console.log(`Map vote: ${layersMessage}`);
-    // await this.server.rcon.broadcast(`Map vote: ${messageLayers}`);
+    console.log(this.mapVote.layers);
+    Logger.verbose('MapVote', 1, `Layers: ${this.mapVote.layers}`);
+    await this.server.rcon.broadcast('Map vote started');
+    // const layersMessage = this.mapVote.layers
+    //   .map((layerName, index) => `${index + 1} - ${layerName}`)
+    //   .join(', ');
   }
 
   async finishMapVote() {
