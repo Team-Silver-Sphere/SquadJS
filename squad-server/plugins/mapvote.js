@@ -23,12 +23,12 @@ export default class MapVote extends BasePlugin {
     return {
       voteDurationSeconds: {
         required: false,
-        default: 30,
+        default: 60,
         description: 'Map vote duration in seconds'
       },
       minimumVotes: {
         required: false,
-        default: 1,
+        default: 0,
         description: 'Minimum number of votes for mapvote to succeed'
       },
       autoStartMapVoteSeconds: {
@@ -76,12 +76,14 @@ export default class MapVote extends BasePlugin {
         votes: {},
         result: null
       };
-      this.mapVoteTimeout = setTimeout(this.finishMapVote, this.options.voteDurationSeconds * 1000);
+      this.mapVoteTimeout = setTimeout(() => {
+        this.finishMapVote();
+      }, this.options.voteDurationSeconds * 1000);
     }
     const layersMessage = this.mapVote.layers
-      .map((layerName, index) => `${index + 1} - ${layerName}`)
-      .join(', ');
-    await this.server.rcon.broadcast(`Map vote in progress: ${layersMessage}`);
+      .map((layerName, index) => `[${index + 1}] - ${layerName}`)
+      .join('\n');
+    await this.server.rcon.broadcast(`Map vote! Type number in chat to vote:\n${layersMessage}`);
   }
 
   async finishMapVote() {
