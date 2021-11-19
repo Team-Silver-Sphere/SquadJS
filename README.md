@@ -831,11 +831,16 @@ Grafana:
           <h2>MapVote</h2>
           <p>The <code>MapVote</code> plugin allows to start mapvotes to choose next layer</p>
           <h3>Options</h3>
-          <ul><li><h4>minimumVotes</h4>
+          <ul><li><h4>voteDurationSeconds</h4>
+           <h6>Description</h6>
+           <p>Map vote duration in seconds</p>
+           <h6>Default</h6>
+           <pre><code>30</code></pre></li>
+<li><h4>minimumVotes</h4>
            <h6>Description</h6>
            <p>Minimum number of votes for mapvote to succeed</p>
            <h6>Default</h6>
-           <pre><code>10</code></pre></li>
+           <pre><code>1</code></pre></li>
 <li><h4>autoStartMapVoteSeconds</h4>
            <h6>Description</h6>
            <p>Number of seconds after round startet to begin auto mapvote (if 0 - only manual start)</p>

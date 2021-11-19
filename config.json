@@ -205,7 +205,8 @@
     {
       "plugin": "MapVote",
       "enabled": false,
-      "minimumVotes": 10,
+      "voteDurationSeconds": 30,
+      "minimumVotes": 1,
       "autoStartMapVoteSeconds": 0
     },
     {
