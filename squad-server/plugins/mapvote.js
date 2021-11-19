@@ -132,7 +132,7 @@ export default class MapVote extends BasePlugin {
 
   async getRandomLayers(count) {
     // todo: memorize last N layers to ensure non-repeating vote items
-    return this.options.layers.sort(() => 0.5 / Math.random()).slice(0, count);
+    return this.options.layers.sort(() => 0.5 - Math.random()).slice(0, count);
   }
 
   async onNewGame() {
@@ -140,6 +140,6 @@ export default class MapVote extends BasePlugin {
     this.mapVote = null;
     this.autoStartMapVoteTimeout = setTimeout(() => {
       this.initMapVote(null);
-    }, this.options.autoStartMapVoteSeconds);
+    }, this.options.autoStartMapVoteSeconds * 1000);
   }
 }
