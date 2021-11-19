@@ -86,6 +86,7 @@ export default class MapVote extends BasePlugin {
 
   async finishMapVote() {
     if (!this.mapVote) return;
+    Logger.verbose('MapVote', 1, `Finishing mapvote timeout...`);
     const hist = {};
     this.mapVote.layers.forEach((layerName) => {
       hist[layerName] = 0;
@@ -104,6 +105,7 @@ export default class MapVote extends BasePlugin {
     if (sortedResults[0].votes >= this.options.minimumVotes) {
       this.mapVote.result = sortedResults[0].layerName;
     }
+    Logger.verbose('MapVote', 1, `Final mapvote result: ${sortedResults}`);
     if (this.mapVote.result) {
       this.server.rcon.broadcast(`Vote finished, next layer: ${this.mapVote.result}`);
     } else {
@@ -112,12 +114,9 @@ export default class MapVote extends BasePlugin {
     // todo - set next layer
   }
 
-  async processVote(info) {
-    this.mapVote.votes[info.player.steamID] = this.mapVote.layers[parseInt(info.message) - 1];
-    await this.server.rcon.warn(
-      info.player.steamID,
-      `You voted for: ${this.mapVote.votes[info.player.steamID]}`
-    );
+  async processVote(steamID, vote) {
+    this.mapVote.votes[steamID] = this.mapVote.layers[parseInt(vote) - 1];
+    await this.server.rcon.warn(steamID, `You voted for: ${this.mapVote.votes[steamID]}`);
   }
 
   async getLayers() {
