@@ -207,7 +207,9 @@
       "enabled": false,
       "voteDurationSeconds": 300,
       "minimumVotes": 1,
-      "autoStartMapVoteSeconds": 60
+      "autoStartMapVoteSeconds": 300,
+      "autoRepeatVoteBroadcastSeconds": 60,
+      "layersHistorySize": 3
     },
     {
       "plugin": "SCBLInfo",

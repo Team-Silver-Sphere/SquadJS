@@ -845,7 +845,17 @@ Grafana:
            <h6>Description</h6>
            <p>Number of seconds after round is started to begin auto map vote</p>
            <h6>Default</h6>
+           <pre><code>300</code></pre></li>
+<li><h4>autoRepeatVoteBroadcastSeconds</h4>
+           <h6>Description</h6>
+           <p>If mapvote is running, will repeat mapvote broadcast automatically each X seconds until finished</p>
+           <h6>Default</h6>
            <pre><code>60</code></pre></li>
+<li><h4>layersHistorySize</h4>
+           <h6>Description</h6>
+           <p>Ensure X last vote winners are not used in map votes</p>
+           <h6>Default</h6>
+           <pre><code>3</code></pre></li>
 <li><h4>layers (Required)</h4>
            <h6>Description</h6>
            <p>Layer names to include in map rotation</p>
