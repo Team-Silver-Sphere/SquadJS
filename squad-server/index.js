@@ -185,11 +185,11 @@ export default class SquadServer extends EventEmitter {
 
     this.logParser.on('NEW_GAME', async (data) => {
       data.layer = await Layers.getLayerByClassname(data.layerClassname);
-
-      this.layerHistory.unshift({ layer: data.layer, time: data.time });
-      this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
-
-      this.currentLayer = data.layer;
+      if (data.layer) {
+        this.layerHistory.unshift({ layer: data.layer, time: data.time });
+        this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
+        this.currentLayer = data.layer;
+      }
       this.emit('NEW_GAME', data);
     });
 
@@ -290,11 +290,10 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('SQUAD_CREATED', async (data) => {
-
-      data.player = await this.getPlayerBySteamID(data.playerSteamID, true)
-      delete data.playerName
-      delete data.playerSteamID
-      delete data.squadID
+      data.player = await this.getPlayerBySteamID(data.playerSteamID, true);
+      delete data.playerName;
+      delete data.playerSteamID;
+      delete data.squadID;
 
       this.emit('SQUAD_CREATED', data);
     });
