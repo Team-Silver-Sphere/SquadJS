@@ -1,5 +1,7 @@
 export default {
-  regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogWorld: Bringing World \/([A-z]+)\/Maps\/([A-z]+)\/(?:Gameplay_Layers\/)?([A-z0-9_]+)/,
+  // eslint-disable-next-line
+  regex:
+    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogWorld: Bringing World \/([A-z\/]+)\/Maps\/([A-z]+)\/(?:Gameplay_Layers\/)?([A-z0-9_]+)/,
   onMatch: (args, logParser) => {
     const data = {
       ...logParser.eventStore.WON,

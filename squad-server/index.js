@@ -184,13 +184,10 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('NEW_GAME', async (data) => {
-      Logger.verbose('SquadServer', 1, 'on::NEW_GAME');
       data.layer = await Layers.getLayerByClassname(data.layerClassname);
-      Logger.verbose('SquadServer', 1, `data.layer=[${data.layer}]`);
       this.layerHistory.unshift({ layer: data.layer, time: data.time });
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
       this.currentLayer = data.layer;
-      Logger.verbose('SquadServer', 1, 'on::NEW_GAME - emiting event');
       this.emit('NEW_GAME', data);
     });
 
