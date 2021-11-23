@@ -101,17 +101,20 @@ export default class MapVote extends BasePlugin {
       result: null
     };
 
-    // repeat broadcast every X seconds until finished
-    this.autoRepeatBroadcastTimeout = setTimeout(() => {
-      this.broadcastMapVote();
-    }, this.options.autoRepeatVoteBroadcastSeconds * 1000);
-
     // finish map vote after X seconds
     this.mapVoteTimeout = setTimeout(() => {
       this.finishMapVote();
     }, this.options.voteDurationSeconds * 1000);
 
+    // repeat broadcast every X seconds until finished
+    this.repeatingBroadcast();
+  }
+
+  async repeatingBroadcast() {
     this.broadcastMapVote();
+    this.autoRepeatBroadcastTimeout = setTimeout(() => {
+      this.repeatingBroadcast();
+    }, this.options.autoRepeatVoteBroadcastSeconds * 1000);
   }
 
   async broadcastMapVote() {
