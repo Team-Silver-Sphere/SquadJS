@@ -1,6 +1,10 @@
 import BasePlugin from './base-plugin.js';
 import Logger from 'core/logger';
 
+// todo: memorize last N layers to ensure non-repeating vote items
+// todo: repeat broadcast until vote is finished
+// todo: show result hist when vote finished
+
 export default class MapVote extends BasePlugin {
   static get description() {
     return 'The <code>MapVote</code> plugin allows to start mapvotes to choose next layer';
@@ -54,7 +58,7 @@ export default class MapVote extends BasePlugin {
   }
 
   async onChatMessage(info) {
-    if (info.message.match(/!mapvote/)) this.initMapVote(info.player.steamID);
+    if (info.message.match(/!(mapvote|votemap)/i)) this.initMapVote(info.player.steamID);
     if (this.mapVote && !this.mapVote.result) {
       const voteMessage = info.message.match(/^(!vote)?\s*([1-5]){1}$/m);
       if (voteMessage) {
@@ -64,7 +68,6 @@ export default class MapVote extends BasePlugin {
   }
 
   async initMapVote(steamID) {
-    if (this.autoStartMapVoteTimeout) clearTimeout(this.autoStartMapVoteTimeout);
     if (this.mapVote && this.mapVote.result) {
       if (steamID) {
         await this.server.rcon.warn(
@@ -75,6 +78,7 @@ export default class MapVote extends BasePlugin {
       return;
     }
     if (!this.mapVote) {
+      if (this.autoStartMapVoteTimeout) clearTimeout(this.autoStartMapVoteTimeout);
       const layersList = await this.getRandomLayers(5);
       Logger.verbose('MapVote', 1, `initMapVote for getLayers: ${layersList}`);
       this.mapVote = {
@@ -130,7 +134,6 @@ export default class MapVote extends BasePlugin {
   }
 
   async getRandomLayers(count) {
-    // todo: memorize last N layers to ensure non-repeating vote items
     return this.options.layers.sort(() => 0.5 - Math.random()).slice(0, count);
   }
 
