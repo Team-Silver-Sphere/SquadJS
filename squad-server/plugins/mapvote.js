@@ -84,6 +84,7 @@ export default class MapVote extends BasePlugin {
           steamID,
           `Vote already finished! Result was: ${this.mapVote.result}`
         );
+        return;
       }
       if (steamID) {
         await this.server.rcon.warn(steamID, 'Vote in progress! Check broadcasts for details');
@@ -125,11 +126,15 @@ export default class MapVote extends BasePlugin {
     await this.server.rcon.broadcast(`MAPVOTE! Type number in chat to vote:\n${layersMessage}`);
   }
 
-  async finishMapVote() {
-    if (this.mapVoteTimeout) clearTimeout(this.mapVoteTimeout);
-    if (this.autoRepeatBroadcastTimeout) clearTimeout(this.autoRepeatBroadcastTimeout);
-    if (!this.mapVote) return;
+  async broadcastMapVoteResults(results) {
+    const resultTable = results.map((el) => `${el.layer} - ${el.votes} vote(s)`).join('\n');
+    await this.server.rcon.broadcast(
+      `MAPVOTE finished, next map: ${this.mapVote.result} \n${resultTable}`
+    );
+  }
 
+  // get sorted array of {layer:string, votes:number}
+  async calculateResults() {
     const hist = {};
     this.mapVote.layers.forEach((layerName) => {
       hist[layerName] = 0;
@@ -137,21 +142,26 @@ export default class MapVote extends BasePlugin {
     Object.keys(this.mapVote.votes).forEach((id) => {
       hist[this.mapVote.votes[id]] += 1;
     });
-    const sortedResults = Object.keys(hist)
+    return Object.keys(hist)
       .map((layerName) => {
         return { layer: layerName, votes: hist[layerName] };
       })
       .sort(function (a, b) {
         return b.votes - a.votes; // max votes first
       });
+  }
+
+  async finishMapVote() {
+    if (this.mapVoteTimeout) clearTimeout(this.mapVoteTimeout);
+    if (this.autoRepeatBroadcastTimeout) clearTimeout(this.autoRepeatBroadcastTimeout);
+    if (!this.mapVote) return;
+
+    const sortedResults = this.calculateResults();
 
     if (sortedResults[0].votes >= this.options.minimumVotes) {
       this.mapVote.result = sortedResults[0].layer;
       this.memorizeLayer(this.mapVote.result);
-      const resultTable = sortedResults.map((el) => `${el.layer} [${el.votes} vote(s)]`).join('\n');
-      this.server.rcon.broadcast(
-        `Vote finished, next map: ${this.mapVote.result} \n${resultTable}`
-      );
+      this.broadcastMapVoteResults(sortedResults);
       this.server.rcon.execute(`AdminSetNextLayer ${this.mapVote.result}`);
     } else {
       this.server.rcon.broadcast('Vote finished, none of the maps have enough votes');
@@ -178,6 +188,7 @@ export default class MapVote extends BasePlugin {
 
   async onNewGame() {
     this.mapVoteTimeout = null;
+    this.autoRepeatBroadcastTimeout = null;
     this.mapVote = null;
     Logger.verbose(
       'MapVote',
