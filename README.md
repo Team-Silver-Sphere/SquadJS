@@ -947,10 +947,10 @@ Grafana:
  * <code>Mod Support</code> - This plugin uses RCON to get a list of layers, so Modded layers should automatically appear in votes.  Simply add the Mod Prefix in your config file, this will help attempt dedpulicating modded layers by base map 
  * <code>Layer/Mode whitelisting</code> - Simple search terms can be filter the map pool, allowing ease of selecting specific mod/Gamemode only vote options
  * <code>Layer/Mode Blacklisting</code> - Simple search terms can be filtered out of the map pool, useful for eliminating maps/modes from vote options
-Once a vote is in progress it either must end, or be canceled before starting another vote 
-During a vote, every 30 seconds the options are Broadcast to the server 
-Automatically Sets Nextmap 
-Players vote via sending a matching number in any chat 
+Once a vote is in progress it either must end, or be canceled before starting another vote
+During a vote, every 30 seconds the options are Broadcast to the server
+Automatically Sets Nextmap
+Players vote via sending a matching number in any chat
  
 
 Player Commands:
@@ -959,9 +959,9 @@ Player Commands:
 
 Admin Commands (Admin Chat Only):
  * <code>!mapvote</code> - Start a new map vote with 3 random maps.
- * <code>!mapvote aas inv raas </code> - search via game mode
- * <code>!mapvote yeho:raas narva:tc goro:inv</code> - layer:mode, can stack deeper for specifc versions
- * <code>!vote option1 option2 option 3</code> - Simple vote for anythin besides maps (Admin must set whatever options)
+ * <code>!mapvote aas inv raas </code> Example GameMode search
+ * <code>!mapvote yeho:raas narva:tc goro:inv</code> Example Layer Search
+ * <code>!vote option1 option2 option 3</code> - Simple vote for anything besides maps (Admin must set whatever options)
  * <code>!cancelvote</code> - Cancel the currently running vote, without totaling the ballots
  * <code>!endvote</code> - End a vote Early, Totalling the ballots.
 </p>
@@ -985,11 +985,17 @@ Admin Commands (Admin Chat Only):
            <pre><code>120</code></pre>
 <li><h4>ignoreChats (Required)</h4>
            <h6>Description</h6>
-           <p>The chat channels to ignore.</p>
+           <p>The chat channels to ignore for reading commands</p>
            <h6>Default</h6>
-           <pre><code>null</code></pre></li><h6>Example</h6>
            <pre><code>[
-  "ChatAll"
+  "ChatAll",
+  "ChatSquad",
+  "ChatTeam"
+]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  "ChatAll",
+  "ChatSquad",
+  "ChatTeam"
 ]</code></pre>
 <li><h4>blacklist (Required)</h4>
            <h6>Description</h6>

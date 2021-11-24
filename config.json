@@ -238,7 +238,11 @@
       "discordClient": "discord",
       "channelID": "",
       "voteTime": null,
-      "ignoreChats": null,
+      "ignoreChats": [
+        "ChatAll",
+        "ChatSquad",
+        "ChatTeam"
+      ],
       "blacklist": [
         "insurgency",
         "jensens",
