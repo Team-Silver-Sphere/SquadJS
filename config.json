@@ -231,6 +231,26 @@
       "plugin": "TeamRandomizer",
       "enabled": true,
       "command": "randomize"
+    },
+    {
+      "plugin": "ttVote",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "voteTime": null,
+      "ignoreChats": null,
+      "blacklist": [
+        "insurgency",
+        "jensens",
+        "destruction"
+      ],
+      "whitelist": [],
+      "layerHistoryLimit": 0,
+      "allowMultipleCAF": true,
+      "disallowRepeatedInvasion": true,
+      "layerPrefixes": [
+        "CAF_"
+      ]
     }
   ],
   "logger": {

@@ -139,6 +139,44 @@ export default class SquadRcon extends Rcon {
     return players;
   }
 
+  async getListLayers() {
+    const response = await this.execute('ListLayers');
+
+    const Layers = [];
+
+    for (const line of response.split('\n')) {
+      // Negate Header, otherwise Assume line = Layer
+      // 'List of available layers :'
+      // 'Anvil_AAS_v1'
+
+      const match = line.match(/^(?!List of available layers :).*/);
+      if (!match) continue;
+
+      Layers.push(match[0]);
+    }
+
+    return Layers;
+  }
+
+  async getListLevels() {
+    const response = await this.execute('ListLevels');
+
+    const Levels = [];
+
+    for (const line of response.split('\n')) {
+      // Negate Header, otherwise Assume line = Level
+      // List of available levels :
+      // Anvil
+
+      const match = line.match(/^(?!List of available levels).*/);
+      if (!match) continue;
+
+      Levels.push(match[0]);
+    }
+
+    return Levels;
+  }
+
   async getSquads() {
     const responseSquad = await this.execute('ListSquads');
 

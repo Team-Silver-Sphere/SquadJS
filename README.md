@@ -933,6 +933,121 @@ Grafana:
            <pre><code>randomize</code></pre></li></ul>
         </details>
 
+<details>
+          <summary>ttVote</summary>
+          <h2>ttVote</h2>
+          <p>The <code>tt-vote</code> plugin provides complex voting functionality:
+
+
+ * <code>Simple Voting</code> - Admins can specify a simple vote in addition to map voting 
+ * <code>Mapvote Command Parsing</code> - Admins can specify a mix of layers, modes, or other "search" terms when specifying a mapvote quickly and simply 
+ * <code>Layer Deduplication by base map</code> - Layers for the next vote take into account recently played maps, and will attempt to exclude layers sharing the base map. 
+ * <code>Double Invasion Limiting</code> - Invasion can be filtered out if recently played, stopping back to back invasion games, this is configurable 
+ * <code>Limit CAF_ Layers to one option per vote</code> - CAF has many more layers than any other faction, leading to a bias in random selection toward CAF 
+ * <code>Mod Support</code> - This plugin uses RCON to get a list of layers, so Modded layers should automatically appear in votes.  Simply add the Mod Prefix in your config file, this will help attempt dedpulicating modded layers by base map 
+ * <code>Layer/Mode whitelisting</code> - Simple search terms can be filter the map pool, allowing ease of selecting specific mod/Gamemode only vote options
+ * <code>Layer/Mode Blacklisting</code> - Simple search terms can be filtered out of the map pool, useful for eliminating maps/modes from vote options
+Once a vote is in progress it either must end, or be canceled before starting another vote 
+During a vote, every 30 seconds the options are Broadcast to the server 
+Automatically Sets Nextmap 
+Players vote via sending a matching number in any chat 
+ 
+
+Player Commands:
+ * <code>Number</code> - Vote for a layer using the layer number.
+
+
+Admin Commands (Admin Chat Only):
+ * <code>!mapvote</code> - Start a new map vote with 3 random maps.
+ * <code>!mapvote aas inv raas </code> 
+ * <code>!mapvote yeho:raas narva:tc goro:inv</code> - End the map vote and announce the winner.
+ * <code>!vote option1 option2 option 3</code> - Simple vote for anythin besides maps (Admin must set whatever options)
+ * <code>!cancelvote</code> - Cancel the currently running vote, without totaling the ballots
+ * <code>!endvote</code> - End a vote Early, Totalling the ballots.
+</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to log vote broadcasts to.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>voteTime</h4>
+           <h6>Description</h6>
+           <p>The amount of time for players to vote in seconds.</p>
+           <h6>Default</h6>
+           <pre><code>null</code></pre></li><h6>Example</h6>
+           <pre><code>120</code></pre>
+<li><h4>ignoreChats (Required)</h4>
+           <h6>Description</h6>
+           <p>The chat channels to ignore.</p>
+           <h6>Default</h6>
+           <pre><code>null</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  "ChatAll"
+]</code></pre>
+<li><h4>blacklist (Required)</h4>
+           <h6>Description</h6>
+           <p>Layers, Modes, and Words to remove</p>
+           <h6>Default</h6>
+           <pre><code>[
+  "insurgency",
+  "jensens",
+  "destruction"
+]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  "caf_",
+  "insurgency",
+  "jensens",
+  "destruction"
+]</code></pre>
+<li><h4>whitelist (Required)</h4>
+           <h6>Description</h6>
+           <p>Layers, Modes, and Words to restrict options to</p>
+           <h6>Default</h6>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  "RAAS"
+]</code></pre>
+<li><h4>layerHistoryLimit (Required)</h4>
+           <h6>Description</h6>
+           <p>The set of previous maps to exclude layers from the next vote, stops repeated short rotations</p>
+           <h6>Default</h6>
+           <pre><code>0</code></pre></li><h6>Example</h6>
+           <pre><code>2</code></pre>
+<li><h4>allowMultipleCAF</h4>
+           <h6>Description</h6>
+           <p>if each set of layer options should attempt to only have a single CAF layer</p>
+           <h6>Default</h6>
+           <pre><code>true</code></pre></li><h6>Example</h6>
+           <pre><code>true</code></pre>
+<li><h4>disallowRepeatedInvasion</h4>
+           <h6>Description</h6>
+           <p>Attempt to limit Invasion if recently played in map History</p>
+           <h6>Default</h6>
+           <pre><code>true</code></pre></li><h6>Example</h6>
+           <pre><code>true</code></pre>
+<li><h4>layerPrefixes (Required)</h4>
+           <h6>Description</h6>
+           <p>Map Prefixes from Mods or DLC, used to filter out base maps</p>
+           <h6>Default</h6>
+           <pre><code>[
+  "CAF_"
+]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  "CAF_",
+  "BAL_",
+  "GC_",
+  "HLP_",
+  "HRR_"
+]</code></pre></ul>
+        </details>
+
 <br>
 
 ## Statement on Accuracy
