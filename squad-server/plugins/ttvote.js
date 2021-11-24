@@ -3,17 +3,17 @@ import DiscordBasePlugin from './discord-base-plugin.js';
 export default class ttVote extends DiscordBasePlugin {
   static get description() {
     return (
-      'The <code>tt-vote</code> plugin provides complex voting functionality.\n' +
-      ' * <code>Simple Voting</code> - Admins can specify a simple vote in addition to map voting\n ' +
-      ' * <code>Mapvote Command Parsing</code> - Admins can specify a mix of layers, modes, or other "search" terms when specifying a mapvote quickly and simply\n ' +
-      ' * <code>Layer Deduplication by base map</code> - Layers for the next vote take into account recently played maps, and will attempt to exclude layers sharing the base map.\n ' +
-      ' * <code>Double Invasion Limiting</code> - Invasion can be filtered out if recently played, stopping back to back invasion games, this is configurable\n ' +
-      ' * <code>Limit CAF_ Layers to one option per vote</code> - CAF has many more layers than any other faction, leading to a bias in random selection toward CAF\n ' +
+      'The <code>tt-vote</code> plugin provides complex voting functionality. \n' +
+      ' * <code>Simple Voting</code> - Admins can specify a simple vote in addition to map voting \n' +
+      ' * <code>Mapvote Command Parsing</code> - Admins can specify a mix of layers, modes, or other "search" terms when specifying a mapvote quickly and simply \n' +
+      ' * <code>Layer Deduplication by base map</code> - Layers for the next vote take into account recently played maps, and will attempt to exclude layers sharing the base map. \n' +
+      ' * <code>Double Invasion Limiting</code> - Invasion can be filtered out if recently played, stopping back to back invasion games, this is configurable \n' +
+      ' * <code>Limit CAF_ Layers to one option per vote</code> - CAF has many more layers than any other faction, leading to a bias in random selection toward CAF \n' +
       ' * <code>Mod Support</code> - This plugin uses RCON to get a list of layers, so Modded layers should automatically appear in votes. ' +
-      ' Simply add the Mod Prefix in your config file, this will help attempt dedpulicating modded layers by base map\n ' +
-      ' * <code>Layer/Mode whitelisting</code> - Simple search terms can be filter the map pool, allowing ease of selecting specific mod/Gamemode only vote options\n ' +
-      ' * <code>Layer/Mode Blacklisting</code> - Simple search terms can be filtered out of the map pool, useful for eliminating maps/modes from vote options\n ' +
-      'Once a vote is in progress it either must end, or be canceled before starting another vote \n ' +
+      ' Simply add the Mod Prefix in your config file, this will help attempt dedpulicating modded layers by base map \n' +
+      ' * <code>Layer/Mode whitelisting</code> - Simple search terms can be filter the map pool, allowing ease of selecting specific mod/Gamemode only vote options\n' +
+      ' * <code>Layer/Mode Blacklisting</code> - Simple search terms can be filtered out of the map pool, useful for eliminating maps/modes from vote options\n' +
+      'Once a vote is in progress it either must end, or be canceled before starting another vote \n' +
       'During a vote, every 30 seconds the options are Broadcast to the server \n' +
       'Automatically Sets Nextmap \n' +
       'Players vote via sending a matching number in any chat \n ' +
@@ -23,7 +23,7 @@ export default class ttVote extends DiscordBasePlugin {
       '\n\n' +
       'Admin Commands (Admin Chat Only):\n' +
       ' * <code>!mapvote</code> - Start a new map vote with 3 random maps.\n' +
-      ' * <code>!mapvote aas inv raas </code>- \n' +
+      ' * <code>!mapvote aas inv raas </code> \n' +
       ' * <code>!mapvote yeho:raas narva:tc goro:inv</code> - End the map vote and announce the winner.\n' +
       ' * <code>!vote option1 option2 option 3</code> - Simple vote for anythin besides maps (Admin must set whatever options)\n' +
       ' * <code>!cancelvote</code> - Cancel the currently running vote, without totaling the ballots\n' +
