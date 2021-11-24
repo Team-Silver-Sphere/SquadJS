@@ -936,7 +936,15 @@ Grafana:
 <details>
           <summary>ttVote</summary>
           <h2>ttVote</h2>
-          <p>NaN * <code>Layer/Mode Blacklisting</code> - Simple search terms can be filtered out of the map pool, useful for eliminating maps/modes from vote options
+          <p>The <code>tt-vote</code> plugin provides complex voting functionality.
+ * <code>Simple Voting</code> - Admins can specify a simple vote in addition to map voting
+  * <code>Mapvote Command Parsing</code> - Admins can specify a mix of layers, modes, or other "search" terms when specifying a mapvote quickly and simply
+  * <code>Layer Deduplication by base map</code> - Layers for the next vote take into account recently played maps, and will attempt to exclude layers sharing the base map.
+  * <code>Double Invasion Limiting</code> - Invasion can be filtered out if recently played, stopping back to back invasion games, this is configurable
+  * <code>Limit CAF_ Layers to one option per vote</code> - CAF has many more layers than any other faction, leading to a bias in random selection toward CAF
+  * <code>Mod Support</code> - This plugin uses RCON to get a list of layers, so Modded layers should automatically appear in votes.  Simply add the Mod Prefix in your config file, this will help attempt dedpulicating modded layers by base map
+  * <code>Layer/Mode whitelisting</code> - Simple search terms can be filter the map pool, allowing ease of selecting specific mod/Gamemode only vote options
+  * <code>Layer/Mode Blacklisting</code> - Simple search terms can be filtered out of the map pool, useful for eliminating maps/modes from vote options
  Once a vote is in progress it either must end, or be canceled before starting another vote 
  During a vote, every 30 seconds the options are Broadcast to the server 
 Automatically Sets Nextmap
