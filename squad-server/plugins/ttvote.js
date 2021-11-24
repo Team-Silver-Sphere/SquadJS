@@ -10,13 +10,13 @@ export default class ttVote extends DiscordBasePlugin {
         ' * <code>Double Invasion Limiting</code> - Invasion can be filtered out if recently played, stopping back to back invasion games, this is configurable\n ' +
         ' * <code>Limit CAF_ Layers to one option per vote</code> - CAF has many more layers than any other faction, leading to a bias in random selection toward CAF\n ' +
         ' * <code>Mod Support</code> - This plugin uses RCON to get a list of layers, so Modded layers should automatically appear in votes. ' +
-        'Simply add the Mod Prefix in your config file, this will help attempt dedpulicating modded layers by base map\n',
+        ' Simply add the Mod Prefix in your config file, this will help attempt dedpulicating modded layers by base map\n ',
       +' * <code>Layer/Mode whitelisting</code> - Simple search terms can be filter the map pool, allowing ease of selecting specific mod/Gamemode only vote options\n ' +
         ' * <code>Layer/Mode Blacklisting</code> - Simple search terms can be filtered out of the map pool, useful for eliminating maps/modes from vote options\n ' +
-        'Once a vote is in progress it either must end, or be canceled before starting another vote \n' +
+        'Once a vote is in progress it either must end, or be canceled before starting another vote \n ' +
         'During a vote, every 30 seconds the options are Broadcast to the server \n' +
-        'Automatically Sets Nextmap\n' +
-        'Players vote via sending a matching number in any chat' +
+        'Automatically Sets Nextmap\n ' +
+        'Players vote via sending a matching number in any chat \n' +
         '\n\n' +
         'Player Commands:\n' +
         ' * <code><layer number></code> - Vote for a layer using the layer number.\n' +
