@@ -936,8 +936,7 @@ Grafana:
 <details>
           <summary>ttVote</summary>
           <h2>ttVote</h2>
-          <p>The <code>tt-vote</code> plugin provides complex voting functionality. 
-features:
+          <p>The <code>tt-vote</code> plugin provides complex voting functionality:
 
 
  * <code>Simple Voting</code> - Admins can specify a simple vote in addition to map voting 
