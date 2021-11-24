@@ -3,7 +3,7 @@ import DiscordBasePlugin from './discord-base-plugin.js';
 export default class ttVote extends DiscordBasePlugin {
   static get description() {
     return (
-      'The <code>tt-vote</code> plugin provides complex voting functionality. \n' +
+      'The <code>tt-vote</code> plugin provides complex voting functionality: \n' +
       ' * <code>Simple Voting</code> - Admins can specify a simple vote in addition to map voting \n' +
       ' * <code>Mapvote Command Parsing</code> - Admins can specify a mix of layers, modes, or other "search" terms when specifying a mapvote quickly and simply \n' +
       ' * <code>Layer Deduplication by base map</code> - Layers for the next vote take into account recently played maps, and will attempt to exclude layers sharing the base map. \n' +
