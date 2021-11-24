@@ -959,8 +959,8 @@ Player Commands:
 
 Admin Commands (Admin Chat Only):
  * <code>!mapvote</code> - Start a new map vote with 3 random maps.
- * <code>!mapvote aas inv raas </code> 
- * <code>!mapvote yeho:raas narva:tc goro:inv</code> - End the map vote and announce the winner.
+ * <code>!mapvote aas inv raas </code> - search via game mode
+ * <code>!mapvote yeho:raas narva:tc goro:inv</code> - layer:mode, can stack deeper for specifc versions
  * <code>!vote option1 option2 option 3</code> - Simple vote for anythin besides maps (Admin must set whatever options)
  * <code>!cancelvote</code> - Cancel the currently running vote, without totaling the ballots
  * <code>!endvote</code> - End a vote Early, Totalling the ballots.

@@ -24,8 +24,8 @@ export default class ttVote extends DiscordBasePlugin {
       '\n\n' +
       'Admin Commands (Admin Chat Only):\n' +
       ' * <code>!mapvote</code> - Start a new map vote with 3 random maps.\n' +
-      ' * <code>!mapvote aas inv raas </code> \n' +
-      ' * <code>!mapvote yeho:raas narva:tc goro:inv</code> - End the map vote and announce the winner.\n' +
+      ' * <code>!mapvote aas inv raas </code> - search via game mode\n' +
+      ' * <code>!mapvote yeho:raas narva:tc goro:inv</code> - layer:mode, can stack deeper for specifc versions\n' +
       ' * <code>!vote option1 option2 option 3</code> - Simple vote for anythin besides maps (Admin must set whatever options)\n' +
       ' * <code>!cancelvote</code> - Cancel the currently running vote, without totaling the ballots\n' +
       ' * <code>!endvote</code> - End a vote Early, Totalling the ballots.\n'
