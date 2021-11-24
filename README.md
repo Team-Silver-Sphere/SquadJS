@@ -947,12 +947,12 @@ Grafana:
   * <code>Layer/Mode Blacklisting</code> - Simple search terms can be filtered out of the map pool, useful for eliminating maps/modes from vote options
  Once a vote is in progress it either must end, or be canceled before starting another vote 
  During a vote, every 30 seconds the options are Broadcast to the server 
-Automatically Sets Nextmap
- Players vote via sending a matching number in any chat 
-
+Automatically Sets Nextmap 
+Players vote via sending a matching number in any chat 
+ 
 
 Player Commands:
- * <code><layer number></code> - Vote for a layer using the layer number.
+ * <code>Number</code> - Vote for a layer using the layer number.
 
 
 Admin Commands (Admin Chat Only):

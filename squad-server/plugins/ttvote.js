@@ -15,11 +15,11 @@ export default class ttVote extends DiscordBasePlugin {
       ' * <code>Layer/Mode Blacklisting</code> - Simple search terms can be filtered out of the map pool, useful for eliminating maps/modes from vote options\n ' +
       'Once a vote is in progress it either must end, or be canceled before starting another vote \n ' +
       'During a vote, every 30 seconds the options are Broadcast to the server \n' +
-      'Automatically Sets Nextmap\n ' +
-      'Players vote via sending a matching number in any chat \n' +
+      'Automatically Sets Nextmap \n' +
+      'Players vote via sending a matching number in any chat \n ' +
       '\n\n' +
       'Player Commands:\n' +
-      ' * <code><layer number></code> - Vote for a layer using the layer number.\n' +
+      ' * <code>Number</code> - Vote for a layer using the layer number.\n' +
       '\n\n' +
       'Admin Commands (Admin Chat Only):\n' +
       ' * <code>!mapvote</code> - Start a new map vote with 3 random maps.\n' +
