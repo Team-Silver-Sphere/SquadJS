@@ -936,7 +936,10 @@ Grafana:
 <details>
           <summary>ttVote</summary>
           <h2>ttVote</h2>
-          <p>The <code>tt-vote</code> plugin provides complex voting functionality: 
+          <p>The <code>tt-vote</code> plugin provides complex voting functionality. 
+features:
+
+
  * <code>Simple Voting</code> - Admins can specify a simple vote in addition to map voting 
  * <code>Mapvote Command Parsing</code> - Admins can specify a mix of layers, modes, or other "search" terms when specifying a mapvote quickly and simply 
  * <code>Layer Deduplication by base map</code> - Layers for the next vote take into account recently played maps, and will attempt to exclude layers sharing the base map. 
