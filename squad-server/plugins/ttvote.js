@@ -346,11 +346,9 @@ export default class ttVote extends DiscordBasePlugin {
     // Remove Recently Played Base maps
     // this can blow up if layerHistory Contains Null or Undefined..
     // But the likey should happen inside of the server index.js,
-    for (const layer of this.server.layerHistory.slice(0, this.options.layerHistoryLimit - 1)) {
+    for (const layer of this.server.layerHistory.slice(0, this.options.layerHistoryLimit)) {
       if (this.options.disallowRepeatedInvasion) {
-        if (
-          this.server.layerHistory.filter((layer) => layer.layer.classname.includes('invasion'))
-        ) {
+        if (layer.layer.classname.toLowerCase().includes('invasion')) {
           Layers = this.filterLayersByPattern(Layers, 'invasion', false);
         }
       }
