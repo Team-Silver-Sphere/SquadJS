@@ -1,6 +1,10 @@
 export default {
-  regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogWorld: Bringing World \/([A-z]+)\/Maps\/([A-z]+)\/(?:Gameplay_Layers\/)?([A-z0-9_]+)/,
+  regex:
+    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogWorld: Bringing World \/([A-z]+)\/(?:Maps\/)?([A-z0-9-]+)\/(?:.+\/)?([A-z0-9-]+)(?:\.[A-z0-9-]+)/,
   onMatch: (args, logParser) => {
+    if (args[5] === 'TransitionMap') {
+      return;
+    }
     const data = {
       ...logParser.eventStore.WON,
       raw: args[0],
