@@ -151,8 +151,9 @@ export default class SquadRcon extends Rcon {
 
       const match = line.match(/^(?!List of available layers :).*/);
       if (!match) continue;
-
-      Layers.push(match[0]);
+      // mods will have layer (modpack)
+      // HRR_Chora_GRAAS_v1_CAF (HawksLayerPack)
+      Layers.push(match[0].split(' ')[0]);
     }
 
     return Layers;

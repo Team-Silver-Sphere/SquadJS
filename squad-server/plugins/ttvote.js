@@ -182,7 +182,7 @@ export default class ttVote extends DiscordBasePlugin {
         info.message
           .slice(9, info.message.length)
           .toLowerCase()
-          .match(/[a-z0-9:]+/g)
+          .match(/[a-z0-9:_-]+/g)
       );
       if (params.length < 2 || params.length > 4) {
         await this.server.rcon.warn(info.steamID, 'Please input between 2-4 vote options.');
@@ -347,6 +347,9 @@ export default class ttVote extends DiscordBasePlugin {
     // this can blow up if layerHistory Contains Null or Undefined..
     // But the likey should happen inside of the server index.js,
     for (const layer of this.server.layerHistory.slice(0, this.options.layerHistoryLimit)) {
+      if (layer.layer === null) {
+        continue;
+      }
       if (this.options.disallowRepeatedInvasion) {
         if (layer.layer.classname.toLowerCase().includes('invasion')) {
           Layers = this.filterLayersByPattern(Layers, 'invasion', false);
