@@ -588,7 +588,7 @@ export default class SquadServer extends EventEmitter {
   async constructPartialLayer() {
     Logger.verbose('SquadServer', 1, `Constructing Partial Layer...`);
     try {
-      const rconData = await this.server.getCurrentMap();
+      const rconData = await this.rcon.getCurrentMap();
       const gamedigData = await Gamedig.query({
         type: 'squad',
         host: this.options.host,
