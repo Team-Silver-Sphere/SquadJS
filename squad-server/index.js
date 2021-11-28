@@ -595,10 +595,10 @@ export default class SquadServer extends EventEmitter {
 
       const layer = {
         name: rconData.layer, // "Al Basrah AAS V1"
-        classname: rconData.level, // "Al Basrah"
+        classname: gamedigData.map, // "Al_Basrah_AAS_V1"
         layerid: gamedigData.map, // "Al_Basrah_AAS_V1"
         map: {
-          name: rconData.layer // "Al Basrah AAS V1"
+          name: rconData.level // "Al Basrah"
         },
         gamemode: gamedigData.raw.GameMode_s // "AAS"
       };
