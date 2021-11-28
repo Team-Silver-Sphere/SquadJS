@@ -400,7 +400,9 @@ export default class SquadServer extends EventEmitter {
 
       const currentLayer =
         (await Layers.getLayerByName(currentMap.layer)) || (await this.constructPartialLayer());
-      const nextLayer = nextMapToBeVoted ? null : await Layers.getLayerByName(nextMap.layer);
+      const nextLayer = nextMapToBeVoted
+        ? null
+        : (await Layers.getLayerByName(nextMap.layer)) || { name: nextMap.layer };
 
       if (this.layerHistory.length === 0) {
         this.layerHistory.unshift({ layer: currentLayer, time: Date.now() });
@@ -599,7 +601,7 @@ export default class SquadServer extends EventEmitter {
         map: {
           name: rconData.level // "Al Basrah"
         },
-        gamemode: gamedigData.raw.GameMode_s // "AAS"
+        gamemode: gamedigData.raw.rules.GameMode_s // "AAS"
       };
       return layer;
     } catch (err) {
