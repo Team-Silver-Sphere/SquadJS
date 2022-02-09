@@ -123,7 +123,7 @@ export default class SquadRcon extends Rcon {
 
     for (const line of response.split('\n')) {
       const match = line.match(
-        /ID: ([0-9]+) \| SteamID: ([0-9]{17}) \| Name: (.+) \| Team ID: ([0-9]+) \| Squad ID: ([0-9]+|N\/A)/
+        /ID: ([0-9]+) \| SteamID: ([0-9]{17}) \| Name: (.+) \| Team ID: ([0-9]+) \| Squad ID: ([0-9]+|N\/A) \| Is Leader: (True|False) \| Role: ([A-Za-z0-9_]*)$/
       );
       if (!match) continue;
 
@@ -132,7 +132,9 @@ export default class SquadRcon extends Rcon {
         steamID: match[2],
         name: match[3],
         teamID: match[4],
-        squadID: match[5] !== 'N/A' ? match[5] : null
+        squadID: match[5] !== 'N/A' ? match[5] : null,
+        leader: match[6] === 'True',
+        role: match[7]
       });
     }
 
@@ -148,7 +150,7 @@ export default class SquadRcon extends Rcon {
 
     for (const line of responseSquad.split('\n')) {
       const match = line.match(
-        /ID: ([0-9]+) \| Name: (.+) \| Size: ([0-9]+) \| Locked: (True|False)/
+        /ID: ([0-9]+) \| Name: (.+) \| Size: ([0-9]+) \| Locked: (True|False) \| Creator Name: (.*) \| Creator Steam ID: ([0-9]{17})/
       );
       const matchSide = line.match(/Team ID: (1|2) \((.+)\)/);
       if (matchSide) {
@@ -161,6 +163,8 @@ export default class SquadRcon extends Rcon {
         squadName: match[2],
         size: match[3],
         locked: match[4],
+        creatorName: match[5],
+        creatorSteamId: match[6],
         teamID: teamID,
         teamName: teamName
       });
