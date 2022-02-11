@@ -359,6 +359,26 @@ export default class SquadServer extends EventEmitter {
             oldSquadID: oldPlayerInfo[player.steamID].squadID,
             newSquadID: player.squadID
           });
+        if (
+          player.leader !== oldPlayerInfo[player.steamID].leader &&
+          oldPlayerInfo[player.steamID].leader === true
+        )
+          this.emit('PLAYER_SQUADLEADER_LOST', {
+            player: player
+          });
+        if (
+          player.leader !== oldPlayerInfo[player.steamID].leader &&
+          oldPlayerInfo[player.steamID].leader === false
+        )
+          this.emit('PLAYER_SQUADLEADER_GAINED', {
+            player: player
+          });
+        if (player.kit !== oldPlayerInfo[player.steamID].kit)
+          this.emit('PLAYER_ROLE_CHANGED', {
+            player: player,
+            oldRole: oldPlayerInfo[player.steamID].role,
+            newRole: player.role
+          });
       }
 
       this.emit('UPDATED_PLAYER_INFORMATION');
