@@ -290,11 +290,10 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('SQUAD_CREATED', async (data) => {
-
-      data.player = await this.getPlayerBySteamID(data.playerSteamID, true)
-      delete data.playerName
-      delete data.playerSteamID
-      delete data.squadID
+      data.player = await this.getPlayerBySteamID(data.playerSteamID, true);
+      delete data.playerName;
+      delete data.playerSteamID;
+      delete data.squadID;
 
       this.emit('SQUAD_CREATED', data);
     });
@@ -373,7 +372,7 @@ export default class SquadServer extends EventEmitter {
           this.emit('PLAYER_SQUADLEADER_GAINED', {
             player: player
           });
-        if (player.kit !== oldPlayerInfo[player.steamID].kit)
+        if (player.role !== oldPlayerInfo[player.steamID].role)
           this.emit('PLAYER_ROLE_CHANGED', {
             player: player,
             oldRole: oldPlayerInfo[player.steamID].role,
