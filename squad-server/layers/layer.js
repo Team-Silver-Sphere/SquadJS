@@ -2,7 +2,7 @@ export default class Layer {
   constructor(data) {
     this.name = data.Name;
     this.classname = data.levelName;
-    this.layerid = data.rawName
+    this.layerid = data.rawName;
     this.map = {
       name: data.mapName
     };
@@ -30,10 +30,10 @@ export default class Layer {
           spawnDelay: vehicle.delay,
           respawnDelay: vehicle.respawnTime
         })),
-        numberOfTanks: data[t].vehicles.filter((v) => {
+        numberOfTanks: (data[t].vehicles || []).filter((v) => {
           return v.icon.match(/tank/);
         }).length,
-        numberOfHelicopters: data[t].vehicles.filter((v) => {
+        numberOfHelicopters: (data[t].vehicles || []).filter((v) => {
           return v.icon.match(/helo/);
         }).length
       });
