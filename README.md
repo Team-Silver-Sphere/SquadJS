@@ -4,15 +4,15 @@
 
 #### SquadJS
 
-[![GitHub release](https://img.shields.io/github/release/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/releases)
-[![GitHub contributors](https://img.shields.io/github/contributors/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors)
-[![GitHub release](https://img.shields.io/github/license/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/releases)
+[![GitHub contributors](https://img.shields.io/github/contributors/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/graphs/contributors)
+[![GitHub release](https://img.shields.io/github/license/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/blob/master/LICENSE)
 
 <br>
 
-[![GitHub issues](https://img.shields.io/github/issues/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/pulls)
-[![GitHub issues](https://img.shields.io/github/stars/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/pulls)
+[![GitHub issues](https://img.shields.io/github/stars/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/stargazers)
 [![Discord](https://img.shields.io/discord/266210223406972928.svg?style=flat-square&logo=discord)](https://discord.gg/9F2Ng5C)
 
 <br><br>
@@ -33,7 +33,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 * Some plugins may have additional requirements.
 
 #### Installation
-1. [Download SquadJS](https://github.com/Thomas-Smyth/SquadJS/releases/latest) and unzip the download.
+1. [Download SquadJS](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) and unzip the download.
 2. Open the unzipped folder in your terminal.
 3. Install the dependencies by running `yarn install` in your terminal. Due to the use of Yarn Workspaces it is important to use `yarn install` and **not** `npm install` as this will not work and will break stuff.
 4. Configure the `config.json` file. See below for more details.
@@ -355,7 +355,7 @@ Grafana:
 <ul><li> <a href="https://grafana.com/">Grafana</a> is a cool way of viewing server statistics stored in the database.</li>
 <li>Install Grafana.</li>
 <li>Add your database as a datasource named <code>SquadJS</code>.</li>
-<li>Import the <a href="https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/templates/SquadJS-Dashboard-v2.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>
+<li>Import the <a href="https://github.com/Team-Silver-Sphere/SquadJS/blob/master/squad-server/templates/SquadJS-Dashboard-v2.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>
 <li>Install any missing Grafana plugins.</li></ul></p>
           <h3>Options</h3>
           <ul><li><h4>database (Required)</h4>
@@ -946,7 +946,7 @@ Below is a list of scenarios we know may cause some information to be inaccurate
 * Duplicated Player Names - If two or more players have the same name or suffix name (see above) then SquadJS will be unable to identify them in the logs. When this occurs event logs will show the player as `null`. Be on the watch for groups of players who try to abuse this in order to TK or complete other malicious actions without being detected by SquadJS plugins.
 
 ## SquadJS API
-SquadJS pings the following data to the [SquadJS API](https://github.com/Thomas-Smyth/SquadJS-API/) at regular intervals to assist with its development:
+SquadJS pings the following data to the [SquadJS API](https://github.com/Team-Silver-Sphere/SquadJS-API/) at regular intervals to assist with its development:
 * Squad server IP, query port, name & player count (including queue size).
 * SquadJS version.
 * Log reader mode, i.e. `tail` or `ftp`.
@@ -958,8 +958,8 @@ Please note, plugin configurations do **not** and should **not** contain any sen
 
 ## Versions and Releases
 Whilst installing SquadJS you may do the following to obtain slightly different versions:
-* Download the [latest release](https://github.com/Thomas-Smyth/SquadJS/releases/latest) - To get the latest **stable** version of SquadJS.
-* Download/clone the [`master` branch](https://github.com/Thomas-Smyth/SquadJS/) - To get the most up to date version of SquadJS.
+* Download the [latest release](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) - To get the latest **stable** version of SquadJS.
+* Download/clone the [`master` branch](https://github.com/Team-Silver-Sphere/SquadJS/) - To get the most up to date version of SquadJS.
 
 All changes proposed to SquadJS will be merged into the `master` branch prior to being released in the next stable version to allow for a period of larger-scale testing to occur. Therefore, we only recommend individuals who are willing to update regularly and partake in testing/bug reporting use the `master` branch. Please note, updates to the `master` branch will not be advertised in the SquadJS startup information, however, notifications of merged pull requests into the `master` branch may be found in our [Discord](https://discord.gg/9F2Ng5C). Once the `master` branch is deemed stable a release will be published and advertised via the SquadJS startup information and our [Discord](https://discord.gg/9F2Ng5C).
 
@@ -976,7 +976,7 @@ The above policy was written and put into effect after the release of SquadJS v2
 
 ## Credits
 SquadJS would not be possible without the support of so many individuals and organisations. Our thanks goes out to:
-* [SquadJS's contributors](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors).
+* [SquadJS's contributors](https://github.com/Team-Silver-Sphere/SquadJS/graphs/contributors).
 * [Thomas Smyth's GitHub sponsors](https://github.com/sponsors/Thomas-Smyth).
 * subtlerod for proposing the initial log parsing idea, helping to design the log parsing process and for providing multiple servers to test with.
 * Shanomac99 and the rest of the Squad Wiki team for providing us with [layer information](https://github.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data).
