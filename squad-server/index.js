@@ -120,7 +120,11 @@ export default class SquadServer extends EventEmitter {
 
     this.rcon.on('UNPOSSESSED_ADMIN_CAMERA', async (data) => {
       data.player = await this.getPlayerBySteamID(data.steamID);
-      data.duration = data.time.getTime() - this.adminsInAdminCam[data.steamID].getTime();
+      if (this.adminsInAdminCam[data.steamID]) {
+        data.duration = data.time.getTime() - this.adminsInAdminCam[data.steamID].getTime();
+      } else {
+        data.duration = 0;
+      }
 
       delete this.adminsInAdminCam[data.steamID];
 
@@ -290,11 +294,10 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('SQUAD_CREATED', async (data) => {
-
-      data.player = await this.getPlayerBySteamID(data.playerSteamID, true)
-      delete data.playerName
-      delete data.playerSteamID
-      delete data.squadID
+      data.player = await this.getPlayerBySteamID(data.playerSteamID, true);
+      delete data.playerName;
+      delete data.playerSteamID;
+      delete data.squadID;
 
       this.emit('SQUAD_CREATED', data);
     });
