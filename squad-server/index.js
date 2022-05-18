@@ -194,6 +194,7 @@ export default class SquadServer extends EventEmitter {
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
 
       this.currentLayer = data.layer;
+      await this.updateAdmins();
       this.emit('NEW_GAME', data);
     });
 
@@ -325,6 +326,10 @@ export default class SquadServer extends EventEmitter {
       if (perm in perms) ret.push(steamID);
     }
     return ret;
+  }
+
+  async updateAdmins() {
+    this.admins = await fetchAdminLists(this.options.adminLists);
   }
 
   async updatePlayerList() {
