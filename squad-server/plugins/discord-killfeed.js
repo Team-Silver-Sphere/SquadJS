@@ -68,14 +68,12 @@ export default class DiscordKillFeed extends DiscordBasePlugin {
       },
       {
         name: "Victim's Name",
-        value: info.victim ? info.victim.name : 'Unknown',
+        value: info.victim.name,
         inline: true
       },
       {
         name: "Victim's SteamID",
-        value: info.victim
-          ? `[${info.victim.steamID}](https://steamcommunity.com/profiles/${info.victim.steamID})`
-          : 'Unknown',
+        value: `[${info.victim.steamID}](https://steamcommunity.com/profiles/${info.victim.steamID})`,
         inline: true
       }
     ];
