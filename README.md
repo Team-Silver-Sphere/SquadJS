@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="assets/squadjs-logo-white.png#gh-dark-mode-only" alt="Logo" width="500"/>
+<img src="assets/squadjs-logo-white.png#gh-dark-mode-only" alt="Logo" width="500"/>
 <img src="assets/squadjs-logo.png#gh-light-mode-only" alt="Logo" width="500"/>
 
 #### SquadJS
