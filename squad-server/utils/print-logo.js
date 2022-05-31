@@ -21,7 +21,7 @@ function versionOutOfDate(current, latest) {
 
 export default async function () {
   const { data } = await axios.get(
-    `https://cdn.jsdelivr.net/gh/Thomas-Smyth/SquadJS@master/package.json`
+    `https://cdn.jsdelivr.net/gh/Team-Silver-Sphere/SquadJS@master/package.json`
   );
   const outdated = versionOutOfDate(SQUADJS_VERSION, data.version);
 
@@ -36,7 +36,7 @@ export default async function () {
                                      \x1b[33m_/ |\x1b[0m    
                                     \x1b[33m|__/\x1b[0m     
 ${COPYRIGHT_MESSAGE}
-GitHub: https://github.com/Thomas-Smyth/SquadJS
+GitHub: https://github.com/Team-Silver-Sphere/SquadJS
 
 Latest Version: ${outdated ? '\x1b[31m' : '\x1b[32m'}${
       data.version

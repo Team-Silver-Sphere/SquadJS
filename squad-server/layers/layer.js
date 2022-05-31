@@ -30,10 +30,10 @@ export default class Layer {
           spawnDelay: vehicle.delay,
           respawnDelay: vehicle.respawnTime
         })),
-        numberOfTanks: data[t].vehicles.filter((v) => {
+        numberOfTanks: (data[t].vehicles || []).filter((v) => {
           return v.icon.match(/tank/);
         }).length,
-        numberOfHelicopters: data[t].vehicles.filter((v) => {
+        numberOfHelicopters: (data[t].vehicles || []).filter((v) => {
           return v.icon.match(/helo/);
         }).length
       });
