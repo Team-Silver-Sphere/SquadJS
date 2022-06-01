@@ -12,4 +12,3 @@ yarn.lock
 # IDEs
 .idea/
 .vs/
-.husky/
