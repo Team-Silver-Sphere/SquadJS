@@ -828,6 +828,43 @@ Grafana:
         </details>
 
 <details>
+          <summary>MapVote</summary>
+          <h2>MapVote</h2>
+          <p>The <code>MapVote</code> plugin allows to start mapvotes to choose next layer</p>
+          <h3>Options</h3>
+          <ul><li><h4>voteDurationSeconds</h4>
+           <h6>Description</h6>
+           <p>Map vote duration in seconds</p>
+           <h6>Default</h6>
+           <pre><code>300</code></pre></li>
+<li><h4>minimumVotes</h4>
+           <h6>Description</h6>
+           <p>Minimum number of votes for a map to win</p>
+           <h6>Default</h6>
+           <pre><code>1</code></pre></li>
+<li><h4>autoStartMapVoteSeconds</h4>
+           <h6>Description</h6>
+           <p>Number of seconds after round is started to begin auto map vote</p>
+           <h6>Default</h6>
+           <pre><code>300</code></pre></li>
+<li><h4>autoRepeatVoteBroadcastSeconds</h4>
+           <h6>Description</h6>
+           <p>If mapvote is running, will repeat mapvote broadcast automatically each X seconds until finished</p>
+           <h6>Default</h6>
+           <pre><code>60</code></pre></li>
+<li><h4>layersHistorySize</h4>
+           <h6>Description</h6>
+           <p>Ensure X last vote winners are not used in map votes</p>
+           <h6>Default</h6>
+           <pre><code>3</code></pre></li>
+<li><h4>layers (Required)</h4>
+           <h6>Description</h6>
+           <p>Layer names to include in map rotation</p>
+           <h6>Default</h6>
+           <pre><code>undefined</code></pre></li></ul>
+        </details>
+
+<details>
           <summary>SCBLInfo</summary>
           <h2>SCBLInfo</h2>
           <p>The <code>SCBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based on data from the <a href="https://squad-community-ban-list.com/">Squad Community Ban List</a>.</p>
