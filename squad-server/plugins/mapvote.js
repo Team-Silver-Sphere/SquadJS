@@ -156,7 +156,7 @@ export default class MapVote extends BasePlugin {
     if (this.autoRepeatBroadcastTimeout) clearTimeout(this.autoRepeatBroadcastTimeout);
     if (!this.mapVote) return;
 
-    const sortedResults = this.calculateResults();
+    const sortedResults = await this.calculateResults();
 
     if (sortedResults[0].votes >= this.options.minimumVotes) {
       this.mapVote.result = sortedResults[0].layer;
