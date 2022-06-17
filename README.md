@@ -844,9 +844,9 @@ Grafana:
            <pre><code>1</code></pre></li>
 <li><h4>autoStartMapVoteSeconds</h4>
            <h6>Description</h6>
-           <p>Number of seconds after round is started to begin auto map vote</p>
+           <p>Number of seconds after round is started to begin auto map vote, 0 to disable auto mapvote start</p>
            <h6>Default</h6>
-           <pre><code>300</code></pre></li>
+           <pre><code>0</code></pre></li>
 <li><h4>autoRepeatVoteBroadcastSeconds</h4>
            <h6>Description</h6>
            <p>If mapvote is running, will repeat mapvote broadcast automatically each X seconds until finished</p>

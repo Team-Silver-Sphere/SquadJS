@@ -35,8 +35,9 @@ export default class MapVote extends BasePlugin {
       },
       autoStartMapVoteSeconds: {
         required: false,
-        default: 300,
-        description: 'Number of seconds after round is started to begin auto map vote'
+        default: 0,
+        description:
+          'Number of seconds after round is started to begin auto map vote, 0 to disable auto mapvote start'
       },
       autoRepeatVoteBroadcastSeconds: {
         required: false,
@@ -467,13 +468,15 @@ export default class MapVote extends BasePlugin {
     this.mapVoteTimeout = null;
     this.autoRepeatBroadcastTimeout = null;
     this.mapVote = null;
-    Logger.verbose(
-      'MapVote',
-      1,
-      `New game started, registering automatic map vote in ${this.options.autoStartMapVoteSeconds} seconds`
-    );
-    this.autoStartMapVoteTimeout = setTimeout(() => {
-      this.initMapVote(null);
-    }, this.options.autoStartMapVoteSeconds * 1000);
+    if (this.options.autoStartMapVoteSeconds > 0) {
+      Logger.verbose(
+        'MapVote',
+        1,
+        `New game started, registering automatic map vote in ${this.options.autoStartMapVoteSeconds} seconds`
+      );
+      this.autoStartMapVoteTimeout = setTimeout(() => {
+        this.initMapVote(null);
+      }, this.options.autoStartMapVoteSeconds * 1000);
+    }
   }
 }

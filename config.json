@@ -207,7 +207,7 @@
       "enabled": false,
       "voteDurationSeconds": 300,
       "minimumVotes": 1,
-      "autoStartMapVoteSeconds": 300,
+      "autoStartMapVoteSeconds": 0,
       "autoRepeatVoteBroadcastSeconds": 60,
       "layersHistorySize": 3,
       "layers": [
