@@ -329,6 +329,29 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
         </details>
 
 <details>
+          <summary>CBLInfo</summary>
+          <h2>CBLInfo</h2>
+          <p>The <code>CBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based on data from the <a href="https://communitybanlist.com/">Community Ban List</a>.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to alert admins through.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>threshold</h4>
+           <h6>Description</h6>
+           <p>Admins will be alerted when a player has this or more reputation points. For more information on reputation points, see the <a href="https://communitybanlist.com/faq">Community Ban List's FAQ</a></p>
+           <h6>Default</h6>
+           <pre><code>6</code></pre></li></ul>
+        </details>
+
+<details>
           <summary>ChatCommands</summary>
           <h2>ChatCommands</h2>
           <p>The <code>ChatCommands</code> plugin can be configured to make chat commands that broadcast or warn the caller with present messages.</p>
@@ -592,9 +615,9 @@ Grafana:
            <p>The color of the embeds.</p>
            <h6>Default</h6>
            <pre><code>16761867</code></pre></li>
-<li><h4>disableSCBL</h4>
+<li><h4>disableCBL</h4>
            <h6>Description</h6>
-           <p>Disable Squad Community Ban List information.</p>
+           <p>Disable Community Ban List information.</p>
            <h6>Default</h6>
            <pre><code>false</code></pre></li></ul>
         </details>
@@ -783,9 +806,9 @@ Grafana:
            <p>The color of the embeds.</p>
            <h6>Default</h6>
            <pre><code>16761867</code></pre></li>
-<li><h4>disableSCBL</h4>
+<li><h4>disableCBL</h4>
            <h6>Description</h6>
-           <p>Disable Squad Community Ban List information.</p>
+           <p>Disable Community Ban List information.</p>
            <h6>Default</h6>
            <pre><code>false</code></pre></li></ul>
         </details>
@@ -825,29 +848,6 @@ Grafana:
            <p>Frequency of the broadcasts in milliseconds.</p>
            <h6>Default</h6>
            <pre><code>300000</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>SCBLInfo</summary>
-          <h2>SCBLInfo</h2>
-          <p>The <code>SCBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based on data from the <a href="https://squad-community-ban-list.com/">Squad Community Ban List</a>.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to alert admins through.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>threshold</h4>
-           <h6>Description</h6>
-           <p>Admins will be alerted when a player has this or more reputation points. For more information on reputation points, see the <a href="https://squad-community-ban-list.com/faq">Squad Community Ban List's FAQ</a></p>
-           <h6>Default</h6>
-           <pre><code>6</code></pre></li></ul>
         </details>
 
 <details>
