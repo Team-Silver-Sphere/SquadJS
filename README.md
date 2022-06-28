@@ -851,29 +851,6 @@ Grafana:
         </details>
 
 <details>
-          <summary>SCBLInfo</summary>
-          <h2>SCBLInfo</h2>
-          <p>The <code>SCBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based on data from the <a href="https://squad-community-ban-list.com/">Squad Community Ban List</a>.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to alert admins through.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>threshold</h4>
-           <h6>Description</h6>
-           <p>Admins will be alerted when a player has this or more reputation points. For more information on reputation points, see the <a href="https://squad-community-ban-list.com/faq">Squad Community Ban List's FAQ</a></p>
-           <h6>Default</h6>
-           <pre><code>6</code></pre></li></ul>
-        </details>
-
-<details>
           <summary>SeedingMode</summary>
           <h2>SeedingMode</h2>
           <p>The <code>SeedingMode</code> plugin broadcasts seeding rule messages to players at regular intervals when the server is below a specified player count. It can also be configured to display "Live" messages when the server goes live.</p>
