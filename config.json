@@ -58,6 +58,13 @@
       "message": "Please apologise for ALL TKs in ALL chat!"
     },
     {
+      "plugin": "CBLInfo",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "threshold": 6
+    },
+    {
       "plugin": "ChatCommands",
       "enabled": true,
       "commands": [
@@ -134,7 +141,7 @@
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867,
-      "disableSCBL": false
+      "disableCBL": false
     },
     {
       "plugin": "DiscordPlaceholder",
@@ -188,7 +195,7 @@
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867,
-      "disableSCBL": false
+      "disableCBL": false
     },
     {
       "plugin": "FogOfWar",
