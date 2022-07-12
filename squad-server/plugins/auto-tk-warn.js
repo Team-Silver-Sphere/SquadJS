@@ -19,7 +19,7 @@ export default class AutoTKWarn extends BasePlugin {
       victimMessage: {
         required: false,
         description: 'The message that will be sent to the victim.',
-        default: 'You were killed by your own team.'
+        default: null // 'You were killed by your own team.'
       }
     };
   }
