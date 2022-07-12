@@ -16,11 +16,6 @@ export default class AutoTKWarn extends BasePlugin {
         description: 'The message to warn attacking players with.',
         default: 'Please apologise for ALL TKs in ALL chat!'
       },
-      warnVictim: {
-        required: false,
-        description: 'Should we nottify the the victim, telling them that they were teamkilled via a warning message',
-        default: false
-      },
       victimMessage: {
         required: false,
         description: 'The message that will be sent to the victim',
@@ -44,11 +39,11 @@ export default class AutoTKWarn extends BasePlugin {
   }
 
   async onTeamkill(info) {
-    if (info.attacker) {
-      this.server.rcon.warn(info.attacker.steamID, this.options.attackerMessage);
+    if (info.attacker && this.options.attackerMessage) {
+      await this.server.rcon.warn(info.attacker.steamID, this.options.attackerMessage);
     }
-    if (this.options.warnVictim && info.victim) {
-      this.server.rcon.warn(info.victim.steamID, this.options.victimMessage);
+    if (info.victim && this.options.victimMessage) {
+      await this.server.rcon.warn(info.victim.steamID, this.options.victimMessage);
     }
   }
 }
