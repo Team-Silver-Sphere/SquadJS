@@ -317,15 +317,27 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
         </details>
 
 <details>
-          <summary>AutoTKWarn</summary>
-          <h2>AutoTKWarn</h2>
-          <p>The <code>AutoTkWarn</code> plugin will automatically warn players with a message when they teamkill.</p>
+          <summary>AutoTKWarnAttacker</summary>
+          <h2>AutoTKWarnAttacker</h2>
+          <p>The <code>AutoTkWarnAttacker</code> plugin will automatically warn players with a message when they teamkill.</p>
           <h3>Options</h3>
           <ul><li><h4>message</h4>
            <h6>Description</h6>
            <p>The message to warn players with.</p>
            <h6>Default</h6>
            <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>AutoTKWarnVictim</summary>
+          <h2>AutoTKWarnVictim</h2>
+          <p>The <code>AutoTkWarnVictim</code> plugin will automatically warn players with a message when they are teamkilled.</p>
+          <h3>Options</h3>
+          <ul><li><h4>message</h4>
+           <h6>Description</h6>
+           <p>The message to warn teamkill victims with.</p>
+           <h6>Default</h6>
+           <pre><code>INFO: You were Teamkilled.</code></pre></li></ul>
         </details>
 
 <details>

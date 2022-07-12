@@ -53,9 +53,14 @@
       "ignoreWhitelist": false
     },
     {
-      "plugin": "AutoTKWarn",
+      "plugin": "AutoTKWarnAttacker",
       "enabled": true,
       "message": "Please apologise for ALL TKs in ALL chat!"
+    },
+    {
+      "plugin": "AutoTKWarnVictim",
+      "enabled": false,
+      "message": "INFO: You were Teamkilled."
     },
     {
       "plugin": "CBLInfo",
