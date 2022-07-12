@@ -20,7 +20,6 @@
   },
   "type": "module",
   "dependencies": {
-    "config": "^3.3.7",
     "squad-server": "1.0.0"
   },
   "devDependencies": {
