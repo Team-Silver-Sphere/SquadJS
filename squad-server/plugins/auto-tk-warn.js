@@ -47,7 +47,7 @@ export default class AutoTKWarn extends BasePlugin {
     if (info.attacker) {
       this.server.rcon.warn(info.attacker.steamID, this.options.attacker_message);
     }
-    if (this.options.warn_victe && info.victim) {
+    if (this.options.warn_victim && info.victim) {
       this.server.rcon.warn(info.victim.steamID, this.options.victim_message);
     }
   }
