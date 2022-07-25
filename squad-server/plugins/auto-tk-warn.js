@@ -11,10 +11,15 @@ export default class AutoTKWarn extends BasePlugin {
 
   static get optionsSpecification() {
     return {
-      message: {
+      attackerMessage: {
         required: false,
-        description: 'The message to warn players with.',
+        description: 'The message to warn attacking players with.',
         default: 'Please apologise for ALL TKs in ALL chat!'
+      },
+      victimMessage: {
+        required: false,
+        description: 'The message that will be sent to the victim.',
+        default: null // 'You were killed by your own team.'
       }
     };
   }
@@ -34,8 +39,11 @@ export default class AutoTKWarn extends BasePlugin {
   }
 
   async onTeamkill(info) {
-    if (!info.attacker) return;
-
-    await this.server.rcon.warn(info.attacker.steamID, this.options.message);
+    if (info.attacker && this.options.attackerMessage) {
+      this.server.rcon.warn(info.attacker.steamID, this.options.attackerMessage);
+    }
+    if (info.victim && this.options.victimMessage) {
+      this.server.rcon.warn(info.victim.steamID, this.options.victimMessage);
+    }
   }
 }
