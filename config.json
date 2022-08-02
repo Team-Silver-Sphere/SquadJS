@@ -55,7 +55,8 @@
     {
       "plugin": "AutoTKWarn",
       "enabled": true,
-      "message": "Please apologise for ALL TKs in ALL chat!"
+      "attackerMessage": "Please apologise for ALL TKs in ALL chat!",
+      "victimMessage": null
     },
     {
       "plugin": "CBLInfo",
