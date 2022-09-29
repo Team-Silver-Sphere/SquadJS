@@ -59,12 +59,12 @@ export default class DiscordRoundEnded extends DiscordBasePlugin {
         color: this.options.color,
         fields: [
           {
-            name: 'Winner',
-            value: `${info.winner.subfaction} : ${info.winner.faction} won with ${info.winner.tickets}.`
+            name: `Team ${info.winner.team} Won`,
+            value: `${info.winner.subfaction}\n ${info.winner.faction}\n won with ${info.winner.tickets} tickets.`
           },
           {
-            name: 'Loser',
-            value: `${info.loser.subfaction} : ${info.loser.faction} lost with ${info.loser.tickets}.`
+            name: `Team ${info.loser.team} Lost`,
+            value: `${info.loser.subfaction}\n ${info.loser.faction}\n lost with ${info.loser.tickets} tickets.`
           },
           {
             name: 'Ticket Difference',
