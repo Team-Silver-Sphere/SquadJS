@@ -11,7 +11,8 @@ export default {
   onMatch: (args, logParser) => {
     const data = {
       winner: logParser.eventStore.ROUND_WINNER ? logParser.eventStore.ROUND_WINNER : null,
-      loser: logParser.eventStore.ROUND_LOSER ? logParser.eventStore.ROUND_LOSER : null
+      loser: logParser.eventStore.ROUND_LOSER ? logParser.eventStore.ROUND_LOSER : null,
+      time: args[1]
     };
     logParser.emit('ROUND_ENDED', data);
     delete logParser.eventStore.ROUND_WINNER;
