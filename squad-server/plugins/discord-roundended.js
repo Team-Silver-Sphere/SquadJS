@@ -29,11 +29,11 @@ export default class DiscordRoundEnded extends DiscordBasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
 
-    this.onNewGame = this.onNewGame.bind(this);
+    this.onRoundEnd = this.onRoundEnd.bind(this);
   }
 
   async mount() {
-    this.server.on('ROUND_ENDED', this.onNewGame);
+    this.server.on('ROUND_ENDED', this.onRoundEnd);
   }
 
   async unmount() {
