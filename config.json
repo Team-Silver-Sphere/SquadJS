@@ -167,6 +167,13 @@
       "color": 16761867
     },
     {
+      "plugin": "DiscordRoundEnded",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
       "plugin": "DiscordServerStatus",
       "enabled": true,
       "discordClient": "discord",
