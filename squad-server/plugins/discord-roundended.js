@@ -50,6 +50,7 @@ export default class DiscordRoundEnded extends DiscordBasePlugin {
           timestamp: info.time.toISOString()
         }
       });
+      return;
     }
 
     await this.sendDiscordMessage({
