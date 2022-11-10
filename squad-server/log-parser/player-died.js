@@ -3,7 +3,7 @@ export default {
     /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQSoldier::)?Die\(\): Player:(.+) KillingDamage=(?:-)*([0-9.]+) from ([A-z_0-9]+) caused by ([A-z_0-9]+)_C/,
   onMatch: (args, logParser) => {
     const data = {
-      ...logParser.eventStore[args[3]],
+      ...logParser.eventStore.session[args[3]],
       raw: args[0],
       time: args[1],
       woundTime: args[1],
@@ -14,7 +14,7 @@ export default {
       weapon: args[6]
     };
 
-    logParser.eventStore[args[3]] = data;
+    logParser.eventStore.session[args[3]] = data;
 
     logParser.emit('PLAYER_DIED', data);
   }

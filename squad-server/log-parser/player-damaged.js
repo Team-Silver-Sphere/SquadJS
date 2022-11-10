@@ -12,7 +12,7 @@ export default {
       weapon: args[6]
     };
 
-    logParser.eventStore[args[3]] = data;
+    logParser.eventStore.session[args[3]] = data;
 
     logParser.emit('PLAYER_DAMAGED', data);
   }
