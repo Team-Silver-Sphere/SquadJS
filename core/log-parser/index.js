@@ -76,7 +76,7 @@ export default class LogParser extends EventEmitter {
         delete this.eventStore.disconnected[player.steamID];
       }
     }
-    this.eventStore.matchData = {};
+    this.eventStore.session = {};
   }
 
   getRules() {
