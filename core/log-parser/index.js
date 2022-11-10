@@ -14,7 +14,12 @@ export default class LogParser extends EventEmitter {
 
     options.filename = filename;
 
-    this.eventStore = {};
+    this.eventStore = {
+      disconnected: {}, // holding area, cleared on map change.
+      players: {}, // persistent data, steamid, controller, suffix.
+      session: {}, // old eventstore, nonpersistent data
+      clients: {} // used in the connection chain before we resolve a player.
+    };
 
     this.linesPerMinute = 0;
     this.matchingLinesPerMinute = 0;
@@ -59,6 +64,19 @@ export default class LogParser extends EventEmitter {
     }
 
     this.linesPerMinute++;
+  }
+
+  // manage cleanup disconnected players, session data.
+  clearEventStore() {
+    Logger.verbose('LogParser', 2, 'Cleaning Eventstore');
+    for (const player of Object.values(this.eventStore.players)) {
+      if (this.eventStore.disconnected[player.steamID] === true) {
+        Logger.verbose('LogParser', 2, `Removing ${player.steamID} from eventStore`);
+        delete this.eventStore.players[player.steamID];
+        delete this.eventStore.disconnected[player.steamID];
+      }
+    }
+    this.eventStore.matchData = {};
   }
 
   getRules() {
