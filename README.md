@@ -1,18 +1,19 @@
 <div align="center">
 
-<img src="assets/squadjs-logo.png" alt="Logo" width="500"/>
+<img src="assets/squadjs-logo-white.png#gh-dark-mode-only" alt="Logo" width="500"/>
+<img src="assets/squadjs-logo.png#gh-light-mode-only" alt="Logo" width="500"/>
 
 #### SquadJS
 
-[![GitHub release](https://img.shields.io/github/release/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/releases)
-[![GitHub contributors](https://img.shields.io/github/contributors/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors)
-[![GitHub release](https://img.shields.io/github/license/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/Team-Silver-Sphere/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/releases)
+[![GitHub contributors](https://img.shields.io/github/contributors/Team-Silver-Sphere/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/graphs/contributors)
+[![GitHub release](https://img.shields.io/github/license/Team-Silver-Sphere/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/blob/master/LICENSE)
 
 <br>
 
-[![GitHub issues](https://img.shields.io/github/issues/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/pulls)
-[![GitHub issues](https://img.shields.io/github/stars/Thomas-Smyth/SquadJS.svg?style=flat-square)](https://github.com/Thomas-Smyth/SquadJS/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/Team-Silver-Sphere/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/Team-Silver-Sphere/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/pulls)
+[![GitHub issues](https://img.shields.io/github/stars/Team-Silver-Sphere/SquadJS.svg?style=flat-square)](https://github.com/Team-Silver-Sphere/SquadJS/stargazers)
 [![Discord](https://img.shields.io/discord/266210223406972928.svg?style=flat-square&logo=discord)](https://discord.gg/9F2Ng5C)
 
 <br><br>
@@ -33,7 +34,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 * Some plugins may have additional requirements.
 
 #### Installation
-1. [Download SquadJS](https://github.com/Thomas-Smyth/SquadJS/releases/latest) and unzip the download.
+1. [Download SquadJS](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) and unzip the download.
 2. Open the unzipped folder in your terminal.
 3. Install the dependencies by running `yarn install` in your terminal. Due to the use of Yarn Workspaces it is important to use `yarn install` and **not** `npm install` as this will not work and will break stuff.
 4. Configure the `config.json` file. See below for more details.
@@ -112,74 +113,6 @@ Connectors allow SquadJS to communicate with external resources.
 Connectors should be named, for example the above is named `discord`, and should have the associated config against it. Configs can be specified by name in plugin options. Should a connector not be needed by any plugin then the default values can be left or you can remove it from your config file.
 
 See below for more details on connectors and their associated config.
-
-##### Squad Layer Filter
-Connects to a filtered list of Squad layers and filters them either by an "initial filter" or an "active filter" that depends on current server information, e.g. player count.
-  ```js
-  "layerFilter": {
-    "type": "buildPoolFromFilter",
-    "filter": {
-      "whitelistedLayers": null,
-      "blacklistedLayers": null,
-      "whitelistedMaps": null,
-      "blacklistedMaps": null,
-      "whitelistedGamemodes": null,
-      "blacklistedGamemodes": [
-        "Training"
-      ],
-      "flagCountMin": null,
-      "flagCountMax": null,
-      "hasCommander": null,
-      "hasTanks": null,
-      "hasHelicopters": null
-    },
-    "activeLayerFilter": {
-      "historyResetTime": 18000000,
-      "layerHistoryTolerance": 8,
-      "mapHistoryTolerance": 4,
-      "gamemodeHistoryTolerance": {
-        "Invasion": 4
-      },
-      "gamemodeRepetitiveTolerance": {
-        "Invasion": 4
-      },
-      "playerCountComplianceEnabled": true,
-      "factionComplianceEnabled": true,
-      "factionHistoryTolerance": {
-        "RUS": 4
-      },
-      "factionRepetitiveTolerance": {
-        "RUS": 4
-      }
-    }
-  },
-  ```
-* `type` - The type of filter builder to use. `filter` will depend on this type.
-    - `buildPoolFromFilter` - Builds the Squad layers list from a list of filters. An example `filter` with default values for this type is show above.
-        - `whitelistedLayers` - List of layers to consider.
-        - `blacklistLayers` -  List of layers to not consider.
-        - `whitelistedMaps` - List of maps to consider.
-        - `blacklistedMaps` - List of maps to not consider.
-        - `whitelistedGamemodes` - List of gamemodes to consider.
-        - `blacklistedGamemodes` - List of gamemodes to not consider.
-        - `flagCountMin` - Minimum number of flags the layer may have.
-        - `flagCountMax` - Maximum number of flags the layer may have.
-        - `hasCommander` - Layer must/most not have a commander. `null` for either.
-        - `hasTanks` - Layer must/most not have a tanks. `null` for either.
-        - `hasHelicopters` - Layer must/most not have a helicopters. `null` for either.
-    - `buildPoolFromFile` - Builds the Squad layers list from a Squad layer config file. `filter` should be the filename of the config file.
-    - `buildPoolFromLayerNames` - Builds the Squad layers list from a list of layers. `filter` should be a list of layers, e.g. `"filter": ["Sumari AAS v1", "Fool's Road AAS v1"]`.
-* `filter` - Described above.
-* `activeLayerFilter` - Filters layers live as server information updates, e.g. if the player count exceeds a certain amount a layer may no longer be in the filter.
-    - `historyResetTime` - After this number of milliseconds the layer history is no longer considered.
-    - `layerHistoryTolerance` - A layer can only be played again after this number of layers.
-    - `mapHistoryTolerance` - A map can only be played again after this number of layers.
-    - `gamemodeHistoryTolerance` - A gamemode can only be played again after this number of layers. Gamemodes can be specified individually inside the object. If they are not listed then the filter is not applied.
-    - `gamemodeRepetitiveTolerance` - A gamemode can only be played this number of times in a row. Gamemodes can be specified individually inside the object. If they are not listed then the filter is not applied.
-    - `playerCountComplianceEnabled` - Filter layers by player count.
-    - `factionComplianceEnabled` - Filter layers so that a team cannot play the same faction twice in a row.
-    - `factionHistoryTolerance` - A faction can only be played again after this number of layers. Factions can be specified individually inside the object. If they are not listed then the filter is not applied.
-    - `factionRepetitiveTolerance` - A faction can only be played this number of times in a row. Factions can be specified individually inside the object. If they are not listed then the filter is not applied.
 
 ##### Discord
 Connects to Discord via `discord.js`.
@@ -320,11 +253,39 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
           <h2>AutoTKWarn</h2>
           <p>The <code>AutoTkWarn</code> plugin will automatically warn players with a message when they teamkill.</p>
           <h3>Options</h3>
-          <ul><li><h4>message</h4>
+          <ul><li><h4>attackerMessage</h4>
            <h6>Description</h6>
-           <p>The message to warn players with.</p>
+           <p>The message to warn attacking players with.</p>
            <h6>Default</h6>
-           <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre></li></ul>
+           <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre></li>
+<li><h4>victimMessage</h4>
+           <h6>Description</h6>
+           <p>The message that will be sent to the victim.</p>
+           <h6>Default</h6>
+           <pre><code>null</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>CBLInfo</summary>
+          <h2>CBLInfo</h2>
+          <p>The <code>CBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based on data from the <a href="https://communitybanlist.com/">Community Ban List</a>.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to alert admins through.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>threshold</h4>
+           <h6>Description</h6>
+           <p>Admins will be alerted when a player has this or more reputation points. For more information on reputation points, see the <a href="https://communitybanlist.com/faq">Community Ban List's FAQ</a></p>
+           <h6>Default</h6>
+           <pre><code>6</code></pre></li></ul>
         </details>
 
 <details>
@@ -355,7 +316,7 @@ Grafana:
 <ul><li> <a href="https://grafana.com/">Grafana</a> is a cool way of viewing server statistics stored in the database.</li>
 <li>Install Grafana.</li>
 <li>Add your database as a datasource named <code>SquadJS</code>.</li>
-<li>Import the <a href="https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/templates/SquadJS-Dashboard-v2.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>
+<li>Import the <a href="https://github.com/Team-Silver-Sphere/SquadJS/blob/master/squad-server/templates/SquadJS-Dashboard-v2.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>
 <li>Install any missing Grafana plugins.</li></ul></p>
           <h3>Options</h3>
           <ul><li><h4>database (Required)</h4>
@@ -591,9 +552,9 @@ Grafana:
            <p>The color of the embeds.</p>
            <h6>Default</h6>
            <pre><code>16761867</code></pre></li>
-<li><h4>disableSCBL</h4>
+<li><h4>disableCBL</h4>
            <h6>Description</h6>
-           <p>Disable Squad Community Ban List information.</p>
+           <p>Disable Community Ban List information.</p>
            <h6>Default</h6>
            <pre><code>false</code></pre></li></ul>
         </details>
@@ -782,9 +743,9 @@ Grafana:
            <p>The color of the embeds.</p>
            <h6>Default</h6>
            <pre><code>16761867</code></pre></li>
-<li><h4>disableSCBL</h4>
+<li><h4>disableCBL</h4>
            <h6>Description</h6>
-           <p>Disable Squad Community Ban List information.</p>
+           <p>Disable Community Ban List information.</p>
            <h6>Default</h6>
            <pre><code>false</code></pre></li></ul>
         </details>
@@ -824,29 +785,6 @@ Grafana:
            <p>Frequency of the broadcasts in milliseconds.</p>
            <h6>Default</h6>
            <pre><code>300000</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>SCBLInfo</summary>
-          <h2>SCBLInfo</h2>
-          <p>The <code>SCBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based on data from the <a href="https://squad-community-ban-list.com/">Squad Community Ban List</a>.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to alert admins through.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>threshold</h4>
-           <h6>Description</h6>
-           <p>Admins will be alerted when a player has this or more reputation points. For more information on reputation points, see the <a href="https://squad-community-ban-list.com/faq">Squad Community Ban List's FAQ</a></p>
-           <h6>Default</h6>
-           <pre><code>6</code></pre></li></ul>
         </details>
 
 <details>
@@ -946,7 +884,7 @@ Below is a list of scenarios we know may cause some information to be inaccurate
 * Duplicated Player Names - If two or more players have the same name or suffix name (see above) then SquadJS will be unable to identify them in the logs. When this occurs event logs will show the player as `null`. Be on the watch for groups of players who try to abuse this in order to TK or complete other malicious actions without being detected by SquadJS plugins.
 
 ## SquadJS API
-SquadJS pings the following data to the [SquadJS API](https://github.com/Thomas-Smyth/SquadJS-API/) at regular intervals to assist with its development:
+SquadJS pings the following data to the [SquadJS API](https://github.com/Team-Silver-Sphere/SquadJS-API/) at regular intervals to assist with its development:
 * Squad server IP, query port, name & player count (including queue size).
 * SquadJS version.
 * Log reader mode, i.e. `tail` or `ftp`.
@@ -958,8 +896,8 @@ Please note, plugin configurations do **not** and should **not** contain any sen
 
 ## Versions and Releases
 Whilst installing SquadJS you may do the following to obtain slightly different versions:
-* Download the [latest release](https://github.com/Thomas-Smyth/SquadJS/releases/latest) - To get the latest **stable** version of SquadJS.
-* Download/clone the [`master` branch](https://github.com/Thomas-Smyth/SquadJS/) - To get the most up to date version of SquadJS.
+* Download the [latest release](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) - To get the latest **stable** version of SquadJS.
+* Download/clone the [`master` branch](https://github.com/Team-Silver-Sphere/SquadJS/) - To get the most up to date version of SquadJS.
 
 All changes proposed to SquadJS will be merged into the `master` branch prior to being released in the next stable version to allow for a period of larger-scale testing to occur. Therefore, we only recommend individuals who are willing to update regularly and partake in testing/bug reporting use the `master` branch. Please note, updates to the `master` branch will not be advertised in the SquadJS startup information, however, notifications of merged pull requests into the `master` branch may be found in our [Discord](https://discord.gg/9F2Ng5C). Once the `master` branch is deemed stable a release will be published and advertised via the SquadJS startup information and our [Discord](https://discord.gg/9F2Ng5C).
 
@@ -976,7 +914,7 @@ The above policy was written and put into effect after the release of SquadJS v2
 
 ## Credits
 SquadJS would not be possible without the support of so many individuals and organisations. Our thanks goes out to:
-* [SquadJS's contributors](https://github.com/Thomas-Smyth/SquadJS/graphs/contributors).
+* [SquadJS's contributors](https://github.com/Team-Silver-Sphere/SquadJS/graphs/contributors).
 * [Thomas Smyth's GitHub sponsors](https://github.com/sponsors/Thomas-Smyth).
 * subtlerod for proposing the initial log parsing idea, helping to design the log parsing process and for providing multiple servers to test with.
 * Shanomac99 and the rest of the Squad Wiki team for providing us with [layer information](https://github.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data).
