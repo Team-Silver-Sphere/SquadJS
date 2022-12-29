@@ -4,11 +4,11 @@ import DiscordBasePlugin from './discord-base-plugin.js';
 
 const { request, gql } = GraphQLRequest;
 
-export default class SCBLInfo extends DiscordBasePlugin {
+export default class CBLInfo extends DiscordBasePlugin {
   static get description() {
     return (
-      'The <code>SCBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based ' +
-      'on data from the <a href="https://squad-community-ban-list.com/">Squad Community Ban List</a>.'
+      'The <code>CBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based ' +
+      'on data from the <a href="https://communitybanlist.com/">Community Ban List</a>.'
     );
   }
 
@@ -30,7 +30,7 @@ export default class SCBLInfo extends DiscordBasePlugin {
         description:
           'Admins will be alerted when a player has this or more reputation points. For more information on ' +
           'reputation points, see the ' +
-          '<a href="https://squad-community-ban-list.com/faq">Squad Community Ban List\'s FAQ</a>',
+          '<a href="https://communitybanlist.com/faq">Community Ban List\'s FAQ</a>',
         default: 6
       }
     };
@@ -53,7 +53,7 @@ export default class SCBLInfo extends DiscordBasePlugin {
   async onPlayerConnected(info) {
     try {
       const data = await request(
-        'https://squad-community-ban-list.com/graphql',
+        'https://communitybanlist.com/graphql',
         gql`
           query Search($id: String!) {
             steamUser(id: $id) {
@@ -91,7 +91,7 @@ export default class SCBLInfo extends DiscordBasePlugin {
       if (!data.steamUser) {
         this.verbose(
           2,
-          `Player ${info.player.name} (Steam ID: ${info.player.steamID}) is not listed in the Squad Community Ban List.`
+          `Player ${info.player.name} (Steam ID: ${info.player.steamID}) is not listed in the Community Ban List.`
         );
         return;
       }
@@ -108,15 +108,14 @@ export default class SCBLInfo extends DiscordBasePlugin {
         embed: {
           title: `${info.player.name} is a potentially harmful player!`,
           author: {
-            name: 'Squad Community Ban List',
-            url: 'https://squad-community-ban-list.com/',
-            icon_url:
-              'https://cdn.jsdelivr.net/gh/Thomas-Smyth/Squad-Community-Ban-List@master/client/src/assets/img/brand/scbl-logo-square.png'
+            name: 'Community Ban List',
+            url: 'https://communitybanlist.com/',
+            icon_url: 'https://communitybanlist.com/static/media/cbl-logo.caf6584e.png'
           },
           thumbnail: {
             url: data.steamUser.avatarFull
           },
-          description: `[${info.player.name}](https://squad-community-ban-list.com/search/${info.player.steamID}) has ${data.steamUser.reputationPoints} reputation points on the Squad Community Ban List and is therefore a potentially harmful player.`,
+          description: `[${info.player.name}](https://communitybanlist.com/search/${info.player.steamID}) has ${data.steamUser.reputationPoints} reputation points on the Community Ban List and is therefore a potentially harmful player.`,
           fields: [
             {
               name: 'Reputation Points',
@@ -149,14 +148,14 @@ export default class SCBLInfo extends DiscordBasePlugin {
           color: '#ffc40b',
           timestamp: info.time.toISOString(),
           footer: {
-            text: 'Powered by SquadJS and the Squad Community Ban List'
+            text: 'Powered by SquadJS and the Community Ban List'
           }
         }
       });
     } catch (err) {
       this.verbose(
         1,
-        `Failed to fetch Squad Community Ban List data for player ${info.name} (Steam ID: ${info.steamID}): `,
+        `Failed to fetch Community Ban List data for player ${info.name} (Steam ID: ${info.steamID}): `,
         err
       );
     }
