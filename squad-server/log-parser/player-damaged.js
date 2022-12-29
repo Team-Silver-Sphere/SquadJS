@@ -1,6 +1,6 @@
 export default {
   regex:
-    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Player:(.+) ActualDamage=([0-9.]+) from (.+) caused by ([A-z_0-9]+)_C/,
+    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Player:(.+) ActualDamage=([0-9.]+) from (.+) caused by ([A-z_0-9\-]+)_C/,
   onMatch: (args, logParser) => {
     const data = {
       raw: args[0],
