@@ -157,7 +157,6 @@ export default class SquadServer extends EventEmitter {
       data.player = await this.getPlayerBySteamID(data.playerSteamID, true);
       delete data.playerName;
       delete data.playerSteamID;
-      delete data.squadID;
 
       this.emit('SQUAD_CREATED', data);
     });
