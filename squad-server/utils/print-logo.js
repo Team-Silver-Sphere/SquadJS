@@ -48,7 +48,7 @@ ${
 }\x1b[0m
 
 \x1b[33mLooking for ways to help protect your server from harmful players?
-Checkout the Squad Community Ban List: https://squad-community-ban-list.com/\x1b[0m
+Checkout the Squad Community Ban List: https://communitybanlist.com/\x1b[0m
 `
   );
 }

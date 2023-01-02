@@ -114,74 +114,6 @@ Connectors should be named, for example the above is named `discord`, and should
 
 See below for more details on connectors and their associated config.
 
-##### Squad Layer Filter
-Connects to a filtered list of Squad layers and filters them either by an "initial filter" or an "active filter" that depends on current server information, e.g. player count.
-  ```js
-  "layerFilter": {
-    "type": "buildPoolFromFilter",
-    "filter": {
-      "whitelistedLayers": null,
-      "blacklistedLayers": null,
-      "whitelistedMaps": null,
-      "blacklistedMaps": null,
-      "whitelistedGamemodes": null,
-      "blacklistedGamemodes": [
-        "Training"
-      ],
-      "flagCountMin": null,
-      "flagCountMax": null,
-      "hasCommander": null,
-      "hasTanks": null,
-      "hasHelicopters": null
-    },
-    "activeLayerFilter": {
-      "historyResetTime": 18000000,
-      "layerHistoryTolerance": 8,
-      "mapHistoryTolerance": 4,
-      "gamemodeHistoryTolerance": {
-        "Invasion": 4
-      },
-      "gamemodeRepetitiveTolerance": {
-        "Invasion": 4
-      },
-      "playerCountComplianceEnabled": true,
-      "factionComplianceEnabled": true,
-      "factionHistoryTolerance": {
-        "RUS": 4
-      },
-      "factionRepetitiveTolerance": {
-        "RUS": 4
-      }
-    }
-  },
-  ```
-* `type` - The type of filter builder to use. `filter` will depend on this type.
-    - `buildPoolFromFilter` - Builds the Squad layers list from a list of filters. An example `filter` with default values for this type is show above.
-        - `whitelistedLayers` - List of layers to consider.
-        - `blacklistLayers` -  List of layers to not consider.
-        - `whitelistedMaps` - List of maps to consider.
-        - `blacklistedMaps` - List of maps to not consider.
-        - `whitelistedGamemodes` - List of gamemodes to consider.
-        - `blacklistedGamemodes` - List of gamemodes to not consider.
-        - `flagCountMin` - Minimum number of flags the layer may have.
-        - `flagCountMax` - Maximum number of flags the layer may have.
-        - `hasCommander` - Layer must/most not have a commander. `null` for either.
-        - `hasTanks` - Layer must/most not have a tanks. `null` for either.
-        - `hasHelicopters` - Layer must/most not have a helicopters. `null` for either.
-    - `buildPoolFromFile` - Builds the Squad layers list from a Squad layer config file. `filter` should be the filename of the config file.
-    - `buildPoolFromLayerNames` - Builds the Squad layers list from a list of layers. `filter` should be a list of layers, e.g. `"filter": ["Sumari AAS v1", "Fool's Road AAS v1"]`.
-* `filter` - Described above.
-* `activeLayerFilter` - Filters layers live as server information updates, e.g. if the player count exceeds a certain amount a layer may no longer be in the filter.
-    - `historyResetTime` - After this number of milliseconds the layer history is no longer considered.
-    - `layerHistoryTolerance` - A layer can only be played again after this number of layers.
-    - `mapHistoryTolerance` - A map can only be played again after this number of layers.
-    - `gamemodeHistoryTolerance` - A gamemode can only be played again after this number of layers. Gamemodes can be specified individually inside the object. If they are not listed then the filter is not applied.
-    - `gamemodeRepetitiveTolerance` - A gamemode can only be played this number of times in a row. Gamemodes can be specified individually inside the object. If they are not listed then the filter is not applied.
-    - `playerCountComplianceEnabled` - Filter layers by player count.
-    - `factionComplianceEnabled` - Filter layers so that a team cannot play the same faction twice in a row.
-    - `factionHistoryTolerance` - A faction can only be played again after this number of layers. Factions can be specified individually inside the object. If they are not listed then the filter is not applied.
-    - `factionRepetitiveTolerance` - A faction can only be played this number of times in a row. Factions can be specified individually inside the object. If they are not listed then the filter is not applied.
-
 ##### Discord
 Connects to Discord via `discord.js`.
   ```json
@@ -321,11 +253,39 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
           <h2>AutoTKWarn</h2>
           <p>The <code>AutoTkWarn</code> plugin will automatically warn players with a message when they teamkill.</p>
           <h3>Options</h3>
-          <ul><li><h4>message</h4>
+          <ul><li><h4>attackerMessage</h4>
            <h6>Description</h6>
-           <p>The message to warn players with.</p>
+           <p>The message to warn attacking players with.</p>
            <h6>Default</h6>
-           <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre></li></ul>
+           <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre></li>
+<li><h4>victimMessage</h4>
+           <h6>Description</h6>
+           <p>The message that will be sent to the victim.</p>
+           <h6>Default</h6>
+           <pre><code>null</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>CBLInfo</summary>
+          <h2>CBLInfo</h2>
+          <p>The <code>CBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based on data from the <a href="https://communitybanlist.com/">Community Ban List</a>.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to alert admins through.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>threshold</h4>
+           <h6>Description</h6>
+           <p>Admins will be alerted when a player has this or more reputation points. For more information on reputation points, see the <a href="https://communitybanlist.com/faq">Community Ban List's FAQ</a></p>
+           <h6>Default</h6>
+           <pre><code>6</code></pre></li></ul>
         </details>
 
 <details>
@@ -592,9 +552,9 @@ Grafana:
            <p>The color of the embeds.</p>
            <h6>Default</h6>
            <pre><code>16761867</code></pre></li>
-<li><h4>disableSCBL</h4>
+<li><h4>disableCBL</h4>
            <h6>Description</h6>
-           <p>Disable Squad Community Ban List information.</p>
+           <p>Disable Community Ban List information.</p>
            <h6>Default</h6>
            <pre><code>false</code></pre></li></ul>
         </details>
@@ -783,9 +743,9 @@ Grafana:
            <p>The color of the embeds.</p>
            <h6>Default</h6>
            <pre><code>16761867</code></pre></li>
-<li><h4>disableSCBL</h4>
+<li><h4>disableCBL</h4>
            <h6>Description</h6>
-           <p>Disable Squad Community Ban List information.</p>
+           <p>Disable Community Ban List information.</p>
            <h6>Default</h6>
            <pre><code>false</code></pre></li></ul>
         </details>
@@ -825,29 +785,6 @@ Grafana:
            <p>Frequency of the broadcasts in milliseconds.</p>
            <h6>Default</h6>
            <pre><code>300000</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>SCBLInfo</summary>
-          <h2>SCBLInfo</h2>
-          <p>The <code>SCBLInfo</code> plugin alerts admins when a harmful player is detected joining their server based on data from the <a href="https://squad-community-ban-list.com/">Squad Community Ban List</a>.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to alert admins through.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>threshold</h4>
-           <h6>Description</h6>
-           <p>Admins will be alerted when a player has this or more reputation points. For more information on reputation points, see the <a href="https://squad-community-ban-list.com/faq">Squad Community Ban List's FAQ</a></p>
-           <h6>Default</h6>
-           <pre><code>6</code></pre></li></ul>
         </details>
 
 <details>
