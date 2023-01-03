@@ -39,7 +39,7 @@ export default class DiscordBaseMessageUpdater extends BasePlugin {
     // Setup model to store subscribed messages.
     this.SubscribedMessage = this.options.messageStore.define(
       `${this.constructor.name}_SubscribedMessage`,
-      { channelID: DataTypes.STRING, messageID: DataTypes.STRING },
+      { channelID: DataTypes.STRING, messageID: DataTypes.STRING, server: DataTypes.INTEGER },
       { timestamps: false }
     );
 
@@ -110,7 +110,8 @@ export default class DiscordBaseMessageUpdater extends BasePlugin {
       );
       await this.SubscribedMessage.create({
         channelID: newChannelID,
-        messageID: newMessageID
+        messageID: newMessageID,
+        server: this.server.id
       });
       this.verbose(
         1,
@@ -129,7 +130,8 @@ export default class DiscordBaseMessageUpdater extends BasePlugin {
       await this.SubscribedMessage.destroy({
         where: {
           channelID: channelID,
-          messageID: messageID
+          messageID: messageID,
+          server: this.server.id
         }
       });
       this.verbose(
@@ -149,7 +151,9 @@ export default class DiscordBaseMessageUpdater extends BasePlugin {
     const generatedMessage = await this.generateMessage();
 
     // Get subscribed messages.
-    const subscribedMessages = await this.SubscribedMessage.findAll();
+    const subscribedMessages = await this.SubscribedMessage.findAll({
+      where: { server: this.server.id }
+    });
 
     // Update each message.
     this.verbose(1, `Updating ${subscribedMessages.length} messages...`);

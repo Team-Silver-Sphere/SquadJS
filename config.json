@@ -55,7 +55,15 @@
     {
       "plugin": "AutoTKWarn",
       "enabled": true,
-      "message": "Please apologise for ALL TKs in ALL chat!"
+      "attackerMessage": "Please apologise for ALL TKs in ALL chat!",
+      "victimMessage": null
+    },
+    {
+      "plugin": "CBLInfo",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "threshold": 6
     },
     {
       "plugin": "ChatCommands",
@@ -129,6 +137,14 @@
       "color": 16761867
     },
     {
+      "plugin": "DiscordKillFeed",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867,
+      "disableCBL": false
+    },
+    {
       "plugin": "DiscordPlaceholder",
       "enabled": true,
       "discordClient": "discord",
@@ -151,6 +167,13 @@
       "color": 16761867
     },
     {
+      "plugin": "DiscordRoundEnded",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867
+    },
+    {
       "plugin": "DiscordServerStatus",
       "enabled": true,
       "discordClient": "discord",
@@ -159,6 +182,14 @@
       "disableSubscriptions": false,
       "updateInterval": 60000,
       "setBotStatus": true
+    },
+    {
+      "plugin": "DiscordSquadCreated",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "color": 16761867,
+      "useEmbed": true
     },
     {
       "plugin": "DiscordSubsystemRestarter",
@@ -172,20 +203,19 @@
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867,
-      "disableSCBL": false
+      "disableCBL": false
+    },
+    {
+      "plugin": "FogOfWar",
+      "enabled": false,
+      "mode": 1,
+      "delay": 10000
     },
     {
       "plugin": "IntervalledBroadcasts",
       "enabled": false,
       "broadcasts": [],
       "interval": 300000
-    },
-    {
-      "plugin": "SCBLInfo",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "threshold": 6
     },
     {
       "plugin": "SeedingMode",

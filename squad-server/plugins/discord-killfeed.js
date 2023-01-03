@@ -1,15 +1,15 @@
 import DiscordBasePlugin from './discord-base-plugin.js';
 
-export default class DiscordTeamkill extends DiscordBasePlugin {
+export default class DiscordKillFeed extends DiscordBasePlugin {
   static get description() {
     return (
-      'The <code>DiscordTeamkill</code> plugin logs teamkills and related information to a Discord channel for ' +
+      'The <code>DiscordKillFeed</code> plugin logs all wounds and related information to a Discord channel for ' +
       'admins to review.'
     );
   }
 
   static get defaultEnabled() {
-    return true;
+    return false;
   }
 
   static get optionsSpecification() {
@@ -37,18 +37,18 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
 
-    this.onTeamkill = this.onTeamkill.bind(this);
+    this.onWound = this.onWound.bind(this);
   }
 
   async mount() {
-    this.server.on('TEAMKILL', this.onTeamkill);
+    this.server.on('PLAYER_WOUNDED', this.onWound);
   }
 
   async unmount() {
-    this.server.removeEventListener('TEAMKILL', this.onTeamkill);
+    this.server.removeEventListener('PLAYER_WOUNDED', this.onWound);
   }
 
-  async onTeamkill(info) {
+  async onWound(info) {
     if (!info.attacker) return;
 
     const fields = [
@@ -68,12 +68,14 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
       },
       {
         name: "Victim's Name",
-        value: info.victim.name,
+        value: info.victim ? info.victim.name : 'Unknown',
         inline: true
       },
       {
         name: "Victim's SteamID",
-        value: `[${info.victim.steamID}](https://steamcommunity.com/profiles/${info.victim.steamID})`,
+        value: info.victim
+          ? `[${info.victim.steamID}](https://steamcommunity.com/profiles/${info.victim.steamID})`
+          : 'Unknown',
         inline: true
       }
     ];
@@ -86,7 +88,7 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
 
     await this.sendDiscordMessage({
       embed: {
-        title: `Teamkill: ${info.attacker.name}`,
+        title: `KillFeed: ${info.attacker.name}`,
         color: this.options.color,
         fields: fields,
         timestamp: info.time.toISOString()

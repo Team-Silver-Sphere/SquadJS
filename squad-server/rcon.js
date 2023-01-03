@@ -84,6 +84,24 @@ export default class SquadRcon extends Rcon {
       return;
     }
 
+    const matchSqCreated = decodedPacket.body.match(
+      /(.+) \(Steam ID: ([0-9]{17})\) has created Squad (\d+) \(Squad Name: (.+)\) on (.+)/
+    );
+    if (matchSqCreated) {
+      Logger.verbose('SquadRcon', 2, `Matched Squad Created: ${decodedPacket.body}`);
+
+      this.emit('SQUAD_CREATED', {
+        time: new Date(),
+        playerName: matchSqCreated[1],
+        playerSteamID: matchSqCreated[2],
+        squadID: matchSqCreated[3],
+        squadName: matchSqCreated[4],
+        teamName: matchSqCreated[5]
+      });
+
+      return;
+    }
+
     const matchBan = decodedPacket.body.match(
       /Banned player ([0-9]+)\. \[steamid=(.*?)\] (.*) for interval (.*)/
     );
@@ -171,6 +189,10 @@ export default class SquadRcon extends Rcon {
 
   async broadcast(message) {
     await this.execute(`AdminBroadcast ${message}`);
+  }
+
+  async setFogOfWar(mode) {
+    await this.execute(`AdminSetFogOfWar ${mode}`);
   }
 
   async warn(steamID, message) {

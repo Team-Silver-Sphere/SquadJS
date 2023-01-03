@@ -120,7 +120,11 @@ export default class SquadServer extends EventEmitter {
 
     this.rcon.on('UNPOSSESSED_ADMIN_CAMERA', async (data) => {
       data.player = await this.getPlayerBySteamID(data.steamID);
-      data.duration = data.time.getTime() - this.adminsInAdminCam[data.steamID].getTime();
+      if (this.adminsInAdminCam[data.steamID]) {
+        data.duration = data.time.getTime() - this.adminsInAdminCam[data.steamID].getTime();
+      } else {
+        data.duration = 0;
+      }
 
       delete this.adminsInAdminCam[data.steamID];
 
@@ -147,6 +151,14 @@ export default class SquadServer extends EventEmitter {
       data.player = await this.getPlayerBySteamID(data.steamID);
 
       this.emit('PLAYER_BANNED', data);
+    });
+
+    this.rcon.on('SQUAD_CREATED', async (data) => {
+      data.player = await this.getPlayerBySteamID(data.playerSteamID, true);
+      delete data.playerName;
+      delete data.playerSteamID;
+
+      this.emit('SQUAD_CREATED', data);
     });
   }
 
@@ -190,6 +202,7 @@ export default class SquadServer extends EventEmitter {
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
 
       this.currentLayer = data.layer;
+      await this.updateAdmins();
       this.emit('NEW_GAME', data);
     });
 
@@ -285,6 +298,10 @@ export default class SquadServer extends EventEmitter {
       this.emit('PLAYER_UNPOSSESS', data);
     });
 
+    this.logParser.on('ROUND_ENDED', async (data) => {
+      this.emit('ROUND_ENDED', data);
+    });
+
     this.logParser.on('TICK_RATE', (data) => {
       this.emit('TICK_RATE', data);
     });
@@ -312,6 +329,10 @@ export default class SquadServer extends EventEmitter {
       if (perm in perms) ret.push(steamID);
     }
     return ret;
+  }
+
+  async updateAdmins() {
+    this.admins = await fetchAdminLists(this.options.adminLists);
   }
 
   async updatePlayerList() {
@@ -424,20 +445,36 @@ export default class SquadServer extends EventEmitter {
         port: this.options.queryPort
       });
 
-      this.serverName = data.name;
+      const info = {
+        raw: data.raw,
+        serverName: data.name,
 
-      this.maxPlayers = parseInt(data.maxplayers);
-      this.publicSlots = parseInt(data.raw.rules.NUMPUBCONN);
-      this.reserveSlots = parseInt(data.raw.rules.NUMPRIVCONN);
+        maxPlayers: parseInt(data.maxplayers),
+        publicSlots: parseInt(data.raw.rules.NUMPUBCONN),
+        reserveSlots: parseInt(data.raw.rules.NUMPRIVCONN),
 
-      this.a2sPlayerCount = parseInt(data.raw.rules.PlayerCount_i);
-      this.publicQueue = parseInt(data.raw.rules.PublicQueue_i);
-      this.reserveQueue = parseInt(data.raw.rules.ReservedQueue_i);
+        a2sPlayerCount: parseInt(data.raw.rules.PlayerCount_i),
+        publicQueue: parseInt(data.raw.rules.PublicQueue_i),
+        reserveQueue: parseInt(data.raw.rules.ReservedQueue_i),
 
-      this.matchTimeout = parseFloat(data.raw.rules.MatchTimeout_f);
-      this.gameVersion = data.raw.version;
+        matchTimeout: parseFloat(data.raw.rules.MatchTimeout_f),
+        gameVersion: data.raw.version
+      };
 
-      this.emit('UPDATED_A2S_INFORMATION');
+      this.serverName = info.serverName;
+
+      this.maxPlayers = info.maxPlayers;
+      this.publicSlots = info.publicSlots;
+      this.reserveSlots = info.reserveSlots;
+
+      this.a2sPlayerCount = info.a2sPlayerCount;
+      this.publicQueue = info.publicQueue;
+      this.reserveQueue = info.reserveQueue;
+
+      this.matchTimeout = info.matchTimeout;
+      this.gameVersion = info.gameVersion;
+
+      this.emit('UPDATED_A2S_INFORMATION', info);
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update A2S information.', err);
     }

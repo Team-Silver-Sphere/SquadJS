@@ -14,7 +14,7 @@ export default class DBLog extends BasePlugin {
       '<ul><li> <a href="https://grafana.com/">Grafana</a> is a cool way of viewing server statistics stored in the database.</li>\n' +
       '<li>Install Grafana.</li>\n' +
       '<li>Add your database as a datasource named <code>SquadJS</code>.</li>\n' +
-      '<li>Import the <a href="https://github.com/Thomas-Smyth/SquadJS/blob/master/squad-server/templates/SquadJS-Dashboard-v2.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>\n' +
+      '<li>Import the <a href="https://github.com/Team-Silver-Sphere/SquadJS/blob/master/squad-server/templates/SquadJS-Dashboard-v2.json">SquadJS Dashboard</a> to get a preconfigured MySQL only Grafana dashboard.</li>\n' +
       '<li>Install any missing Grafana plugins.</li></ul>'
     );
   }
@@ -499,13 +499,13 @@ export default class DBLog extends BasePlugin {
     });
   }
 
-  async onUpdatedA2SInformation() {
+  async onUpdatedA2SInformation(info) {
     await this.models.PlayerCount.create({
       server: this.options.overrideServerID || this.server.id,
       match: this.match ? this.match.id : null,
-      players: this.server.a2sPlayerCount,
-      publicQueue: this.server.publicQueue,
-      reserveQueue: this.server.reserveQueue
+      players: info.a2sPlayerCount,
+      publicQueue: info.publicQueue,
+      reserveQueue: info.reserveQueue
     });
   }
 
