@@ -13,7 +13,7 @@ export default {
       2nd Step in player connected path
       */
 
-    logParser.eventStore['steamid-connected'] = logParser.eventStore.clients[args[3]];
+    logParser.eventStore['client-login'] = logParser.eventStore.clients[args[3]];
     delete logParser.eventStore.clients[args[3]];
     logParser.emit('CLIENT_LOGIN', data);
   }

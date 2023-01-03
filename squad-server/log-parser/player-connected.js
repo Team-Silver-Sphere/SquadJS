@@ -6,11 +6,11 @@ export default {
       time: args[1],
       chainID: args[2],
       playerSuffix: args[3],
-      steamID: logParser.eventStore['steamid-connected'], // player connected
+      steamID: logParser.eventStore['client-login'], // player connected
       controller: logParser.eventStore['player-controller'] // playercontroller connected
     };
 
-    delete logParser.eventStore['steamid-connected'];
+    delete logParser.eventStore['client-login'];
     delete logParser.eventStore['player-controller'];
 
     // Handle Reconnecting players
