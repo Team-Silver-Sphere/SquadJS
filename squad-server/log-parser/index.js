@@ -11,10 +11,11 @@ import PlayerPossess from './player-possess.js';
 import PlayerRevived from './player-revived.js';
 import PlayerUnPossess from './player-un-possess.js';
 import PlayerWounded from './player-wounded.js';
+import RoundEnded from './round-ended.js';
+import RoundTickets from './round-tickets.js';
 import RoundWinner from './round-winner.js';
 import ServerTickRate from './server-tick-rate.js';
 import SteamIDConnected from './steamid-connected.js';
-import SquadCreated from './squad-created.js';
 
 export default class SquadLogParser extends LogParser {
   constructor(options) {
@@ -34,10 +35,11 @@ export default class SquadLogParser extends LogParser {
       PlayerRevived,
       PlayerUnPossess,
       PlayerWounded,
+      RoundEnded,
+      RoundTickets,
       RoundWinner,
       ServerTickRate,
-      SteamIDConnected,
-      SquadCreated
+      SteamIDConnected
     ];
   }
 }
