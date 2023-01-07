@@ -10,7 +10,7 @@ export default {
       possessClassname: args[4]
     };
 
-    logParser.eventStore[args[3]] = args[2];
+    logParser.eventStore.session[args[3]] = args[2];
 
     logParser.emit('PLAYER_POSSESS', data);
   }
