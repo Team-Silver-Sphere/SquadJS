@@ -24,6 +24,11 @@ export default class DiscordBasePlugin extends BasePlugin {
   }
 
   async sendDiscordMessage(message) {
+    if (!this.channel) {
+      this.verbose(1, `Could not send Discord Message. Channel not initialized.`)
+      return;
+    }
+
     if (typeof message === 'object' && 'embed' in message)
       message.embed.footer = message.embed.footer || { text: COPYRIGHT_MESSAGE };
 
