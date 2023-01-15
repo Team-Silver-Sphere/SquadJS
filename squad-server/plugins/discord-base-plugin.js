@@ -15,7 +15,12 @@ export default class DiscordBasePlugin extends BasePlugin {
   }
 
   async prepareToMount() {
-    this.channel = await this.options.discordClient.channels.fetch(this.options.channelID);
+    try {
+      this.channel = await this.options.discordClient.channels.fetch(this.options.channelID);
+    } catch (error) {
+      this.channel = null;
+      this.verbose(1, `Could not fetch channel: ${this.options.channelID}`);
+    }
   }
 
   async sendDiscordMessage(message) {
