@@ -19,7 +19,8 @@ export default class DiscordBasePlugin extends BasePlugin {
       this.channel = await this.options.discordClient.channels.fetch(this.options.channelID);
     } catch (error) {
       this.channel = null;
-      this.verbose(1, `Could not fetch channel: ${this.options.channelID}`);
+      this.verbose(1, `Could not fetch Discord channel with channelID "${this.options.channelID}". Error: ${error.message}`);
+      this.verbose(2, `${error.stack}`);
     }
   }
 
