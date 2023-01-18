@@ -54,6 +54,7 @@ export default class Rcon extends EventEmitter {
     // Used For tracking Callbacks
     this.callbackIds = [];
     this.count = 1;
+    this.loggedin = false;
   }
 
   onPacket(decodedPacket) {
@@ -181,7 +182,7 @@ export default class Rcon extends EventEmitter {
 
   onClose(hadError) {
     this.connected = false;
-
+    this.loggedin = false;
     Logger.verbose(
       'RCON',
       1,
@@ -306,6 +307,11 @@ export default class Rcon extends EventEmitter {
         return;
       }
 
+      if (!this.loggedin && type !== SERVERDATA_AUTH) {
+        reject(new Error('RCON not Logged in'));
+        return;
+      }
+
       Logger.verbose('RCON', 2, `Writing packet with type "${type}" and body "${body}".`);
 
       const encodedPacket = this.encodePacket(
@@ -328,8 +334,9 @@ export default class Rcon extends EventEmitter {
       };
 
       // the auth packet also sends a normal response, so we add an extra empty action to ignore it
-      this.callbackIds.push({ id: this.count, cmd: body });
+
       if (type === SERVERDATA_AUTH) {
+        this.callbackIds.push({ id: this.count, cmd: body });
         this.responseCallbackQueue.push(() => {});
         this.responseCallbackQueue.push((decodedPacket) => {
           this.client.removeListener('error', onError);
@@ -338,10 +345,12 @@ export default class Rcon extends EventEmitter {
             reject(new Error('Authentication failed.'));
           } else {
             Logger.verbose('RCON', 1, 'Authentication succeeded.');
+            this.loggedin = true;
             resolve();
           }
         });
       } else {
+        this.callbackIds.push({ id: this.count, cmd: body });
         this.responseCallbackQueue.push((response) => {
           this.client.removeListener('error', onError);
 
