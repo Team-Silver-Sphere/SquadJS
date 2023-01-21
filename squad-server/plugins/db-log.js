@@ -147,6 +147,35 @@ export default class DBLog extends BasePlugin {
     );
 
     this.createModel(
+      'ChatMessage',
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+        },
+        time: {
+          type: DataTypes.DATE,
+          notNull: true
+        },
+        chat: {
+          type: DataTypes.STRING,
+          primaryKey: true
+        },
+        message: {
+          type: DataTypes.STRING
+        },
+        steamid: {
+          type: DataTypes.STRING
+        }
+      },
+      {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci'
+      }
+    );
+
+    this.createModel(
       'Wound',
       {
         id: {
@@ -329,6 +358,11 @@ export default class DBLog extends BasePlugin {
       onDelete: 'CASCADE'
     });
 
+    this.models.Server.hasMany(this.models.ChatMessage, {
+      foreignKey: { name: 'server', allowNull: false },
+      onDelete: 'CASCADE'
+    });
+
     this.models.SteamUser.hasMany(this.models.Wound, {
       foreignKey: { name: 'attacker' },
       onDelete: 'CASCADE'
@@ -389,12 +423,18 @@ export default class DBLog extends BasePlugin {
       onDelete: 'CASCADE'
     });
 
+    this.models.Match.hasMany(this.models.ChatMessage, {
+      foreignKey: { name: 'match' },
+      onDelete: 'CASCADE'
+    });
+
     this.onTickRate = this.onTickRate.bind(this);
     this.onUpdatedA2SInformation = this.onUpdatedA2SInformation.bind(this);
     this.onNewGame = this.onNewGame.bind(this);
     this.onPlayerWounded = this.onPlayerWounded.bind(this);
     this.onPlayerDied = this.onPlayerDied.bind(this);
     this.onPlayerRevived = this.onPlayerRevived.bind(this);
+    this.onChatMessage = this.onChatMessage.bind(this);
   }
 
   createModel(name, schema) {
@@ -412,6 +452,7 @@ export default class DBLog extends BasePlugin {
     await this.models.Wound.sync();
     await this.models.Death.sync();
     await this.models.Revive.sync();
+    await this.models.ChatMessage.sync();
   }
 
   async mount() {
@@ -430,6 +471,7 @@ export default class DBLog extends BasePlugin {
     this.server.on('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.on('PLAYER_DIED', this.onPlayerDied);
     this.server.on('PLAYER_REVIVED', this.onPlayerRevived);
+    this.server.on('CHAT_MESSAGE', this.onChatMessage);
   }
 
   async unmount() {
@@ -439,6 +481,18 @@ export default class DBLog extends BasePlugin {
     this.server.removeEventListener('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.removeEventListener('PLAYER_DIED', this.onPlayerDied);
     this.server.removeEventListener('PLAYER_REVIVED', this.onPlayerRevived);
+    this.server.removeEventListener('CHAT_MESSAGE', this.onChatMessage);
+  }
+
+  async onChatMessage(info) {
+    await this.models.ChatMessage.create({
+      server: this.options.overrideServerID || this.server.id,
+      match: this.match ? this.match.id : null,
+      time: info.time,
+      steamid: info.player.steamID,
+      chat: info.chat,
+      message: info.message
+    });
   }
 
   async onTickRate(info) {
