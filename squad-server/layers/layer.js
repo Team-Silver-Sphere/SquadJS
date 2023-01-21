@@ -31,7 +31,7 @@ export default class Layer {
           respawnDelay: vehicle.respawnTime
         })),
         numberOfTanks: (data[t].vehicles || []).filter((v) => {
-          return v.icon.match(/tank/);
+          return v.icon.match(/_tank/);
         }).length,
         numberOfHelicopters: (data[t].vehicles || []).filter((v) => {
           return v.icon.match(/helo/);
