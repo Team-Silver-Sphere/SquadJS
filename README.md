@@ -41,6 +41,13 @@ SquadJS relies on being able to access the Squad server log directory in order t
 5. Configure the `config.json` file. See below for more details.
 6. Start SquadJS by running `node index.js` in your terminal.
 
+#### Updating from git
+1. Stop SquadJS if it is running.
+2. Open a terminal in the root folder of the your cloned local copy of the SquadJS repository
+3. Update your cloned copy of the repository with the command `git pull`
+4. Install any new project dependancies with the command `yarn install`
+5. Start SquadJS by running `node index.js` in your terminal.
+
 **Note** - If you are interested in testing versions of SquadJS not yet released please download/clone the `master` branch. Please also see [here](#versions-and-releases) for more information on our versions and release procedures.
 
 <br>
