@@ -17,6 +17,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default class SquadServerFactory {
   static async buildFromConfig(config) {
+    Logger.setTimeStamps(config.logger.timestamps ? config.logger.timestamps : false);
+
     const plugins = await Plugins.getPlugins();
 
     for (const plugin of Object.keys(plugins)) {
