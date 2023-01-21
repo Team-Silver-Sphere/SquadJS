@@ -159,11 +159,10 @@ export default class DBLog extends BasePlugin {
           notNull: true
         },
         chat: {
-          type: DataTypes.STRING,
-          primaryKey: true
+          type: DataTypes.STRING
         },
         message: {
-          type: DataTypes.STRING
+          type: DataTypes.TEXT
         },
         steamid: {
           type: DataTypes.STRING
