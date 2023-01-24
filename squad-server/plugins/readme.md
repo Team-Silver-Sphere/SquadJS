@@ -16,7 +16,8 @@ Stored in the server object are a range of different properties that store infor
  * `reserveSlots` - Maximum number of reserved slots.
  * `publicQueue` - Length of the public queue.
  * `reserveQueue` - Length of the reserved queue.
- * `matchTimeout` - Time until match ends?
+ * `matchTimeout` - Timelimit for the current map in minutes (Seems to be always 120 even on Jensen Range).
+ * `playtimeSeconds`- Time spend on the current map (in seconds).
  * `gameVersion` - Game version.
  * `layerHistory` - Array history of layers used with most recent at the start. Each entry is an object with layer info in.
  * `currentLayer` - The current layer.

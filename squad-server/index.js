@@ -457,6 +457,7 @@ export default class SquadServer extends EventEmitter {
         publicQueue: parseInt(data.raw.rules.PublicQueue_i),
         reserveQueue: parseInt(data.raw.rules.ReservedQueue_i),
 
+        playtimeSeconds: parseFloat(data.raw.rules.PLAYTIME_i),
         matchTimeout: parseFloat(data.raw.rules.MatchTimeout_f),
         gameVersion: data.raw.version
       };
@@ -471,6 +472,7 @@ export default class SquadServer extends EventEmitter {
       this.publicQueue = info.publicQueue;
       this.reserveQueue = info.reserveQueue;
 
+      this.playtimeSeconds = info.playtimeSeconds;
       this.matchTimeout = info.matchTimeout;
       this.gameVersion = info.gameVersion;
 
