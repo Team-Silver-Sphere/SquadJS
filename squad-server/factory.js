@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import Discord from 'discord.js';
 import sequelize from 'sequelize';
 import AwnAPI from './utils/awn-api.js';
+import ConfigTools from './utils/config-tools.js';
 
 import Logger from 'core/logger';
 
@@ -17,6 +18,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default class SquadServerFactory {
   static async buildFromConfig(config) {
+    Logger.verbose('SquadServerFactory', 4, `Logging config:\n${JSON.stringify(config)}`);
     Logger.setTimeStamps(config.logger.timestamps ? config.logger.timestamps : false);
 
     const plugins = await Plugins.getPlugins();
@@ -145,7 +147,7 @@ export default class SquadServerFactory {
     try {
       return JSON.parse(configString);
     } catch (err) {
-      throw new Error('Unable to parse config file.');
+      throw new Error(`Unable to parse config file. ${err}`);
     }
   }
 
@@ -156,13 +158,21 @@ export default class SquadServerFactory {
 
   static readConfigFile(configPath = './config.json') {
     configPath = path.resolve(__dirname, '../', configPath);
-    if (!fs.existsSync(configPath)) throw new Error('Config file does not exist.');
+    if (!fs.existsSync(configPath)) throw new Error(`Config file does not exist. ${configPath}`);
+
+    Logger.verbose('SquadServerFactory', 1, `Reading config file ${configPath}`);
     return fs.readFileSync(configPath, 'utf8');
   }
 
-  static buildFromConfigFile(configPath) {
-    Logger.verbose('SquadServerFactory', 1, 'Reading config file...');
-    return SquadServerFactory.buildFromConfigString(SquadServerFactory.readConfigFile(configPath));
+  static buildFromConfigFiles(configPaths) {
+    Logger.verbose('SquadServerFactory', 1, 'Reading config files...');
+    Logger.verbose('SquadServerFactory', 4, JSON.stringify(configPaths));
+
+    const configs = configPaths.map((configPath) =>
+      SquadServerFactory.parseConfig(SquadServerFactory.readConfigFile(configPath))
+    );
+
+    return SquadServerFactory.buildFromConfig(ConfigTools.mergeConfigs({}, ...configs));
   }
 
   static async buildConfig() {

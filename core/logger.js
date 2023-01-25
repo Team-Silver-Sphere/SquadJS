@@ -11,7 +11,7 @@ class Logger {
     let colorFunc = chalk[this.colors[module] || 'white'];
     if (typeof colorFunc !== 'function') colorFunc = chalk.white;
 
-    if ((this.verboseness[module] || 1) >= verboseness)
+    if (process.env.VERBOSE === 'true' || (this.verboseness[module] || 1) >= verboseness)
       console.log(
         `${this.includeTimestamps ? '[' + new Date().toISOString() + ']' : ''}[${colorFunc(
           module
