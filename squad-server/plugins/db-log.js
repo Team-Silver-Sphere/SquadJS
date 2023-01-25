@@ -166,6 +166,15 @@ export default class DBLog extends BasePlugin {
         },
         steamid: {
           type: DataTypes.STRING
+        },
+        squadName: {
+          type: DataTypes.STRING
+        },
+        squadID: {
+          type: DataTypes.INTEGER
+        },
+        team: {
+          type: DataTypes.INTEGER
         }
       },
       {
@@ -490,7 +499,10 @@ export default class DBLog extends BasePlugin {
       time: info.time,
       steamid: info.player.steamID,
       chat: info.chat,
-      message: info.message
+      message: info.message,
+      squadName: info.player.squad ? info.player.squad.squadName : null,
+      squadID: info.player.squadID || null,
+      team: info.player.teamID
     });
   }
 
