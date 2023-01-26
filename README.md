@@ -49,6 +49,7 @@ SquadJS can be configured via a JSON configuration file which, by default, is lo
 
 The config file needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
 
+### Configuration Sections 
 <details>
   <summary>Server</summary>
 
@@ -191,8 +192,123 @@ The `logger` section configures how verbose a module of SquadJS will be as well 
   ```
 The larger the number set in the `verboseness` section for a specified module the more it will print to the console.
 
+Early stages of SquadJS initialization, before the configuration has been read and applied, will only log with a `verboseness` of 1. In order to enable verbose output for in those early stages the `VERBOSE` environment variable can be set to `true`. This will ignore all `verboseness` configurations and log everything.
+
   ---
 </details>
+
+### Merged Configurations
+The configuration can be spread over multiple config files. This can be helpful if run multiple servers and want to ensure all servers run the same configuration. Or if you have a large configuration for a plugin (e.g. a lot of [ChatCommands](#chatcommands) ) that make your config unreadable.
+
+<details>
+    <summary>Example with multiple config files</summary>
+
+---
+
+In this example we have 2 servers running and want the same configuration on both servers. The only diffrences are each server uses a diffrent discord bot and server 1 has verbose logging for the RCON module enabled.
+
+Server 1 will be started using `node index.js config.base.json config.server1.json`.  
+Server 2 will be started using `node index.js config.base.json config.server2.json`.
+
+- <details>
+    <summary>config.server1.json</summary>
+
+    ```json
+      {
+        "server": {
+          "id": 1,
+          "host": "localhost",
+          "queryPort": 27165,
+          "rconPort": 21114,
+          "rconPassword": "test1",
+          "logReaderMode": "tail",
+          "logDir": "C:/path/to/squad/server1/log/folder"
+        },
+        "connectors": {
+          "discord": "Token Discord Bot 1"
+        },
+        "logger": {
+          "verboseness": {
+            "RCON": 4
+          }
+        }
+      }
+    ```
+  </details>
+
+- <details>
+    <summary>config.server2.json</summary>
+
+    ```json
+      {
+        "server": {
+          "id": 2,
+          "host": "localhost",
+          "queryPort": 27175,
+          "rconPort": 21124,
+          "rconPassword": "test2",
+          "logReaderMode": "tail",
+          "logDir": "C:/path/to/squad/server2/log/folder"
+        },
+        "connectors": {
+          "discord": "Token Discord Bot 2"
+        }
+      }
+    ```
+  </details>
+
+- <details>
+    <summary>config.base.json</summary>
+
+    ```json
+      {
+        "server": {
+          "ftp": {
+            "port": 21,
+            "user": "FTP Username",
+            "password": "FTP Password",
+            "useListForSize": false
+          },
+          "adminLists": [
+            {
+              "type": "",
+              "source": ""
+            }
+          ]
+        },
+        "connectors": {
+          "mysql": {
+            "host": "host",
+            "port": 3306,
+            "username": "squadjs",
+            "password": "password",
+            "database": "squadjs",
+            "dialect": "mysql"
+          },
+          "sqlite": "sqlite:database.sqlite"
+        },
+        "plugins": [ "THIS HAS BEEN REMOVED TO MAKE THE CONFIG MORE READABLE" ],
+        "logger": {
+          "verboseness": {
+            "SquadServer": 1,
+            "LogParser": 1,
+            "RCON": 1
+          },
+          "colors": {
+            "SquadServer": "yellowBright",
+            "SquadServerFactory": "yellowBright",
+            "LogParser": "blueBright",
+            "RCON": "redBright"
+          }
+        }
+      }
+    ```
+  </details>
+---
+</details>
+
+If you have problems with this, you can view the merged config by forcing SquadJS to log everything to the console.  
+See [here](#console-output-configuration) for more information on console output. 
 
 <br>
 
