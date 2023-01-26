@@ -21,16 +21,8 @@ class Plugins {
     const pluginFilenames = [];
     for await (const dirent of dir) {
       if (!dirent.isFile()) continue;
-      if (
-        [
-          'index.js',
-          'base-plugin.js',
-          'discord-base-message-updater.js',
-          'discord-base-plugin.js',
-          'readme.md'
-        ].includes(dirent.name)
-      )
-        continue;
+      if (!dirent.name.endsWith('.squad.js')) continue;
+
       pluginFilenames.push(dirent.name);
     }
 
