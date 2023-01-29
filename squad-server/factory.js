@@ -19,6 +19,10 @@ export default class SquadServerFactory {
   static async buildFromConfig(config) {
     Logger.setTimeStamps(config.logger.timestamps ? config.logger.timestamps : false);
 
+    if (config.server.pluginPaths) {
+      Plugins.setPluginPaths(config.server.pluginPaths);
+    }
+
     const plugins = await Plugins.getPlugins();
 
     for (const plugin of Object.keys(plugins)) {
