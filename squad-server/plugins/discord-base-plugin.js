@@ -19,14 +19,17 @@ export default class DiscordBasePlugin extends BasePlugin {
       this.channel = await this.options.discordClient.channels.fetch(this.options.channelID);
     } catch (error) {
       this.channel = null;
-      this.verbose(1, `Could not fetch Discord channel with channelID "${this.options.channelID}". Error: ${error.message}`);
+      this.verbose(
+        1,
+        `Could not fetch Discord channel with channelID "${this.options.channelID}". Error: ${error.message}`
+      );
       this.verbose(2, `${error.stack}`);
     }
   }
 
   async sendDiscordMessage(message) {
     if (!this.channel) {
-      this.verbose(1, `Could not send Discord Message. Channel not initialized.`)
+      this.verbose(1, `Could not send Discord Message. Channel not initialized.`);
       return;
     }
 
