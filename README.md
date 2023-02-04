@@ -37,7 +37,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 1. [Download SquadJS](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) and unzip the download.
 2. Open the unzipped folder in your terminal.
 3. Install the dependencies by running `yarn install` in your terminal. Due to the use of Yarn Workspaces it is important to use `yarn install` and **not** `npm install` as this will not work and will break stuff.
-4. Configure the `config.json` file. See below for more details.
+4. Create a new configuration. See [here](#configuring-squadjs) for more details.
 5. Start SquadJS by running `node index.js` in your terminal.
 
 **Note** - If you are interested in testing versions of SquadJS not yet released please download/clone the `master` branch. Please also see [here](#versions-and-releases) for more information on our versions and release procedures.
@@ -45,7 +45,10 @@ SquadJS relies on being able to access the Squad server log directory in order t
 <br>
 
 ## **Configuring SquadJS**
-SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS and is named [config.json](./config.json).
+SquadJS can be configured via a JSON configuration file. The default location for the config is [config.json](./config.json). This file has to be created manualy.
+`config.example.json` can be used as template for new configurations.
+
+You can maintain multiple configs using this naming scheme: `config.<configname>.json`. This naming scheme is useful for multiple servers or [config merging](#merged-configurations).
 
 The config file needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
 
