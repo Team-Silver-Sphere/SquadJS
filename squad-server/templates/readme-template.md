@@ -80,6 +80,10 @@ The following section of the configuration contains information about your Squad
         "type": "remote",
         "source": "http://yourWebsite.com/Server1/Admins.cfg",
       }
+    ],
+    "pluginPaths": [
+      "squad-server/plugins/",
+      "C:/path/to/custom/plugins"
     ]
   },
   ```
@@ -94,6 +98,7 @@ The following section of the configuration contains information about your Squad
 * `ftp:user` - The FTP user of the server. Only required for `ftp` `logReaderMode`.
 * `ftp:password` - The FTP password of the server. Only required for `ftp` `logReaderMode`.
 * `adminLists` - Sources for identifying an admins on the server, either remote or local.
+* `pluginPaths` - Paths that will be searched for SquadJS plugins. Useful for custom plugins [See more here](./squad-server/plugins/readme.md).
 
   ---
 </details>

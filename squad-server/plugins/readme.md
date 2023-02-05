@@ -1,6 +1,12 @@
-## Creating Your Own Plugins
+# Plugins
+You can extend SquadJS by writing you own plugins. 
 To create your own plugin you need a basic knowledge of JavaScript.
 
+Plugins have to use the file extension `.squad.js` and should extend the [BasePlugin](./base-plugin.js).
+You can create base classes for your plugins by using only `.js` as file extension like [DiscordBasePlugin](./discord-base-plugin.js).
+Your own base classes should extend the [BasePlugin](./base-plugin.js) also.
+
+## Creating Your Own Plugins
 Typical plugins are functions that take the server as an argument in order to allow the plugin to access information about the server or manipulate it in some way:
 ```js
 function aPluginToLogServerID(server){
