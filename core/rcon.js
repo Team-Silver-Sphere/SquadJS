@@ -81,7 +81,7 @@ export default class Rcon extends EventEmitter {
     this.#write(this.type.command, id + 2);
   }
   #write(type, id, body) {
-    Logger.verbose("RCON", 2, `Writing packet with type "${type}", id "${id}" and body "${string || ""}".`); //console.warn("RCON", 2, `Writing packet with type "${type}", id "${id}" and body "${body || ""}".`);//
+    Logger.verbose("RCON", 2, `Writing packet with type "${type}", id "${id}" and body "${body || ""}".`); //console.warn("RCON", 2, `Writing packet with type "${type}", id "${id}" and body "${body || ""}".`);//
     this.client.write(this.#encode(type, id, body).toString("binary"), "binary");
   }
   #encode(type, id, body = "") {
