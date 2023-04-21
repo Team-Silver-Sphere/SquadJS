@@ -18,7 +18,6 @@ export default class Rcon extends EventEmitter {
     this.connectionRetry;
     this.msgId = 20;
     this.responseString = { id: 0, body: "" };
-    this.execute = this.execute.bind(this);
   }
   processChatPacket(decodedPacket) {}
   async connect() {
