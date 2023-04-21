@@ -18,6 +18,7 @@ export default class Rcon extends EventEmitter {
     this.connectionRetry;
     this.msgId = 20;
     this.responseString = { id: 0, body: "" };
+    this.maxIncomingPacketSize = 8192; //Set at double, Squad ver 4.3 outputs oversize when server is full, checking for 4.4
   }
   processChatPacket(decodedPacket) {}
   async connect() {
@@ -60,7 +61,7 @@ export default class Rcon extends EventEmitter {
       if (!this.client.writable) return reject(new Error("Unable to write to node:net socket."));
       const string = String(body);
       const length = Buffer.from(string).length;
-      if (length > 4096) Logger.verbose("RCON", 1, `Error occurred. Oversize, "${length}" > 4096.`);
+      if (length > this.maxIncomingPacketSize) Logger.verbose("RCON", 1, `Error occurred. Oversize, "${length}" > ${this.maxIncomingPacketSize}.`);
       else {
         const outputData = (data) => {
           clearTimeout(timeOut);
