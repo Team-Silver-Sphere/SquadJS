@@ -23,17 +23,16 @@ export default class Rcon extends EventEmitter {
   async connect() {
     return new Promise((resolve, reject) => {
       if (this.client && this.connected && !this.client.destroyed) return reject(new Error("Rcon.connect() Rcon already connected."));
-      this.on("server", (pkt) => this.processChatPacket(pkt)).once("auth", () => {
+      Logger.verbose("RCON", 1, `Connecting to: ${this.host}:${this.port}`);
+      this.once("auth", () => {
         Logger.verbose("RCON", 1, `Connected to: ${this.host}:${this.port}`);
         clearTimeout(this.connectionRetry);
         this.connected = true;
         resolve();
       });
-      Logger.verbose("RCON", 1, `Connecting to: ${this.host}:${this.port}`);
       this.connectionRetry = setTimeout(() => this.connect(), this.autoReconnectDelay);
       this.autoReconnect = true;
-      this.client = net
-        .createConnection({ port: this.port, host: this.host }, () => this.#sendAuth())
+      this.client = net.createConnection({ port: this.port, host: this.host }, () => this.#sendAuth())
         .on("data", (data) => this.#onData(data))
         .on("end", () => this.#onClose())
         .on("error", () => this.#onNetError());
@@ -111,7 +110,7 @@ export default class Rcon extends EventEmitter {
       if (!packet) break;
       else Logger.verbose("RCON", 3, `Processing decoded packet: Size: ${packet.size}, ID: ${packet.id}, Type: ${packet.type}, Body: ${packet.body}`);
       if (packet.type === this.type.response) this.#onResponse(packet);
-      else if (packet.type === this.type.server) this.emit("server", packet);
+      else if (packet.type === this.type.server) this.processChatPacket(packet);
       else if (packet.type === this.type.command) this.emit("auth");
     }
   }
