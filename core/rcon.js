@@ -1,3 +1,5 @@
+
+
 import EventEmitter from "events";
 import net from "net";
 import Logger from "./logger.js";
@@ -18,13 +20,14 @@ export default class Rcon extends EventEmitter {
     this.connectionRetry;
     this.msgId = 20;
     this.responseString = { id: 0, body: "" };
+    this.events = new EventEmitter();
   }
   processChatPacket(decodedPacket) {}
   async connect() {
     return new Promise((resolve, reject) => {
       if (this.client && this.connected && !this.client.destroyed) return reject(new Error("Rcon.connect() Rcon already connected."));
       Logger.verbose("RCON", 1, `Connecting to: ${this.host}:${this.port}`);
-      this.once("auth", () => {
+      this.events.once("auth", () => {
         Logger.verbose("RCON", 1, `Connected to: ${this.host}:${this.port}`);
         clearTimeout(this.connectionRetry);
         this.connected = true;
@@ -32,7 +35,8 @@ export default class Rcon extends EventEmitter {
       });
       this.connectionRetry = setTimeout(() => this.connect(), this.autoReconnectDelay);
       this.autoReconnect = true;
-      this.client = net.createConnection({ port: this.port, host: this.host }, () => this.#sendAuth())
+      this.client = net
+        .createConnection({ port: this.port, host: this.host }, () => this.#sendAuth())
         .on("data", (data) => this.#onData(data))
         .on("end", () => this.#onClose())
         .on("error", () => this.#onNetError());
@@ -111,7 +115,7 @@ export default class Rcon extends EventEmitter {
       else Logger.verbose("RCON", 3, `Processing decoded packet: Size: ${packet.size}, ID: ${packet.id}, Type: ${packet.type}, Body: ${packet.body}`);
       if (packet.type === this.type.response) this.#onResponse(packet);
       else if (packet.type === this.type.server) this.processChatPacket(packet);
-      else if (packet.type === this.type.command) this.emit("auth");
+      else if (packet.type === this.type.command) this.events.emit("auth");
     }
   }
   #decode() {
@@ -152,13 +156,13 @@ export default class Rcon extends EventEmitter {
     this.#cleanUp();
   }
   #onNetError(error) {
-    Logger.verbose("RCON", 1, `node:net error:`, err);
+    Logger.verbose("RCON", 1, `node:net error:`, error);
     this.emit("RCON_ERROR", error);
     this.#cleanUp();
   }
   #cleanUp() {
     this.connected = false;
-    this.removeAllListeners();
+    this.events.removeAllListeners();
     clearTimeout(this.connectionRetry);
     if (this.autoReconnect) {
       Logger.verbose("RCON", 1, `Sleeping ${this.autoReconnectDelay}ms before reconnecting.`);
