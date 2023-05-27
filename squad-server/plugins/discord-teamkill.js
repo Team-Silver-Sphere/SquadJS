@@ -26,9 +26,9 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
         description: 'The color of the embeds.',
         default: 16761867
       },
-      disableSCBL: {
+      disableCBL: {
         required: false,
-        description: 'Disable Squad Community Ban List information.',
+        description: 'Disable Community Ban List information.',
         default: false
       }
     };
@@ -78,10 +78,10 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
       }
     ];
 
-    if (!this.options.disableSCBL)
+    if (!this.options.disableCBL)
       fields.push({
-        name: 'Squad Community Ban List',
-        value: `[Attacker's Bans](https://squad-community-ban-list.com/search/${info.attacker.steamID})`
+        name: 'Community Ban List',
+        value: `[Attacker's Bans](https://communitybanlist.com/search/${info.attacker.steamID})`
       });
 
     await this.sendDiscordMessage({

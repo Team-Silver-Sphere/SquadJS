@@ -4,6 +4,7 @@ import AdminBroadcast from './admin-broadcast.js';
 import DeployableDamaged from './deployable-damaged.js';
 import NewGame from './new-game.js';
 import PlayerConnected from './player-connected.js';
+import PlayerControllerConnected from './playercontroller-connected.js';
 import PlayerDisconnected from './player-disconnected.js';
 import PlayerDamaged from './player-damaged.js';
 import PlayerDied from './player-died.js';
@@ -11,10 +12,13 @@ import PlayerPossess from './player-possess.js';
 import PlayerRevived from './player-revived.js';
 import PlayerUnPossess from './player-un-possess.js';
 import PlayerWounded from './player-wounded.js';
+import RoundEnded from './round-ended.js';
+import RoundTickets from './round-tickets.js';
 import RoundWinner from './round-winner.js';
 import ServerTickRate from './server-tick-rate.js';
-import SteamIDConnected from './steamid-connected.js';
-import SquadCreated from './squad-created.js';
+import ClientConnected from './client-connected.js';
+import ClientLogin from './client-login.js';
+import PendingConnectionDestroyed from './pending-connection-destroyed.js';
 
 export default class SquadLogParser extends LogParser {
   constructor(options) {
@@ -27,6 +31,7 @@ export default class SquadLogParser extends LogParser {
       DeployableDamaged,
       NewGame,
       PlayerConnected,
+      PlayerControllerConnected,
       PlayerDisconnected,
       PlayerDamaged,
       PlayerDied,
@@ -34,10 +39,13 @@ export default class SquadLogParser extends LogParser {
       PlayerRevived,
       PlayerUnPossess,
       PlayerWounded,
+      RoundEnded,
+      RoundTickets,
       RoundWinner,
       ServerTickRate,
-      SteamIDConnected,
-      SquadCreated
+      ClientConnected,
+      ClientLogin,
+      PendingConnectionDestroyed
     ];
   }
 }

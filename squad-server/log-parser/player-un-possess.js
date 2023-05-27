@@ -7,10 +7,11 @@ export default {
       time: args[1],
       chainID: args[2],
       playerSuffix: args[3],
-      switchPossess: args[3] in logParser.eventStore && logParser.eventStore[args[3]] === args[2]
+      switchPossess:
+        args[3] in logParser.eventStore.session && logParser.eventStore.session[args[3]] === args[2]
     };
 
-    delete logParser.eventStore[args[3]];
+    delete logParser.eventStore.session[args[3]];
 
     logParser.emit('PLAYER_UNPOSSESS', data);
   }

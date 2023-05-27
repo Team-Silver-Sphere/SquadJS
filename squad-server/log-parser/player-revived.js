@@ -3,7 +3,7 @@ export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: (.+) has revived (.+)\./,
   onMatch: (args, logParser) => {
     const data = {
-      ...logParser.eventStore[args[3]],
+      ...logParser.eventStore.session[args[3]],
       raw: args[0],
       time: args[1],
       chainID: args[2],

@@ -14,7 +14,7 @@ export default {
       healthRemaining: args[8]
     };
 
-    logParser.eventStore[args[3]] = data;
+    logParser.eventStore.session[args[3]] = data;
 
     logParser.emit('DEPLOYABLE_DAMAGED', data);
   }
