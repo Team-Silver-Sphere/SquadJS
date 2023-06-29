@@ -46,50 +46,38 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
   }
 
   async onEntry(info) {
-    await this.sendDiscordMessage({
-      embed: {
-        title: `Admin Entered Admin Camera`,
-        color: this.options.color,
-        fields: [
-          {
-            name: "Admin's Name",
-            value: info.player.name,
-            inline: true
-          },
-          {
-            name: "Admin's SteamID",
-            value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
-            inline: true
-          }
-        ],
-        timestamp: info.time.toISOString()
+    const embed = this.buildEmbed(this.options.color, info.time, 'Admin Entered Admin Camera').addFields(
+      {
+        name: "Admin's Name",
+        value: info.player.name,
+        inline: true
+      },
+      {
+        name: "Admin's SteamID",
+        value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+        inline: true
       }
-    });
+    );
+    await this.sendDiscordMessage(this.objEmbed(embed));
   }
 
   async onExit(info) {
-    await this.sendDiscordMessage({
-      embed: {
-        title: `Admin Left Admin Camera`,
-        color: this.options.color,
-        fields: [
-          {
-            name: "Admin's Name",
-            value: info.player.name,
-            inline: true
-          },
-          {
-            name: "Admin's SteamID",
-            value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
-            inline: true
-          },
-          {
-            name: 'Time in Admin Camera',
-            value: `${Math.round(info.duration / 60000)} mins`
-          }
-        ],
-        timestamp: info.time.toISOString()
+    const embed = this.buildEmbed(this.options.color, info.time, 'Admin Left Admin Camera').addFields(
+      {
+        name: "Admin's Name",
+        value: info.player.name,
+        inline: true
+      },
+      {
+        name: "Admin's SteamID",
+        value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+        inline: true
+      },
+      {
+        name: 'Time in Admin Camera',
+        value: `${Math.round(info.duration / 60000)} mins`
       }
-    });
+    );
+    await this.sendDiscordMessage(this.objEmbed(embed));
   }
 }

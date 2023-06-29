@@ -1,4 +1,4 @@
-import Discord from 'discord.js';
+import { ActivityType, EmbedBuilder } from 'discord.js';
 import tinygradient from 'tinygradient';
 
 import { COPYRIGHT_MESSAGE } from '../utils/constants.js';
@@ -55,11 +55,6 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
   }
 
   async generateMessage() {
-    const embed = new Discord.MessageEmbed();
-
-    // Set embed title.
-    embed.setTitle(this.server.serverName);
-
     // Set player embed field.
     let players = '';
 
@@ -70,37 +65,43 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
     players += ` / ${this.server.publicSlots}`;
     if (this.server.reserveSlots > 0) players += ` (+${this.server.reserveSlots})`;
 
-    embed.addField('Players', players);
-
-    // Set layer embed fields.
-    embed.addField(
-      'Current Layer',
-      `\`\`\`${this.server.currentLayer?.name || 'Unknown'}\`\`\``,
-      true
-    );
-    embed.addField(
-      'Next Layer',
-      `\`\`\`${
-        this.server.nextLayer?.name || (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
-      }\`\`\``,
-      true
-    );
-
+    const embed = new EmbedBuilder()
+    // Set embed title.
+    .setTitle(this.server.serverName)
+    .addFields(
+      {
+        name: 'Players',
+        value: players
+      },
+      // Set layer embed fields.
+      {
+        name: 'Current Layer',
+        value: `\`\`\`${this.server.currentLayer?.name || 'Unknown'}\`\`\``,
+        inline: true
+      },
+      {
+        name: 'Next Layer',
+        value: `\`\`\`${
+          this.server.nextLayer?.name || (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
+        }\`\`\``,
+        inline: true
+      },
+    )
     // Set layer image.
-    embed.setImage(
+    .setImage(
       this.server.currentLayer
         ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg`
         : undefined
-    );
-
+    )
     // Set timestamp.
-    embed.setTimestamp(new Date());
-
+    .setTimestamp(new Date())
     // Set footer.
-    embed.setFooter(COPYRIGHT_MESSAGE);
-
+    .setFooter({
+      text: COPYRIGHT_MESSAGE,
+      iconURL: null
+    })
     // Set gradient embed color.
-    embed.setColor(
+    .setColor(
       parseInt(
         tinygradient([
           { color: '#ff0000', pos: 0 },
@@ -113,17 +114,24 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
       )
     );
 
-    return embed;
+    return {
+      embeds: [embed]
+    };
   }
 
   async updateStatus() {
     if (!this.options.setBotStatus) return;
 
-    await this.options.discordClient.user.setActivity(
-      `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
-        this.server.currentLayer?.name || 'Unknown'
-      }`,
-      { type: 'WATCHING' }
-    );
+    await this.options.discordClient.user.setPresence({
+      activities: [
+        {
+          name: `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
+            this.server.currentLayer?.name || 'Unknown'
+          }`,
+          type: ActivityType.Watching
+        }
+      ],
+      status: 'online'
+    });
   }
 }

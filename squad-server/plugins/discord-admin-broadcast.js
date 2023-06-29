@@ -44,18 +44,10 @@ export default class DiscordAdminBroadcast extends DiscordBasePlugin {
   }
 
   async onAdminBroadcast(info) {
-    await this.sendDiscordMessage({
-      embed: {
-        title: 'Admin Broadcast',
-        color: this.options.color,
-        fields: [
-          {
-            name: 'Message',
-            value: `${info.message}`
-          }
-        ],
-        timestamp: info.time.toISOString()
-      }
+    const embed = this.buildEmbed(this.options.color, info.time, 'Admin Broadcast').addFields({
+      name: 'Message',
+      value: `${info.message}`
     });
+    await this.sendDiscordMessage(this.objEmbed(embed));
   }
 }

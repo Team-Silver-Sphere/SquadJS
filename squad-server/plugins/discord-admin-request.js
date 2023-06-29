@@ -108,37 +108,32 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
         await this.server.rcon.warn(player.steamID, `[${info.player.name}] - ${info.message}`);
     }
 
-    const message = {
-      embed: {
-        title: `${info.player.name} has requested admin support!`,
-        color: this.options.color,
-        fields: [
-          {
-            name: 'Player',
-            value: info.player.name,
-            inline: true
-          },
-          {
-            name: 'SteamID',
-            value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
-            inline: true
-          },
-          {
-            name: 'Team & Squad',
-            value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
-          },
-          {
-            name: 'Message',
-            value: info.message
-          },
-          {
-            name: 'Admins Online',
-            value: amountAdmins
-          }
-        ],
-        timestamp: info.time.toISOString()
+    const message = { };
+    const embed = this.buildEmbed(this.options.color, info.time, `${info.player.name} has requested admin support!`).addFields(
+      {
+        name: 'Player',
+        value: info.player.name,
+        inline: true
+      },
+      {
+        name: 'SteamID',
+        value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+        inline: true
+      },
+      {
+        name: 'Team & Squad',
+        value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
+      },
+      {
+        name: 'Message',
+        value: info.message
+      },
+      {
+        name: 'Admins Online',
+        value: amountAdmins
       }
-    };
+    );
+    Object.assign(message, this.objEmbed(embed));
 
     if (this.options.pingGroups.length > 0 && Date.now() - this.options.pingDelay > this.lastPing) {
       message.content = this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');

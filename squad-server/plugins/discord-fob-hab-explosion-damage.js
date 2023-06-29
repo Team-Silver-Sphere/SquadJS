@@ -48,7 +48,7 @@ export default class DiscordFOBHABExplosionDamage extends DiscordBasePlugin {
     if (!info.weapon.match(/_Deployable_/i)) return;
     if (!info.player) return;
 
-    const fields = [
+    const embed = this.buildEmbed(this.options.color, info.time, `FOB/HAB Explosion Damage: ${info.player.name}`).addFields(
       {
         name: "Player's Name",
         value: info.player.name,
@@ -67,15 +67,7 @@ export default class DiscordFOBHABExplosionDamage extends DiscordBasePlugin {
         name: 'Weapon',
         value: info.weapon
       }
-    ];
-
-    await this.sendDiscordMessage({
-      embed: {
-        title: `FOB/HAB Explosion Damage: ${info.player.name}`,
-        color: this.options.color,
-        fields: fields,
-        timestamp: info.time.toISOString()
-      }
-    });
+    );
+    await this.sendDiscordMessage(this.objEmbed(embed));
   }
 }

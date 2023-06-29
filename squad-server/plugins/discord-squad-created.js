@@ -47,29 +47,23 @@ export default class DiscordSquadCreated extends DiscordBasePlugin {
 
   async onSquadCreated(info) {
     if (this.options.useEmbed) {
-      await this.sendDiscordMessage({
-        embed: {
-          title: `Squad Created`,
-          color: this.options.color,
-          fields: [
-            {
-              name: 'Player',
-              value: info.player.name,
-              inline: true
-            },
-            {
-              name: 'Team',
-              value: info.teamName,
-              inline: true
-            },
-            {
-              name: 'Squad Number & Squad Name',
-              value: `${info.player.squadID} : ${info.squadName}`
-            }
-          ],
-          timestamp: info.time.toISOString()
+      const embed = this.buildEmbed(this.options.color, info.time, 'Squad Created').addFields(
+        {
+          name: 'Player',
+          value: info.player.name,
+          inline: true
+        },
+        {
+          name: 'Team',
+          value: info.teamName,
+          inline: true
+        },
+        {
+          name: 'Squad Number & Squad Name',
+          value: `${info.player.squadID} : ${info.squadName}`
         }
-      });
+      );
+      await this.sendDiscordMessage(this.objEmbed(embed));
     } else {
       await this.sendDiscordMessage(
         ` \`\`\`Player: ${info.player.name}\n created Squad ${info.player.squadID} : ${info.squadName}\n on ${info.teamName}\`\`\` `
