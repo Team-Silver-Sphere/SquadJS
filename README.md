@@ -20,20 +20,35 @@
 </div>
 
 ## **About**
+
 SquadJS is a scripting framework, designed for Squad servers, that aims to handle all communication and data collection to and from the servers. Using SquadJS as the base to any of your scripting projects allows you to easily write complex plugins without having to worry about the hassle of RCON or log parsing. However, for your convenience SquadJS comes shipped with multiple plugins already built for you allowing you to experience the power of SquadJS right away.
 
 <br>
 
 ## **Using SquadJS**
+
 SquadJS relies on being able to access the Squad server log directory in order to parse logs live to collect information. Thus, SquadJS must be hosted on the same server box as your Squad server or be connected to your Squad server via FTP.
 
 #### Prerequisites
+
 * Git
-* [Node.js](https://nodejs.org/en/) (14.x) - [Download](https://nodejs.org/en/)
-* [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
+* [Node.js](https://nodejs.org/en/) (18.16.1+) - [Download](https://nodejs.org/en/)
+* [Yarn](https://yarnpkg.com/) (Version 3.6.1+) - [Download](https://yarnpkg.com/getting-started/install)
 * Some plugins may have additional requirements.
 
+#### Upgrading SquadJS from v3 => v4
+
+* [Node.js](https://nodejs.org/en/) (18.16.1+) - [Download](https://nodejs.org/en/)
+* [Yarn](https://yarnpkg.com/) (Version 3.6.1+) - [Migration guide](https://yarnpkg.com/getting-started/migration#step-by-step)
+
+1. Update [Node.js](https://nodejs.org/en/) to v18.16.1 or higher.
+2. Run `npm install -g yarn` to update the global yarn version to latest v1.
+3. Run `yarn set version berry` to enable v2
+4. Run `yarn config set nodeLinker node-modules`.
+5. Run `yarn install` to migrate the lockfile.
+
 #### Installation
+
 1. [Download SquadJS](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) and unzip the download.
 2. Open the unzipped folder in your terminal.
 3. Install the dependencies by running `yarn install` in your terminal. Due to the use of Yarn Workspaces it is important to use `yarn install` and **not** `npm install` as this will not work and will break stuff.
@@ -45,6 +60,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 <br>
 
 ## **Configuring SquadJS**
+
 SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS and is named [config.json](./config.json).
 
 The config file needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
@@ -83,6 +99,7 @@ The following section of the configuration contains information about your Squad
     ]
   },
   ```
+
 * `id` - An integer ID to uniquely identify the server.
 * `host` - The IP of the server.
 * `queryPort` - The query port of the server.
@@ -105,6 +122,7 @@ The following section of the configuration contains information about your Squad
 ## Connector Configuration
 
 Connectors allow SquadJS to communicate with external resources.
+
   ```json
   "connectors": {
     "discord": "Discord Login Token",
@@ -115,7 +133,9 @@ Connectors should be named, for example the above is named `discord`, and should
 See below for more details on connectors and their associated config.
 
 ##### Discord
+
 Connects to Discord via `discord.js`.
+
   ```json
   "discord": "Discord Login Token",
   ```
@@ -123,16 +143,19 @@ Requires a Discord bot login token.
 
 
 ##### Databases
+
 SquadJS uses [Sequelize](https://sequelize.org/) to connect and use a wide range of SQL databases.
 
 The connector should be configured using any of Sequelize's single argument configuration options.
 
 For example:
+
   ```json
   "mysql": "mysql://user:pass@example.com:5432/dbname"
   ```
 
 or:
+
   ```json
   "sqlite": {
       "dialect": "sqlite",
@@ -151,7 +174,8 @@ See [Sequelize's documentation](https://sequelize.org/master/manual/getting-star
 ## Plugin Configuration
 
 The `plugins` section in your config file lists all plugins built into SquadJS
-  ```json
+
+```json
     "plugins": [
       {
         "plugin": "auto-tk-warn",
@@ -159,7 +183,7 @@ The `plugins` section in your config file lists all plugins built into SquadJS
         "message": "Please apologise for ALL TKs in ALL chat!"
       }
     ]
-  ```
+```
 
 The `disabled` field can be toggled between `true`/ `false` to enabled/disable the plugin.
 
@@ -174,7 +198,8 @@ Plugin options are also specified. A full list of plugin options can be seen bel
 ## Console Output Configuration
 
 The `logger` section configures how verbose a module of SquadJS will be as well as the displayed color.
-  ```json
+
+```json
     "logger": {
       "verboseness": {
         "SquadServer": 1,
@@ -182,13 +207,16 @@ The `logger` section configures how verbose a module of SquadJS will be as well 
         "RCON": 1
       },
       "colors": {
+        "DiscordJS": "cyanBright",
+        "Err": "redBright",
         "SquadServer": "yellowBright",
         "SquadServerFactory": "yellowBright",
         "LogParser": "blueBright",
         "RCON": "redBright"
       }
     }
-  ```
+```
+
 The larger the number set in the `verboseness` section for a specified module the more it will print to the console.
 
   ---
@@ -197,6 +225,7 @@ The larger the number set in the `verboseness` section for a specified module th
 <br>
 
 ## **Plugins**
+
 The following is a list of plugins built into SquadJS, you can click their title for more information:
 
 Interested in creating your own plugin? [See more here](./squad-server/plugins/readme.md)
@@ -275,7 +304,7 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelID</h4>
            <h6>Description</h6>
            <p>The ID of the channel to alert admins through.</p>
            <h6>Default</h6>
@@ -897,6 +926,7 @@ Grafana:
 <br>
 
 ## Statement on Accuracy
+
 Some information SquadJS collects from Squad servers was never intended or designed to be collected. As a result, it is impossible for any framework to collect the same information with 100% accuracy. SquadJS aims to get as close as possible to that figure, however, it acknowledges that this is not possible in some specific scenarios.
 
 Below is a list of scenarios we know may cause some information to be inaccurate:
@@ -907,6 +937,7 @@ Below is a list of scenarios we know may cause some information to be inaccurate
 * Duplicated Player Names - If two or more players have the same name or suffix name (see above) then SquadJS will be unable to identify them in the logs. When this occurs event logs will show the player as `null`. Be on the watch for groups of players who try to abuse this in order to TK or complete other malicious actions without being detected by SquadJS plugins.
 
 ## SquadJS API
+
 SquadJS pings the following data to the [SquadJS API](https://github.com/Team-Silver-Sphere/SquadJS-API/) at regular intervals to assist with its development:
 * Squad server IP, query port, name & player count (including queue size).
 * SquadJS version.
@@ -918,6 +949,7 @@ At this time, this cannot be disabled.
 Please note, plugin configurations do **not** and should **not** contain any sensitive information which allows us to collect this information. Any sensitive information, e.g. Discord login tokens, should be included in the `connectors` section of the config which is not sent to our API. It is important that developers of custom plugins maintain this approach to avoid submitting confidential information to our API.
 
 ## Versions and Releases
+
 Whilst installing SquadJS you may do the following to obtain slightly different versions:
 * Download the [latest release](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) - To get the latest **stable** version of SquadJS.
 * Download/clone the [`master` branch](https://github.com/Team-Silver-Sphere/SquadJS/) - To get the most up to date version of SquadJS.
@@ -936,6 +968,7 @@ Release version numbers and changelogs are managed by [Release Drafter](https://
 The above policy was written and put into effect after the release of SquadJS v2.0.5. A major version bump to SquadJS v3.0.0 was made to signify this policy taking affect and to draw a line under the previous poor management of releases and version numbers.
 
 ## Credits
+
 SquadJS would not be possible without the support of so many individuals and organisations. Our thanks goes out to:
 * [SquadJS's contributors](https://github.com/Team-Silver-Sphere/SquadJS/graphs/contributors).
 * [Thomas Smyth's GitHub sponsors](https://github.com/sponsors/Thomas-Smyth).
@@ -946,6 +979,7 @@ SquadJS would not be possible without the support of so many individuals and org
 * Everyone in the [Squad RCON Discord](https://discord.gg/9F2Ng5C) and others who have submitted bug reports, suggestions, feedback and provided logs.
 
 ## License
+
 ```
 Boost Software License - Version 1.0 - August 17th, 2003
 

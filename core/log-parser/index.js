@@ -47,7 +47,6 @@ export default class LogParser extends EventEmitter {
 
   async processLine(line) {
     Logger.verbose('LogParser', 4, `Matching on line: ${line}`);
-
     let i = this.getRules().length;
     while (i--) {
       const rule = this.getRules()[i];
@@ -59,17 +58,17 @@ export default class LogParser extends EventEmitter {
     this.onLine(addedLines);
     addedLines.length = 0;
   }
-	
-	onLine(addedLine) {
-    for(const ad of addedLine) {
+
+  onLine(addedLine) {
+    for (const ad of addedLine) {
       const { rule, match } = ad;
       Logger.verbose('LogParser', 3, `Matched on line: ${match[0]}`);
       match[1] = moment.utc(match[1], 'YYYY.MM.DD-hh.mm.ss:SSS').toDate();
       match[2] = parseInt(match[2]);
       rule.onMatch(match, this);
       this.matchingLinesPerMinute += 1;
-      this.matchingLatency +=  Number(Date.now()) - match[1];
-    };
+      this.matchingLatency += Number(Date.now()) - match[1];
+    }
   }
 
   // manage cleanup disconnected players, session data.
@@ -106,7 +105,9 @@ export default class LogParser extends EventEmitter {
       } lines per minute | Matching lines per minute: ${
         this.matchingLinesPerMinute
       } matching lines per minute | Average matching latency: ${
-        Number.isNaN(this.matchingLatency / this.matchingLinesPerMinute) ? 0 : this.matchingLatency / this.matchingLinesPerMinute
+        Number.isNaN(this.matchingLatency / this.matchingLinesPerMinute)
+          ? 0
+          : this.matchingLatency / this.matchingLinesPerMinute
       }ms`
     );
     this.linesPerMinute = 0;

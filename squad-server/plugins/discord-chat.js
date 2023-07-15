@@ -53,26 +53,33 @@ export default class DiscordChat extends DiscordBasePlugin {
 
   async onChatMessage(info) {
     if (this.options.ignoreChats.includes(info.chat)) return;
-    const embed = this.buildEmbed(this.options.chatColors[info.chat] || this.options.color, info.time, info.chat).addFields(
-      {
-        name: 'Player',
-        value: info.player.name,
-        inline: true
-      },
-      {
-        name: 'SteamID',
-        value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.steamID})`,
-        inline: true
-      },
-      {
-        name: 'Team & Squad',
-        value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
-      },
-      {
-        name: 'Message',
-        value: `${info.message}`
+
+    await this.sendDiscordMessage({
+      embed: {
+        title: info.chat,
+        color: this.options.chatColors[info.chat] || this.options.color,
+        fields: [
+          {
+            name: 'Player',
+            value: info.player.name,
+            inline: true
+          },
+          {
+            name: 'SteamID',
+            value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.steamID})`,
+            inline: true
+          },
+          {
+            name: 'Team & Squad',
+            value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
+          },
+          {
+            name: 'Message',
+            value: `${info.message}`
+          }
+        ],
+        timestamp: info.time.toISOString()
       }
-    );
-    await this.sendDiscordMessage(this.objEmbed(embed));
+    });
   }
 }

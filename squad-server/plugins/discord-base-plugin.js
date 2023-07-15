@@ -1,6 +1,7 @@
 import BasePlugin from './base-plugin.js';
+
 import { COPYRIGHT_MESSAGE } from '../utils/constants.js';
-import { EmbedBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
 
 export default class DiscordBasePlugin extends BasePlugin {
   static get optionsSpecification() {
@@ -14,206 +15,207 @@ export default class DiscordBasePlugin extends BasePlugin {
     };
   }
 
+  // #region Constructor
+  constructor(server, options, connectors) {
+    super(server, options, connectors);
+    this.channels = new Map();
+  }
+  // #endregion
+
+  // #region prepareToMount
   async prepareToMount() {
-    try {
-      this.channel = await this.options.discordClient.channels.fetch(this.options.channelID);
-    } catch (error) {
-      this.channel = null;
-      this.verbose(
-        1,
-        `Could not fetch Discord channel with channelID "${this.options.channelID}". Error: ${error.message}`
-      );
-      this.verbose(2, `${error.stack}`);
-    }
-  }
-
-  /**
-   * Object is Null
-   * @param {Object} obj - Object
-   * @returns {boolean} Returns booleantrue or false
-   */
-  isNull(obj) {
-    return Object.is(obj, null) || Object.is(obj, undefined);
-  }
-
-  /**
-   * Object is Blank
-   * @param {(Object|Object[]|string)} obj - Array, Set, Object or String
-   * @returns {boolean} Returns boolean true or false
-   */
-  isBlank(obj) {
-    return (
-      (typeof obj === 'string' && Object.is(obj.trim(), '')) ||
-      (obj instanceof Set && Object.is(obj.size, 0)) ||
-      (Array.isArray(obj) && Object.is(obj.length, 0)) ||
-      (obj instanceof Object &&
-        typeof obj.entries !== 'function' &&
-        Object.is(Object.keys(obj).length, 0))
-    );
-  }
-
-  /**
-   * Object is Empty
-   * @param {(Object|Object[]|string)} obj - Array, object or string
-   * @returns {boolean} Returns boolean true or false
-   */
-  isEmpty(obj) {
-    return this.isNull(obj) || this.isBlank(obj);
-  }
-
-  isObj(obj) {
-    return obj instanceof Object && typeof obj.entries !== 'function' || typeof obj === 'object';
-  }
-
-  /**
-   * Has valid info
-   * @param {Object} info - Root information
-   * @param {string} template - template to use
-   * 
-   * Templates:
-   * - steamID
-   * - squadID
-   * - squadName
-   * - TeamID
-   * - teamName
-   * @returns {boolean} Returns boolean true or false
-   */
-  isValid(info, template) {
-    const check = this.validate(info, template);
-    if(Object.is(check, `<${template}>`)) {
-      return false;
-    };
-    return check;
-  }
-
-  /**
-   * Embed Builder
-   * @param {Number|string} color - Color of embed message
-   * @param {Date|string} time - Timestamp of embed message
-   * @param {string} title - Title of embed message
-   * @param {string} author - Author of embed message
-   * @returns {class} embed - EmbedBuilder()
-   */
-  buildEmbed(color, time, title, author) {
-    const embed = new EmbedBuilder();
-    if(!this.isEmpty(author)) {
-      if(isObj(author)) {
-        embed.setAuthor(author);
-      } else {
-        embed.setAuthor({
-          name: author,
-          iconURL: null,
-          url: null
-        });
+    if (!this.isEmpty(this.options.channelIDs)) {
+      for (const obj of this.options.channelIDs) {
+        try {
+          if (typeof obj.channelID !== 'string') {
+            throw new Error('Discord channelID must be a string.');
+          }
+          if (typeof obj.label !== 'string') {
+            throw new Error('Discord label must be a string.');
+          }
+          this.channels.set(obj.label, {
+            channel: this.options.discordClient.channels.cache.get(obj.channelID),
+            ...obj
+          });
+        } catch (ex) {
+          this.dbg(
+            'DiscordJS',
+            1,
+            `Could not fetch Discord channel w/ channelID { ${JSON.stringify(obj)} }, ${ex.message}`
+          );
+          this.dbg('DiscordJS', 2, `${ex.stack}`);
+        }
       }
-    };
-    if(!this.isEmpty(color)) {
-      if(typeof color === 'string') {
-        embed.setColor(this.options.chatColors[color])
+    }
+    if (!this.isEmpty(this.options.channelID)) {
+      try {
+        if (typeof this.options.channelID !== 'string') {
+          throw new Error('Unknown Discord channelID type.');
+        }
+        this.channels.set('default', {
+          channel: this.options.discordClient.channels.cache.get(this.options.channelID),
+          channelID: this.options.channelID
+        });
+      } catch (error) {
+        this.dbg(
+          'DiscordJS',
+          1,
+          `Could not fetch Discord channel with channelID "${this.options.channelID}". Error: ${error.message}`
+        );
+        this.dbg('DiscordJS', 2, `${error.stack}`);
+      }
+    }
+    this.dbg('DiscordJS', 1, `Loaded ${this.channels.size} Discord Channels.`);
+  }
+  // #endregion
+
+  buildButton(CustomId, Label, style = 'Primary', link) {
+    const btn = new ButtonBuilder().setLabel(Label).setStyle(ButtonStyle[style]);
+    if (this.isEmpty(link)) {
+      btn.setCustomId(CustomId);
+    } else {
+      btn.setURL(link);
+    }
+    return btn;
+  }
+
+  buildEmbed(color, time, author) {
+    const { clan, iconURL, name, url } = this.options.embedInfo;
+    const embed = new EmbedBuilder();
+    const authorFormat = {};
+    // If this.options.embedInfo is invalid
+    if (this.isEmpty(author ?? name)) {
+      Object.assign(authorFormat, {
+        name: 'SquadJS Server Watchdog',
+        iconURL,
+        url
+      });
+    } else {
+      Object.assign(authorFormat, {
+        name: `${clan}${author ?? name}`,
+        iconURL,
+        url
+      });
+    }
+    embed.setAuthor(authorFormat);
+    if (!this.isEmpty(color)) {
+      if (typeof color === 'string') {
+        embed.setColor(this.options.chatColors[color]);
       } else {
-        embed.setColor(color)
-      };
-    };
-    if(this.isNull(time)) {
+        embed.setColor(color);
+      }
+    }
+    if (this.isNull(time)) {
       embed.setTimestamp(new Date());
-    } else if(typeof time === 'string') {
+    } else if (typeof time === 'string') {
       embed.setTimestamp(new Date(time));
     } else {
       embed.setTimestamp(time);
-    };
-    if(!this.isEmpty(title)) {
-      embed.setTitle(title)
-    };
+    }
     return embed;
   }
 
-  /**
-   * Embed to Object
-   * @param {class|object} embed - EmbedBuilder() class
-   * @returns {object} Embed Object
-   */
   objEmbed(embed) {
-    if(Array.isArray(embed)) {
+    if (Array.isArray(embed)) {
       return {
         embeds: embed
       };
-    };
-    if(embed instanceof Set) {
+    }
+    if (embed instanceof Set) {
       return {
         embeds: [...embed]
       };
-    };
+    }
     return {
       embeds: [embed]
     };
   }
 
-  validator(obj, locate) {
-    let result = null;
-    for(const key in obj) {
-      if(key === locate) {
-        result = obj[key];
-        break;
-      } else if(obj[key] instanceof Object) {
-        result = this.validator(obj[key], locate);
-      };
+  objRow(buttons) {
+    const row = new ActionRowBuilder().addComponents(...buttons);
+    return {
+      components: [row]
     };
-    return result;
   }
 
-  validate(info, template) {
-    if (!this.isObj(info)) {
-      return 'Undefined';
-    };
-    const formatted = template.replace(/(<[\w\d]+>)/g, (_match, root) => {
-      const mfind = (txt) => {
-        const reg = new RegExp(txt, 'g');
-        const txtMatch = root.match(/[\w\d]+/g)[0].match(reg) || [];
-        return !!txtMatch.length;
-      };
-      const mFormat = (key, alt) => {
-        const extras = alt ?? key;
-        return this.isNull(key) ? root : extras;
-      };
-      let response = null;
-      if(mfind('steamID')) {
-        response = mFormat(this.validator(info, 'steamID'))
-      } else if(mfind('squadID')) {
-        response = mFormat(this.validator(info, 'squadID'))
-      } else if(mfind('squadName')) {
-        response = mFormat(this.validator(info, 'squadName'))
-      } else if(mfind('name')) {
-        response = mFormat(this.validator(info, 'name'))
-      } else if(mfind('TeamID')) {
-        response = mFormat(this.validator(info, 'teamID'))
-      } else if(mfind('teamName')) {
-        response = mFormat(this.validator(info, 'teamName'))
-      } else {
-        response = root;
+  // #region Send Discord Msg
+  /**
+   * sendDiscordMessage
+   * @param {(Object|string)} message - Message to send to channel
+   * @param {(Object[]|string)} labels - String or Array of channel labels
+   */
+  async sendDiscordMessage(message, labels) {
+    try {
+      if (this.isEmpty(message)) {
+        this.dbg('DiscordJS', 1, 'Could not send Discord Message. Message is empty.');
+        return;
       }
-      return response;
-    });
-    return formatted;
+      if (this.isBlank(this.channels)) {
+        this.dbg('DiscordJS', 1, `Could not send Discord Message. Channels not initialized.`);
+        return;
+      }
+      const cLabels = [];
+      if (this.isEmpty(labels)) {
+        cLabels.push('default');
+      } else if (typeof labels === 'string') {
+        cLabels.push(labels);
+      } else {
+        cLabels.push(...this.normalizeTarget(labels));
+      }
+      if (typeof message === 'object') {
+        if ('embed' in message) {
+          message.embeds = message.embed;
+          delete message.embed;
+        }
+        if ('embeds' in message) {
+          const copyright = {
+            text: COPYRIGHT_MESSAGE,
+            icon_url: null
+          };
+          const addCopyright = (e) => {
+            if (e instanceof EmbedBuilder) {
+              if (!e.data.footer?.text.includes('SquadJS')) {
+                e.setFooter(copyright);
+              }
+              return e;
+            }
+            const toEmbed = EmbedBuilder.from(e);
+            if (!toEmbed.data.footer?.text.includes('SquadJS')) {
+              toEmbed.setFooter(copyright);
+            }
+            return toEmbed;
+          };
+          if (!Array.isArray(message.embeds)) {
+            if (message.embeds instanceof Set) {
+              message.embeds = [...message.embeds];
+            } else {
+              message.embeds = [message.embeds];
+            }
+          }
+          message.embeds = message.embeds.map(addCopyright);
+        }
+      }
+      const toSend = [];
+      for (const label of cLabels) {
+        const c = this.channels.get(label);
+        if (this.isEmpty(c)) {
+          continue;
+        }
+        if (this.isEmpty(c.channel)) {
+          this.dbg(
+            'DiscordJS',
+            1,
+            'Could not send Discord Message, channel is not initialized.',
+            c
+          );
+          break;
+        }
+        toSend.push(c.channel.send(message));
+      }
+      await Promise.all(toSend);
+    } catch (ex) {
+      console.error(ex);
+    }
   }
-
-  async sendDiscordMessage(message) {
-    if (this.isEmpty(message)) {
-      this.verbose(1, 'Could not send Discord Message. Message is empty.');
-      return;
-    }
-    if (!this.channel) {
-      this.verbose(1, `Could not send Discord Message. Channel not initialized.`);
-      return;
-    }
-    if (typeof message === 'object' && 'embeds' in message) {
-      for(const e of message.embeds) {
-        e.setFooter({
-          text: COPYRIGHT_MESSAGE,
-          iconURL: null
-        });
-      };
-    }
-
-    await this.channel.send(message);
-  }
+  // #endregion
 }

@@ -86,10 +86,13 @@ export default class DiscordKillFeed extends DiscordBasePlugin {
         value: `[Attacker's Bans](https://communitybanlist.com/search/${info.attacker.steamID})`
       });
 
-    const embed = this.buildEmbed(this.options.color, info.time, `KillFeed: ${info.attacker.name}`);
-    for(const f of fields) {
-      embed.addFields(f)
-    }
-    await this.sendDiscordMessage(this.objEmbed(embed));
+    await this.sendDiscordMessage({
+      embed: {
+        title: `KillFeed: ${info.attacker.name}`,
+        color: this.options.color,
+        fields: fields,
+        timestamp: info.time.toISOString()
+      }
+    });
   }
 }

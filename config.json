@@ -248,6 +248,8 @@
       "RCON": 1
     },
     "colors": {
+      "DiscordJS": "cyanBright",
+      "Err": "redBright",
       "SquadServer": "yellowBright",
       "SquadServerFactory": "yellowBright",
       "LogParser": "blueBright",

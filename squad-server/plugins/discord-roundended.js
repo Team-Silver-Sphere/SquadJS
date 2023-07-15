@@ -41,27 +41,39 @@ export default class DiscordRoundEnded extends DiscordBasePlugin {
   }
 
   async onRoundEnd(info) {
-    const embed = this.buildEmbed(this.options.color, info.time);
     if (!info.winner || !info.loser) {
-      embed.setTitle('Round Ended').setDescription('This match Ended in a Draw');
-      await this.sendDiscordMessage(this.objEmbed(embed));
+      await this.sendDiscordMessage({
+        embed: {
+          title: 'Round Ended',
+          description: 'This match Ended in a Draw',
+          color: this.options.color,
+          timestamp: info.time.toISOString()
+        }
+      });
       return;
     }
 
-    embed.setTitle('Round Ended').setDescription(`${info.winner.layer} - ${info.winner.level}`).addFields(
-      {
-        name: `Team ${info.winner.team} Won`,
-        value: `${info.winner.subfaction}\n ${info.winner.faction}\n won with ${info.winner.tickets} tickets.`
-      },
-      {
-        name: `Team ${info.loser.team} Lost`,
-        value: `${info.loser.subfaction}\n ${info.loser.faction}\n lost with ${info.loser.tickets} tickets.`
-      },
-      {
-        name: 'Ticket Difference',
-        value: `${info.winner.tickets - info.loser.tickets}.`
+    await this.sendDiscordMessage({
+      embed: {
+        title: 'Round Ended',
+        description: `${info.winner.layer} - ${info.winner.level}`,
+        color: this.options.color,
+        fields: [
+          {
+            name: `Team ${info.winner.team} Won`,
+            value: `${info.winner.subfaction}\n ${info.winner.faction}\n won with ${info.winner.tickets} tickets.`
+          },
+          {
+            name: `Team ${info.loser.team} Lost`,
+            value: `${info.loser.subfaction}\n ${info.loser.faction}\n lost with ${info.loser.tickets} tickets.`
+          },
+          {
+            name: 'Ticket Difference',
+            value: `${info.winner.tickets - info.loser.tickets}.`
+          }
+        ],
+        timestamp: info.time.toISOString()
       }
-    );
-    await this.sendDiscordMessage(this.objEmbed(embed));
+    });
   }
 }

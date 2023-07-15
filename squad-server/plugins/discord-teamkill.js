@@ -83,10 +83,14 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
         name: 'Community Ban List',
         value: `[Attacker's Bans](https://communitybanlist.com/search/${info.attacker.steamID})`
       });
-    const embed = this.buildEmbed(this.options.color, info.time, `Teamkill: ${info.attacker.name}`);
-    for(const f of fields) {
-      embed.addFields(f)
-    }
-    await this.sendDiscordMessage(this.objEmbed(embed));
+
+    await this.sendDiscordMessage({
+      embed: {
+        title: `Teamkill: ${info.attacker.name}`,
+        color: this.options.color,
+        fields: fields,
+        timestamp: info.time.toISOString()
+      }
+    });
   }
 }
