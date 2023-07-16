@@ -80,11 +80,12 @@ export default class DiscordBasePlugin extends BasePlugin {
   }
 
   buildEmbed(color, time, author) {
-    const { clan, iconURL, name, url } = this.options.embedInfo;
+    const { clan, iconURL, url } = this.options.embedInfo;
+    const name = author ?? this.options.embedInfo.name;
     const embed = new EmbedBuilder();
     const authorFormat = {};
     // If this.options.embedInfo is invalid
-    if (this.isEmpty(author ?? name)) {
+    if (this.isEmpty(name)) {
       Object.assign(authorFormat, {
         name: 'SquadJS Server Watchdog',
         iconURL,
@@ -92,18 +93,14 @@ export default class DiscordBasePlugin extends BasePlugin {
       });
     } else {
       Object.assign(authorFormat, {
-        name: `${clan}${author ?? name}`,
+        name: `${clan ?? ''}${name}`,
         iconURL,
         url
       });
     }
     embed.setAuthor(authorFormat);
     if (!this.isEmpty(color)) {
-      if (typeof color === 'string') {
-        embed.setColor(this.options.chatColors[color]);
-      } else {
-        embed.setColor(color);
-      }
+      embed.setColor(color);
     }
     if (this.isNull(time)) {
       embed.setTimestamp(new Date());
@@ -115,6 +112,11 @@ export default class DiscordBasePlugin extends BasePlugin {
     return embed;
   }
 
+  /**
+   * Convert and wrap embeds to object
+   * @param {(Object|Object[]|string)} embed - Array, Set, or Embed class
+   * @returns {Object} Object to be used with this.sendDiscordMessage
+   */
   objEmbed(embed) {
     if (Array.isArray(embed)) {
       return {
@@ -155,7 +157,7 @@ export default class DiscordBasePlugin extends BasePlugin {
         return;
       }
       const cLabels = [];
-      if (this.isEmpty(labels)) {
+      if (this.isEmpty(labels) || this.channels.size === 1) {
         cLabels.push('default');
       } else if (typeof labels === 'string') {
         cLabels.push(labels);

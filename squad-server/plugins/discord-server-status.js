@@ -66,53 +66,56 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
     if (this.server.reserveSlots > 0) players += ` (+${this.server.reserveSlots})`;
 
     const embed = new EmbedBuilder()
-    // Set embed title.
-    .setTitle(this.server.serverName)
-    .addFields(
-      {
-        name: 'Players',
-        value: players
-      },
-      // Set layer embed fields.
-      {
-        name: 'Current Layer',
-        value: `\`\`\`${this.server.currentLayer?.name || 'Unknown'}\`\`\``,
-        inline: true
-      },
-      {
-        name: 'Next Layer',
-        value: `\`\`\`${
-          this.server.nextLayer?.name || (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
-        }\`\`\``,
-        inline: true
-      },
-    )
-    // Set layer image.
-    .setImage(
-      this.server.currentLayer
-        ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg`
-        : undefined
-    )
-    // Set timestamp.
-    .setTimestamp(new Date())
-    // Set footer.
-    .setFooter({
-      text: COPYRIGHT_MESSAGE,
-      iconURL: null
-    })
-    // Set gradient embed color.
-    .setColor(
-      parseInt(
-        tinygradient([
-          { color: '#ff0000', pos: 0 },
-          { color: '#ffff00', pos: 0.5 },
-          { color: '#00ff00', pos: 1 }
-        ])
-          .rgbAt(this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots))
-          .toHex(),
-        16
+      // Set embed title.
+      .setTitle(this.server.serverName)
+      .addFields(
+        {
+          name: 'Players',
+          value: players
+        },
+        // Set layer embed fields.
+        {
+          name: 'Current Layer',
+          value: `\`\`\`${this.server.currentLayer?.name || 'Unknown'}\`\`\``,
+          inline: true
+        },
+        {
+          name: 'Next Layer',
+          value: `\`\`\`${
+            this.server.nextLayer?.name ||
+            (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
+          }\`\`\``,
+          inline: true
+        }
       )
-    );
+      // Set layer image.
+      .setImage(
+        this.server.currentLayer
+          ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg`
+          : undefined
+      )
+      // Set timestamp.
+      .setTimestamp(new Date())
+      // Set footer.
+      .setFooter({
+        text: COPYRIGHT_MESSAGE,
+        iconURL: null
+      })
+      // Set gradient embed color.
+      .setColor(
+        parseInt(
+          tinygradient([
+            { color: '#ff0000', pos: 0 },
+            { color: '#ffff00', pos: 0.5 },
+            { color: '#00ff00', pos: 1 }
+          ])
+            .rgbAt(
+              this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots)
+            )
+            .toHex(),
+          16
+        )
+      );
 
     return {
       embeds: [embed]

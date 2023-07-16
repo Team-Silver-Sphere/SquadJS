@@ -304,12 +304,26 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to alert admins through.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "CBLInfo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
+<li><h4>embedInfo</h4>
+           <h6>Description</h6>
+           <p>Server info for embed messages.</p>
+           <h6>Default</h6>
+           <pre><code>{
+  "clan": "",
+  "iconURL": "https://communitybanlist.com/static/media/cbl-logo.caf6584e.png",
+  "url": "https://communitybanlist.com/"
+}</code></pre></li>
 <li><h4>threshold</h4>
            <h6>Description</h6>
            <p>Admins will be alerted when a player has this or more reputation points. For more information on reputation points, see the <a href="https://communitybanlist.com/faq">Community Ban List's FAQ</a></p>
@@ -370,12 +384,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log admin broadcasts to.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "Foo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embed.</p>
@@ -393,17 +412,39 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
-           <p>The ID of the channel to log admin camera usage to.</p>
+           <p>The ID of the channel to log admin camera usage to. Specify one channel ID will send all usage to that channel.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>color</h4>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "admin-camera-entry",
+    "channelID": "667741905228136459"
+  },
+  {
+    "label": "admin-camera-exit",
+    "channelID": "667741905228131111"
+  }
+]</code></pre>
+<li><h4>colors</h4>
            <h6>Description</h6>
-           <p>The color of the embed.</p>
+           <p>Colors for embed messages.</p>
            <h6>Default</h6>
-           <pre><code>16761867</code></pre></li></ul>
+           <pre><code>{
+  "entry": 2202966,
+  "exit": 15416641
+}</code></pre></li>
+<li><h4>embedInfo</h4>
+           <h6>Description</h6>
+           <p>Server info for embed messages.</p>
+           <h6>Default</h6>
+           <pre><code>{
+  "clan": "SquadJS ",
+  "name": "Admin Camera",
+  "iconURL": null,
+  "url": null
+}</code></pre></li></ul>
         </details>
 
 <details>
@@ -416,12 +457,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log admin broadcasts to.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "Foo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
 <li><h4>ignoreChats</h4>
            <h6>Description</h6>
            <p>A list of chat names to ignore.</p>
@@ -483,12 +529,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log admin broadcasts to.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "Foo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
 <li><h4>chatColors</h4>
            <h6>Description</h6>
            <p>The color of the embed for each chat.</p>
@@ -521,12 +572,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log events to.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "Foo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
 <li><h4>events (Required)</h4>
            <h6>Description</h6>
            <p>A list of events to dump.</p>
@@ -547,12 +603,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log FOB/HAB explosion damage to.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "Foo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embeds.</p>
@@ -570,12 +631,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log teamkills to.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "Foo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embeds.</p>
@@ -603,11 +669,14 @@ Grafana:
            <p>Command to create Discord placeholder.</p>
            <h6>Default</h6>
            <pre><code>!placeholder</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
-           <p>The bot will only answer with a placeholder on this channel</p>
+           <p>The bot will only answer with a placeholder in these channels</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li></ul>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  "667741905228136459"
+]</code></pre></ul>
         </details>
 
 <details>
@@ -620,12 +689,14 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
-           <p>ID of channel to turn into RCON console.</p>
+           <p>Channel IDs to turn into RCON console.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  "667741905228136459"
+]</code></pre>
 <li><h4>permissions</h4>
            <h6>Description</h6>
            <p><ul><li>Dictionary of roles and a list of the permissions they are allowed to use.<li>If dictionary is empty (<code>{}</code>) permissions will be disabled</li><li>A list of available RCON commands can be found here <a>https://squad.gamepedia.com/Server_Administration#Admin_Console_Commands</a>.</ul></p>
@@ -655,12 +726,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log admin broadcasts to.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "Foo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embed.</p>
@@ -678,12 +754,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log round end events to.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "Foo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embed.</p>
@@ -738,12 +819,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log Squad Creation events to.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "Foo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embed.</p>
@@ -784,12 +870,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+<li><h4>channelIDs (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log teamkills to.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  {
+    "label": "Foo",
+    "channelID": "667741905228136459"
+  }
+]</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embeds.</p>
