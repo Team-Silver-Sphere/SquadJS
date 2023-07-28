@@ -125,7 +125,11 @@ Connectors allow SquadJS to communicate with external resources.
 
   ```json
   "connectors": {
-    "discord": "Discord Login Token",
+    "discord": {
+      "clientID": "",
+      "guidID": "",
+      "token": ""
+    },
   },
   ```
 Connectors should be named, for example the above is named `discord`, and should have the associated config against it. Configs can be specified by name in plugin options. Should a connector not be needed by any plugin then the default values can be left or you can remove it from your config file.
@@ -137,7 +141,11 @@ See below for more details on connectors and their associated config.
 Connects to Discord via `discord.js`.
 
   ```json
-  "discord": "Discord Login Token",
+  "discord": {
+    "clientID": "",
+    "guidID": "",
+    "token": ""
+  }
   ```
 Requires a Discord bot login token.
 

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { Client, Events, GatewayIntentBits } from 'discord.js';
+import DiscordBot from 'discord-bot';
 import sequelize from 'sequelize';
 import AwnAPI from './utils/awn-api.js';
 
@@ -106,17 +106,9 @@ export default class SquadServerFactory {
       if (!(typeof connectorConfig === 'string' || typeof connectorConfig === 'object')) {
         throw new Error('Unknown Discord connector config type.');
       }
-      const connector = new Client({
-        intents: [
-          GatewayIntentBits.Guilds,
-          GatewayIntentBits.GuildMessages,
-          GatewayIntentBits.MessageContent
-        ]
-      });
-      connector.once(Events.ClientReady, (c) => {
-        Logger.verbose('DiscordJS', 1, `Logged in as ${c.user.tag}`);
-      });
-      await connector.login(connectorConfig);
+      const bot = new DiscordBot(connectorConfig, server);
+      const connector = await bot.auth();
+      bot.getCommands();
       return connector;
     }
 
