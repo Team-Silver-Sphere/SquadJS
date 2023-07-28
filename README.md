@@ -126,9 +126,9 @@ Connectors allow SquadJS to communicate with external resources.
   ```json
   "connectors": {
     "discord": {
-      "clientID": "",
-      "guidID": "",
-      "token": ""
+      "clientID": "Discord Application ID",
+      "guidID": "Discord Server ID",
+      "token": "Discord Login Token"
     },
   },
   ```
@@ -142,9 +142,9 @@ Connects to Discord via `discord.js`.
 
   ```json
   "discord": {
-    "clientID": "",
-    "guidID": "",
-    "token": ""
+    "clientID": "Discord Application ID",
+    "guidID": "Discord Server ID",
+    "token": "Discord Login Token"
   }
   ```
 Requires a Discord bot login token.

@@ -22,9 +22,9 @@
   },
   "connectors": {
     "discord": {
-      "clientID": "",
-      "guidID": "",
-      "token": ""
+      "clientID": "Discord Application ID",
+      "guidID": "Discord Server ID",
+      "token": "Discord Login Token"
     },
     "awnAPI": {
       "orgID": "YourOrgID",
