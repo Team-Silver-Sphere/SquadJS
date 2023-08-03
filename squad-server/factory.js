@@ -108,7 +108,6 @@ export default class SquadServerFactory {
       }
       const bot = new DiscordBot(connectorConfig, server);
       const connector = await bot.auth();
-      bot.getCommands();
       return connector;
     }
 

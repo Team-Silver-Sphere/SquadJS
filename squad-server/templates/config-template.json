@@ -21,7 +21,7 @@
     ]
   },
   "connectors": {
-    "discord": {"clientID": "", "guidID": "", "token": ""},
+    "discord": {"clientID": "Discord Application ID", "guidID": "Discord Server ID", "token": "Discord Login Token"},
     "awnAPI": {"orgID":"YourOrgID", "creds": {"username":"AwnUsername", "password":"AwnPassword"}},
     "mysql": {
       "host": "host",
