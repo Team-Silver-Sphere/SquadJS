@@ -120,6 +120,7 @@ Connects to Discord via `discord.js`.
   "discord": "Discord Login Token",
   ```
 Requires a Discord bot login token.
+Requires "Message Content Intent" option to be checked via the Discord Developer Portal. Otherwise it won't be able to read the discord messages if you have DiscordServerStatus enabled.
 
 
 ##### Databases
