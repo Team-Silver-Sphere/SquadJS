@@ -19,7 +19,7 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
       ...DiscordBaseMessageUpdater.optionsSpecification,
       command: {
         required: false,
-        description: 'Command name to get message.',
+        description: 'Command name to get message. Discord bot requires "Message Content Intent" option to be checked via Discord Developer Porta. Otherwise your bot cannot read the chat/channel',
         default: '!status'
       },
       updateInterval: {
