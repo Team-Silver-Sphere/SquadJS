@@ -666,6 +666,7 @@ Grafana:
           <summary>DiscordServerStatus</summary>
           <h2>DiscordServerStatus</h2>
           <p>The <code>DiscordServerStatus</code> plugin can be used to get the server status in Discord.</p>
+          <p>To be able to receive feedback from the discord bot while the plugin is enabled. You must activate the option "Message Content Intent" in the discord Developer portal for your bot. Otherwise it won't be able to read the discord messages</p>
           <h3>Options</h3>
           <ul><li><h4>discordClient (Required)</h4>
            <h6>Description</h6>
