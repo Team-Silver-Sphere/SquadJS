@@ -103,10 +103,18 @@ export default class SquadServerFactory {
     Logger.verbose('SquadServerFactory', 1, `Starting ${type} connector ${connectorName}...`);
 
     if (type === 'discord') {
+      const obj = { server };
       if (!(typeof connectorConfig === 'string' || typeof connectorConfig === 'object')) {
-        throw new Error('Unknown Discord connector config type.');
+        throw new Error('{ Discord Config } is invalid / must be a type of String or Object');
       }
-      const bot = new DiscordBot(connectorConfig, server);
+      if (typeof connectorConfig === 'string') {
+        Object.assign(obj, {
+          token: connectorConfig
+        });
+      } else {
+        Object.assign(obj, connectorConfig);
+      }
+      const bot = new DiscordBot(obj);
       const connector = await bot.auth();
       return connector;
     }

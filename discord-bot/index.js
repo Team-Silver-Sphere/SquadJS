@@ -17,7 +17,7 @@ const isNull = (obj) => {
 
 /**
  * Object is Blank
- * @param {(Object|Object[]|string)} obj - Array, Set, Object or String
+ * @param {String | Array | Set | Map | Object} obj - Array, Set, Object or String
  * @returns {boolean} Returns if statement true or false
  */
 const isBlank = (obj) => {
@@ -33,7 +33,7 @@ const isBlank = (obj) => {
 
 /**
  * Object is Empty
- * @param {(Object|Object[]|string)} obj - Array, object or string
+ * @param {String | Array | Set | Map | Object} obj - Array, object or string
  * @returns {boolean} Returns if statement true or false
  */
 const isEmpty = (obj) => {
@@ -41,184 +41,227 @@ const isEmpty = (obj) => {
 };
 
 export default class DiscordBot {
-  constructor(connectorConfig, server) {
-    Logger.verbose('DiscordJS', 1, 'Initializing...');
+  constructor(connectorConfig) {
+    this.log = this.log.bind(this);
+    this.err = this.err.bind(this);
 
-    this.client = new Client({
-      intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-      ]
-    });
+    if (typeof connectorConfig === 'string') {
+      this.token = connectorConfig;
+    } else if (typeof connectorConfig === 'object') {
+      this.setConfig(connectorConfig, this);
+    } else {
+      throw new Error('{ connectorConfig } is invalid / must be a type of String or Object');
+    }
 
-    this.token = connectorConfig;
-    this.clientId = null;
-    this.guildId = null;
-    this.server = isNull(server) ? null : server;
+    if (isEmpty(this.server)) {
+      this.server = null;
+    }
+
+    const intents = [];
+    if (Array.isArray(this.intents)) {
+      for (const intent of this.intents) {
+        intents.push(GatewayIntentBits[intent]);
+      }
+    } else {
+      for (const intent of ['Guilds', 'GuildMessages', 'MessageContent']) {
+        intents.push(GatewayIntentBits[intent]);
+      }
+    }
+    this.client = new Client({ intents });
+
     this.commands = [];
     this.localCommands = [];
     this.globalCommands = [];
     this.client.commandIndex = new Collection();
+    this.client.on(Events.Warn, this.log);
 
-    if (typeof connectorConfig === 'object') {
-      this.token = connectorConfig.token;
-      this.clientId = connectorConfig.clientID;
-      this.guildId = connectorConfig.guildID;
-    }
+    this.loadEvents('./events');
+    this.loadCommands(['./local-commands', './global-commands']);
+  }
 
-    if (!isEmpty(this.clientId) && !isEmpty(this.guildId)) {
-      this.loadCmds(this.localCommands, 'local-commands');
-    }
-
-    if (!isEmpty(this.clientId)) {
-      this.loadCmds(this.globalCommands, 'global-commands');
-    }
-
-    this.client.on(Events.Warn, (info) => {
-      Logger.verbose('DiscordJS', 1, info);
-    });
-
-    this.client.on(Events.Error, (ex) => {
-      Logger.verbose('Err', 1, ex.message, ex.stack);
-    });
-
-    this.client.on(Events.InteractionCreate, async (interaction) => {
-      const command = interaction.client.commandIndex.get(interaction.commandName);
-      if (!command) {
-        Logger.verbose('Err', 1, `No command matching ${interaction.commandName} was found.`);
-        return;
+  setConfig(objA = {}, objB = {}) {
+    objA = objA || {};
+    objB = objB || {};
+    for (const [key, value] of Object.entries(objA)) {
+      if (!Object.hasOwn(objB, key)) {
+        objB[key] = value;
+      } else if (typeof value === 'object') {
+        this.setConfig(value, objB[key]);
       }
-      try {
-        if (interaction.isChatInputCommand()) {
-          await command.execute(interaction, this.server);
-        } else if (interaction.isAutocomplete()) {
-          await command.autocomplete(interaction, this.server);
-        }
-      } catch (ex) {
-        Logger.verbose('Err', 1, `Failed to execute Interaction. Reason: ${ex.message}`, ex.stack);
-        if (interaction.isChatInputCommand()) {
-          if (interaction.replied || interaction.deferred) {
-            await interaction.followUp({
-              content: 'There was an error while executing this command!',
-              ephemeral: true
-            });
-          } else {
-            await interaction.reply({
-              content: 'There was an error while executing this command!',
-              ephemeral: true
-            });
-          }
-        } else if (interaction.isAutocomplete()) {
-          await interaction.respond([
-            { name: 'There was an error while executing this command!', value: '' }
-          ]);
-        }
-      }
-    });
-
-    this.client.login(this.token);
+    }
+    return objB;
   }
 
   auth() {
     return new Promise((resolve, reject) => {
-      Logger.verbose('DiscordJS', 1, 'Logging in...');
+      this.log('Logging in...');
       this.client.once(Events.ClientReady, (c) => {
-        Logger.verbose('DiscordJS', 1, `Logged in as ${c.user.tag}`);
-        this.localCmds();
-        this.globalCmds();
+        this.log(`Logged in as ${c.user.tag}`);
+        this.deloyCommands();
         resolve(c);
       });
       this.client.once(Events.Error, reject);
+      this.client.login(this.token);
     });
   }
 
-  async loadCmds(commands = [], folderName = '') {
-    const dir = await fs.promises.opendir(path.join(__dirname, `./${folderName}`));
-    const cmdFilenames = [];
-    for await (const dirent of dir) {
-      if (!dirent.isFile()) continue;
-      cmdFilenames.push(dirent.name);
+  static async getFiles(targetPath, cmdFilenames) {
+    cmdFilenames = cmdFilenames || [];
+    try {
+      const dir = await fs.promises.opendir(path.join(__dirname, targetPath), { encoding: 'utf8' });
+      for await (const dirent of dir) {
+        if (dirent.isFile() && dirent.name.endsWith('.js')) {
+          cmdFilenames.push(dirent.name);
+        } else if (dirent.isDirectory()) {
+          const childFiles = await fs.promises.opendir(path.join(dir, dirent.name), {
+            encoding: 'utf8'
+          });
+          dir.push(...childFiles);
+        }
+      }
+    } catch (ex) {
+      if ('message' in ex) {
+        if ('cause' in ex) {
+          Logger.verbose('Err', 1, ex.cause);
+        }
+        Logger.verbose('Err', 1, ex.message);
+        Logger.verbose('Err', 2, ex.stack);
+      } else {
+        Logger.verbose('Err', 1, ex);
+      }
     }
+    return cmdFilenames;
+  }
+
+  async loadEvents(root) {
+    if (isEmpty(root)) {
+      return;
+    }
+    const cmdFilenames = await DiscordBot.getFiles(root);
     if (isBlank(cmdFilenames)) {
       return;
     }
     for (const cmdFilename of cmdFilenames) {
-      Logger.verbose('DiscordJS', 1, `Loading command file ${cmdFilename}...`);
-      const { default: cmdData } = await import(`./${folderName}/${cmdFilename}`);
-      if ('data' in cmdData && 'execute' in cmdData) {
-        commands.push(cmdData.data.toJSON());
-        this.client.commandIndex.set(cmdData.data.name, cmdData);
+      this.log(`Loading file ${cmdFilename}...`);
+      const { default: cmdData } = await import(`${root}/${cmdFilename}`);
+      if ('event' in cmdData && 'execute' in cmdData) {
+        const evt = cmdData.once && cmdData?.once === true ? 'once' : 'on';
+        if (cmdData.server && cmdData?.server === true) {
+          this.client[evt](cmdData.event, (...args) => cmdData.execute(this.server, ...args));
+        } else {
+          this.client[evt](cmdData.event, (...args) => cmdData.execute(...args));
+        }
       } else {
-        Logger.verbose(
-          'Err',
-          1,
-          `The command at "./${folderName}/${cmdFilename}" is missing a required "data" or "execute" property.`
-        );
+        this.err(`{ ${cmdFilename} } is missing a required "event" or "execute" property.`);
       }
     }
-    return commands;
   }
 
-  async localCmds() {
-    if (isEmpty(this.guildId)) {
+  async loadCommands(folderPaths) {
+    if (isEmpty(folderPaths)) {
       return;
     }
-    if (isEmpty(this.clientId)) {
-      return;
-    }
-
-    const rest = new REST().setToken(this.token);
-    try {
-      Logger.verbose(
-        'DiscordJS',
-        1,
-        `Started refreshing ${this.localCommands.length} application (/) commands.`
-      );
-      const data = await rest
-        .put(Routes.applicationGuildCommands(this.clientId, this.guildId), {
-          body: this.localCommands
-        })
-        .catch((ex) => {
-          Logger.verbose('Err', 1, `Failed to load Routes. Reason: ${ex.message}`, ex.stack);
-        });
-
-      Logger.verbose(
-        'DiscordJS',
-        1,
-        `Successfully reloaded ${data.length} application (/) commands.`
-      );
-    } catch (ex) {
-      Logger.verbose('Err', 1, `Failed to load RESET. Reason: ${ex.message}`, ex.stack);
+    for (const root of folderPaths) {
+      const cmdFilenames = await DiscordBot.getFiles(root);
+      if (isBlank(cmdFilenames)) continue;
+      for (const cmdFilename of cmdFilenames) {
+        this.log(`Loading command file ${cmdFilename}...`);
+        const { default: cmdData } = await import(`${root}/${cmdFilename}`);
+        if ('data' in cmdData && 'execute' in cmdData) {
+          if (/global/.test(root) || cmdData.global) {
+            this.globalCommands.push(cmdData.data.toJSON());
+          } else {
+            this.localCommands.push(cmdData.data.toJSON());
+          }
+          this.client.commandIndex.set(cmdData.data.name, cmdData);
+        } else {
+          this.err(`{ ${cmdFilename} } is missing a required "data" or "execute" property.`);
+        }
+      }
     }
   }
 
-  async globalCmds() {
-    if (isEmpty(this.clientId)) {
-      return;
-    }
-
-    const rest = new REST().setToken(this.token);
+  async deloyCommands() {
     try {
-      Logger.verbose(
-        'DiscordJS',
-        1,
-        `Started refreshing ${this.globalCommands.length} application (/) commands.`
-      );
+      if (isEmpty(this.clientID)) {
+        throw new Error('{ clientID } is missing / invalid - ' + this.clientID);
+      }
 
-      const data = await rest
-        .put(Routes.applicationCommands(this.clientId), { body: this.globalCommands })
-        .catch((ex) => {
-          Logger.verbose('Err', 1, `Failed to load Routes. Reason: ${ex.message}`, ex.stack);
-        });
+      this.client.on(Events.InteractionCreate, async (interaction) => {
+        const command = interaction.client.commandIndex.get(interaction.commandName);
+        if (!command) {
+          this.err(`No command matching ${interaction.commandName} was found.`);
+          return;
+        }
+        try {
+          if (interaction.isChatInputCommand()) {
+            await command.execute(interaction, this.server);
+          } else if (interaction.isAutocomplete()) {
+            await command.autocomplete(interaction, this.server);
+          }
+        } catch (ex) {
+          this.err(ex);
+          if (interaction.isChatInputCommand()) {
+            if (interaction.replied || interaction.deferred) {
+              await interaction.followUp({
+                content: 'There was an error while executing this command!',
+                ephemeral: true
+              });
+            } else {
+              await interaction.reply({
+                content: 'There was an error while executing this command!',
+                ephemeral: true
+              });
+            }
+          } else if (interaction.isAutocomplete()) {
+            await interaction.respond([
+              { name: 'There was an error while executing this command!', value: '' }
+            ]);
+          }
+        }
+      });
 
-      Logger.verbose(
-        'DiscordJS',
-        1,
-        `Successfully reloaded ${data.length} application (/) commands.`
-      );
+      const reset = new REST({ version: '10' }).setToken(this.token);
+
+      let data = [];
+      if (!isBlank(this.localCommands) && !isEmpty(this.guidID)) {
+        this.log(`Started refreshing ${this.localCommands.length} application (/) commands.`);
+        data = await reset
+          .put(Routes.applicationGuildCommands(this.clientID, this.guidID), {
+            body: this.localCommands
+          })
+          .catch((ex) => {
+            this.err(`Failed to load Routes. Reason: ${ex.message}`, ex.stack);
+          });
+        this.log(`Successfully reloaded ${data.length} application (/) commands.`);
+      }
+      if (!isBlank(this.globalCommands)) {
+        this.log(`Started refreshing ${this.globalCommands.length} application (/) commands.`);
+        data = await reset
+          .put(Routes.applicationCommands(this.clientID), { body: this.globalCommands })
+          .catch((ex) => {
+            this.err(`Failed to load Routes. Reason: ${ex.message}`, ex.stack);
+          });
+        this.log(`Successfully reloaded ${data.length} application (/) commands.`);
+      }
     } catch (ex) {
-      Logger.verbose('Err', 1, `Failed to load RESET. Reason: ${ex.message}`, ex.stack);
+      this.err(`Failed to load RESET. Reason: ${ex.message}`, ex.stack);
+    }
+  }
+
+  log(...msg) {
+    Logger.verbose('DiscordJS', 1, ...msg);
+  }
+
+  err(ex) {
+    if ('message' in ex) {
+      if ('cause' in ex) {
+        Logger.verbose('Err', 1, ex.cause);
+      }
+      Logger.verbose('Err', 1, ex.message);
+      Logger.verbose('Err', 2, ex.stack);
+    } else {
+      Logger.verbose('Err', 1, ex);
     }
   }
 }

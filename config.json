@@ -24,6 +24,11 @@
     "discord": {
       "clientID": "Discord Application ID",
       "guidID": "Discord Server ID",
+      "intents": [
+        "Guilds",
+        "GuildMessages",
+        "MessageContent"
+      ],
       "token": "Discord Login Token"
     },
     "awnAPI": {
