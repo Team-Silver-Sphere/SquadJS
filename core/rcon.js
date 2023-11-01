@@ -267,8 +267,6 @@ export default class Rcon extends EventEmitter {
         return;
       }
 
-      Logger.verbose('RCON', 2, `Writing packet with type "${type}" and body "${body}".`);
-
       const encodedPacket = this.encodePacket(
         type,
         type !== SERVERDATA_AUTH ? MID_PACKET_ID : END_PACKET_ID,
@@ -290,6 +288,8 @@ export default class Rcon extends EventEmitter {
 
       // the auth packet also sends a normal response, so we add an extra empty action to ignore it
       if (type === SERVERDATA_AUTH) {
+        Logger.verbose('RCON', 2, `Writing Auth Packet`);
+        Logger.verbose('RCON', 4, `Writing packet with type "${type}" and body "${body}".`);
         this.responseCallbackQueue.push(() => {});
         this.responseCallbackQueue.push((decodedPacket) => {
           this.client.removeListener('error', onError);
@@ -302,6 +302,7 @@ export default class Rcon extends EventEmitter {
           }
         });
       } else {
+        Logger.verbose('RCON', 2, `Writing packet with type "${type}" and body "${body}".`);
         this.responseCallbackQueue.push((response) => {
           this.client.removeListener('error', onError);
 
