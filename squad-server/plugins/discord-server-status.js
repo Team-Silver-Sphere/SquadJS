@@ -7,7 +7,7 @@ import DiscordBaseMessageUpdater from './discord-base-message-updater.js';
 
 export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
   static get description() {
-    return 'The <code>DiscordServerStatus</code> plugin can be used to get the server status in Discord. Make sure that the option "Message Content Intent" is enabled/active on your discord bot via the Discord Developer Portal. Otherwise the discord bot will be unable to answer back with the server status request';
+    return 'The <code>DiscordServerStatus</code> plugin can be used to get the server status in Discord. Make sure that you enable the "Message Content Intent" option on your Discord bot via the Discord Developer Portal, otherwise, the Discord bot will be unable to reply to messages.';
   }
 
   static get defaultEnabled() {
