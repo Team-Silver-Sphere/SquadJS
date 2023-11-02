@@ -156,7 +156,7 @@ export default class Rcon extends EventEmitter {
     this.#cleanUp();
   }
   #onNetError(error) {
-    Logger.verbose("RCON", 1, `node:net error:`, err);
+    Logger.verbose("RCON", 1, `node:net error:`, error);
     this.emit("RCON_ERROR", error);
     this.#cleanUp();
   }
