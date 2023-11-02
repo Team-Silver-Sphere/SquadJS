@@ -257,6 +257,7 @@ export default class SquadServer extends EventEmitter {
 
     this.logParser.on('PLAYER_DIED', async (data) => {
       data.victim = await this.getPlayerByName(data.victimName);
+      data.attacker = await this.getPlayerByName(data.attackerName);
 
       if (data.victim && data.attacker)
         data.teamkill =
@@ -267,6 +268,10 @@ export default class SquadServer extends EventEmitter {
       delete data.attackerName;
 
       this.emit('PLAYER_DIED', data);
+
+      if (data.teamkill) {
+        this.emit('TEAMKILL', data);
+      }
     });
 
     this.logParser.on('PLAYER_REVIVED', async (data) => {
