@@ -1,5 +1,5 @@
-import EventEmitter from "events";
-import net from "net";
+import { EventEmitter } from "node:events";
+import net from "node:net";
 import Logger from "./logger.js";
 export default class Rcon extends EventEmitter {
   constructor(options = {}) {
@@ -15,61 +15,45 @@ export default class Rcon extends EventEmitter {
     this.connected = false;
     this.autoReconnect = false;
     this.autoReconnectDelay = options.autoReconnectDelay || 5000;
-    this.autoReconnectTimeout;
+    this.connectionRetry;
     this.msgId = 20;
     this.responseString = { id: 0, body: "" };
   }
+  processChatPacket(decodedPacket) {}
   async connect() {
-    return new Promise((resolve) => {
-      const sendAuth = () => {
-        Logger.verbose("RCON", 1, `Sending Token to: ${this.host}:${this.port}`);
-        this.client.write(this.#encode(this.type.auth, 2147483647, this.password).toString("binary"), "binary");
-      };
-      const onAuth = () => {
+    return new Promise((resolve, reject) => {
+      if (this.client && this.connected && !this.client.destroyed) return reject(new Error("Rcon.connect() Rcon already connected."));
+      this.removeAllListeners("server");
+      this.removeAllListeners("auth");
+      this.on("server", (pkt) => this.processChatPacket(pkt)).once("auth", () => {
         Logger.verbose("RCON", 1, `Connected to: ${this.host}:${this.port}`);
-        clearTimeout(this.autoReconnectTimeout);
+        clearTimeout(this.connectionRetry);
         this.connected = true;
-      };
-      const onError = (error) => {
-        Logger.verbose("RCON", 1, `Node:Net Error: ${error || "Undefined Error"}`);
-        this.emit("RCON_ERROR", error);
-      };
-      const onEnd = () => {
-        Logger.verbose("RCON", 1, `Server sent FIN packet.`);
-      };
-      const onClose = () => {
-        Logger.verbose("RCON", 1, `Socket closed.`);
-        this.connected = false;
-        clearTimeout(this.autoReconnectTimeout);
-        if (this.autoReconnect) {
-          Logger.verbose("RCON", 1, `Sleeping ${this.autoReconnectDelay}ms before reconnecting.`);
-          this.autoReconnectTimeout = setTimeout(() => init(), this.autoReconnectDelay);
-        }
-      };
-      const init = () => {
-        if (this.client && this.connected && !this.client.destroyed) return Logger.verbose("RCON", 1, `Attempting to connect while not fully disconnected`);
-        Logger.verbose("RCON", 1, `Connecting to: ${this.host}:${this.port}`);
-        this.autoReconnect = true;
-        this.client = net
-          .createConnection({ port: this.port, host: this.host, noDelay: true })
-          .on("data", (data) => this.#onData(data))
-          .once("ready", () => sendAuth())
-          .once("auth", () => resolve(onAuth()))
-          .once("error", (error) => onError(error))
-          .once("end", () => onEnd())
-          .once("close", () => onClose());
-      };
-      init();
+        resolve();
+      });
+      Logger.verbose("RCON", 1, `Connecting to: ${this.host}:${this.port}`);
+      this.connectionRetry = setTimeout(() => this.connect(), this.autoReconnectDelay);
+      this.autoReconnect = true;
+      this.client = net
+        .createConnection({ port: this.port, host: this.host }, () => this.#sendAuth())
+        .on("data", (data) => this.#onData(data))
+        .on("end", () => this.#onClose())
+        .on("error", () => this.#onNetError());
+    }).catch((error) => {
+      Logger.verbose("RCON", 1, `Rcon.connect() ${error}`);
     });
   }
   async disconnect() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       Logger.verbose("RCON", 1, `Disconnecting from: ${this.host}:${this.port}`);
-      clearTimeout(this.autoReconnectTimeout);
+      clearTimeout(this.connectionRetry);
+      this.removeAllListeners();
       this.autoReconnect = false;
       this.client.end();
       this.connected = false;
       resolve();
+    }).catch((error) => {
+      Logger.verbose("RCON", 1, `Rcon.disconnect() ${error}`);
     });
   }
   async execute(body) {
@@ -78,7 +62,7 @@ export default class Rcon extends EventEmitter {
       if (!this.client.writable) return reject(new Error("Unable to write to node:net socket."));
       const string = String(body);
       const length = Buffer.from(string).length;
-      if (length > 4096) Logger.verbose("RCON", 1, `Error occurred. Oversize, "${length}" > 4096.`);
+      if (length > 4152) Logger.verbose("RCON", 1, `Error occurred. Oversize, "${length}" > 4152.`);
       else {
         const outputData = (data) => {
           clearTimeout(timeOut);
@@ -91,11 +75,18 @@ export default class Rcon extends EventEmitter {
         if (this.msgId > 80) this.msgId = 20;
         const listenerId = `response${this.msgId}`;
         const timeOut = setTimeout(timedOut, 10000);
-        this.client.once(listenerId, outputData);
+        this.once(listenerId, outputData);
         this.#send(string, this.msgId);
         this.msgId++;
       }
+    }).catch((error) => {
+      Logger.verbose("RCON", 1, `Rcon.execute() ${error}`);
     });
+  }
+  #sendAuth() {
+    Logger.verbose("RCON", 1, `Sending Token to: ${this.host}:${this.port}`);
+    Logger.verbose("RCON", 4, `Writing packet with type "${this.type.auth}" and body "${this.password}".`);
+    this.client.write(this.#encode(this.type.auth, 2147483647, this.password).toString("binary"), "binary");
   }
   #send(body, id = 99) {
     this.#write(this.type.command, id, body);
@@ -123,8 +114,8 @@ export default class Rcon extends EventEmitter {
       if (!packet) break;
       else Logger.verbose("RCON", 3, `Processing decoded packet: Size: ${packet.size}, ID: ${packet.id}, Type: ${packet.type}, Body: ${packet.body}`);
       if (packet.type === this.type.response) this.#onResponse(packet);
-      else if (packet.type === this.type.server) this.processChatPacket(packet);
-      else if (packet.type === this.type.command) this.client.emit("auth");
+      else if (packet.type === this.type.server) this.emit("server", packet);
+      else if (packet.type === this.type.command) this.emit("auth");
     }
   }
   #decode() {
@@ -147,7 +138,7 @@ export default class Rcon extends EventEmitter {
   }
   #onResponse(packet) {
     if (packet.body === "") {
-      this.client.emit(`response${this.responseString.id - 2}`, this.responseString.body);
+      this.emit(`response${this.responseString.id - 2}`, this.responseString.body);
       this.responseString.body = "";
     } else if (!packet.body.includes("")) {
       this.responseString.body = this.responseString.body += packet.body;
@@ -159,6 +150,24 @@ export default class Rcon extends EventEmitter {
     this.stream = Buffer.alloc(0);
     this.responseString = "";
     return null;
+  }
+  #onClose() {
+    Logger.verbose("RCON", 1, `Socket closed.`);
+    this.#cleanUp();
+  }
+  #onNetError(error) {
+    Logger.verbose("RCON", 1, `node:net error:`, err);
+    this.emit("RCON_ERROR", error);
+    this.#cleanUp();
+  }
+  #cleanUp() {
+    this.connected = false;
+    this.removeAllListeners();
+    clearTimeout(this.connectionRetry);
+    if (this.autoReconnect) {
+      Logger.verbose("RCON", 1, `Sleeping ${this.autoReconnectDelay}ms before reconnecting.`);
+      this.connectionRetry = setTimeout(() => this.connect(), this.autoReconnectDelay);
+    }
   }
   #bufToHexString(buf) {
     return buf.toString("hex").match(/../g).join(" ");
