@@ -412,11 +412,18 @@ export default class SquadServer extends EventEmitter {
     Logger.verbose('SquadServer', 1, `Updating layer information...`);
 
     try {
+      let currentLayer = this.currentLayer;
       const currentMap = await this.rcon.getCurrentMap();
       const nextMap = await this.rcon.getNextMap();
       const nextMapToBeVoted = nextMap.layer === 'To be voted';
 
-      const currentLayer = await Layers.getLayerByName(currentMap.layer);
+      if (currentLayer?.name !== currentMap.layer){
+        const rconlayer = await Layers.getLayerByName(currentMap.layer);
+        if (rconlayer){
+          currentLayer = rconlayer;
+        }
+      }
+      
       const nextLayer = nextMapToBeVoted ? null : await Layers.getLayerByName(nextMap.layer);
 
       if (this.layerHistory.length === 0) {
@@ -447,6 +454,7 @@ export default class SquadServer extends EventEmitter {
     Logger.verbose('SquadServer', 1, `Updating A2S information...`);
 
     try {
+      const serverlayer = this.currentLayer;
       const data = await Gamedig.query({
         type: 'squad',
         host: this.options.host,
@@ -466,7 +474,8 @@ export default class SquadServer extends EventEmitter {
         reserveQueue: parseInt(data.raw.rules.ReservedQueue_i),
 
         matchTimeout: parseFloat(data.raw.rules.MatchTimeout_f),
-        gameVersion: data.raw.version
+        gameVersion: data.raw.version,
+        currentLayer: data.map
       };
 
       this.serverName = info.serverName;
@@ -481,6 +490,8 @@ export default class SquadServer extends EventEmitter {
 
       this.matchTimeout = info.matchTimeout;
       this.gameVersion = info.gameVersion;
+
+      this.currentLayer = info.currentLayer === serverlayer?.layerid ? this.currentLayer : await Layers.getLayerById(info.currentLayer);
 
       this.emit('UPDATED_A2S_INFORMATION', info);
     } catch (err) {
