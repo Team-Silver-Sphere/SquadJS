@@ -491,7 +491,10 @@ export default class SquadServer extends EventEmitter {
       this.matchTimeout = info.matchTimeout;
       this.gameVersion = info.gameVersion;
 
-      this.currentLayer = info.currentLayer === serverlayer?.layerid ? this.currentLayer : await Layers.getLayerById(info.currentLayer);
+      if (info.currentLayer !== serverlayer?.layerid) {
+        const a2slayer = await Layers.getLayerById(info.currentLayer);
+        this.currentLayer = a2slayer ? a2slayer : this.currentLayer;
+      }
 
       this.emit('UPDATED_A2S_INFORMATION', info);
     } catch (err) {
