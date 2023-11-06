@@ -43,6 +43,11 @@
   },
   "plugins": [
     {
+      "plugin": "PersistentEOSIDtoSteamID",
+      "enabled": true,
+      "database": "sqlite"
+    },
+    {
       "plugin": "AutoKickUnassigned",
       "enabled": true,
       "warningMessage": "Join a squad, you are are unassigned and will be kicked",
