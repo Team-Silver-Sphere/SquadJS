@@ -1,10 +1,11 @@
 import Logger from 'core/logger';
 import Rcon from 'core/rcon';
+import PersistentEOSIDtoSteamID from './plugins/persistent-eosid-to-steamid.js';
 
 export default class SquadRcon extends Rcon {
   processChatPacket(decodedPacket) {
     const matchChat = decodedPacket.body.match(
-      /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[SteamID:([0-9]{17})] (.+?) : (.*)/
+      /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[SteamID:([0-9a-f]{32})] (.+?) : (.*)/
     );
     if (matchChat) {
       Logger.verbose('SquadRcon', 2, `Matched chat message: ${decodedPacket.body}`);
@@ -22,7 +23,7 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchPossessedAdminCam = decodedPacket.body.match(
-      /\[SteamID:([0-9]{17})] (.+?) has possessed admin camera./
+      /\[SteamID:([0-9a-f]{32})] (.+?) has possessed admin camera./
     );
     if (matchPossessedAdminCam) {
       Logger.verbose('SquadRcon', 2, `Matched admin camera possessed: ${decodedPacket.body}`);
@@ -37,7 +38,7 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchUnpossessedAdminCam = decodedPacket.body.match(
-      /\[SteamID:([0-9]{17})] (.+?) has unpossessed admin camera./
+      /\[SteamID:([0-9a-f]{32})] (.+?) has unpossessed admin camera./
     );
     if (matchUnpossessedAdminCam) {
       Logger.verbose('SquadRcon', 2, `Matched admin camera possessed: ${decodedPacket.body}`);
@@ -68,7 +69,7 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchKick = decodedPacket.body.match(
-      /Kicked player ([0-9]+)\. \[steamid=([0-9]{17})] (.*)/
+      /Kicked player ([0-9]+)\. \[steamid=([0-9a-f]{32})] (.*)/
     );
     if (matchKick) {
       Logger.verbose('SquadRcon', 2, `Matched kick message: ${decodedPacket.body}`);
@@ -85,7 +86,7 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchSqCreated = decodedPacket.body.match(
-      /(.+) \(Steam ID: ([0-9]{17})\) has created Squad (\d+) \(Squad Name: (.+)\) on (.+)/
+      /(.+) \(Steam ID: ([0-9a-f]{32})\) has created Squad (\d+) \(Squad Name: (.+)\) on (.+)/
     );
     if (matchSqCreated) {
       Logger.verbose('SquadRcon', 2, `Matched Squad Created: ${decodedPacket.body}`);
@@ -134,22 +135,32 @@ export default class SquadRcon extends Rcon {
     };
   }
 
-  async getListPlayers() {
+  async getListPlayers(server) {
     const response = await this.execute('ListPlayers');
 
     const players = [];
 
     if(!response || response.length < 1) return players;
-    
+
     for (const line of response.split('\n')) {
       const match = line.match(
-        /ID: ([0-9]+) \| SteamID: ([0-9]{17}) \| Name: (.+) \| Team ID: ([0-9]+) \| Squad ID: ([0-9]+|N\/A) \| Is Leader: (True|False) \| Role: ([A-Za-z0-9_]*)\b/
+        /ID: ([0-9]+) \| SteamID: ([0-9a-f]{32}) \| Name: (.+) \| Team ID: ([0-9]+) \| Squad ID: ([0-9]+|N\/A) \| Is Leader: (True|False) \| Role: ([A-Za-z0-9_]*)\b/
       );
       if (!match) continue;
 
+      let steamID = this.eosIndex[ match[ 2 ] ]
+
+      const persEosIdPlugin = server.plugins.find(p => p instanceof PersistentEOSIDtoSteamID)
+      if (persEosIdPlugin && !this.eosIndex[ match[ 2 ] ]) {
+        steamID = (await persEosIdPlugin.getByEOSID(match[ 2 ])).steamID
+        this.addIds(steamID, match[ 2 ]);
+        Logger.verbose("RCON", 1, `Getting SteamID for player: ${match[ 3 ]} from EOSID: ${match[ 2 ]} => ${steamID}`)
+      }
+
       players.push({
         playerID: match[1],
-        steamID: match[2],
+        steamID: steamID,
+        EOSID: match[2],
         name: match[3],
         teamID: match[4],
         squadID: match[5] !== 'N/A' ? match[5] : null,
@@ -168,11 +179,9 @@ export default class SquadRcon extends Rcon {
     let teamName;
     let teamID;
 
-    if(!responseSquad || responseSquad.length < 1) return squads;
-
     for (const line of responseSquad.split('\n')) {
       const match = line.match(
-        /ID: ([0-9]+) \| Name: (.+) \| Size: ([0-9]+) \| Locked: (True|False) \| Creator Name: (.+) \| Creator Steam ID: ([0-9]{17})/
+        /ID: ([0-9]+) \| Name: (.+) \| Size: ([0-9]+) \| Locked: (True|False) \| Creator Name: (.+) \| Creator Steam ID: ([0-9a-f]{32})/
       );
       const matchSide = line.match(/Team ID: (1|2) \((.+)\)/);
       if (matchSide) {
