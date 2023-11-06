@@ -129,7 +129,6 @@ export default class Rcon extends EventEmitter {
     return buffer;
   }
   #onData(data) {
-    console.log(data)
     Logger.verbose("RCON", 4, `Got data: ${this.#bufToHexString(data)}`);
     this.stream = Buffer.concat([this.stream, data], this.stream.byteLength + data.byteLength);
     while (this.stream.byteLength >= 7) {
