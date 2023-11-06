@@ -16,10 +16,14 @@ import RoundEnded from './round-ended.js';
 import RoundTickets from './round-tickets.js';
 import RoundWinner from './round-winner.js';
 import ServerTickRate from './server-tick-rate.js';
-import ClientConnected from './client-connected.js';
+import AddingClientConnection from './adding-client-connection.js';
 import ClientLogin from './client-login.js';
 import PendingConnectionDestroyed from './pending-connection-destroyed.js';
-
+import clientExternalAccountInfo from './client-external-account-info.js';
+import sendingAuthResult from './sending-auth-result.js';
+import loginRequest from './login-request.js';
+import joinRequest from './join-request.js';
+import checkPermissionResolveEosid from './check-permission-resolve-eosid.js';
 export default class SquadLogParser extends LogParser {
   constructor(options) {
     super('SquadGame.log', options);
@@ -43,9 +47,14 @@ export default class SquadLogParser extends LogParser {
       RoundTickets,
       RoundWinner,
       ServerTickRate,
-      ClientConnected,
+      AddingClientConnection,
       ClientLogin,
-      PendingConnectionDestroyed
+      PendingConnectionDestroyed,
+      clientExternalAccountInfo,
+      sendingAuthResult,
+      loginRequest,
+      joinRequest,
+      checkPermissionResolveEosid,
     ];
   }
 }
