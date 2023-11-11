@@ -80,6 +80,11 @@ export default class SquadServerFactory {
 
     for (const pluginConfig of config.plugins) {
       if (!pluginConfig.enabled) continue;
+      
+      //ignore non JS files
+      if (!pluginConfig.plugin.endsWith('.js')){
+        continue;
+      }
 
       if (!plugins[pluginConfig.plugin])
         throw new Error(`Plugin ${pluginConfig.plugin} does not exist.`);
