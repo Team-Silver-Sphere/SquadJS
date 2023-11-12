@@ -219,7 +219,10 @@ export default class SquadServer extends EventEmitter {
 
     this.logParser.on('PLAYER_DISCONNECTED', async (data) => {
       data.player = await this.getPlayerBySteamID(data.steamID);
-      if (!data.player) data.player = this.oldplayers.filter((player) => player.steamID === data.steamID)[0];
+      if (!data.player){
+        const foundoldplayers = this.oldplayers.filter((player) => player.steamID === data.steamID);
+        data.player = foundoldplayers[0] ? foundoldplayers[0] : null;
+      }
 
       this.emit('PLAYER_DISCONNECTED', data);
     });
