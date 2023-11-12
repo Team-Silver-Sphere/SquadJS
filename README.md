@@ -45,7 +45,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 <br>
 
 ## **Configuring SquadJS**
-SquadJS can be configured via a JSON configuration file. The default location for the config is [config.json](./config.json). This file has to be created manualy.
+SquadJS can be configured via a JSON configuration file. The default location for the config is [config.json](./config.json). This file has to be created manually.
 `config.example.json` can be used as template for new configurations.
 
 You can maintain multiple configs using this naming scheme: `config.<configname>.json`. This naming scheme is useful for multiple servers or [config merging](#merged-configurations).
@@ -203,6 +203,9 @@ Early stages of SquadJS initialization, before the configuration has been read a
 ### Merged Configurations
 The configuration can be spread over multiple config files. This can be helpful if run multiple servers and want to ensure all servers run the same configuration. Or if you have a large configuration for a plugin (e.g. a lot of [ChatCommands](#chatcommands) ) that make your config unreadable.
 
+Config files can be included by specifying their path in the `baseincludes` list your config. These files will be loaded in order and overwrite values from previously loaded configs. There is also a `overwrites` list that allows you to specify configs that should overwrite values in this config. Normal users should use the `baseincludes`. All relative paths have a small search order in which the file is first looked for, first in the directory relative to which the config that includes it, then inside the SquadJS directory.
+This allows sharing of a 'config folder' that references configs relative to other configs in that folder and makes sharing configs easier.
+
 <details>
     <summary>Example with multiple config files</summary>
 
@@ -210,14 +213,15 @@ The configuration can be spread over multiple config files. This can be helpful 
 
 In this example we have 2 servers running and want the same configuration on both servers. The only diffrences are each server uses a diffrent discord bot and server 1 has verbose logging for the RCON module enabled.
 
-Server 1 will be started using `node index.js config.base.json config.server1.json`.  
-Server 2 will be started using `node index.js config.base.json config.server2.json`.
+Server 1 will be started using `node index.js config.server1.json`.  
+Server 2 will be started using `node index.js config.server2.json`.
 
 - <details>
     <summary>config.server1.json</summary>
 
     ```json
       {
+        "baseincludes": ["./config.base.json"],
         "server": {
           "id": 1,
           "host": "localhost",
@@ -244,6 +248,7 @@ Server 2 will be started using `node index.js config.base.json config.server2.js
 
     ```json
       {
+        "baseincludes": ["./config.base.json"],
         "server": {
           "id": 2,
           "host": "localhost",
@@ -265,6 +270,7 @@ Server 2 will be started using `node index.js config.base.json config.server2.js
 
     ```json
       {
+        "baseincludes": ["./config.example.json"],
         "server": {
           "ftp": {
             "port": 21,
@@ -309,6 +315,16 @@ Server 2 will be started using `node index.js config.base.json config.server2.js
   </details>
 ---
 </details>
+<br>
+<details>
+  <summary>Precise loading order of configs</summary>
+  
+  Configs are parsed recursively through their `baseincludes`, their own json, and finally their `overwrites` and stored sequentially to a list that contains the json from each config. So in the above example the resultant list of configs loaded from loading `config.server1.json` would be `config.example.json, config.base.json, config.server1.json`. These configs then overwrite the current configuration in the order that they are in this list. This means that if you have `base-includes = ["config.external.json", "config.example.json"]` set in `config.myconfig.json`, with `config.external.json` also including `config.example.json`, the resultant list would like: `config.example.json, config.external.json, config.example.json, config.myconfig.json` and be merged as such.
+  Due to this, the ordering of the included jsons was most likely an error here, and you would actually want `config.external.json` second and `config.example.json` first.
+
+</details>
+
+Please remember to avoid circular dependencies and it is considered good practice to include `config.example.json` as the base for other configs. If a new property is added to the example config that is required by SquadJS due to an update, your configs will prevent SquadJS from running.
 
 If you have problems with this, you can view the merged config by forcing SquadJS to log everything to the console.  
 See [here](#console-output-configuration) for more information on console output. 

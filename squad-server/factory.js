@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 
 import Discord from 'discord.js';
 import sequelize from 'sequelize';
@@ -143,9 +143,33 @@ export default class SquadServerFactory {
     throw new Error(`${type.connector} is an unsupported connector type.`);
   }
 
-  static parseConfig(configString) {
+  static parseConfig(configString, configfile = "", previousconfigfiles = null) {
+    configfile = path.resolve(configfile);
+    if (!previousconfigfiles) previousconfigfiles = []
+    if (previousconfigfiles.indexOf(configfile) > -1){
+      Logger.verbose('SquadServerFactory', 1, `Found circular config with ${previousconfigfiles.slice(1)}`);
+      throw new Error(`Config has circular dependency at ${configfile} in with previous configs ${previousconfigfiles}!`);
+    }
+    else previousconfigfiles.push(configfile)
     try {
-      return JSON.parse(configString);
+      const jsonconfig = JSON.parse(configString);
+      const beforeincludes = jsonconfig.baseincludes ? jsonconfig.baseincludes.flatMap((filename) => {
+        try {
+          return SquadServerFactory.parseConfig(
+              SquadServerFactory.readConfigFile(
+                  filename,
+                  path.dirname(configfile)
+              ),
+              filename,
+              previousconfigfiles
+          );
+        } catch (err) {
+          throw new Error(`Config file ${filename} from ${configfile} did not load. ${err}`)
+        }
+      }) : [];
+      const overwrites = jsonconfig.overwrites ? jsonconfig.overwrites.flatMap((filename) => SquadServerFactory.parseConfig(SquadServerFactory.readConfigFile(filename), filename, previousconfigfiles)) : [];
+      const retconfig = [beforeincludes, jsonconfig, overwrites].flat(1);
+      return retconfig;
     } catch (err) {
       throw new Error(`Unable to parse config file. ${err}`);
     }
@@ -156,23 +180,22 @@ export default class SquadServerFactory {
     return SquadServerFactory.buildFromConfig(SquadServerFactory.parseConfig(configString));
   }
 
-  static readConfigFile(configPath = './config.json') {
-    configPath = path.resolve(__dirname, '../', configPath);
-    if (!fs.existsSync(configPath)) throw new Error(`Config file does not exist. ${configPath}`);
+  static readConfigFile(configPath = './config.json', dirlocation = null) {
+    const configLoc = dirlocation ? path.resolve(__dirname, '../', dirlocation, configPath) : path.resolve(__dirname, '../', configPath);
+    if (!fs.existsSync(configLoc)) throw new Error(`Config file does not exist. ${configLoc}`);
 
-    Logger.verbose('SquadServerFactory', 1, `Reading config file ${configPath}`);
-    return fs.readFileSync(configPath, 'utf8');
+    Logger.verbose('SquadServerFactory', 1, `Reading config file ${configLoc}`);
+    return fs.readFileSync(configLoc, 'utf8');
   }
 
-  static buildFromConfigFiles(configPaths) {
-    Logger.verbose('SquadServerFactory', 1, 'Reading config files...');
-    Logger.verbose('SquadServerFactory', 4, JSON.stringify(configPaths));
+  static buildFromConfigFile(configPath) {
+    Logger.verbose('SquadServerFactory', 1, 'Reading config file...');
+    Logger.verbose('SquadServerFactory', 4, JSON.stringify(configPath));
+    let configs = SquadServerFactory.parseConfig(SquadServerFactory.readConfigFile(configPath));
 
-    const configs = configPaths.map((configPath) =>
-      SquadServerFactory.parseConfig(SquadServerFactory.readConfigFile(configPath))
-    );
-
-    return SquadServerFactory.buildFromConfig(ConfigTools.mergeConfigs({}, ...configs));
+    const mergedconfig = ConfigTools.mergeConfigs({}, ...configs);
+    Logger.verbose('SquadServerFactory', 4, `Merged config: ${JSON.stringify(mergedconfig)}`)
+    return SquadServerFactory.buildFromConfig(mergedconfig);
   }
 
   static async buildConfig() {

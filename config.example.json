@@ -1,4 +1,6 @@
 {
+  "baseincludes": [],
+  "overwrites": [],
   "server": {
     "id": 1,
     "host": "xxx.xxx.xxx.xxx",

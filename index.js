@@ -5,21 +5,20 @@ async function main() {
   await printLogo();
 
   const config = process.env.config;
-  const args = process.argv.slice(2);
-  const configPaths = args.length ? args : ['./config.json'];
+  const configPath = process.argv.length > 2 ? process.argv[2] : null;
 
-  if (config && args.length) throw new Error('Cannot accept both a config and config paths.');
+  if (config && configPath) throw new Error('Cannot accept both a config and config path.');
 
   // create a SquadServer instance
   const server = config
     ? await SquadServerFactory.buildFromConfigString(config)
-    : await SquadServerFactory.buildFromConfigFiles(configPaths);
+    : await SquadServerFactory.buildFromConfigFile(configPath ? configPath : './config.json');
 
   // watch the server
-  await server.watch();
+  // await server.watch();
 
   // now mount the plugins
-  await Promise.all(server.plugins.map(async (plugin) => await plugin.mount()));
+  // await Promise.all(server.plugins.map(async (plugin) => await plugin.mount()));
 }
 
 main();
