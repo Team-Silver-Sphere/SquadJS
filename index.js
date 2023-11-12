@@ -15,10 +15,10 @@ async function main() {
     : await SquadServerFactory.buildFromConfigFile(configPath ? configPath : './config.json');
 
   // watch the server
-  // await server.watch();
+  await server.watch();
 
   // now mount the plugins
-  // await Promise.all(server.plugins.map(async (plugin) => await plugin.mount()));
+  await Promise.all(server.plugins.map(async (plugin) => await plugin.mount()));
 }
 
 main();
