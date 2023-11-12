@@ -12,3 +12,7 @@ yarn.lock
 # IDEs
 .idea/
 .vs/
+
+config.json
+config.*.json
+!config.example.json
