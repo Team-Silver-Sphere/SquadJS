@@ -1,10 +1,13 @@
 import { EventEmitter } from "node:events";
 import net from "node:net";
 import Logger from "./logger.js";
+import fs from 'fs';
+import path from 'path';
+const RCON_LOG_FILEPATH = "RCON_RECEIVED_MESSAGES.log"
 export default class Rcon extends EventEmitter {
   constructor(options = {}) {
     super();
-    for (const option of ["host", "port", "password"]) if (!(option in options)) throw new Error(`${option} must be specified.`);
+    for (const option of [ "host", "port", "password" ]) if (!(option in options)) throw new Error(`${option} must be specified.`);
     this.host = options.host;
     this.port = options.port;
     this.password = options.password;
@@ -26,13 +29,15 @@ export default class Rcon extends EventEmitter {
     this.passThroughTimeOut = options.passThroughTimeOut || 60000;
     this.passThroughMaxClients = 1; //options.passThroughMaxClients || 10;
     this.passThroughChallenge = options.passThroughChallenge || options.password;
+    this.dumpRconResponsesToFile = options.dumpRconResponsesToFile || false;
     this.rconClients = {};
-    for (let i = 1; i <= this.passThroughMaxClients; i++) this.rconClients[`${i}`] = null;
+    for (let i = 1; i <= this.passThroughMaxClients; i++) this.rconClients[ `${i}` ] = null;
     this.ptServer = null;
 
     this.steamIndex = { "76561198799344716": "00026e21ce3d43c792613bdbb6dec1ba" }; // example dtata
     this.eosIndex = { "00026e21ce3d43c792613bdbb6dec1ba": "76561198799344716" }; // example dtata
 
+    this.rotateLogFile(RCON_LOG_FILEPATH)
 
   }
   processChatPacket(decodedPacket) {
@@ -79,6 +84,12 @@ export default class Rcon extends EventEmitter {
     });
   }
   async execute(body) {
+    let steamID = body.match(/\d{17}/);
+    if (steamID) {
+      steamID = steamID[ 0 ]
+      body = body.replace(/\d{17}/, this.steamIndex[ steamID ]);
+    }
+
     return new Promise((resolve, reject) => {
       if (!this.connected) return reject(new Error("Rcon not connected."));
       if (!this.client.writable) return reject(new Error("Unable to write to node:net socket"));
@@ -95,7 +106,7 @@ export default class Rcon extends EventEmitter {
           this.removeListener(listenerId, outputData);
           return reject(new Error(`Rcon response timed out`));
         };
-        if (this.msgId > this.msgIdHigh -2) this.msgId = this.msgIdLow;
+        if (this.msgId > this.msgIdHigh - 2) this.msgId = this.msgIdLow;
         const listenerId = `response${this.msgId}`;
         const timeOut = setTimeout(timedOut, 10000);
         this.once(listenerId, outputData);
@@ -130,12 +141,13 @@ export default class Rcon extends EventEmitter {
   }
   #onData(data) {
     Logger.verbose("RCON", 4, `Got data: ${this.#bufToHexString(data)}`);
-    this.stream = Buffer.concat([this.stream, data], this.stream.byteLength + data.byteLength);
+    this.stream = Buffer.concat([ this.stream, data ], this.stream.byteLength + data.byteLength);
     while (this.stream.byteLength >= 7) {
       const packet = this.#decode();
       if (!packet) break;
       else Logger.verbose("RCON", 3, `Processing decoded packet: Size: ${packet.size}, ID: ${packet.id}, Type: ${packet.type}, Body: ${packet.body}`);
-      
+      this.appendToFile(RCON_LOG_FILEPATH, packet.body)
+
       if (packet.id > this.msgIdHigh) this.emit(`responseForward_1`, packet);
       else if (packet.type === this.type.response) this.#onResponse(packet);
       else if (packet.type === this.type.server) this.#onServer(packet);
@@ -145,12 +157,12 @@ export default class Rcon extends EventEmitter {
   #onServer(packet) {
     this.emit("server", packet);
     for (const client in this.rconClients)
-      if (this.rconClients[client]) {
-        this.emit(`serverForward_${this.rconClients[client].rconIdClient}`, packet.body);
+      if (this.rconClients[ client ]) {
+        this.emit(`serverForward_${this.rconClients[ client ].rconIdClient}`, packet.body);
       }
   }
   #decode() {
-    if (this.stream[0] === 0 && this.stream[1] === 1 && this.stream[2] === 0 && this.stream[3] === 0 && this.stream[4] === 0 && this.stream[5] === 0 && this.stream[6] === 0) {
+    if (this.stream[ 0 ] === 0 && this.stream[ 1 ] === 1 && this.stream[ 2 ] === 0 && this.stream[ 3 ] === 0 && this.stream[ 4 ] === 0 && this.stream[ 5 ] === 0 && this.stream[ 6 ] === 0) {
       this.stream = this.stream.subarray(7);
       return this.soh;
     }
@@ -159,11 +171,11 @@ export default class Rcon extends EventEmitter {
     else if (bufSize <= this.stream.byteLength - 4 && this.stream.byteLength >= 12) {
       const bufId = this.stream.readInt32LE(4);
       const bufType = this.stream.readInt32LE(8);
-      if (this.stream[bufSize + 2] !== 0 || this.stream[bufSize + 3] !== 0 || bufId < 0 || bufType < 0 || bufType > 5) return this.#badPacket();
+      if (this.stream[ bufSize + 2 ] !== 0 || this.stream[ bufSize + 3 ] !== 0 || bufId < 0 || bufType < 0 || bufType > 5) return this.#badPacket();
       else {
         const response = { size: bufSize, id: bufId, type: bufType, body: this.stream.toString("utf8", 12, bufSize + 2) };
         this.stream = this.stream.subarray(bufSize + 4);
-        if (response.body === "" && this.stream[0] === 0 && this.stream[1] === 1 && this.stream[2] === 0 && this.stream[3] === 0 && this.stream[4] === 0 && this.stream[5] === 0 && this.stream[6] === 0) {
+        if (response.body === "" && this.stream[ 0 ] === 0 && this.stream[ 1 ] === 1 && this.stream[ 2 ] === 0 && this.stream[ 3 ] === 0 && this.stream[ 4 ] === 0 && this.stream[ 5 ] === 0 && this.stream[ 6 ] === 0) {
           this.stream = this.stream.subarray(7);
           response.body = "";
         }
@@ -213,7 +225,7 @@ export default class Rcon extends EventEmitter {
     this.ptServer.listen(this.passThroughPort, () => Logger.verbose("RCON", 1, `Pass-through Server: Listening on port ${this.passThroughPort}`));
   }
   closeServer() {
-    for (const client in this.rconClients) if (this.rconClients[client]) this.rconClients[client].end();
+    for (const client in this.rconClients) if (this.rconClients[ client ]) this.rconClients[ client ].end();
     if (!this.ptServer) return;
     this.ptServer.close(() => this.#onServerClose());
   }
@@ -239,7 +251,7 @@ export default class Rcon extends EventEmitter {
     if (!client.rconIdClient) return;
     this.removeAllListeners(`serverForward_${client.rconIdClient}`);
     this.removeAllListeners(`responseForward_${client.rconIdClient}`);
-    this.rconClients[`${client.rconIdClient}`] = null;
+    this.rconClients[ `${client.rconIdClient}` ] = null;
     Logger.verbose("RCON", 1, `Pass-through Server: Client-${client.rconIdClient} Disconnected`);
   }
   #onClientTimeOut(client) {
@@ -248,7 +260,7 @@ export default class Rcon extends EventEmitter {
   }
   #onClientData(client, data) {
     if (!client.rconStream) client.rconStream = new Buffer.alloc(0);
-    client.rconStream = Buffer.concat([client.rconStream, data], client.rconStream.byteLength + data.byteLength);
+    client.rconStream = Buffer.concat([ client.rconStream, data ], client.rconStream.byteLength + data.byteLength);
     while (client.rconStream.byteLength >= 4) {
       const packet = this.#decodeClient(client);
       if (!packet) break;
@@ -258,7 +270,7 @@ export default class Rcon extends EventEmitter {
         if (!client.rconWheel || client.rconWheel > 20) client.rconWheel = 0;
         else client.rconWheel++;
 
-        client.rconIdQueueNEW[`${client.rconWheel}`] = packet.id
+        client.rconIdQueueNEW[ `${client.rconWheel}` ] = packet.id
 
         const encoded = this.#encode(packet.type, this.specialId + client.rconWheel, this.#steamToEosClient(packet.body)); ////////////////////////////////////////////////
         this.client.write(encoded.toString("binary"), "binary");
@@ -287,9 +299,9 @@ export default class Rcon extends EventEmitter {
       client.rconHasAuthed = true;
       client.rconIdQueueNEW = {}
       for (let i = 1; i <= this.passThroughMaxClients; i++) {
-        if (this.rconClients[`${i}`] === null) {
+        if (this.rconClients[ `${i}` ] === null) {
           client.rconIdClient = i;
-          this.rconClients[`${i}`] = client;
+          this.rconClients[ `${i}` ] = client;
           break;
         }
       }
@@ -307,11 +319,11 @@ export default class Rcon extends EventEmitter {
 
       //console.log(client.rconIdQueueNEW);//////////////////////////////////////////////////////////////////////////////////////////
 
-      client.write(this.#encode(packet.type, client.rconIdQueueNEW[int], this.#eosToSteam(packet.body)).toString("binary"), "binary");
+      client.write(this.#encode(packet.type, client.rconIdQueueNEW[ int ], this.#eosToSteam(packet.body)).toString("binary"), "binary");
     } else if (packet.body != "") {
       const int = packet.id - this.specialId
-      client.write(this.#encode(0, client.rconIdQueueNEW[int]).toString("binary"), "binary");
-      client.write(this.#encodeSpecial(client.rconIdQueueNEW[int]).toString("binary"), "binary");
+      client.write(this.#encode(0, client.rconIdQueueNEW[ int ]).toString("binary"), "binary");
+      client.write(this.#encodeSpecial(client.rconIdQueueNEW[ int ]).toString("binary"), "binary");
     }
   }
   #encodeSpecial(id) {
@@ -336,8 +348,8 @@ export default class Rcon extends EventEmitter {
   }
 
   addIds(steamId, eosId) {
-    this.steamIndex[steamId] = eosId; // { "76561198799344716": "00026e21ce3d43c792613bdbb6dec1ba" };
-    this.eosIndex[eosId] = steamId;
+    this.steamIndex[ steamId ] = eosId; // { "76561198799344716": "00026e21ce3d43c792613bdbb6dec1ba" };
+    this.eosIndex[ eosId ] = steamId;
   }
 
   removeIds(eosId) {
@@ -347,7 +359,7 @@ export default class Rcon extends EventEmitter {
   #steamToEosClient(body) {
     //assume client does not send more than 1 steamId per msg
     const m = body.match(/[0-9]{17}/);
-    if (m && m[1] in this.steamIndex) return body.replaceAll(`${m[0]}`, this.steamIndex[m[0]]);
+    if (m && m[ 1 ] in this.steamIndex) return body.replaceAll(`${m[ 0 ]}`, this.steamIndex[ m[ 0 ] ]);
     return body;
   }
 
@@ -363,9 +375,34 @@ export default class Rcon extends EventEmitter {
     console.warn(line);
     for (const r of this.defs) {
       const match = line.match(r.regex);
-      if (match && match.groups.eosId in this.eosIndex) return r.rep(line, this.eosIndex[match.groups.eosId], match.groups.eosId);
+      if (match && match.groups.eosId in this.eosIndex) return r.rep(line, this.eosIndex[ match.groups.eosId ], match.groups.eosId);
     }
     return line;
+  }
+
+  appendToFile(filePath, content) {
+    if (!this.dumpRconResponsesToFile) return;
+    const dir = path.dirname(filePath);
+
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
+    fs.appendFile(filePath, content + "\n", (err) => {
+      if (err) throw err;
+    });
+  }
+  rotateLogFile(logFile) {
+    if (!this.dumpRconResponsesToFile) return;
+    if (fs.existsSync(logFile)) {
+      const ext = path.extname(logFile);
+      const base = path.basename(logFile, ext);
+      const dir = path.dirname(logFile);
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const newFile = path.join(dir, `${base}_${timestamp}${ext}`);
+
+      fs.renameSync(logFile, newFile);
+    }
   }
 
   defs = [
