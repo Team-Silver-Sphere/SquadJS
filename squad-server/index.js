@@ -196,7 +196,9 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('NEW_GAME', async (data) => {
-      data.layer = await Layers.getLayerByClassname(data.layerClassname);
+      data.layer =
+        (await Layers.getLayerByClassname(data.layerClassname)) ||
+        (await this.constructPartialLayer());
 
       this.layerHistory.unshift({ layer: data.layer, time: data.time });
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
@@ -416,8 +418,11 @@ export default class SquadServer extends EventEmitter {
       const nextMap = await this.rcon.getNextMap();
       const nextMapToBeVoted = nextMap.layer === 'To be voted';
 
-      const currentLayer = await Layers.getLayerByName(currentMap.layer);
-      const nextLayer = nextMapToBeVoted ? null : await Layers.getLayerByName(nextMap.layer);
+      const currentLayer =
+        (await Layers.getLayerByName(currentMap.layer)) || (await this.constructPartialLayer());
+      const nextLayer = nextMapToBeVoted
+        ? null
+        : (await Layers.getLayerByName(nextMap.layer)) || { name: nextMap.layer };
 
       if (this.layerHistory.length === 0) {
         this.layerHistory.unshift({ layer: currentLayer, time: Date.now() });
@@ -605,5 +610,29 @@ export default class SquadServer extends EventEmitter {
     }
 
     this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
+  }
+
+  async constructPartialLayer() {
+    Logger.verbose('SquadServer', 1, `Constructing Partial Layer...`);
+    try {
+      const rconData = await this.rcon.getCurrentMap();
+      const gamedigData = await Gamedig.query({
+        type: 'squad',
+        host: this.options.host,
+        port: this.options.queryPort
+      });
+
+      const layer = {
+        name: rconData.layer, // "Al Basrah AAS V1"
+        layerid: gamedigData.map, // "Al_Basrah_AAS_V1"
+        map: {
+          name: rconData.level // "Al Basrah"
+        },
+        gamemode: gamedigData.raw.rules.GameMode_s // "AAS"
+      };
+      return layer;
+    } catch (err) {
+      Logger.verbose('SquadServer', 1, `Failed to Construct Partial Layer`, err);
+    }
   }
 }
