@@ -43,6 +43,7 @@ export default class DBLog extends BasePlugin {
     super(server, options, connectors);
 
     this.models = {};
+    this.playerSession = {};
 
     this.createModel('Server', {
       id: {
@@ -138,6 +139,35 @@ export default class DBLog extends BasePlugin {
         },
         lastName: {
           type: DataTypes.STRING
+        }
+      },
+      {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci'
+      }
+    );
+
+    this.createModel(
+      'PlaySession',
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+        },
+
+        name: {
+          type: DataTypes.STRING
+        },
+
+        startTime: {
+          type: DataTypes.DATE
+        },
+
+        endTime: {
+          type: DataTypes.DATE,
+          allowNull: true,
+          defaultValue: null
         }
       },
       {
@@ -329,6 +359,11 @@ export default class DBLog extends BasePlugin {
       onDelete: 'CASCADE'
     });
 
+    this.models.Server.hasMany(this.models.PlaySession, {
+      foreignKey: { name: 'server', allowNull: false },
+      onDelete: 'CASCADE'
+    });
+
     this.models.SteamUser.hasMany(this.models.Wound, {
       foreignKey: { name: 'attacker' },
       onDelete: 'CASCADE'
@@ -364,6 +399,11 @@ export default class DBLog extends BasePlugin {
       onDelete: 'CASCADE'
     });
 
+    this.models.SteamUser.hasMany(this.models.PlaySession, {
+      foreignKey: { name: 'steamID', allowNull: false },
+      onDelete: 'CASCADE'
+    });
+
     this.models.Match.hasMany(this.models.TickRate, {
       foreignKey: { name: 'match' },
       onDelete: 'CASCADE'
@@ -395,6 +435,10 @@ export default class DBLog extends BasePlugin {
     this.onPlayerWounded = this.onPlayerWounded.bind(this);
     this.onPlayerDied = this.onPlayerDied.bind(this);
     this.onPlayerRevived = this.onPlayerRevived.bind(this);
+    this.onPlayerConnected = this.onPlayerConnected.bind(this);
+    this.onPlayerDisconnected = this.onPlayerDisconnected.bind(this);
+    this.startSession = this.startSession.bind(this);
+    this.saveSession = this.saveSession.bind(this);
   }
 
   createModel(name, schema) {
@@ -409,6 +453,7 @@ export default class DBLog extends BasePlugin {
     await this.models.TickRate.sync();
     await this.models.PlayerCount.sync();
     await this.models.SteamUser.sync();
+    await this.models.PlaySession.sync();
     await this.models.Wound.sync();
     await this.models.Death.sync();
     await this.models.Revive.sync();
@@ -430,6 +475,8 @@ export default class DBLog extends BasePlugin {
     this.server.on('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.on('PLAYER_DIED', this.onPlayerDied);
     this.server.on('PLAYER_REVIVED', this.onPlayerRevived);
+    this.server.on('PLAYER_CONNECTED', this.onPlayerConnected);
+    this.server.on('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
   }
 
   async unmount() {
@@ -439,6 +486,8 @@ export default class DBLog extends BasePlugin {
     this.server.removeEventListener('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.removeEventListener('PLAYER_DIED', this.onPlayerDied);
     this.server.removeEventListener('PLAYER_REVIVED', this.onPlayerRevived);
+    this.server.removeEventListener('PLAYER_CONNECTED', this.onPlayerConnected);
+    this.server.removeEventListener('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
   }
 
   async onTickRate(info) {
@@ -576,5 +625,45 @@ export default class DBLog extends BasePlugin {
       reviverTeamID: info.reviver ? info.reviver.teamID : null,
       reviverSquadID: info.reviver ? info.reviver.squadID : null
     });
+  }
+
+  async onPlayerConnected(info) {
+    if (!info || !info.player) return;
+
+    await this.startSession(info.player.steamID, info.player.name, info.time);
+  }
+
+  async onPlayerDisconnected(info) {
+    if (!info || !info.player) return;
+
+    await this.saveSession(info.player.steamID, info.time);
+  }
+
+  async startSession(steamID, name, startTime) {
+    this.playerSession[steamID] = {
+      server: this.options.overrideServerID || this.server.id,
+      steamID,
+      name,
+      startTime
+    };
+
+    await this.models.PlaySession.create(this.playerSession[steamID]);
+  }
+
+  async saveSession(steamID, endTime, deleteFromMemory = true) {
+    if (!this.playerSession[steamID]) return;
+
+    await this.models.PlaySession.update(
+      { endTime },
+      {
+        where: {
+          server: this.options.overrideServerID || this.server.id,
+          steamID,
+          endTime: null
+        }
+      }
+    );
+
+    if (deleteFromMemory) delete this.playerSession[steamID];
   }
 }
