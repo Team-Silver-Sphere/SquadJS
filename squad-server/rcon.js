@@ -5,17 +5,18 @@ import PersistentEOSIDtoSteamID from './plugins/persistent-eosid-to-steamid.js';
 export default class SquadRcon extends Rcon {
   processChatPacket(decodedPacket) {
     const matchChat = decodedPacket.body.match(
-      /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[SteamID:([0-9a-f]{32})] (.+?) : (.*)/
+      /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[Online IDs:EOS: ([0-9a-f]{32}) steam: (\d{17})\] (.+?) : (.*)/
     );
     if (matchChat) {
       Logger.verbose('SquadRcon', 2, `Matched chat message: ${decodedPacket.body}`);
 
       this.emit('CHAT_MESSAGE', {
         raw: decodedPacket.body,
-        chat: matchChat[1],
-        steamID: matchChat[2],
-        name: matchChat[3],
-        message: matchChat[4],
+        chat: matchChat[ 1 ],
+        eosID: matchChat[ 2 ],
+        steamID: matchChat[ 3 ],
+        name: matchChat[ 4 ],
+        message: matchChat[ 5 ],
         time: new Date()
       });
 
@@ -23,14 +24,14 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchPossessedAdminCam = decodedPacket.body.match(
-      /\[SteamID:([0-9a-f]{32})] (.+?) has possessed admin camera./
+      /\[Online Ids:EOS: ([0-9a-f]{32}) steam: (\d{17})\] (.+) has possessed admin camera\./
     );
     if (matchPossessedAdminCam) {
       Logger.verbose('SquadRcon', 2, `Matched admin camera possessed: ${decodedPacket.body}`);
       this.emit('POSSESSED_ADMIN_CAMERA', {
         raw: decodedPacket.body,
-        steamID: matchPossessedAdminCam[1],
-        name: matchPossessedAdminCam[2],
+        steamID: matchPossessedAdminCam[ 2 ],
+        name: matchPossessedAdminCam[ 3 ],
         time: new Date()
       });
 
@@ -38,14 +39,14 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchUnpossessedAdminCam = decodedPacket.body.match(
-      /\[SteamID:([0-9a-f]{32})] (.+?) has unpossessed admin camera./
+      /\[Online IDs:EOS: ([0-9a-f]{32}) steam: (\d{17})\] (.+) has unpossessed admin camera\./
     );
     if (matchUnpossessedAdminCam) {
       Logger.verbose('SquadRcon', 2, `Matched admin camera possessed: ${decodedPacket.body}`);
       this.emit('UNPOSSESSED_ADMIN_CAMERA', {
         raw: decodedPacket.body,
-        steamID: matchUnpossessedAdminCam[1],
-        name: matchUnpossessedAdminCam[2],
+        steamID: matchPossessedAdminCam[ 2 ],
+        name: matchPossessedAdminCam[ 3 ],
         time: new Date()
       });
 
@@ -60,8 +61,8 @@ export default class SquadRcon extends Rcon {
 
       this.emit('PLAYER_WARNED', {
         raw: decodedPacket.body,
-        name: matchWarn[1],
-        reason: matchWarn[2],
+        name: matchWarn[ 1 ],
+        reason: matchWarn[ 2 ],
         time: new Date()
       });
 
@@ -69,16 +70,16 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchKick = decodedPacket.body.match(
-      /Kicked player ([0-9]+)\. \[steamid=([0-9a-f]{32})] (.*)/
+      /Kicked player ([0-9]+)\. \[Online IDs= EOS: ([0-9a-f]{32}) steam: (\d{17})] (.*)/
     );
     if (matchKick) {
       Logger.verbose('SquadRcon', 2, `Matched kick message: ${decodedPacket.body}`);
 
       this.emit('PLAYER_KICKED', {
         raw: decodedPacket.body,
-        playerID: matchKick[1],
-        steamID: matchKick[2],
-        name: matchKick[3],
+        playerID: matchKick[ 1 ],
+        steamID: matchKick[ 3 ],
+        name: matchKick[ 4 ],
         time: new Date()
       });
 
@@ -86,18 +87,18 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchSqCreated = decodedPacket.body.match(
-      /(.+) \(Steam ID: ([0-9a-f]{32})\) has created Squad (\d+) \(Squad Name: (.+)\) on (.+)/
+      /(.+) \(Online IDs: EOS: ([0-9a-f]{32}) steam: (\d{17})\) has created Squad (\d+) \(Squad Name: (.+)\) on (.+)/
     );
     if (matchSqCreated) {
       Logger.verbose('SquadRcon', 2, `Matched Squad Created: ${decodedPacket.body}`);
 
       this.emit('SQUAD_CREATED', {
         time: new Date(),
-        playerName: matchSqCreated[1],
-        playerSteamID: matchSqCreated[2],
-        squadID: matchSqCreated[3],
-        squadName: matchSqCreated[4],
-        teamName: matchSqCreated[5]
+        playerName: matchSqCreated[ 1 ],
+        playerSteamID: matchSqCreated[ 3 ],
+        squadID: matchSqCreated[ 4 ],
+        squadName: matchSqCreated[ 5 ],
+        teamName: matchSqCreated[ 6 ]
       });
 
       return;
@@ -111,10 +112,10 @@ export default class SquadRcon extends Rcon {
 
       this.emit('PLAYER_BANNED', {
         raw: decodedPacket.body,
-        playerID: matchBan[1],
-        steamID: matchBan[2],
-        name: matchBan[3],
-        interval: matchBan[4],
+        playerID: matchBan[ 1 ],
+        steamID: matchBan[ 2 ],
+        name: matchBan[ 3 ],
+        interval: matchBan[ 4 ],
         time: new Date()
       });
     }
@@ -123,15 +124,15 @@ export default class SquadRcon extends Rcon {
   async getCurrentMap() {
     const response = await this.execute('ShowCurrentMap');
     const match = response.match(/^Current level is (.*), layer is (.*)/);
-    return { level: match[1], layer: match[2] };
+    return { level: match[ 1 ], layer: match[ 2 ] };
   }
 
   async getNextMap() {
     const response = await this.execute('ShowNextMap');
     const match = response.match(/^Next level is (.*), layer is (.*)/);
     return {
-      level: match[1] !== '' ? match[1] : null,
-      layer: match[2] !== 'To be voted' ? match[2] : null
+      level: match[ 1 ] !== '' ? match[ 1 ] : null,
+      layer: match[ 2 ] !== 'To be voted' ? match[ 2 ] : null
     };
   }
 
@@ -140,32 +141,24 @@ export default class SquadRcon extends Rcon {
 
     const players = [];
 
-    if(!response || response.length < 1) return players;
+    if (!response || response.length < 1) return players;
 
     for (const line of response.split('\n')) {
       const match = line.match(
-        /ID: ([0-9]+) \| SteamID: ([0-9a-f]{32}) \| Name: (.+) \| Team ID: ([0-9]+) \| Squad ID: ([0-9]+|N\/A) \| Is Leader: (True|False) \| Role: ([A-Za-z0-9_]*)\b/
+        /ID: ([0-9]+) \| Online IDs: EOS: ([0-9a-f]{32}) steam: (\d{17}) \| Name: (.+) \| Team ID: ([0-9]+) \| Squad ID: ([0-9]+|N\/A) \| Is Leader: (True|False) \| Role: ([A-Za-z0-9_]*)\b/
       );
       if (!match) continue;
 
-      let steamID = this.eosIndex[ match[ 2 ] ]
-
-      const persEosIdPlugin = server.plugins.find(p => p instanceof PersistentEOSIDtoSteamID)
-      if (persEosIdPlugin && !this.eosIndex[ match[ 2 ] ]) {
-        steamID = (await persEosIdPlugin.getByEOSID(match[ 2 ])).steamID
-        this.addIds(steamID, match[ 2 ]);
-        Logger.verbose("RCON", 1, `Getting SteamID for player: ${match[ 3 ]} from EOSID: ${match[ 2 ]} => ${steamID}`)
-      }
-
+      server.rcon.addIds(match[ 3 ], match[ 2 ]);
       players.push({
-        playerID: match[1],
-        steamID: steamID,
-        EOSID: match[2],
-        name: match[3],
-        teamID: match[4],
-        squadID: match[5] !== 'N/A' ? match[5] : null,
-        isLeader: match[6] === 'True',
-        role: match[7]
+        playerID: match[ 1 ],
+        EOSID: match[ 2 ],
+        steamID: match[ 3 ],
+        name: match[ 4 ],
+        teamID: match[ 5 ],
+        squadID: match[ 6 ] !== 'N/A' ? match[ 5 ] : null,
+        isLeader: match[ 7 ] === 'True',
+        role: match[ 8 ]
       });
     }
 
@@ -181,21 +174,21 @@ export default class SquadRcon extends Rcon {
 
     for (const line of responseSquad.split('\n')) {
       const match = line.match(
-        /ID: ([0-9]+) \| Name: (.+) \| Size: ([0-9]+) \| Locked: (True|False) \| Creator Name: (.+) \| Creator Steam ID: ([0-9a-f]{32})/
+        /ID: ([0-9]+) \| Name: (.+) \| Size: ([0-9]+) \| Locked: (True|False) \| Creator Name: (.+) \| Creator Online IDs: EOS: ([0-9a-f]{32}) steam: (\d{17})/
       );
       const matchSide = line.match(/Team ID: (1|2) \((.+)\)/);
       if (matchSide) {
-        teamID = matchSide[1];
-        teamName = matchSide[2];
+        teamID = matchSide[ 1 ];
+        teamName = matchSide[ 2 ];
       }
       if (!match) continue;
       squads.push({
-        squadID: match[1],
-        squadName: match[2],
-        size: match[3],
-        locked: match[4],
-        creatorName: match[5],
-        creatorSteamID: match[6],
+        squadID: match[ 1 ],
+        squadName: match[ 2 ],
+        size: match[ 3 ],
+        locked: match[ 4 ],
+        creatorName: match[ 5 ],
+        creatorSteamID: match[ 7 ],
         teamID: teamID,
         teamName: teamName
       });
