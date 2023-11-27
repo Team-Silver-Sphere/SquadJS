@@ -28,7 +28,9 @@ export default class Layer {
           classname: vehicle.rawType,
           count: vehicle.count,
           spawnDelay: vehicle.delay,
-          respawnDelay: vehicle.respawnTime
+          respawnDelay: vehicle.respawnTime,
+          icon: vehicle.icon,
+          spawnerSize: vehicle.spawner_Size
         })),
         numberOfTanks: (data[t].vehicles || []).filter((v) => {
           return v.icon.match(/_tank/);
