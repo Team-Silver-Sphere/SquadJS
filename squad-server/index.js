@@ -502,6 +502,7 @@ export default class SquadServer extends EventEmitter {
         reserveSlots: parseInt(data.PlayerReserveCount_I),
 
         playerCount: parseInt(data.PlayerCount_I),
+        a2sPlayerCount: parseInt(data.PlayerCount_I),
         publicQueue: parseInt(data.PublicQueue_I),
         reserveQueue: parseInt(data.ReservedQueue_I),
 
