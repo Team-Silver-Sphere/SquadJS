@@ -1,31 +1,20 @@
 export default {
-  regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogNet: Join succeeded: (.+)/,
+  regex:
+    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: PostLogin: NewPlayer: BP_PlayerController_C .+PersistentLevel\.([^\s]+) \(IP: ([\d.]+) \| Online IDs: EOS: ([0-9a-f]{32}) steam: (\d+)\)/,
   onMatch: (args, logParser) => {
     const data = {
-      raw: args[ 0 ],
-      time: args[ 1 ],
-      chainID: +args[ 2 ],
-      playerSuffix: args[ 3 ]
+      raw: args[0],
+      time: args[1],
+      chainID: +args[2],
+      ip: args[4],
+      eosID: args[5],
+      steamID: args[6]
     };
 
-    // console.log(`ChainID: ${data.chainID}`, logParser.eventStore.joinRequests[ data.chainID ]);
-    const joinRequestsData = { ...logParser.eventStore.joinRequests[ data.chainID ] };
-    // console.log('loginRequestData', loginRequestData)
+    const joinRequestData = logParser.eventStore.joinRequests[+args[2]];
+    data.connection = joinRequestData.connection;
+    data.playerSuffix = joinRequestData.suffix;
 
-    data.eosID = joinRequestsData.eosID
-    data.controller = joinRequestsData.controller
-    data.steamID = `${logParser.eventStore.connectionIdToSteamID.get(joinRequestsData.connection)}`
-
-    logParser.eventStore.connectionIdToSteamID.delete(joinRequestsData.connection)
-
-    delete logParser.eventStore.joinRequests[ +data.chainID ];
-
-    // Handle Reconnecting players
-    if (logParser.eventStore.disconnected[ data.steamID ]) {
-      delete logParser.eventStore.disconnected[ data.steamID ];
-    }
     logParser.emit('PLAYER_CONNECTED', data);
-    // logParser.eventStore.players[ data.steamID ].suffix = data.playerSuffix
-    // logParser.eventStore.players[ data.steamID ].controller = data.controller
   }
 };
