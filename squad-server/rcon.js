@@ -171,6 +171,8 @@ export default class SquadRcon extends Rcon {
     let teamName;
     let teamID;
 
+    if (!responseSquad || responseSquad.length < 1) return squads;
+
     for (const line of responseSquad.split('\n')) {
       const match = line.match(
         /ID: ([0-9]+) \| Name: (.+) \| Size: ([0-9]+) \| Locked: (True|False) \| Creator Name: (.+) \| Creator Online IDs: EOS: ([0-9a-f]{32}) steam: (\d{17})/
