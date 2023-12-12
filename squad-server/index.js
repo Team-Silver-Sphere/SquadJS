@@ -508,8 +508,8 @@ export default class SquadServer extends EventEmitter {
         currentLayer: data.MapName_s,
         nextLayer: data.NextLayer_s,
 
-        teamOne: data.TeamOne_s.replace(new RegExp(data.MapName_s, 'i'), ''),
-        teamTwo: data.TeamTwo_s.replace(new RegExp(data.MapName_s, 'i'), ''),
+        teamOne: data.TeamOne_s?.replace(new RegExp(data.MapName_s, 'i'), '') || '',
+        teamTwo: data.TeamTwo_s?.replace(new RegExp(data.MapName_s, 'i'), '') || '',
 
         matchTimeout: parseFloat(data.MatchTimeout_d),
         gameVersion: data.GameVersion_s
