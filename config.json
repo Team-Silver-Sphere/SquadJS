@@ -5,8 +5,6 @@
     "queryPort": 27165,
     "rconPort": 21114,
     "rconPassword": "password",
-    "rconPassThrough": true,
-    "rconPassThroughPort": 8124,
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
     "ftp": {
@@ -42,11 +40,6 @@
     "sqlite": "sqlite:database.sqlite"
   },
   "plugins": [
-    {
-      "plugin": "PersistentEOSIDtoSteamID",
-      "enabled": true,
-      "database": "sqlite"
-    },
     {
       "plugin": "AutoKickUnassigned",
       "enabled": true,
@@ -223,6 +216,11 @@
       "enabled": false,
       "broadcasts": [],
       "interval": 300000
+    },
+    {
+      "plugin": "PersistentEOSIDtoSteamID",
+      "enabled": false,
+      "database": "sqlite"
     },
     {
       "plugin": "SeedingMode",

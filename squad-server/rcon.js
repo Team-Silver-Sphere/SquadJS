@@ -1,6 +1,5 @@
 import Logger from 'core/logger';
 import Rcon from 'core/rcon';
-import PersistentEOSIDtoSteamID from './plugins/persistent-eosid-to-steamid.js';
 
 export default class SquadRcon extends Rcon {
   processChatPacket(decodedPacket) {
@@ -12,11 +11,11 @@ export default class SquadRcon extends Rcon {
 
       this.emit('CHAT_MESSAGE', {
         raw: decodedPacket.body,
-        chat: matchChat[ 1 ],
-        eosID: matchChat[ 2 ],
-        steamID: matchChat[ 3 ],
-        name: matchChat[ 4 ],
-        message: matchChat[ 5 ],
+        chat: matchChat[1],
+        eosID: matchChat[2],
+        steamID: matchChat[3],
+        name: matchChat[4],
+        message: matchChat[5],
         time: new Date()
       });
 
@@ -30,8 +29,8 @@ export default class SquadRcon extends Rcon {
       Logger.verbose('SquadRcon', 2, `Matched admin camera possessed: ${decodedPacket.body}`);
       this.emit('POSSESSED_ADMIN_CAMERA', {
         raw: decodedPacket.body,
-        steamID: matchPossessedAdminCam[ 2 ],
-        name: matchPossessedAdminCam[ 3 ],
+        steamID: matchPossessedAdminCam[2],
+        name: matchPossessedAdminCam[3],
         time: new Date()
       });
 
@@ -45,8 +44,8 @@ export default class SquadRcon extends Rcon {
       Logger.verbose('SquadRcon', 2, `Matched admin camera possessed: ${decodedPacket.body}`);
       this.emit('UNPOSSESSED_ADMIN_CAMERA', {
         raw: decodedPacket.body,
-        steamID: matchPossessedAdminCam[ 2 ],
-        name: matchPossessedAdminCam[ 3 ],
+        steamID: matchUnpossessedAdminCam[2],
+        name: matchUnpossessedAdminCam[3],
         time: new Date()
       });
 
@@ -61,8 +60,8 @@ export default class SquadRcon extends Rcon {
 
       this.emit('PLAYER_WARNED', {
         raw: decodedPacket.body,
-        name: matchWarn[ 1 ],
-        reason: matchWarn[ 2 ],
+        name: matchWarn[1],
+        reason: matchWarn[2],
         time: new Date()
       });
 
@@ -77,9 +76,9 @@ export default class SquadRcon extends Rcon {
 
       this.emit('PLAYER_KICKED', {
         raw: decodedPacket.body,
-        playerID: matchKick[ 1 ],
-        steamID: matchKick[ 3 ],
-        name: matchKick[ 4 ],
+        playerID: matchKick[1],
+        steamID: matchKick[3],
+        name: matchKick[4],
         time: new Date()
       });
 
@@ -94,11 +93,11 @@ export default class SquadRcon extends Rcon {
 
       this.emit('SQUAD_CREATED', {
         time: new Date(),
-        playerName: matchSqCreated[ 1 ],
-        playerSteamID: matchSqCreated[ 3 ],
-        squadID: matchSqCreated[ 4 ],
-        squadName: matchSqCreated[ 5 ],
-        teamName: matchSqCreated[ 6 ]
+        playerName: matchSqCreated[1],
+        playerSteamID: matchSqCreated[3],
+        squadID: matchSqCreated[4],
+        squadName: matchSqCreated[5],
+        teamName: matchSqCreated[6]
       });
 
       return;
@@ -112,10 +111,10 @@ export default class SquadRcon extends Rcon {
 
       this.emit('PLAYER_BANNED', {
         raw: decodedPacket.body,
-        playerID: matchBan[ 1 ],
-        steamID: matchBan[ 2 ],
-        name: matchBan[ 3 ],
-        interval: matchBan[ 4 ],
+        playerID: matchBan[1],
+        steamID: matchBan[2],
+        name: matchBan[3],
+        interval: matchBan[4],
         time: new Date()
       });
     }
@@ -124,15 +123,15 @@ export default class SquadRcon extends Rcon {
   async getCurrentMap() {
     const response = await this.execute('ShowCurrentMap');
     const match = response.match(/^Current level is (.*), layer is (.*)/);
-    return { level: match[ 1 ], layer: match[ 2 ] };
+    return { level: match[1], layer: match[2] };
   }
 
   async getNextMap() {
     const response = await this.execute('ShowNextMap');
     const match = response.match(/^Next level is (.*), layer is (.*)/);
     return {
-      level: match[ 1 ] !== '' ? match[ 1 ] : null,
-      layer: match[ 2 ] !== 'To be voted' ? match[ 2 ] : null
+      level: match[1] !== '' ? match[1] : null,
+      layer: match[2] !== 'To be voted' ? match[2] : null
     };
   }
 
@@ -149,16 +148,16 @@ export default class SquadRcon extends Rcon {
       );
       if (!match) continue;
 
-      server.rcon.addIds(match[ 3 ], match[ 2 ]);
+      server.rcon.addIds(match[3], match[2]);
       players.push({
-        playerID: match[ 1 ],
-        EOSID: match[ 2 ],
-        steamID: match[ 3 ],
-        name: match[ 4 ],
-        teamID: match[ 5 ],
-        squadID: match[ 6 ] !== 'N/A' ? match[ 5 ] : null,
-        isLeader: match[ 7 ] === 'True',
-        role: match[ 8 ]
+        playerID: match[1],
+        EOSID: match[2],
+        steamID: match[3],
+        name: match[4],
+        teamID: match[5],
+        squadID: match[6] !== 'N/A' ? match[5] : null,
+        isLeader: match[7] === 'True',
+        role: match[8]
       });
     }
 
@@ -178,17 +177,17 @@ export default class SquadRcon extends Rcon {
       );
       const matchSide = line.match(/Team ID: (1|2) \((.+)\)/);
       if (matchSide) {
-        teamID = matchSide[ 1 ];
-        teamName = matchSide[ 2 ];
+        teamID = matchSide[1];
+        teamName = matchSide[2];
       }
       if (!match) continue;
       squads.push({
-        squadID: match[ 1 ],
-        squadName: match[ 2 ],
-        size: match[ 3 ],
-        locked: match[ 4 ],
-        creatorName: match[ 5 ],
-        creatorSteamID: match[ 7 ],
+        squadID: match[1],
+        squadName: match[2],
+        size: match[3],
+        locked: match[4],
+        creatorName: match[5],
+        creatorSteamID: match[7],
         teamID: teamID,
         teamName: teamName
       });
