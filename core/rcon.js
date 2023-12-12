@@ -439,11 +439,15 @@ export default class Rcon extends EventEmitter {
   }
 
   matchRcon(line) {
-    console.warn(line);
     for (const r of defs) {
       const match = line.match(r.regex);
-      if (match && match.groups.eosId in this.eosIndex)
-        return r.rep(line, this.eosIndex[match.groups.eosId], match.groups.eosId);
+      if (match && (match.groups.eosId in this.eosIndex || match.groups.steamId)) {
+        return r.rep(
+          line,
+          match.groups.steamId || this.eosIndex[match.groups.eosId],
+          match.groups.eosId
+        );
+      }
     }
     return line;
   }
@@ -477,29 +481,44 @@ const defs = [
   //strict matching to avoid 'name as steamId errors'
   {
     regex:
-      /^ID: [0-9]+ \| SteamID: (?<eosId>[0-9a-f]{32}) \| Name: .+ \| Team ID: (1|2|N\/A) \| Squad ID: ([0-9]+|N\/A) \| Is Leader: (True|False|N\/A) \| Role: .+$/,
+      /^ID: [0-9]+ \| Online IDs: EOS: (?<eosId>[0-9a-f]{32}) steam: (?<steamId>\d{17}) \| Name: .+ \| Team ID: (1|2|N\/A) \| Squad ID: ([0-9]+|N\/A) \| Is Leader: (True|False|N\/A) \| Role: .+$/,
     rep: (line, steamId, eosId) => {
-      return line.replace(` SteamID: ${eosId} `, ` SteamID: ${steamId} `);
+      return line.replace(
+        /\| Online IDs: EOS: [\w\d]{32} steam: \d{17} \|/,
+        `| SteamID: ${steamId} |`
+      );
     }
   },
   {
     regex:
-      /^ID: (?<Id>[0-9]+) \| SteamID: (?<eosId>[0-9a-f]{32}) \| Since Disconnect: (?<SinceDc>.+) \| Name: (?<name>.+)$/,
+      /^ID: (?<Id>[0-9]+) \| Online IDs: EOS: (?<eosId>[0-9a-f]{32}) steam: (?<steamId>\d{17}) \| Since Disconnect: (?<SinceDc>.+) \| Name: (?<name>.+)$/,
     rep: (line, steamId, eosId) => {
-      return line.replace(` SteamID: ${eosId} `, ` SteamID: ${steamId} `);
+      return line.replace(
+        /Online IDs: EOS: (?<eosId>[0-9a-f]{32}) steam: (?<steamId>\d{17})/,
+        `SteamID: ${steamId}`
+      );
     }
   },
   {
     regex:
-      /^ID: (?<sqdId>[0-9]+) \| Name: (?<sqdName>.+) \| Size: (?<sqdSize>[0-9]) \| Locked: (?<locked>True|False) \| Creator Name: (?<creatorName>.+) \| Creator Steam ID: (?<creatorSteamId>[0-9]{17})/,
+      /^ID: (?<sqdId>[0-9]+) \| Name: (?<sqdName>.+) \| Size: (?<sqdSize>[0-9]) \| Locked: (?<locked>True|False) \| Creator Name: (?<creatorName>.+) \| Creator Online IDs: EOS: (?<eosID>[\d\w]{32}) steam: (?<steamId>\d{17})/,
     rep: (line, steamId, eosId) => {
-      return line.replace(` Creator Steam ID: ${eosId}`, ` Creator Steam ID: ${steamId}`);
+      console.log(line, steamId, eosId);
+      const ret = line.replace(
+        /\| Creator Online IDs: EOS: [\w\d]{32} steam: \d{17}/,
+        `| Creator Steam ID: ${steamId}`
+      );
+      return ret;
     }
   },
   {
-    regex: /^Forced team change for player (?<id>[0-9]+). \[steamid=(?<eosId>[0-9a-f]{32})] (.+)/,
+    regex:
+      /^Forced team change for player (?<id>[0-9]+). \[Online IDs= EOS: (?<eosId>[0-9a-f]{32}) steam: (?<steamId>\d{17})] (.+)/,
     rep: (line, steamId, eosId) => {
-      return line.replace(` [steamid=${eosId}] `, ` [steamid=${steamId}] `);
+      return line.replace(
+        /Online IDs= EOS: (?<eosId>[0-9a-f]{32}) steam: (?<steamId>\d{17})/,
+        `steamid=${steamId}`
+      );
     }
   },
 
@@ -511,40 +530,30 @@ const defs = [
   },
 
   {
-    regex: /^\[ChatAll] \[SteamID:(?<eosId>[0-9a-f]{32})] ((?<name>.+) : (?<msg>.+))/,
+    regex:
+      /^\[Chat(All|Team|Squad|Admin)] \[Online IDs:EOS: (?<eosId>[\d\w]{32}) steam: (?<steamId>\d{17})] (?<name>.+) : (?<msg>.+)/,
     rep: (line, steamId, eosId) => {
-      return line.replace(` [SteamID:${eosId}] `, ` [SteamID:${steamId}] `);
-    }
-  },
-  {
-    regex: /^\[ChatTeam] \[SteamID:(?<eosId>[0-9a-f]{32})] ((?<name>.+) : (?<msg>.+))/,
-    rep: (line, steamId, eosId) => {
-      return line.replace(` [SteamID:${eosId}] `, ` [SteamID:${steamId}] `);
-    }
-  },
-  {
-    regex: /^\[ChatSquad] \[SteamID:(?<eosId>[0-9a-f]{32})] ((?<name>.+) : (?<msg>.+))/,
-    rep: (line, steamId, eosId) => {
-      return line.replace(` [SteamID:${eosId}] `, ` [SteamID:${steamId}] `);
-    }
-  },
-  {
-    regex: /^\[ChatAdmin] \[SteamID:(?<eosId>[0-9a-f]{32})] ((?<name>.+) : (?<msg>.+))/,
-    rep: (line, steamId, eosId) => {
-      return line.replace(` [SteamID:${eosId}] `, ` [SteamID:${steamId}] `);
+      return line.replace(/Online IDs:EOS: [\d\w]{32} steam: \d{17}/, `SteamID:${steamId}`);
     }
   },
   {
     regex:
-      /^(?<name>.+) \(Steam ID: (?<eosId>[0-9a-f]{32})\) has created Squad (?<squadNum>[0-9]+) \(Squad Name: (?<squadName>.+)\) on (?<teamName>.+)/,
+      /^(?<name>.+) \(Online IDs: EOS: (?<eosId>[0-9a-f]{32}) steam: (?<steamId>\d+)\) has created Squad (?<squadNum>[0-9]+) \(Squad Name: (?<squadName>.+)\) on (?<teamName>.+)/,
     rep: (line, steamId, eosId) => {
-      return line.replace(` (Steam ID: ${eosId}) `, ` (Steam ID: ${steamId}) `);
+      return line.replace(
+        /Online IDs: EOS: (?<eosId>[0-9a-f]{32}) steam: (?<steamId>\d+)/,
+        `Steam ID: ${steamId}`
+      );
     }
   },
   {
-    regex: /^Kicked player (?<Id>[0-9]+). \[steamid=(?<eosId>[0-9a-f]{32})] (?<name>.+)/,
+    regex:
+      /^Kicked player (?<Id>[0-9]+). \[Online IDs= EOS: (?<eosId>[0-9a-f]{32}) steam: (?<steamId>\d{17})] (?<name>.+)/,
     rep: (line, steamId, eosId) => {
-      return line.replace(` [steamid=${eosId}] `, ` [steamid=${steamId}] `);
+      return line.replace(
+        /Online IDs= EOS: (?<eosId>[0-9a-f]{32}) steam: (?<steamId>\d{17})/,
+        `steamid=${steamId}`
+      );
     }
   },
 
@@ -555,15 +564,10 @@ const defs = [
     }
   },
   {
-    regex: /^\[SteamID:(?<eosId>[0-9a-f]{32})] (?<name>.+) has possessed admin camera./,
+    regex:
+      /^\[Online I(d|D)s:EOS: (?<eosId>[0-9a-f]{32}) steam: (?<steamId>)\d{17}] (?<name>.+) has (un)?possessed admin camera\./,
     rep: (line, steamId, eosId) => {
-      return line.replace(` [SteamID:${eosId}] `, ` [SteamID:${steamId}] `);
-    }
-  },
-  {
-    regex: /^\[SteamID:(?<eosId>[0-9a-f]{32})] (?<name>.+) has unpossessed admin camera./,
-    rep: (line, steamId, eosId) => {
-      return line.replace(` [SteamID:${eosId}] `, ` [SteamID:${steamId}] `);
+      return line.replace(/Online I(d|D)s:EOS: [\w\d]{32} steam: \d{17}/, `SteamID:${steamId}`);
     }
   }
 ];
