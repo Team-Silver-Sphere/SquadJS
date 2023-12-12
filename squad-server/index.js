@@ -1,7 +1,6 @@
 import EventEmitter from 'events';
 
 import axios from 'axios';
-import Gamedig from 'gamedig';
 
 import Logger from 'core/logger';
 import { SQUADJS_API_DOMAIN } from 'core/constants';
@@ -19,7 +18,7 @@ export default class SquadServer extends EventEmitter {
   constructor(options = {}) {
     super();
 
-    for (const option of [ 'host', 'queryPort' ])
+    for (const option of ['host'])
       if (!(option in options)) throw new Error(`${option} must be specified.`);
 
     this.id = options.id;
@@ -107,29 +106,29 @@ export default class SquadServer extends EventEmitter {
 
       const command = data.message.match(/!([^ ]+) ?(.*)/);
       if (command)
-        this.emit(`CHAT_COMMAND:${command[ 1 ].toLowerCase()}`, {
+        this.emit(`CHAT_COMMAND:${command[1].toLowerCase()}`, {
           ...data,
-          message: command[ 2 ].trim()
+          message: command[2].trim()
         });
     });
 
     this.rcon.on('POSSESSED_ADMIN_CAMERA', async (data) => {
       data.player = await this.getPlayerBySteamID(data.steamID);
 
-      this.adminsInAdminCam[ data.steamID ] = data.time;
+      this.adminsInAdminCam[data.steamID] = data.time;
 
       this.emit('POSSESSED_ADMIN_CAMERA', data);
     });
 
     this.rcon.on('UNPOSSESSED_ADMIN_CAMERA', async (data) => {
       data.player = await this.getPlayerBySteamID(data.steamID);
-      if (this.adminsInAdminCam[ data.steamID ]) {
-        data.duration = data.time.getTime() - this.adminsInAdminCam[ data.steamID ].getTime();
+      if (this.adminsInAdminCam[data.steamID]) {
+        data.duration = data.time.getTime() - this.adminsInAdminCam[data.steamID].getTime();
       } else {
         data.duration = 0;
       }
 
-      delete this.adminsInAdminCam[ data.steamID ];
+      delete this.adminsInAdminCam[data.steamID];
 
       this.emit('UNPOSSESSED_ADMIN_CAMERA', data);
     });
@@ -210,11 +209,15 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('PLAYER_CONNECTED', async (data) => {
-      Logger.verbose("SquadServer", 1, `Player connected ${data.playerSuffix} - SteamID: ${data.steamID} - EOSID: ${data.eosID}`)
+      Logger.verbose(
+        'SquadServer',
+        1,
+        `Player connected ${data.playerSuffix} - SteamID: ${data.steamID} - EOSID: ${data.eosID}`
+      );
 
-      this.rcon.addIds(data.steamID, data.eosID)
+      this.rcon.addIds(data.steamID, data.eosID);
 
-      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.player = await this.getPlayerByEOSID(data.eosID);
       if (data.player) data.player.suffix = data.playerSuffix;
 
       delete data.steamID;
@@ -224,7 +227,7 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('PLAYER_DISCONNECTED', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.player = await this.getPlayerByEOSID(data.playerEOSID);
 
       delete data.steamID;
 
@@ -233,22 +236,29 @@ export default class SquadServer extends EventEmitter {
 
     this.logParser.on('PLAYER_DAMAGED', async (data) => {
       data.victim = await this.getPlayerByName(data.victimName);
-      data.attacker = await this.getPlayerByName(data.attackerName);
+      data.attacker = await this.getPlayerByEOSID(data.attackerEOSID);
 
-      if (data.victim && data.attacker)
+      if (!data.attacker.playercontroller) data.attacker.playercontroller = data.attackerController;
+
+      if (data.victim && data.attacker) {
+        if (!data.victim.playercontroller) data.victim.playercontroller = data.attackerController;
+
         data.teamkill =
           data.victim.teamID === data.attacker.teamID &&
           data.victim.steamID !== data.attacker.steamID;
+      }
 
       delete data.victimName;
       delete data.attackerName;
+
+      console.log('player damage', data);
 
       this.emit('PLAYER_DAMAGED', data);
     });
 
     this.logParser.on('PLAYER_WOUNDED', async (data) => {
       data.victim = await this.getPlayerByName(data.victimName);
-      data.attacker = await this.getPlayerByName(data.attackerName);
+      data.attacker = await this.getPlayerByEOSID(data.attackerEOSID);
       if (!data.attacker)
         data.attacker = await this.getPlayerByController(data.attackerPlayerController);
 
@@ -266,7 +276,7 @@ export default class SquadServer extends EventEmitter {
 
     this.logParser.on('PLAYER_DIED', async (data) => {
       data.victim = await this.getPlayerByName(data.victimName);
-      data.attacker = await this.getPlayerByName(data.attackerName);
+      data.attacker = await this.getPlayerByEOSID(data.attackerEOSID);
       if (!data.attacker)
         data.attacker = await this.getPlayerByController(data.attackerPlayerController);
 
@@ -282,9 +292,9 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('PLAYER_REVIVED', async (data) => {
-      data.victim = await this.getPlayerByName(data.victimName);
-      data.attacker = await this.getPlayerByName(data.attackerName);
-      data.reviver = await this.getPlayerByName(data.reviverName);
+      data.victim = await this.getPlayerByEOSID(data.victimEOSID);
+      data.attacker = await this.getPlayerByEOSID(data.attackerEOSID);
+      data.reviver = await this.getPlayerByEOSID(data.reviverEOSID);
 
       delete data.victimName;
       delete data.attackerName;
@@ -294,7 +304,7 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('PLAYER_POSSESS', async (data) => {
-      data.player = await this.getPlayerByNameSuffix(data.playerSuffix);
+      data.player = await this.getPlayerByEOSID(data.playerEOSID);
       if (data.player) data.player.possessClassname = data.possessClassname;
 
       delete data.playerSuffix;
@@ -303,7 +313,7 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('PLAYER_UNPOSSESS', async (data) => {
-      data.player = await this.getPlayerByNameSuffix(data.playerSuffix);
+      data.player = await this.getPlayerByEOSID(data.playerEOSID);
 
       delete data.playerSuffix;
 
@@ -319,8 +329,8 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('CLIENT_EXTERNAL_ACCOUNT_INFO', (data) => {
-      this.rcon.addIds(data.steamID, data.eosID)
-    })
+      this.rcon.addIds(data.steamID, data.eosID);
+    });
     // this.logParser.on('CLIENT_CONNECTED', (data) => {
     //   Logger.verbose("SquadServer", 1, `Client connected. Connection: ${data.connection} - SteamID: ${data.steamID}`)
     // })
@@ -349,12 +359,12 @@ export default class SquadServer extends EventEmitter {
   }
 
   getAdminPermsBySteamID(steamID) {
-    return this.admins[ steamID ];
+    return this.admins[steamID];
   }
 
   getAdminsWithPermission(perm) {
     const ret = [];
-    for (const [ steamID, perms ] of Object.entries(this.admins)) {
+    for (const [steamID, perms] of Object.entries(this.admins)) {
       if (perm in perms) ret.push(steamID);
     }
     return ret;
@@ -372,16 +382,16 @@ export default class SquadServer extends EventEmitter {
     try {
       const oldPlayerInfo = {};
       for (const player of this.players) {
-        oldPlayerInfo[ player.steamID ] = player;
+        oldPlayerInfo[player.steamID] = player;
       }
 
       const players = [];
       for (const player of await this.rcon.getListPlayers(this))
         players.push({
-          ...oldPlayerInfo[ player.steamID ],
+          ...oldPlayerInfo[player.steamID],
           ...player,
-          playercontroller: this.logParser.eventStore.players[ player.steamID ]
-            ? this.logParser.eventStore.players[ player.steamID ].controller
+          playercontroller: this.logParser.eventStore.players[player.steamID]
+            ? this.logParser.eventStore.players[player.steamID].controller
             : null,
           squad: await this.getSquadByID(player.teamID, player.squadID)
         });
@@ -389,17 +399,17 @@ export default class SquadServer extends EventEmitter {
       this.players = players;
 
       for (const player of this.players) {
-        if (typeof oldPlayerInfo[ player.steamID ] === 'undefined') continue;
-        if (player.teamID !== oldPlayerInfo[ player.steamID ].teamID)
+        if (typeof oldPlayerInfo[player.steamID] === 'undefined') continue;
+        if (player.teamID !== oldPlayerInfo[player.steamID].teamID)
           this.emit('PLAYER_TEAM_CHANGE', {
             player: player,
-            oldTeamID: oldPlayerInfo[ player.steamID ].teamID,
+            oldTeamID: oldPlayerInfo[player.steamID].teamID,
             newTeamID: player.teamID
           });
-        if (player.squadID !== oldPlayerInfo[ player.steamID ].squadID)
+        if (player.squadID !== oldPlayerInfo[player.steamID].squadID)
           this.emit('PLAYER_SQUAD_CHANGE', {
             player: player,
-            oldSquadID: oldPlayerInfo[ player.steamID ].squadID,
+            oldSquadID: oldPlayerInfo[player.steamID].squadID,
             newSquadID: player.squadID
           });
       }
@@ -478,9 +488,9 @@ export default class SquadServer extends EventEmitter {
       // });
 
       const rawData = await this.rcon.execute(`ShowServerInfo`);
-      Logger.verbose("SquadServer", 3, `A2S raw data`, rawData)
+      Logger.verbose('SquadServer', 3, `A2S raw data`, rawData);
       const data = JSON.parse(rawData);
-      Logger.verbose("SquadServer", 2, `A2S data`, JSON.data)
+      Logger.verbose('SquadServer', 2, `A2S data`, JSON.data);
       // Logger.verbose("SquadServer", 1, `A2S data`, JSON.stringify(data, null, 2))
 
       const info = {
@@ -498,8 +508,8 @@ export default class SquadServer extends EventEmitter {
         currentLayer: data.MapName_s,
         nextLayer: data.NextLayer_s,
 
-        teamOne: data.TeamOne_s.replace(new RegExp(data.MapName_s, "i"), ''),
-        teamTwo: data.TeamTwo_s.replace(new RegExp(data.MapName_s, "i"), ''),
+        teamOne: data.TeamOne_s.replace(new RegExp(data.MapName_s, 'i'), ''),
+        teamTwo: data.TeamTwo_s.replace(new RegExp(data.MapName_s, 'i'), ''),
 
         matchTimeout: parseFloat(data.MatchTimeout_d),
         gameVersion: data.GameVersion_s
@@ -537,7 +547,7 @@ export default class SquadServer extends EventEmitter {
 
     if (!forceUpdate) {
       matches = this.players.filter(condition);
-      if (matches.length === 1) return matches[ 0 ];
+      if (matches.length === 1) return matches[0];
 
       if (!retry) return null;
     }
@@ -545,7 +555,7 @@ export default class SquadServer extends EventEmitter {
     await this.updatePlayerList();
 
     matches = this.players.filter(condition);
-    if (matches.length === 1) return matches[ 0 ];
+    if (matches.length === 1) return matches[0];
 
     return null;
   }
@@ -555,7 +565,7 @@ export default class SquadServer extends EventEmitter {
 
     if (!forceUpdate) {
       matches = this.squads.filter(condition);
-      if (matches.length === 1) return matches[ 0 ];
+      if (matches.length === 1) return matches[0];
 
       if (!retry) return null;
     }
@@ -563,7 +573,7 @@ export default class SquadServer extends EventEmitter {
     await this.updateSquadList();
 
     matches = this.squads.filter(condition);
-    if (matches.length === 1) return matches[ 0 ];
+    if (matches.length === 1) return matches[0];
 
     return null;
   }
@@ -578,6 +588,7 @@ export default class SquadServer extends EventEmitter {
   async getPlayerBySteamID(steamID, forceUpdate) {
     return this.getPlayerByCondition((player) => player.steamID === steamID, forceUpdate);
   }
+
   async getPlayerByEOSID(eosID, forceUpdate) {
     return this.getPlayerByCondition((player) => player.EOSID === eosID, forceUpdate);
   }
