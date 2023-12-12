@@ -6,11 +6,11 @@ const { DataTypes } = Sequelize;
 
 export default class PersistentEOSIDtoSteamID extends BasePlugin {
   static get description() {
-    return "Stores into a DB every association of SteamID-EOSID";
+    return 'Stores into a DB every association of SteamID-EOSID';
   }
 
   static get defaultEnabled() {
-    return false;
+    return true;
   }
 
   static get optionsSpecification() {
@@ -37,7 +37,7 @@ export default class PersistentEOSIDtoSteamID extends BasePlugin {
           primaryKey: true
         },
         eosID: {
-          type: DataTypes.STRING,
+          type: DataTypes.STRING
         }
       },
       {
@@ -50,13 +50,13 @@ export default class PersistentEOSIDtoSteamID extends BasePlugin {
   }
 
   createModel(name, schema) {
-    this.models[ name ] = this.options.database.define(`EOS_${name}`, schema, {
+    this.models[name] = this.options.database.define(`EOS_${name}`, schema, {
       timestamps: false,
       indexes: [
         {
           unique: true,
-          fields: [ 'eosID' ]
-        },
+          fields: ['eosID']
+        }
       ]
     });
   }
@@ -67,7 +67,7 @@ export default class PersistentEOSIDtoSteamID extends BasePlugin {
 
   async mount() {
     this.server.on('PLAYER_CONNECTED', this.onPlayerConnected);
-    this.verbose(1, 'Mounted')
+    this.verbose(1, 'Mounted');
   }
 
   async unmount() {
@@ -82,10 +82,10 @@ export default class PersistentEOSIDtoSteamID extends BasePlugin {
   }
 
   async getByEOSID(eosID) {
-    return await this.models.SteamIDtoEOSID.findOne({ where: { eosID: eosID } })
+    return await this.models.SteamIDtoEOSID.findOne({ where: { eosID: eosID } });
   }
 
   async getBySteamID(steamID) {
-    return await this.models.SteamIDtoEOSID.findOne({ where: { steamID: steamID } })
+    return await this.models.SteamIDtoEOSID.findOne({ where: { steamID: steamID } });
   }
 }
