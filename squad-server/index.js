@@ -251,8 +251,6 @@ export default class SquadServer extends EventEmitter {
       delete data.victimName;
       delete data.attackerName;
 
-      console.log('player damage', data);
-
       this.emit('PLAYER_DAMAGED', data);
     });
 
