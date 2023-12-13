@@ -18,8 +18,6 @@ export default {
 
     logParser.eventStore.session[args[3]] = data;
 
-    console.log('Die', data);
-
     logParser.emit('PLAYER_DIED', data);
   }
 };
