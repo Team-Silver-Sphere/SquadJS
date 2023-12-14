@@ -186,7 +186,7 @@ export default class Rcon extends EventEmitter {
       return this.soh;
     }
     const bufSize = this.stream.readInt32LE(0);
-    if (bufSize > 4154 || bufSize < 10) return this.badPacket();
+    if (bufSize > 8192 || bufSize < 10) return this.badPacket();
     else if (bufSize <= this.stream.byteLength - 4 && this.stream.byteLength >= 12) {
       const bufId = this.stream.readInt32LE(4);
       const bufType = this.stream.readInt32LE(8);
