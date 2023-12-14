@@ -157,6 +157,8 @@ export default class SquadServer extends EventEmitter {
 
     this.rcon.on('SQUAD_CREATED', async (data) => {
       data.player = await this.getPlayerBySteamID(data.playerSteamID, true);
+      data.player.squadID = data.squadID;
+
       delete data.playerName;
       delete data.playerSteamID;
 
