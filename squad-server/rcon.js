@@ -176,9 +176,9 @@ export default class SquadRcon extends Rcon {
 
     for (const line of responseSquad.split('\n')) {
       const match = line.match(
-        /ID: ([0-9]+) \| Name: (.+) \| Size: ([0-9]+) \| Locked: (True|False) \| Creator Name: (.+) \| Creator Online IDs: EOS: ([0-9a-f]{32}) steam: (\d{17})/
+        /ID: (\d+) \| Name: (.+) \| Size: (\d+) \| Locked: (True|False) \| Creator Name: (.+) \| Creator Online IDs: EOS: ([\d\w]{32}) steam: (\d{17})/
       );
-      const matchSide = line.match(/Team ID: (1|2) \((.+)\)/);
+      const matchSide = line.match(/Team ID: (\d) \((.+)\)/);
       if (matchSide) {
         teamID = matchSide[1];
         teamName = matchSide[2];
