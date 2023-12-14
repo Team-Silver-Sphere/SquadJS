@@ -228,7 +228,7 @@ export default class Rcon extends EventEmitter {
       this.emit(`response${this.responseString.id - 2}`, this.responseString.body);
       this.responseString.body = '';
     } else if (!packet.body.includes('')) {
-      this.responseString.body = this.responseString.body += packet.body;
+      this.responseString.body = this.responseString.body + packet.body;
       this.responseString.id = packet.id;
     } else this.badPacket();
   }
@@ -241,7 +241,7 @@ export default class Rcon extends EventEmitter {
       }`
     );
     this.stream = Buffer.alloc(0);
-    this.responseString = '';
+    this.responseString.body = '';
     return null;
   }
   onClose() {
