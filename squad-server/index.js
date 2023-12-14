@@ -527,6 +527,9 @@ export default class SquadServer extends EventEmitter {
       this.matchTimeout = info.matchTimeout;
       this.gameVersion = info.gameVersion;
 
+      if (!this.currentLayer) this.currentLayer = Layers.getLayerByClassname(info.currentLayer);
+      if (!this.nextLayer) this.nextLayer = Layers.getLayerByClassname(info.nextLayer);
+
       this.emit('UPDATED_A2S_INFORMATION', info);
       this.emit('UPDATED_SERVER_INFORMATION', info);
     } catch (err) {
