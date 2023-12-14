@@ -190,6 +190,7 @@ export default class SquadRcon extends Rcon {
         size: match[3],
         locked: match[4],
         creatorName: match[5],
+        creatorEOSID: match[6],
         creatorSteamID: match[7],
         teamID: teamID,
         teamName: teamName
