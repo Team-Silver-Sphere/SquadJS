@@ -148,7 +148,7 @@ export default class SquadRcon extends Rcon {
       );
       if (!match) continue;
 
-      if (server && server.rcon) server.rcon.addIds(match[3], match[2]);
+      if (server?.rcon?.addIds) server.rcon.addIds(match[3], match[2]);
 
       players.push({
         playerID: match[1],
