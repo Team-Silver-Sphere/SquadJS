@@ -72,12 +72,12 @@ export default class SquadServer extends EventEmitter {
     this.admins = await fetchAdminLists(this.options.adminLists);
 
     await this.rcon.connect();
-    await this.logParser.watch();
-
     await this.updateSquadList();
     await this.updatePlayerList(this);
     await this.updateLayerInformation();
     await this.updateA2SInformation();
+
+    await this.logParser.watch();
 
     Logger.verbose('SquadServer', 1, `Watching ${this.serverName}...`);
 
@@ -413,6 +413,13 @@ export default class SquadServer extends EventEmitter {
             newSquadID: player.squadID
           });
       }
+
+      if (this.a2sPlayerCount > 0 && players.length === 0)
+        Logger.verbose(
+          'SquadServer',
+          1,
+          `Real Player Count: ${this.a2sPlayerCount} but loaded ${players.length}`
+        );
 
       this.emit('UPDATED_PLAYER_INFORMATION');
     } catch (err) {
