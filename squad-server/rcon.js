@@ -86,7 +86,7 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchSqCreated = decodedPacket.body.match(
-      /(.+) \(Online IDs: EOS: ([0-9a-f]{32}) steam: (\d{17})\) has created Squad (\d+) \(Squad Name: (.+)\) on (.+)/
+      /(.+) \(Online IDs: EOS: ([\da-f]{32}) steam: (\d{17})\) has created Squad (\d+) \(Squad Name: (.+)\) on (.+)/
     );
     if (matchSqCreated) {
       Logger.verbose('SquadRcon', 2, `Matched Squad Created: ${decodedPacket.body}`);
@@ -94,6 +94,7 @@ export default class SquadRcon extends Rcon {
       this.emit('SQUAD_CREATED', {
         time: new Date(),
         playerName: matchSqCreated[1],
+        playerEOSID: matchSqCreated[2],
         playerSteamID: matchSqCreated[3],
         squadID: matchSqCreated[4],
         squadName: matchSqCreated[5],
