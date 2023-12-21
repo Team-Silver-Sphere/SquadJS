@@ -241,11 +241,10 @@ export default class SquadServer extends EventEmitter {
       data.victim = await this.getPlayerByName(data.victimName);
       data.attacker = await this.getPlayerByEOSID(data.attackerEOSID);
 
-      if (!data.attacker.playercontroller) data.attacker.playercontroller = data.attackerController;
+      if (data.attacker && !data.attacker.playercontroller && data.attackerController)
+        data.attacker.playercontroller = data.attackerController;
 
       if (data.victim && data.attacker) {
-        if (!data.victim.playercontroller) data.victim.playercontroller = data.attackerController;
-
         data.teamkill =
           data.victim.teamID === data.attacker.teamID &&
           data.victim.steamID !== data.attacker.steamID;
