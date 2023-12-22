@@ -1,6 +1,6 @@
 export default {
   regex:
-    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogNet: UNetConnection::PendingConnectionLost\. \[UNetConnection\] RemoteAddr: ([0-9]{17}):[0-9]+, Name: (SteamNetConnection_[0-9]+), Driver: GameNetDriver (SteamNetDriver_[0-9]+), IsServer: YES, PC: NULL, Owner: NULL, UniqueId: (?:Steam:UNKNOWN \[.+\]|INVALID) bPendingDestroy=0/,
+  /^\[([0-9.:-]+)]\[([ 0-9]*)]LogNet: UNetConnection::PendingConnectionLost\. \[UNetConnection\] RemoteAddr: ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+), Name: (EOSIpNetConnection_[0-9]+), Driver: GameNetDriver (EOSNetDriver_[0-9]+), IsServer: YES, PC: NULL, Owner: NULL, UniqueId: (RedpointEOS:([a-z0-9]{32})) bPendingDestroy=0/,
   onMatch: (args, logParser) => {
     const data = {
       raw: args[0],

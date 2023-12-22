@@ -1,6 +1,6 @@
 export default {
   regex:
-    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Login: NewPlayer: SteamNetConnection \/Engine\/Transient\.(SteamNetConnection_[0-9]+)/,
+  /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Login: NewPlayer: EOSIpNetConnection \/Engine\/Transient\.(EOSIpNetConnection_[0-9]+)/,
   onMatch: (args, logParser) => {
     const data = {
       raw: args[0],

@@ -6,7 +6,7 @@ export default {
       time: args[1],
       chainID: args[2],
       playerSuffix: args[3],
-      steamID: logParser.eventStore['client-login'], // player connected
+      EOSID: logParser.eventStore['client-login'], // player connected
       controller: logParser.eventStore['player-controller'] // playercontroller connected
     };
 
