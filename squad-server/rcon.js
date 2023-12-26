@@ -144,8 +144,6 @@ export default class SquadRcon extends Rcon {
       );
       if (!match) continue;
 
-      if (this.addIds) this.addIds(match[3], match[2]);
-
       const data = match.groups;
       data.isLeader = data.isLeader === 'True';
       data.squadID = data.squadID !== 'N/A' ? data.squadID : null;
