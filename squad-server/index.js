@@ -596,7 +596,7 @@ export default class SquadServer extends EventEmitter {
   }
 
   async getPlayerByEOSID(eosID, forceUpdate) {
-    return this.getPlayerByCondition((player) => player.EOSID === eosID, forceUpdate);
+    return this.getPlayerByCondition((player) => player.eosID === eosID, forceUpdate);
   }
 
   async getPlayerByName(name, forceUpdate) {
