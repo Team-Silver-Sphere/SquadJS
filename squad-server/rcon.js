@@ -131,7 +131,7 @@ export default class SquadRcon extends Rcon {
     };
   }
 
-  async getListPlayers(server) {
+  async getListPlayers() {
     const response = await this.execute('ListPlayers');
 
     const players = [];
@@ -144,7 +144,7 @@ export default class SquadRcon extends Rcon {
       );
       if (!match) continue;
 
-      if (server?.rcon?.addIds) server.rcon.addIds(match[3], match[2]);
+      if (this.addIds) this.addIds(match[3], match[2]);
 
       const data = match.groups;
       data.isLeader = data.isLeader === 'True';
