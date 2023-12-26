@@ -215,8 +215,6 @@ export default class SquadServer extends EventEmitter {
         `Player connected ${data.playerSuffix} - SteamID: ${data.steamID} - EOSID: ${data.eosID}`
       );
 
-      this.rcon.addIds(data.steamID, data.eosID);
-
       data.player = await this.getPlayerByEOSID(data.eosID);
       if (data.player) data.player.suffix = data.playerSuffix;
 
