@@ -515,6 +515,7 @@ export default class SquadServer extends EventEmitter {
         teamTwo: data.TeamTwo_s?.replace(new RegExp(data.MapName_s, 'i'), '') || '',
 
         matchTimeout: parseFloat(data.MatchTimeout_d),
+        matchStartTime: this.getMatchStartTimeByPlaytime(data.PLAYTIME_I),
         gameVersion: data.GameVersion_s
       };
 
@@ -525,10 +526,12 @@ export default class SquadServer extends EventEmitter {
       this.reserveSlots = info.reserveSlots;
 
       this.a2sPlayerCount = info.playerCount;
+      this.playerCount = info.playerCount;
       this.publicQueue = info.publicQueue;
       this.reserveQueue = info.reserveQueue;
 
       this.matchTimeout = info.matchTimeout;
+      this.matchStartTime = info.matchStartTime;
       this.gameVersion = info.gameVersion;
 
       if (!this.currentLayer) this.currentLayer = Layers.getLayerByClassname(info.currentLayer);
@@ -662,5 +665,9 @@ export default class SquadServer extends EventEmitter {
     }
 
     this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
+  }
+
+  getMatchStartTimeByPlaytime(playtime) {
+    return new Date(Date.now() - +playtime * 1000);
   }
 }
