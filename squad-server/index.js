@@ -540,10 +540,10 @@ export default class SquadServer extends EventEmitter {
       this.emit('UPDATED_A2S_INFORMATION', info);
       this.emit('UPDATED_SERVER_INFORMATION', info);
     } catch (err) {
-      Logger.verbose('SquadServer', 1, 'Failed to update A2S information.', err);
+      Logger.verbose('SquadServer', 1, 'Failed to update server information.', err);
     }
 
-    Logger.verbose('SquadServer', 1, `Updated A2S information.`);
+    Logger.verbose('SquadServer', 1, `Updated server information.`);
 
     this.updateA2SInformationTimeout = setTimeout(
       this.updateA2SInformation,
