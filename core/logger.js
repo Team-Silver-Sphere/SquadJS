@@ -4,6 +4,7 @@ class Logger {
   constructor() {
     this.verboseness = {};
     this.colors = {};
+    this.includeTimestamps = false;
   }
 
   verbose(module, verboseness, message, ...extras) {
@@ -11,7 +12,12 @@ class Logger {
     if (typeof colorFunc !== 'function') colorFunc = chalk.white;
 
     if ((this.verboseness[module] || 1) >= verboseness)
-      console.log(`[${colorFunc(module)}][${verboseness}] ${message}`, ...extras);
+      console.log(
+        `${this.includeTimestamps ? '[' + new Date().toISOString() + ']' : ''}[${colorFunc(
+          module
+        )}][${verboseness}] ${message}`,
+        ...extras
+      );
   }
 
   setVerboseness(module, verboseness) {
@@ -20,6 +26,10 @@ class Logger {
 
   setColor(module, color) {
     this.colors[module] = color;
+  }
+
+  setTimeStamps(option) {
+    this.includeTimestamps = option;
   }
 }
 

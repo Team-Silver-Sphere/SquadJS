@@ -337,6 +337,8 @@ export default class Rcon extends EventEmitter {
 
       if (type === SERVERDATA_AUTH) {
         this.callbackIds.push({ id: this.count, cmd: body });
+        Logger.verbose('RCON', 2, `Writing Auth Packet`);
+        Logger.verbose('RCON', 4, `Writing packet with type "${type}" and body "${body}".`);
         this.responseCallbackQueue.push(() => {});
         this.responseCallbackQueue.push((decodedPacket) => {
           this.client.removeListener('error', onError);
@@ -350,6 +352,7 @@ export default class Rcon extends EventEmitter {
           }
         });
       } else {
+        Logger.verbose('RCON', 2, `Writing packet with type "${type}" and body "${body}".`);
         this.callbackIds.push({ id: this.count, cmd: body });
         this.responseCallbackQueue.push((response) => {
           this.client.removeListener('error', onError);

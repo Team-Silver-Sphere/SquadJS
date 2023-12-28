@@ -15,9 +15,9 @@
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.5",
-    "socket.io": "^3.1.2",
+    "socket.io": "^4.5.4",
     "sqlite3": "^5.0.0",
-    "tedious": "^9.2.1",
+    "tedious": "^15.1.2",
     "tinygradient": "^1.1.2"
   },
   "exports": {
