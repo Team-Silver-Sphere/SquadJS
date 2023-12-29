@@ -477,23 +477,20 @@ export default class SquadServer extends EventEmitter {
     );
   }
 
-  async updateA2SInformation() {
+  updateA2SInformation() {
+    return this.updateServerInformation();
+  }
+
+  async updateServerInformation() {
     if (this.updateA2SInformationTimeout) clearTimeout(this.updateA2SInformationTimeout);
 
-    Logger.verbose('SquadServer', 1, `Updating A2S information...`);
+    Logger.verbose('SquadServer', 1, `Updating server information...`);
 
     try {
-      // const data = await Gamedig.query({
-      //   type: 'squad',
-      //   host: this.options.host,
-      //   port: this.options.queryPort
-      // });
-
       const rawData = await this.rcon.execute(`ShowServerInfo`);
-      Logger.verbose('SquadServer', 3, `A2S raw data`, rawData);
+      Logger.verbose('SquadServer', 3, `Server information raw data`, rawData);
       const data = JSON.parse(rawData);
-      Logger.verbose('SquadServer', 2, `A2S data`, JSON.data);
-      // Logger.verbose("SquadServer", 1, `A2S data`, JSON.stringify(data, null, 2))
+      Logger.verbose('SquadServer', 2, `Server information data`, JSON.data);
 
       const info = {
         raw: data,
