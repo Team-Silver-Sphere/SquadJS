@@ -212,7 +212,7 @@ export default class SquadServer extends EventEmitter {
       Logger.verbose(
         'SquadServer',
         1,
-        `Player connected ${data.playerSuffix} - SteamID: ${data.steamID} - EOSID: ${data.eosID}`
+        `Player connected ${data.playerSuffix} - SteamID: ${data.steamID} - EOSID: ${data.eosID} - IP: ${data.ip}`
       );
 
       data.player = await this.getPlayerByEOSID(data.eosID);
