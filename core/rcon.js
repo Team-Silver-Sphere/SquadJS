@@ -337,6 +337,7 @@ export default class Rcon extends EventEmitter {
 
       if (type === SERVERDATA_AUTH) {
         this.callbackIds.push({ id: this.count, cmd: body });
+
         this.responseCallbackQueue.push(() => {});
         this.responseCallbackQueue.push((decodedPacket) => {
           this.client.removeListener('error', onError);
@@ -350,6 +351,7 @@ export default class Rcon extends EventEmitter {
           }
         });
       } else {
+
         this.callbackIds.push({ id: this.count, cmd: body });
         this.responseCallbackQueue.push((response) => {
           this.client.removeListener('error', onError);
