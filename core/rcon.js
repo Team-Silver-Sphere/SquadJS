@@ -351,7 +351,6 @@ export default class Rcon extends EventEmitter {
           }
         });
       } else {
-
         this.callbackIds.push({ id: this.count, cmd: body });
         this.responseCallbackQueue.push((response) => {
           this.client.removeListener('error', onError);
