@@ -225,7 +225,7 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('PLAYER_DISCONNECTED', async (data) => {
-      data.player = await this.getPlayerByEOSID(data.playerEOSID);
+      data.player = await this.getPlayerByEOSID(data.eosID);
 
       delete data.steamID;
 

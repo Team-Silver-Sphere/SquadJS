@@ -8,7 +8,7 @@ export default {
       chainID: args[2],
       ip: args[3],
       playerController: args[4],
-      playerEOSID: args[5]
+      eosID: args[5]
     };
 
     logParser.eventStore.disconnected[data.steamID] = true;
