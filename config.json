@@ -218,11 +218,6 @@
       "interval": 300000
     },
     {
-      "plugin": "PersistentEOSIDtoSteamID",
-      "enabled": true,
-      "database": "sqlite"
-    },
-    {
       "plugin": "SeedingMode",
       "enabled": true,
       "interval": 150000,

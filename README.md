@@ -811,18 +811,6 @@ Grafana:
         </details>
 
 <details>
-          <summary>PersistentEOSIDtoSteamID</summary>
-          <h2>PersistentEOSIDtoSteamID</h2>
-          <p>Stores into a DB every association of SteamID-EOSID</p>
-          <h3>Options</h3>
-          <ul><li><h4>database (Required)</h4>
-           <h6>Description</h6>
-           <p>The Sequelize connector.</p>
-           <h6>Default</h6>
-           <pre><code>sqlite</code></pre></li></ul>
-        </details>
-
-<details>
           <summary>SeedingMode</summary>
           <h2>SeedingMode</h2>
           <p>The <code>SeedingMode</code> plugin broadcasts seeding rule messages to players at regular intervals when the server is below a specified player count. It can also be configured to display "Live" messages when the server goes live.</p>
