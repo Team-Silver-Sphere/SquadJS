@@ -145,8 +145,10 @@ export default class SquadRcon extends Rcon {
       if (!match) continue;
 
       const data = match.groups;
+      data.playerID = +data.playerID;
       data.isLeader = data.isLeader === 'True';
-      data.squadID = data.squadID !== 'N/A' ? data.squadID : null;
+      data.teamID = data.teamID !== 'N/A' ? +data.teamID : null;
+      data.squadID = data.squadID !== 'N/A' ? +data.squadID : null;
 
       players.push(data);
     }
@@ -169,10 +171,11 @@ export default class SquadRcon extends Rcon {
       );
       const matchSide = line.match(/Team ID: (\d) \((.+)\)/);
       if (matchSide) {
-        teamID = matchSide[1];
+        teamID = +matchSide[1];
         teamName = matchSide[2];
       }
       if (!match) continue;
+      match.groups.squadID = +match.groups.squadID;
       squads.push({
         ...match.groups,
         teamID: teamID,
