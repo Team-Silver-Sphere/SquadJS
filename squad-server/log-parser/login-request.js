@@ -1,6 +1,6 @@
 export default {
   regex:
-    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogNet: Login request: \?Name=(.+) userId: RedpointEOS:([\da-f]{32}) platform: RedpointEOS/,
+    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogNet: Login request: \?Name=(.+?)(?:\?PASSWORD=(?:.+?))? userId: RedpointEOS:([\da-f]{32}) platform: RedpointEOS/,
   onMatch: (args, logParser) => {
     const data = {
       raw: args[0],
