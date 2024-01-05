@@ -1,6 +1,6 @@
 export default {
   regex:
-    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Login: NewPlayer: SteamNetConnection \/Engine\/Transient\.(SteamNetConnection_[0-9]+)/,
+    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Login: NewPlayer: EOSIpNetConnection \/Engine\/Transient\.(EOSIpNetConnection_[0-9]+)/,
   onMatch: (args, logParser) => {
     const data = {
       raw: args[0],
@@ -13,7 +13,7 @@ export default {
       2nd Step in player connected path
       */
 
-    logParser.eventStore['client-login'] = logParser.eventStore.clients[args[3]];
+    logParser.eventStore.joinRequests[data.chainID].connection = data.connection;
     delete logParser.eventStore.clients[args[3]];
     logParser.emit('CLIENT_LOGIN', data);
   }
