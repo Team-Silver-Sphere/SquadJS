@@ -17,7 +17,7 @@ export default class AutoKickUnassigned extends BasePlugin {
       warningMessage: {
         required: false,
         description: 'Message SquadJS will send to players warning them they will be kicked',
-        default: 'Join a squad, you are are unassigned and will be kicked'
+        default: 'Join a squad, you are unassigned and will be kicked'
       },
       kickMessage: {
         required: false,

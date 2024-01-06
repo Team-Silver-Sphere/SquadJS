@@ -45,7 +45,7 @@
     {
       "plugin": "AutoKickUnassigned",
       "enabled": true,
-      "warningMessage": "Join a squad, you are are unassigned and will be kicked",
+      "warningMessage": "Join a squad, you are unassigned and will be kicked",
       "kickMessage": "Unassigned - automatically removed",
       "frequencyOfWarnings": 30,
       "unassignedTimer": 360,
