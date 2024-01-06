@@ -2,7 +2,7 @@ import Sequelize from 'sequelize';
 
 import BasePlugin from './base-plugin.js';
 
-const { DataTypes } = Sequelize;
+const { DataTypes, QueryTypes } = Sequelize;
 
 export default class DBLog extends BasePlugin {
   static get description() {
@@ -143,6 +143,44 @@ export default class DBLog extends BasePlugin {
       {
         charset: 'utf8mb4',
         collate: 'utf8mb4_unicode_ci'
+      }
+    );
+
+    this.createModel(
+      'Player',
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+        },
+        eosID: {
+          type: DataTypes.STRING,
+          unique: true
+        },
+        steamID: {
+          type: DataTypes.STRING,
+          notNull: true,
+          unique: true
+        },
+        lastName: {
+          type: DataTypes.STRING
+        },
+        lastIP: {
+          type: DataTypes.STRING
+        }
+      },
+      {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci',
+        indexes: [
+          {
+            fields: ['eosID']
+          },
+          {
+            fields: ['steamID']
+          }
+        ]
       }
     );
 
@@ -329,37 +367,44 @@ export default class DBLog extends BasePlugin {
       onDelete: 'CASCADE'
     });
 
-    this.models.SteamUser.hasMany(this.models.Wound, {
+    this.models.Player.hasMany(this.models.Wound, {
+      sourceKey: 'steamID',
       foreignKey: { name: 'attacker' },
       onDelete: 'CASCADE'
     });
 
-    this.models.SteamUser.hasMany(this.models.Wound, {
+    this.models.Player.hasMany(this.models.Wound, {
+      sourceKey: 'steamID',
       foreignKey: { name: 'victim' },
       onDelete: 'CASCADE'
     });
 
-    this.models.SteamUser.hasMany(this.models.Death, {
+    this.models.Player.hasMany(this.models.Death, {
+      sourceKey: 'steamID',
       foreignKey: { name: 'attacker' },
       onDelete: 'CASCADE'
     });
 
-    this.models.SteamUser.hasMany(this.models.Death, {
+    this.models.Player.hasMany(this.models.Death, {
+      sourceKey: 'steamID',
       foreignKey: { name: 'victim' },
       onDelete: 'CASCADE'
     });
 
-    this.models.SteamUser.hasMany(this.models.Revive, {
+    this.models.Player.hasMany(this.models.Revive, {
+      sourceKey: 'steamID',
       foreignKey: { name: 'attacker' },
       onDelete: 'CASCADE'
     });
 
-    this.models.SteamUser.hasMany(this.models.Revive, {
+    this.models.Player.hasMany(this.models.Revive, {
+      sourceKey: 'steamID',
       foreignKey: { name: 'victim' },
       onDelete: 'CASCADE'
     });
 
-    this.models.SteamUser.hasMany(this.models.Revive, {
+    this.models.Player.hasMany(this.models.Revive, {
+      sourceKey: 'steamID',
       foreignKey: { name: 'reviver' },
       onDelete: 'CASCADE'
     });
@@ -392,9 +437,12 @@ export default class DBLog extends BasePlugin {
     this.onTickRate = this.onTickRate.bind(this);
     this.onUpdatedA2SInformation = this.onUpdatedA2SInformation.bind(this);
     this.onNewGame = this.onNewGame.bind(this);
+    this.onPlayerConnected = this.onPlayerConnected.bind(this);
     this.onPlayerWounded = this.onPlayerWounded.bind(this);
     this.onPlayerDied = this.onPlayerDied.bind(this);
     this.onPlayerRevived = this.onPlayerRevived.bind(this);
+    this.migrateSteamUsersIntoPlayers = this.migrateSteamUsersIntoPlayers.bind(this);
+    this.dropAllForeignKeys = this.dropAllForeignKeys.bind(this);
   }
 
   createModel(name, schema) {
@@ -409,12 +457,15 @@ export default class DBLog extends BasePlugin {
     await this.models.TickRate.sync();
     await this.models.PlayerCount.sync();
     await this.models.SteamUser.sync();
+    await this.models.Player.sync();
     await this.models.Wound.sync();
     await this.models.Death.sync();
     await this.models.Revive.sync();
   }
 
   async mount() {
+    await this.migrateSteamUsersIntoPlayers();
+
     await this.models.Server.upsert({
       id: this.options.overrideServerID || this.server.id,
       name: this.server.serverName
@@ -427,6 +478,7 @@ export default class DBLog extends BasePlugin {
     this.server.on('TICK_RATE', this.onTickRate);
     this.server.on('UPDATED_A2S_INFORMATION', this.onUpdatedA2SInformation);
     this.server.on('NEW_GAME', this.onNewGame);
+    this.server.on('PLAYER_CONNECTED', this.onPlayerConnected);
     this.server.on('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.on('PLAYER_DIED', this.onPlayerDied);
     this.server.on('PLAYER_REVIVED', this.onPlayerRevived);
@@ -436,6 +488,7 @@ export default class DBLog extends BasePlugin {
     this.server.removeEventListener('TICK_RATE', this.onTickRate);
     this.server.removeEventListener('UPDATED_A2S_INFORMATION', this.onTickRate);
     this.server.removeEventListener('NEW_GAME', this.onNewGame);
+    this.server.removeEventListener('PLAYER_CONNECTED', this.onPlayerConnected);
     this.server.removeEventListener('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.removeEventListener('PLAYER_DIED', this.onPlayerDied);
     this.server.removeEventListener('PLAYER_REVIVED', this.onPlayerRevived);
@@ -479,15 +532,27 @@ export default class DBLog extends BasePlugin {
 
   async onPlayerWounded(info) {
     if (info.attacker)
-      await this.models.SteamUser.upsert({
-        steamID: info.attacker.steamID,
-        lastName: info.attacker.name
-      });
+      await this.models.Player.upsert(
+        {
+          eosID: info.attacker.eosID,
+          steamID: info.attacker.steamID,
+          lastName: info.attacker.name
+        },
+        {
+          conflictFields: ['steamID']
+        }
+      );
     if (info.victim)
-      await this.models.SteamUser.upsert({
-        steamID: info.victim.steamID,
-        lastName: info.victim.name
-      });
+      await this.models.Player.upsert(
+        {
+          eosID: info.victim.eosID,
+          steamID: info.victim.steamID,
+          lastName: info.victim.name
+        },
+        {
+          conflictFields: ['steamID']
+        }
+      );
 
     await this.models.Wound.create({
       server: this.options.overrideServerID || this.server.id,
@@ -509,15 +574,27 @@ export default class DBLog extends BasePlugin {
 
   async onPlayerDied(info) {
     if (info.attacker)
-      await this.models.SteamUser.upsert({
-        steamID: info.attacker.steamID,
-        lastName: info.attacker.name
-      });
+      await this.models.Player.upsert(
+        {
+          eosID: info.attacker.eosID,
+          steamID: info.attacker.steamID,
+          lastName: info.attacker.name
+        },
+        {
+          conflictFields: ['steamID']
+        }
+      );
     if (info.victim)
-      await this.models.SteamUser.upsert({
-        steamID: info.victim.steamID,
-        lastName: info.victim.name
-      });
+      await this.models.Player.upsert(
+        {
+          eosID: info.victim.eosID,
+          steamID: info.victim.steamID,
+          lastName: info.victim.name
+        },
+        {
+          conflictFields: ['steamID']
+        }
+      );
 
     await this.models.Death.create({
       server: this.options.overrideServerID || this.server.id,
@@ -540,20 +617,38 @@ export default class DBLog extends BasePlugin {
 
   async onPlayerRevived(info) {
     if (info.attacker)
-      await this.models.SteamUser.upsert({
-        steamID: info.attacker.steamID,
-        lastName: info.attacker.name
-      });
+      await this.models.Player.upsert(
+        {
+          eosID: info.attacker.eosID,
+          steamID: info.attacker.steamID,
+          lastName: info.attacker.name
+        },
+        {
+          conflictFields: ['steamID']
+        }
+      );
     if (info.victim)
-      await this.models.SteamUser.upsert({
-        steamID: info.victim.steamID,
-        lastName: info.victim.name
-      });
+      await this.models.Player.upsert(
+        {
+          eosID: info.victim.eosID,
+          steamID: info.victim.steamID,
+          lastName: info.victim.name
+        },
+        {
+          conflictFields: ['steamID']
+        }
+      );
     if (info.reviver)
-      await this.models.SteamUser.upsert({
-        steamID: info.reviver.steamID,
-        lastName: info.reviver.name
-      });
+      await this.models.Player.upsert(
+        {
+          eosID: info.reviver.eosID,
+          steamID: info.reviver.steamID,
+          lastName: info.reviver.name
+        },
+        {
+          conflictFields: ['steamID']
+        }
+      );
 
     await this.models.Revive.create({
       server: this.options.overrideServerID || this.server.id,
@@ -576,5 +671,90 @@ export default class DBLog extends BasePlugin {
       reviverTeamID: info.reviver ? info.reviver.teamID : null,
       reviverSquadID: info.reviver ? info.reviver.squadID : null
     });
+  }
+
+  async onPlayerConnected(info) {
+    await this.models.Player.upsert(
+      {
+        eosID: info.eosID,
+        steamID: info.player.steamID,
+        lastName: info.player.name,
+        lastIP: info.ip
+      },
+      {
+        conflictFields: ['steamID']
+      }
+    );
+  }
+
+  async migrateSteamUsersIntoPlayers() {
+    try {
+      const steamUsersCount = await this.models.SteamUser.count();
+      const playersCount = await this.models.Player.count();
+
+      if (steamUsersCount < playersCount) {
+        this.verbose(
+          1,
+          `Skipping migration from SteamUsers to Players due to a previous successful migration.`
+        );
+        return;
+      }
+
+      await this.dropAllForeignKeys();
+
+      const steamUsers = (await this.models.SteamUser.findAll()).map((u) => u.dataValues);
+      await this.models.Player.bulkCreate(steamUsers);
+
+      this.verbose(1, `Migration from SteamUsers to Players successful`);
+    } catch (error) {
+      this.verbose(1, `Error during Migration from SteamUsers to Players: ${error}`);
+    }
+  }
+
+  async dropAllForeignKeys() {
+    this.verbose(
+      1,
+      `Starting to drop constraints on DB: ${this.options.database.config.database} related to DBLog_SteamUsers deptecated table.`
+    );
+    for (const modelName in this.models) {
+      const model = this.models[modelName];
+      const tableName = model.tableName;
+
+      try {
+        const result = await this.options.database.query(
+          `SELECT * FROM information_schema.key_column_usage WHERE referenced_table_name IS NOT NULL AND table_schema = '${this.options.database.config.database}' AND table_name = '${tableName}';`,
+          { type: QueryTypes.SELECT }
+        );
+
+        for (const r of result) {
+          if (r.REFERENCED_TABLE_NAME === 'DBLog_SteamUsers') {
+            this.verbose(
+              1,
+              `Found constraint ${r.COLUMN_NAME} on table ${tableName}, referencing ${r.REFERENCED_COLUMN_NAME} on ${r.REFERENCED_TABLE_NAME}`
+            );
+
+            await this.options.database
+              .query(`ALTER TABLE ${tableName} DROP FOREIGN KEY ${r.CONSTRAINT_NAME}`, {
+                type: QueryTypes.RAW
+              })
+              .then(() => {
+                this.verbose(1, `Dropped foreign key ${r.COLUMN_NAME} on table ${tableName}`);
+              })
+              .catch((e) => {
+                this.verbose(
+                  1,
+                  `Error dropping foreign key ${r.COLUMN_NAME} on table ${tableName}:`,
+                  e
+                );
+              });
+          }
+        }
+      } catch (error) {
+        this.verbose(1, `Error dropping foreign keys for table ${tableName}:`, error);
+      } finally {
+        model.sync();
+      }
+    }
+    await this.models.Player.sync();
   }
 }
