@@ -4,7 +4,7 @@ import Rcon from 'core/rcon';
 export default class SquadRcon extends Rcon {
   processChatPacket(decodedPacket) {
     const matchChat = decodedPacket.body.match(
-      /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[SteamID:([0-9]{17})] (.+?) : (.*)/
+      /\[(ChatAll|ChatTeam|ChatSquad|ChatAdmin)] \[Online IDs:EOS: ([0-9a-f]{32}) steam: (\d{17})\] (.+?) : (.*)/
     );
     if (matchChat) {
       Logger.verbose('SquadRcon', 2, `Matched chat message: ${decodedPacket.body}`);
@@ -12,9 +12,10 @@ export default class SquadRcon extends Rcon {
       this.emit('CHAT_MESSAGE', {
         raw: decodedPacket.body,
         chat: matchChat[1],
-        steamID: matchChat[2],
-        name: matchChat[3],
-        message: matchChat[4],
+        eosID: matchChat[2],
+        steamID: matchChat[3],
+        name: matchChat[4],
+        message: matchChat[5],
         time: new Date()
       });
 
@@ -22,14 +23,14 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchPossessedAdminCam = decodedPacket.body.match(
-      /\[SteamID:([0-9]{17})] (.+?) has possessed admin camera./
+      /\[Online Ids:EOS: ([0-9a-f]{32}) steam: (\d{17})\] (.+) has possessed admin camera\./
     );
     if (matchPossessedAdminCam) {
       Logger.verbose('SquadRcon', 2, `Matched admin camera possessed: ${decodedPacket.body}`);
       this.emit('POSSESSED_ADMIN_CAMERA', {
         raw: decodedPacket.body,
-        steamID: matchPossessedAdminCam[1],
-        name: matchPossessedAdminCam[2],
+        steamID: matchPossessedAdminCam[2],
+        name: matchPossessedAdminCam[3],
         time: new Date()
       });
 
@@ -37,14 +38,14 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchUnpossessedAdminCam = decodedPacket.body.match(
-      /\[SteamID:([0-9]{17})] (.+?) has unpossessed admin camera./
+      /\[Online IDs:EOS: ([0-9a-f]{32}) steam: (\d{17})\] (.+) has unpossessed admin camera\./
     );
     if (matchUnpossessedAdminCam) {
       Logger.verbose('SquadRcon', 2, `Matched admin camera possessed: ${decodedPacket.body}`);
       this.emit('UNPOSSESSED_ADMIN_CAMERA', {
         raw: decodedPacket.body,
-        steamID: matchUnpossessedAdminCam[1],
-        name: matchUnpossessedAdminCam[2],
+        steamID: matchUnpossessedAdminCam[2],
+        name: matchUnpossessedAdminCam[3],
         time: new Date()
       });
 
@@ -68,7 +69,7 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchKick = decodedPacket.body.match(
-      /Kicked player ([0-9]+)\. \[steamid=([0-9]{17})] (.*)/
+      /Kicked player ([0-9]+)\. \[Online IDs= EOS: ([0-9a-f]{32}) steam: (\d{17})] (.*)/
     );
     if (matchKick) {
       Logger.verbose('SquadRcon', 2, `Matched kick message: ${decodedPacket.body}`);
@@ -76,8 +77,8 @@ export default class SquadRcon extends Rcon {
       this.emit('PLAYER_KICKED', {
         raw: decodedPacket.body,
         playerID: matchKick[1],
-        steamID: matchKick[2],
-        name: matchKick[3],
+        steamID: matchKick[3],
+        name: matchKick[4],
         time: new Date()
       });
 
@@ -85,18 +86,14 @@ export default class SquadRcon extends Rcon {
     }
 
     const matchSqCreated = decodedPacket.body.match(
-      /(.+) \(Steam ID: ([0-9]{17})\) has created Squad (\d+) \(Squad Name: (.+)\) on (.+)/
+      /(?<playerName>.+) \(Online IDs: EOS: (?<playerEOSID>[\da-f]{32})(?: steam: (?<playerSteamID>\d{17}))?\) has created Squad (?<squadID>\d+) \(Squad Name: (?<squadName>.+)\) on (?<teamName>.+)/
     );
     if (matchSqCreated) {
       Logger.verbose('SquadRcon', 2, `Matched Squad Created: ${decodedPacket.body}`);
 
       this.emit('SQUAD_CREATED', {
         time: new Date(),
-        playerName: matchSqCreated[1],
-        playerSteamID: matchSqCreated[2],
-        squadID: matchSqCreated[3],
-        squadName: matchSqCreated[4],
-        teamName: matchSqCreated[5]
+        ...matchSqCreated.groups
       });
 
       return;
@@ -139,23 +136,21 @@ export default class SquadRcon extends Rcon {
 
     const players = [];
 
-    if(!response || response.length < 1) return players;
-    
+    if (!response || response.length < 1) return players;
+
     for (const line of response.split('\n')) {
       const match = line.match(
-        /ID: ([0-9]+) \| SteamID: ([0-9]{17}) \| Name: (.+) \| Team ID: ([0-9]+) \| Squad ID: ([0-9]+|N\/A) \| Is Leader: (True|False) \| Role: ([A-Za-z0-9_]*)\b/
+        /^ID: (?<playerID>\d+) \| Online IDs: EOS: (?<eosID>[a-f\d]{32}) (?:steam: (?<steamID>\d{17}) )?\| Name: (?<name>.+) \| Team ID: (?<teamID>\d|N\/A) \| Squad ID: (?<squadID>\d+|N\/A) \| Is Leader: (?<isLeader>True|False) \| Role: (?<role>.+)$/
       );
       if (!match) continue;
 
-      players.push({
-        playerID: match[1],
-        steamID: match[2],
-        name: match[3],
-        teamID: match[4],
-        squadID: match[5] !== 'N/A' ? match[5] : null,
-        isLeader: match[6] === 'True',
-        role: match[7]
-      });
+      const data = match.groups;
+      data.playerID = +data.playerID;
+      data.isLeader = data.isLeader === 'True';
+      data.teamID = data.teamID !== 'N/A' ? +data.teamID : null;
+      data.squadID = data.squadID !== 'N/A' ? +data.squadID : null;
+
+      players.push(data);
     }
 
     return players;
@@ -168,25 +163,21 @@ export default class SquadRcon extends Rcon {
     let teamName;
     let teamID;
 
-    if(!responseSquad || responseSquad.length < 1) return squads;
+    if (!responseSquad || responseSquad.length < 1) return squads;
 
     for (const line of responseSquad.split('\n')) {
       const match = line.match(
-        /ID: ([0-9]+) \| Name: (.+) \| Size: ([0-9]+) \| Locked: (True|False) \| Creator Name: (.+) \| Creator Steam ID: ([0-9]{17})/
+        /ID: (?<squadID>\d+) \| Name: (?<squadName>.+) \| Size: (?<size>\d+) \| Locked: (?<locked>True|False) \| Creator Name: (?<creatorName>.+) \| Creator Online IDs: EOS: (?<creatorEOSID>[a-f\d]{32})(?: steam: (?<creatorSteamID>\d{17}))?/
       );
-      const matchSide = line.match(/Team ID: (1|2) \((.+)\)/);
+      const matchSide = line.match(/Team ID: (\d) \((.+)\)/);
       if (matchSide) {
-        teamID = matchSide[1];
+        teamID = +matchSide[1];
         teamName = matchSide[2];
       }
       if (!match) continue;
+      match.groups.squadID = +match.groups.squadID;
       squads.push({
-        squadID: match[1],
-        squadName: match[2],
-        size: match[3],
-        locked: match[4],
-        creatorName: match[5],
-        creatorSteamID: match[6],
+        ...match.groups,
         teamID: teamID,
         teamName: teamName
       });

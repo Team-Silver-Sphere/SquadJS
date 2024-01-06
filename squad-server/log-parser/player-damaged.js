@@ -1,6 +1,6 @@
 export default {
   regex:
-    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Player:(.+) ActualDamage=([0-9.]+) from (.+) caused by ([A-z_0-9-]+)_C/,
+    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Player:(.+) ActualDamage=([0-9.]+) from (.+) \(Online IDs: EOS: ([0-9a-f]{32}) steam: (\d{17}) \| Player Controller ID: ([^ ]+)\)caused by ([A-z_0-9-]+)_C/,
   onMatch: (args, logParser) => {
     const data = {
       raw: args[0],
@@ -9,10 +9,17 @@ export default {
       victimName: args[3],
       damage: parseFloat(args[4]),
       attackerName: args[5],
-      weapon: args[6]
+      attackerEOSID: args[6],
+      attackerSteamID: args[7],
+      attackerController: args[8],
+      weapon: args[9]
     };
 
     logParser.eventStore.session[args[3]] = data;
+
+    if (!logParser.eventStore.players[data.attackerSteamID])
+      logParser.eventStore.players[data.attackerSteamID] = {};
+    logParser.eventStore.players[data.attackerSteamID].controller = data.attackerController;
 
     logParser.emit('PLAYER_DAMAGED', data);
   }
