@@ -5,12 +5,11 @@ export default {
     const data = {
       raw: args[0],
       time: args[1],
-      chainID: args[2],
+      chainID: +args[2],
       controller: args[3]
     };
 
-    logParser.eventStore['player-controller'] = args[3];
-
+    logParser.eventStore.joinRequests[data.chainID].controller = data.controller;
     logParser.emit('PLAYER_CONTROLLER_CONNECTED', data);
   }
 };
