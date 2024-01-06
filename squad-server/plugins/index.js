@@ -13,14 +13,15 @@ class Plugins {
 
   async getPlugins(force = false) {
     if (this.plugins && !force) return this.plugins;
-    
+
     this.plugins = {};
 
     const dir = await fs.promises.opendir(path.join(__dirname, './'));
 
     const pluginFilenames = [];
     for await (const dirent of dir) {
-      if (!dirent.isFile() || !dirent.name.endsWith('.js')) { // Check for non .js file type
+      // Check for non .js file type
+      if (!dirent.isFile() || !dirent.name.endsWith('.js')) {
         continue;
       }
       if (
