@@ -1,0 +1,13 @@
+import { Events } from 'discord.js';
+
+export default {
+  // Only execute once
+  once: true,
+  // Does not pass the Squad server Object to the event
+  server: false,
+  // On client ready
+  event: Events.ClientReady,
+  async execute(client) {
+    console.log(`Logged in as ${client.user.tag}`);
+  }
+};

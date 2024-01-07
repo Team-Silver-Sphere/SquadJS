@@ -15,11 +15,16 @@ export default class DiscordDebug extends DiscordBasePlugin {
   static get optionsSpecification() {
     return {
       ...DiscordBasePlugin.optionsSpecification,
-      channelID: {
+      channelIDs: {
         required: true,
         description: 'The ID of the channel to log events to.',
-        default: '',
-        example: '667741905228136459'
+        default: [],
+        example: [
+          {
+            label: 'Foo',
+            channelID: '667741905228136459'
+          }
+        ]
       },
       events: {
         required: true,

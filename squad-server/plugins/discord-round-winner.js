@@ -12,11 +12,16 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
   static get optionsSpecification() {
     return {
       ...DiscordBasePlugin.optionsSpecification,
-      channelID: {
+      channelIDs: {
         required: true,
         description: 'The ID of the channel to log admin broadcasts to.',
-        default: '',
-        example: '667741905228136459'
+        default: [],
+        example: [
+          {
+            label: 'Foo',
+            channelID: '667741905228136459'
+          }
+        ]
       },
       color: {
         required: false,
