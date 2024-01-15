@@ -37,7 +37,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 1. [Download SquadJS](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) and unzip the download.
 2. Open the unzipped folder in your terminal.
 3. Install the dependencies by running `yarn install` in your terminal. Due to the use of Yarn Workspaces it is important to use `yarn install` and **not** `npm install` as this will not work and will break stuff.
-4. Configure the `config.json` file. See below for more details.
+4. Create a new configuration. See [here](#configuring-squadjs) for more details.
 5. Start SquadJS by running `node index.js` in your terminal.
 
 **Note** - If you are interested in testing versions of SquadJS not yet released please download/clone the `master` branch. Please also see [here](#versions-and-releases) for more information on our versions and release procedures.
@@ -45,10 +45,14 @@ SquadJS relies on being able to access the Squad server log directory in order t
 <br>
 
 ## **Configuring SquadJS**
-SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS and is named [config.json](./config.json).
+SquadJS can be configured via a JSON configuration file. The default location for the config is [config.json](./config.json). This file has to be created manually.
+`config.example.json` can be used as template for new configurations.
+
+You can maintain multiple configs using this naming scheme: `config.<configname>.json`. This naming scheme is useful for multiple servers or [config merging](#merged-configurations).
 
 The config file needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
 
+### Configuration Sections 
 <details>
   <summary>Server</summary>
 
@@ -191,8 +195,139 @@ The `logger` section configures how verbose a module of SquadJS will be as well 
   ```
 The larger the number set in the `verboseness` section for a specified module the more it will print to the console.
 
+Early stages of SquadJS initialization, before the configuration has been read and applied, will only log with a `verboseness` of 1. In order to enable verbose output for in those early stages the `VERBOSE` environment variable can be set to `true`. This will ignore all `verboseness` configurations and log everything.
+
   ---
 </details>
+
+### Merged Configurations
+The configuration can be spread over multiple config files. This can be helpful if run multiple servers and want to ensure all servers run the same configuration. Or if you have a large configuration for a plugin (e.g. a lot of [ChatCommands](#chatcommands) ) that make your config unreadable.
+
+Config files can be included by specifying their path in the `baseincludes` list your config. These files will be loaded in order and overwrite values from previously loaded configs. There is also a `overwrites` list that allows you to specify configs that should overwrite values in this config. Normal users should use the `baseincludes`. All relative paths have a small search order in which the file is first looked for, first in the directory relative to which the config that includes it, then inside the SquadJS directory.
+This allows sharing of a 'config folder' that references configs relative to other configs in that folder and makes sharing configs easier.
+
+<details>
+    <summary>Example with multiple config files</summary>
+
+---
+
+In this example we have 2 servers running and want the same configuration on both servers. The only diffrences are each server uses a diffrent discord bot and server 1 has verbose logging for the RCON module enabled.
+
+Server 1 will be started using `node index.js config.server1.json`.  
+Server 2 will be started using `node index.js config.server2.json`.
+
+- <details>
+    <summary>config.server1.json</summary>
+
+    ```json
+      {
+        "baseincludes": ["./config.base.json"],
+        "server": {
+          "id": 1,
+          "host": "localhost",
+          "queryPort": 27165,
+          "rconPort": 21114,
+          "rconPassword": "test1",
+          "logReaderMode": "tail",
+          "logDir": "C:/path/to/squad/server1/log/folder"
+        },
+        "connectors": {
+          "discord": "Token Discord Bot 1"
+        },
+        "logger": {
+          "verboseness": {
+            "RCON": 4
+          }
+        }
+      }
+    ```
+  </details>
+
+- <details>
+    <summary>config.server2.json</summary>
+
+    ```json
+      {
+        "baseincludes": ["./config.base.json"],
+        "server": {
+          "id": 2,
+          "host": "localhost",
+          "queryPort": 27175,
+          "rconPort": 21124,
+          "rconPassword": "test2",
+          "logReaderMode": "tail",
+          "logDir": "C:/path/to/squad/server2/log/folder"
+        },
+        "connectors": {
+          "discord": "Token Discord Bot 2"
+        }
+      }
+    ```
+  </details>
+
+- <details>
+    <summary>config.base.json</summary>
+
+    ```json
+      {
+        "baseincludes": ["./config.example.json"],
+        "server": {
+          "ftp": {
+            "port": 21,
+            "user": "FTP Username",
+            "password": "FTP Password",
+            "useListForSize": false
+          },
+          "adminLists": [
+            {
+              "type": "",
+              "source": ""
+            }
+          ]
+        },
+        "connectors": {
+          "mysql": {
+            "host": "host",
+            "port": 3306,
+            "username": "squadjs",
+            "password": "password",
+            "database": "squadjs",
+            "dialect": "mysql"
+          },
+          "sqlite": "sqlite:database.sqlite"
+        },
+        "plugins": [ "THIS HAS BEEN REMOVED TO MAKE THE CONFIG MORE READABLE" ],
+        "logger": {
+          "verboseness": {
+            "SquadServer": 1,
+            "LogParser": 1,
+            "RCON": 1
+          },
+          "colors": {
+            "SquadServer": "yellowBright",
+            "SquadServerFactory": "yellowBright",
+            "LogParser": "blueBright",
+            "RCON": "redBright"
+          }
+        }
+      }
+    ```
+  </details>
+---
+</details>
+<br>
+<details>
+  <summary>Precise loading order of configs</summary>
+  
+  Configs are parsed recursively through their `baseincludes`, their own json, and finally their `overwrites` and stored sequentially to a list that contains the json from each config. So in the above example the resultant list of configs loaded from loading `config.server1.json` would be `config.example.json, config.base.json, config.server1.json`. These configs then overwrite the current configuration in the order that they are in this list. This means that if you have `base-includes = ["config.external.json", "config.example.json"]` set in `config.myconfig.json`, with `config.external.json` also including `config.example.json`, the resultant list would like: `config.example.json, config.external.json, config.example.json, config.myconfig.json` and be merged as such.
+  Due to this, the ordering of the included jsons was most likely an error here, and you would actually want `config.external.json` second and `config.example.json` first.
+
+</details>
+
+Please remember to avoid circular dependencies and it is considered good practice to include `config.example.json` as the base for other configs. If a new property is added to the example config that is required by SquadJS due to an update, your configs will prevent SquadJS from running.
+
+If you have problems with this, you can view the merged config by forcing SquadJS to log everything to the console.  
+See [here](#console-output-configuration) for more information on console output. 
 
 <br>
 
