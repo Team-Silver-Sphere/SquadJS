@@ -106,10 +106,12 @@
       "ignorePhrases": [],
       "command": "admin",
       "pingGroups": [],
+      "pingHere": false,
       "pingDelay": 60000,
       "color": 16761867,
       "warnInGameAdmins": false,
-      "showInGameAdmins": true
+      "showInGameAdmins": true,
+      "serverName": "Server 1"
     },
     {
       "plugin": "DiscordChat",
