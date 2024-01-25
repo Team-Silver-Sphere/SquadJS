@@ -447,11 +447,6 @@ Grafana:
            <p>Should players know how much in-game admins there are active/online?</p>
            <h6>Default</h6>
            <pre><code>true</code></pre></li>
-<li><h4>serverName</h4>
-           <h6>Description</h6>
-           <p>The Server Name will come across in the Discord Message</p>
-           <h6>Default</h6>
-           <pre><code>Server 1</code></pre></li></ul>
         </details>
 
 <details>
