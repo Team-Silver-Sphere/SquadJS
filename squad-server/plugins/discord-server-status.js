@@ -102,7 +102,7 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
     // Clamp the ratio between 0 and 1 to avoid tinygradient errors.
     const ratio = this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots);
     const clampedRatio = Math.min(1, Math.max(0, ratio));
-    
+
     // Set gradient embed color.
     embed.setColor(
       parseInt(
