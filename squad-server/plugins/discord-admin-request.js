@@ -70,11 +70,6 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
         required: false,
         description: 'Should players know how much in-game admins there are active/online?',
         default: true
-      },
-      serverName: {
-        required: false,
-        description: 'The Server Name will come across in the Discord Message',
-        default: 'Server 1'
       }
     };
   }
@@ -153,15 +148,15 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
 
     if (this.options.pingGroups.length > 0 && Date.now() - this.options.pingDelay > this.lastPing) {
       if (this.options.pingHere === true && this.options.pingGroups.length === 0) {
-        message.content = `@here - Admin Requested in ${this.options.serverName}`;
+        message.content = `@here - Admin Requested in ${this.server.serverName}`;
       } else if (this.options.pingHere === true && this.options.pingGroups.length > 0) {
         message.content = `@here - Admin Requested in ${
-          this.options.serverName
+          this.server.serverName
         } - ${this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ')}`;
       } else if (this.options.pingHere === false && this.options.pingGroups.length === 0) {
-        message.content = `Admin Requested in ${this.options.serverName}`;
+        message.content = `Admin Requested in ${this.server.serverName}`;
       } else if (this.options.pingHere === false && this.options.pingGroups.length > 0) {
-        message.content = `Admin Requested in ${this.options.serverName} - ${this.options.pingGroups
+        message.content = `Admin Requested in ${this.server.serverName} - ${this.options.pingGroups
           .map((groupID) => `<@&${groupID}>`)
           .join(' ')}`;
       }
