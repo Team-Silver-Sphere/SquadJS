@@ -110,8 +110,7 @@
       "pingDelay": 60000,
       "color": 16761867,
       "warnInGameAdmins": false,
-      "showInGameAdmins": true,
-      "serverName": "Server 1"
+      "showInGameAdmins": true
     },
     {
       "plugin": "DiscordChat",
