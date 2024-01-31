@@ -16,9 +16,13 @@ export default class LogParser extends EventEmitter {
 
     this.eventStore = {
       disconnected: {}, // holding area, cleared on map change.
-      players: {}, // persistent data, steamid, controller, suffix.
+      players: [], // persistent data, steamid, controller, suffix.
+      playersEOS: [], // proxies from EOSID to persistent data, steamid, controller, suffix.
+      connectionIdToSteamID: new Map(),
       session: {}, // old eventstore, nonpersistent data
-      clients: {} // used in the connection chain before we resolve a player.
+      clients: {}, // used in the connection chain before we resolve a player.
+      lastConnection: {}, // used to store the last client connection data to then associate a steamid
+      joinRequests: []
     };
 
     this.linesPerMinute = 0;

@@ -20,7 +20,10 @@ class Plugins {
 
     const pluginFilenames = [];
     for await (const dirent of dir) {
-      if (!dirent.isFile()) continue;
+      // Check for non .js file type
+      if (!dirent.isFile() || !dirent.name.endsWith('.js')) {
+        continue;
+      }
       if (
         [
           'index.js',
