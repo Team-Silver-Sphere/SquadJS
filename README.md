@@ -422,6 +422,11 @@ Grafana:
            <pre><code>[
   "500455137626554379"
 ]</code></pre>
+<li><h4>pingHere</h4>
+           <h6>Description</h6>
+           <p>Ping @here. Great if Admin Requests are posted to a Squad Admin ONLY channel, allows pinging only Online Admins.</p>
+           <h6>Default</h6>
+           <pre><code>false</code></pre></li>
 <li><h4>pingDelay</h4>
            <h6>Description</h6>
            <p>Cooldown for pings in milliseconds.</p>

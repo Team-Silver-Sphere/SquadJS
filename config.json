@@ -106,6 +106,7 @@
       "ignorePhrases": [],
       "command": "admin",
       "pingGroups": [],
+      "pingHere": false,
       "pingDelay": 60000,
       "color": 16761867,
       "warnInGameAdmins": false,

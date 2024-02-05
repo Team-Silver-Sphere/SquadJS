@@ -44,6 +44,12 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
         default: [],
         example: ['500455137626554379']
       },
+      pingHere: {
+        required: false,
+        description:
+          'Ping @here. Great if Admin Requests are posted to a Squad Admin ONLY channel, allows pinging only Online Admins.',
+        default: false
+      },
       pingDelay: {
         required: false,
         description: 'Cooldown for pings in milliseconds.',
@@ -141,7 +147,19 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
     };
 
     if (this.options.pingGroups.length > 0 && Date.now() - this.options.pingDelay > this.lastPing) {
-      message.content = this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');
+      if (this.options.pingHere === true && this.options.pingGroups.length === 0) {
+        message.content = `@here - Admin Requested in ${this.server.serverName}`;
+      } else if (this.options.pingHere === true && this.options.pingGroups.length > 0) {
+        message.content = `@here - Admin Requested in ${
+          this.server.serverName
+        } - ${this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ')}`;
+      } else if (this.options.pingHere === false && this.options.pingGroups.length === 0) {
+        message.content = `Admin Requested in ${this.server.serverName}`;
+      } else if (this.options.pingHere === false && this.options.pingGroups.length > 0) {
+        message.content = `Admin Requested in ${this.server.serverName} - ${this.options.pingGroups
+          .map((groupID) => `<@&${groupID}>`)
+          .join(' ')}`;
+      }
       this.lastPing = Date.now();
     }
 
