@@ -99,6 +99,10 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
     // Set footer.
     embed.setFooter(COPYRIGHT_MESSAGE);
 
+    // Clamp the ratio between 0 and 1 to avoid tinygradient errors.
+    const ratio = this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots);
+    const clampedRatio = Math.min(1, Math.max(0, ratio));
+
     // Set gradient embed color.
     embed.setColor(
       parseInt(
@@ -107,7 +111,7 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
           { color: '#ffff00', pos: 0.5 },
           { color: '#00ff00', pos: 1 }
         ])
-          .rgbAt(this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots))
+          .rgbAt(clampedRatio)
           .toHex(),
         16
       )
