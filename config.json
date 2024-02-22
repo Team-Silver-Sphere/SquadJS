@@ -253,6 +253,7 @@
       "SquadServerFactory": "yellowBright",
       "LogParser": "blueBright",
       "RCON": "redBright"
-    }
+    },
+    "timestamps": false
   }
 }
