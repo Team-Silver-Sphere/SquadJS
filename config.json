@@ -73,7 +73,8 @@
           "command": "squadjs",
           "type": "warn",
           "response": "This server is powered by SquadJS.",
-          "ignoreChats": []
+          "ignoreChats": [],
+          "includeChats": []
         }
       ]
     },
