@@ -375,7 +375,12 @@ Grafana:
            <h6>Description</h6>
            <p>The color of the embed.</p>
            <h6>Default</h6>
-           <pre><code>16761867</code></pre></li></ul>
+           <pre><code>16761867</code></pre></li>
+<li><h4>warnInGameAdmins</h4>
+           <h6>Description</h6>
+           <p>Whether or not to warn in game admins when an admin enters or exits admin camera.</p>
+           <h6>Default</h6>
+           <pre><code>false</code></pre></li></ul>
         </details>
 
 <details>

@@ -22,6 +22,11 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
         required: false,
         description: 'The color of the embed.',
         default: 16761867
+      },
+      warnInGameAdmins: {
+        required: false,
+        description: 'Whether or not to warn in game admins when an admin enters or exits admin camera.',
+        default: false
       }
     };
   }
@@ -45,6 +50,19 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
     this.server.removeEventListener('UNPOSSESSED_ADMIN_CAMERA', this.onExit);
   }
 
+  async warnInGameAdmins(info, state) {
+    if (!this.options.warnInGameAdmins) return;
+  
+    await this.server.updatePlayerList();
+    const admins = await this.server.getAdminsWithPermission("canseeadminchat");
+  
+    for (const player of this.server.players) {
+        if (admins.includes(player.steamID)) {
+            await this.server.rcon.warn(player.steamID, `[${info.player.name}] ${state} admin camera.`);
+        }
+    }
+  }
+
   async onEntry(info) {
     await this.sendDiscordMessage({
       embed: {
@@ -65,6 +83,10 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
         timestamp: info.time.toISOString()
       }
     });
+    
+    await this.warnInGameAdmins(info, 'entered');
+
+    this.verbose(1, `Admin has entered admin cam: ${info.player.name}`);
   }
 
   async onExit(info) {
@@ -91,5 +113,9 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
         timestamp: info.time.toISOString()
       }
     });
+
+    await this.warnInGameAdmins(info, 'left');
+
+    this.verbose(1, `Admin has left admin cam: ${info.player.name}`);
   }
 }
