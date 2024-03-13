@@ -4,7 +4,9 @@ import AdminBroadcast from './admin-broadcast.js';
 import DeployableDamaged from './deployable-damaged.js';
 import NewGame from './new-game.js';
 import PlayerConnected from './player-connected.js';
+import PlayerConnectedGC from './player-connected-gc.js';
 import PlayerControllerConnected from './playercontroller-connected.js';
+import PlayerControllerConnectedGC from './playercontroller-connected-gc.js';
 import PlayerDisconnected from './player-disconnected.js';
 import PlayerDamaged from './player-damaged.js';
 import PlayerDied from './player-died.js';
@@ -36,7 +38,9 @@ export default class SquadLogParser extends LogParser {
       DeployableDamaged,
       NewGame,
       PlayerConnected,
+      PlayerConnectedGC,
       PlayerControllerConnected,
+      PlayerControllerConnectedGC,
       PlayerDisconnected,
       PlayerDamaged,
       PlayerDied,
