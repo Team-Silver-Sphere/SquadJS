@@ -33,8 +33,10 @@ export default class DiscordBasePlugin extends BasePlugin {
       return;
     }
 
-    if (typeof message === 'object' && 'embed' in message)
+    if (typeof message === 'object' && 'embed' in message) {
       message.embed.footer = message.embed.footer || { text: COPYRIGHT_MESSAGE };
+      message = {embeds:[message.embed]};
+    }
 
     await this.channel.send(message);
   }
