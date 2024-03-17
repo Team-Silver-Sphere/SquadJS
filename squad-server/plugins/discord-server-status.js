@@ -121,7 +121,7 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
       `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
         this.server.currentLayer?.name || 'Unknown'
       }`,
-      { type: 'WATCHING' }
+      { type: 4 }
     );
   }
 }
