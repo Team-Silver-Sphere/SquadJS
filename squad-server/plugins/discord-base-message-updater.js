@@ -51,11 +51,11 @@ export default class DiscordBaseMessageUpdater extends BasePlugin {
   }
 
   async mount() {
-    this.options.discordClient.on('message', this.onDiscordMessage);
+    this.options.discordClient.on('messageCreate', this.onDiscordMessage);
   }
 
   async unmount() {
-    this.options.discordClient.removeEventListener('message', this.onDiscordMessage);
+    this.options.discordClient.removeEventListener('messageCreate', this.onDiscordMessage);
   }
 
   async generateMessage() {

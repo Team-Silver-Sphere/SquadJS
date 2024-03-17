@@ -40,11 +40,11 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
   }
 
   async mount() {
-    this.options.discordClient.on('message', this.onMessage);
+    this.options.discordClient.on('messageCreate', this.onMessage);
   }
 
   async unmount() {
-    this.options.discordClient.removeEventListener('message', this.onMessage);
+    this.options.discordClient.removeEventListener('messageCreate', this.onMessage);
   }
 
   async onMessage(message) {
