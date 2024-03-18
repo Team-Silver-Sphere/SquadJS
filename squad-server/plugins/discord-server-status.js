@@ -85,7 +85,7 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
       );
 
     return {
-      embed: {
+      embeds: [{
         title: this.server.serverName,
         fields: [
           {
@@ -110,7 +110,7 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
         timestamp: new Date(),
         image: { url: (this.server.currentLayer ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg` : undefined) },
 
-      }
+      },]
     };
   }
 
