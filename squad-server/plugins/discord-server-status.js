@@ -84,34 +84,35 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
         16
       );
 
-    return {
-      embeds: [{
-        title: this.server.serverName,
-        fields: [
-          {
-            name: 'Players',
-            value: players
-          },
-          {
-            name: 'Current Layer',
-            value: `\`\`\`${layerName || 'Unknown'}\`\`\``,
-            inline: true
-          },
-          {
-            name: 'Next Layer',
-            value: `\`\`\`${
-              this.server.nextLayer?.name || (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
-            }\`\`\``,
-            inline: true
-          }
-        ],
-        color: color,
-        footer: COPYRIGHT_MESSAGE,
-        timestamp: new Date(),
-        image: { url: (this.server.currentLayer ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg` : undefined) },
+    const embedobj = {
+      title: this.server.serverName,
+      fields: [
+        {
+          name: 'Players',
+          value: players
+        },
+        {
+          name: 'Current Layer',
+          value: `\`\`\`${layerName || 'Unknown'}\`\`\``,
+          inline: true
+        },
+        {
+          name: 'Next Layer',
+          value: `\`\`\`${
+            this.server.nextLayer?.name || (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
+          }\`\`\``,
+          inline: true
+        }
+      ],
+      color: color,
+      footer: {text:COPYRIGHT_MESSAGE},
+      timestamp: new Date(),
+      image: {
+        url: (this.server.currentLayer ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg` : undefined)
+      },
+    }
 
-      },]
-    };
+    return { embeds: [embedobj] };
   }
 
   async updateStatus() {
