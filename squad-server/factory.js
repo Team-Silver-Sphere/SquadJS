@@ -111,6 +111,10 @@ export default class SquadServerFactory {
         ]});
       connector.once(Events.ClientReady, readyClient => {console.log(`Ready! Logged in as ${readyClient.user.tag}`);});
       await connector.login(connectorConfig);
+      // setup compatability with older plugins for message create event.
+      connector.on('messageCreate', message=>{
+        connector.emit('message', message);
+      });
       return connector;
     }
 
