@@ -241,6 +241,14 @@
       "plugin": "TeamRandomizer",
       "enabled": true,
       "command": "randomize"
+    },
+    {
+  "plugin": "DiscordStats",
+  "enabled": true,
+  "discordClient": "discord",
+  "database": "mysql", // Replace this with any DB you use "mongoDB, sqlite, or keep it as mysql
+  "channelID": "put_channel_ID_here", // Replace this with your discord channel ID
+  "prefix": "!"
     }
   ],
   "logger": {
