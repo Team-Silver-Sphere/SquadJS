@@ -5,6 +5,7 @@
   "exports": {
     "./log-parser": "./log-parser/index.js",
     "./constants": "./constants.js",
+    "./id-parser": "./id-parser.js",
     "./logger": "./logger.js",
     "./rcon": "./rcon.js"
   },
