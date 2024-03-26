@@ -1,6 +1,8 @@
+import { iterate, capitalID } from 'core/id-parser';
+
 export default {
   regex:
-    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Player:(.+) ActualDamage=([0-9.]+) from (.+) \(Online IDs: EOS: ([0-9a-f]{32}) steam: (\d{17}) \| Player Controller ID: ([^ ]+)\)caused by ([A-z_0-9-]+)_C/,
+    /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Player:(.+) ActualDamage=([0-9.]+) from (.+) \(Online IDs:([^|]+)\| Player Controller ID: ([^ ]+)\)caused by ([A-z_0-9-]+)_C/,
   onMatch: (args, logParser) => {
     const data = {
       raw: args[0],
@@ -9,11 +11,12 @@ export default {
       victimName: args[3],
       damage: parseFloat(args[4]),
       attackerName: args[5],
-      attackerEOSID: args[6],
-      attackerSteamID: args[7],
-      attackerController: args[8],
-      weapon: args[9]
+      attackerController: args[7],
+      weapon: args[8]
     };
+    iterate(args[6]).forEach((platform, id) => {
+      data['attacker' + capitalID(platform)] = id;
+    });
 
     logParser.eventStore.session[args[3]] = data;
 
