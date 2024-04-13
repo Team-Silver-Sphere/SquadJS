@@ -208,7 +208,7 @@ export default class SquadServer extends EventEmitter {
       this.emit('NEW_GAME', data);
     });
 
-    this.logParser.on('PLAYER_CONNECTED', async (data) => {
+    this.logParser.on('JOIN_SUCCEEDED', async (data) => {
       Logger.verbose(
         'SquadServer',
         1,
@@ -322,23 +322,6 @@ export default class SquadServer extends EventEmitter {
     this.logParser.on('TICK_RATE', (data) => {
       this.emit('TICK_RATE', data);
     });
-
-    this.logParser.on('CLIENT_EXTERNAL_ACCOUNT_INFO', (data) => {
-      this.rcon.addIds(data.steamID, data.eosID);
-    });
-    // this.logParser.on('CLIENT_CONNECTED', (data) => {
-    //   Logger.verbose("SquadServer", 1, `Client connected. Connection: ${data.connection} - SteamID: ${data.steamID}`)
-    // })
-    // this.logParser.on('CLIENT_LOGIN_REQUEST', (data) => {
-    //   Logger.verbose("SquadServer", 1, `Login request. ChainID: ${data.chainID} - Suffix: ${data.suffix} - EOSID: ${data.eosID}`)
-
-    // })
-    // this.logParser.on('RESOLVED_EOS_ID', (data) => {
-    //   Logger.verbose("SquadServer", 1, `Resolved EOSID. ChainID: ${data.chainID} - Suffix: ${data.suffix} - EOSID: ${data.eosID}`)
-    // })
-    // this.logParser.on('ADDING_CLIENT_CONNECTION', (data) => {
-    //   Logger.verbose("SquadServer", 1, `Adding client connection`, data)
-    // })
   }
 
   async restartLogParser() {
