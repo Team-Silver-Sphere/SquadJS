@@ -13,6 +13,7 @@ import Rcon from './rcon.js';
 import { SQUADJS_VERSION } from './utils/constants.js';
 
 import fetchAdminLists from './utils/admin-lists.js';
+import { anyIDToPlayer, anyIDsToPlayers } from './utils/any-id.js';
 
 export default class SquadServer extends EventEmitter {
   constructor(options = {}) {
@@ -336,16 +337,26 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.watch();
   }
 
+  // DEPRECATED FUNCTION
   getAdminPermsBySteamID(steamID) {
-    return this.admins[steamID];
+    return this.getAdminPermsByAnyID(steamID);
+  }
+
+  getAdminPermsByAnyID(anyID) {
+    // using this.players directly to keep the function sync
+    const player = anyIDToPlayer(anyID, this.players);
+    if (player === undefined) return;
+    for (const parm in player)
+      if (parm.endsWith("ID") && player[parm] in this.admins)
+        return this.admins[player[parm]];
   }
 
   getAdminsWithPermission(perm) {
     const ret = [];
-    for (const [steamID, perms] of Object.entries(this.admins)) {
-      if (perm in perms) ret.push(steamID);
+    for (const [anyID, perms] of Object.entries(this.admins)) {
+      if (perm in perms) ret.push(anyID);
     }
-    return ret;
+    return anyIDsToPlayers(ret, this.players).map(player => player.eosID);
   }
 
   async updateAdmins() {
