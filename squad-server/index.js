@@ -387,16 +387,18 @@ export default class SquadServer extends EventEmitter {
       this.players = players;
 
       for (const player of this.players) {
-        if (player.teamID !== oldPlayerInfo[player.eosID].teamID)
+        const oldInfo = oldPlayerInfo[player.eosID];
+        if (oldInfo === undefined) continue;
+        if (player.teamID !== oldInfo.teamID)
           this.emit('PLAYER_TEAM_CHANGE', {
             player: player,
-            oldTeamID: oldPlayerInfo[player.eosID].teamID,
+            oldTeamID: oldInfo.teamID,
             newTeamID: player.teamID
           });
-        if (player.squadID !== oldPlayerInfo[player.eosID].squadID)
+        if (player.squadID !== oldInfo.squadID)
           this.emit('PLAYER_SQUAD_CHANGE', {
             player: player,
-            oldSquadID: oldPlayerInfo[player.eosID].squadID,
+            oldSquadID: oldInfo.squadID,
             newSquadID: player.squadID
           });
       }
