@@ -20,9 +20,9 @@ export default {
 
     logParser.eventStore.session[args[3]] = data;
 
-    if (!logParser.eventStore.players[data.attackerSteamID])
-      logParser.eventStore.players[data.attackerSteamID] = {};
-    logParser.eventStore.players[data.attackerSteamID].controller = data.attackerController;
+    if (!logParser.eventStore.players[data.attackerEOSID])
+      logParser.eventStore.players[data.attackerEOSID] = {};
+    logParser.eventStore.players[data.attackerEOSID].controller = data.attackerController;
 
     logParser.emit('PLAYER_DAMAGED', data);
   }

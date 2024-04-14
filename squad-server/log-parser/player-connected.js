@@ -25,11 +25,11 @@ export default {
     };
 
     logParser.eventStore.joinRequests[data.chainID] = player;
-    logParser.eventStore.players[data.steamID] = player;
+    logParser.eventStore.players[data.eosID] = player;
 
     // Handle Reconnecting players
-    if (logParser.eventStore.disconnected[data.steamID]) {
-      delete logParser.eventStore.disconnected[data.steamID];
+    if (logParser.eventStore.disconnected[data.eosID]) {
+      delete logParser.eventStore.disconnected[data.eosID];
     }
 
     logParser.emit('PLAYER_CONNECTED', data);

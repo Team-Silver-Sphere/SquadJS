@@ -16,7 +16,7 @@ export default class LogParser extends EventEmitter {
 
     this.eventStore = {
       disconnected: {}, // holding area, cleared on map change.
-      players: [], // persistent data, steamid, controller, suffix.
+      players: {}, // persistent data, steamid, controller, suffix.
       session: {}, // old eventstore, nonpersistent data
       joinRequests: []
     };
@@ -70,10 +70,10 @@ export default class LogParser extends EventEmitter {
   clearEventStore() {
     Logger.verbose('LogParser', 2, 'Cleaning Eventstore');
     for (const player of Object.values(this.eventStore.players)) {
-      if (this.eventStore.disconnected[player.steamID] === true) {
-        Logger.verbose('LogParser', 2, `Removing ${player.steamID} from eventStore`);
-        delete this.eventStore.players[player.steamID];
-        delete this.eventStore.disconnected[player.steamID];
+      if (this.eventStore.disconnected[player.eosID] === true) {
+        Logger.verbose('LogParser', 2, `Removing ${player.eosID} from eventStore`);
+        delete this.eventStore.players[player.eosID];
+        delete this.eventStore.disconnected[player.eosID];
       }
     }
     this.eventStore.session = {};

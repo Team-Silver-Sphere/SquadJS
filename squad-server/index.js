@@ -99,7 +99,7 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.rcon.on('CHAT_MESSAGE', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.player = await this.getPlayerByEOSID(data.eosID);
       this.emit('CHAT_MESSAGE', data);
 
       const command = data.message.match(/!([^ ]+) ?(.*)/);
@@ -111,22 +111,22 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.rcon.on('POSSESSED_ADMIN_CAMERA', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.player = await this.getPlayerByEOSID(data.eosID);
 
-      this.adminsInAdminCam[data.steamID] = data.time;
+      this.adminsInAdminCam[data.eosID] = data.time;
 
       this.emit('POSSESSED_ADMIN_CAMERA', data);
     });
 
     this.rcon.on('UNPOSSESSED_ADMIN_CAMERA', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
-      if (this.adminsInAdminCam[data.steamID]) {
-        data.duration = data.time.getTime() - this.adminsInAdminCam[data.steamID].getTime();
+      data.player = await this.getPlayerByEOSID(data.eosID);
+      if (this.adminsInAdminCam[data.eosID]) {
+        data.duration = data.time.getTime() - this.adminsInAdminCam[data.eosID].getTime();
       } else {
         data.duration = 0;
       }
 
-      delete this.adminsInAdminCam[data.steamID];
+      delete this.adminsInAdminCam[data.eosID];
 
       this.emit('UNPOSSESSED_ADMIN_CAMERA', data);
     });
@@ -142,13 +142,13 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.rcon.on('PLAYER_KICKED', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.player = await this.getPlayerByEOSID(data.eosID);
 
       this.emit('PLAYER_KICKED', data);
     });
 
     this.rcon.on('PLAYER_BANNED', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.player = await this.getPlayerByEOSID(data.eosID);
 
       this.emit('PLAYER_BANNED', data);
     });
@@ -158,8 +158,7 @@ export default class SquadServer extends EventEmitter {
       data.player.squadID = data.squadID;
 
       delete data.playerName;
-      delete data.playerSteamID;
-      delete data.playerEOSID;
+      for (const k in data) if (k.startsWith('player') && k.endsWith('ID')) delete data[k];
 
       this.emit('SQUAD_CREATED', data);
     });
@@ -219,7 +218,7 @@ export default class SquadServer extends EventEmitter {
       data.player = await this.getPlayerByEOSID(data.eosID);
       if (data.player) data.player.suffix = data.playerSuffix;
 
-      delete data.steamID;
+      for (const k in data) if (k.endsWith('ID')) delete data[k];
       delete data.playerSuffix;
 
       this.emit('PLAYER_CONNECTED', data);
@@ -228,7 +227,7 @@ export default class SquadServer extends EventEmitter {
     this.logParser.on('PLAYER_DISCONNECTED', async (data) => {
       data.player = await this.getPlayerByEOSID(data.eosID);
 
-      delete data.steamID;
+      for (const k in data) if (k.endsWith('ID')) delete data[k];
 
       this.emit('PLAYER_DISCONNECTED', data);
     });
@@ -243,7 +242,7 @@ export default class SquadServer extends EventEmitter {
       if (data.victim && data.attacker) {
         data.teamkill =
           data.victim.teamID === data.attacker.teamID &&
-          data.victim.steamID !== data.attacker.steamID;
+          data.victim.eosID !== data.attacker.eosID;
       }
 
       delete data.victimName;
@@ -261,7 +260,7 @@ export default class SquadServer extends EventEmitter {
       if (data.victim && data.attacker)
         data.teamkill =
           data.victim.teamID === data.attacker.teamID &&
-          data.victim.steamID !== data.attacker.steamID;
+          data.victim.eosID !== data.attacker.eosID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -279,7 +278,7 @@ export default class SquadServer extends EventEmitter {
       if (data.victim && data.attacker)
         data.teamkill =
           data.victim.teamID === data.attacker.teamID &&
-          data.victim.steamID !== data.attacker.steamID;
+          data.victim.eosID !== data.attacker.eosID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -371,16 +370,16 @@ export default class SquadServer extends EventEmitter {
     try {
       const oldPlayerInfo = {};
       for (const player of this.players) {
-        oldPlayerInfo[player.steamID] = player;
+        oldPlayerInfo[player.eosID] = player;
       }
 
       const players = [];
       for (const player of await this.rcon.getListPlayers(this))
         players.push({
-          ...oldPlayerInfo[player.steamID],
+          ...oldPlayerInfo[player.eosID],
           ...player,
-          playercontroller: this.logParser.eventStore.players[player.steamID]
-            ? this.logParser.eventStore.players[player.steamID].controller
+          playercontroller: this.logParser.eventStore.players[player.eosID]
+            ? this.logParser.eventStore.players[player.eosID].controller
             : null,
           squad: await this.getSquadByID(player.teamID, player.squadID)
         });
@@ -388,17 +387,16 @@ export default class SquadServer extends EventEmitter {
       this.players = players;
 
       for (const player of this.players) {
-        if (typeof oldPlayerInfo[player.steamID] === 'undefined') continue;
-        if (player.teamID !== oldPlayerInfo[player.steamID].teamID)
+        if (player.teamID !== oldPlayerInfo[player.eosID].teamID)
           this.emit('PLAYER_TEAM_CHANGE', {
             player: player,
-            oldTeamID: oldPlayerInfo[player.steamID].teamID,
+            oldTeamID: oldPlayerInfo[player.eosID].teamID,
             newTeamID: player.teamID
           });
-        if (player.squadID !== oldPlayerInfo[player.steamID].squadID)
+        if (player.squadID !== oldPlayerInfo[player.eosID].squadID)
           this.emit('PLAYER_SQUAD_CHANGE', {
             player: player,
-            oldSquadID: oldPlayerInfo[player.steamID].squadID,
+            oldSquadID: oldPlayerInfo[player.eosID].squadID,
             newSquadID: player.squadID
           });
       }
@@ -585,12 +583,21 @@ export default class SquadServer extends EventEmitter {
     );
   }
 
+  // DEPRECATED
   async getPlayerBySteamID(steamID, forceUpdate) {
     return this.getPlayerByCondition((player) => player.steamID === steamID, forceUpdate);
   }
 
   async getPlayerByEOSID(eosID, forceUpdate) {
     return this.getPlayerByCondition((player) => player.eosID === eosID, forceUpdate);
+  }
+
+  async getPlayerByAnyID(anyID, forceUpdate) {
+    return this.getPlayerByCondition(
+      (player) =>
+        Object.entries(player).filter(([parm, val]) => parm.endsWith('ID') && val === anyID).length,
+      forceUpdate
+    );
   }
 
   async getPlayerByName(name, forceUpdate) {

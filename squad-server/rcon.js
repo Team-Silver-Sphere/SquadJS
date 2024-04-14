@@ -211,16 +211,16 @@ export default class SquadRcon extends Rcon {
     await this.execute(`AdminSetFogOfWar ${mode}`);
   }
 
-  async warn(steamID, message) {
-    await this.execute(`AdminWarn "${steamID}" ${message}`);
+  async warn(anyID, message) {
+    await this.execute(`AdminWarn "${anyID}" ${message}`);
   }
 
   // 0 = Perm | 1m = 1 minute | 1d = 1 Day | 1M = 1 Month | etc...
-  async ban(steamID, banLength, message) {
-    await this.execute(`AdminBan "${steamID}" ${banLength} ${message}`);
+  async ban(anyID, banLength, message) {
+    await this.execute(`AdminBan "${anyID}" ${banLength} ${message}`);
   }
 
-  async switchTeam(steamID) {
-    await this.execute(`AdminForceTeamChange "${steamID}"`);
+  async switchTeam(anyID) {
+    await this.execute(`AdminForceTeamChange "${anyID}"`);
   }
 }
