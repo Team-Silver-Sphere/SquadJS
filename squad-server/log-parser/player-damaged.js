@@ -1,4 +1,4 @@
-import { iterate, capitalID } from 'core/id-parser';
+import { iterateIDs, capitalID } from 'core/id-parser';
 
 export default {
   regex:
@@ -14,7 +14,7 @@ export default {
       attackerController: args[7],
       weapon: args[8]
     };
-    iterate(args[6]).forEach((platform, id) => {
+    iterateIDs(args[6]).forEach((platform, id) => {
       data['attacker' + capitalID(platform)] = id;
     });
 

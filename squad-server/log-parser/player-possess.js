@@ -1,4 +1,4 @@
-import { iterate, capitalID } from 'core/id-parser';
+import { iterateIDs, capitalID } from 'core/id-parser';
 
 export default {
   regex:
@@ -13,7 +13,7 @@ export default {
     };
 
     logParser.eventStore.session[args[3]] = args[2];
-    iterate(args[4]).forEach((platform, id) => {
+    iterateIDs(args[4]).forEach((platform, id) => {
       data['player' + capitalID(platform)] = id;
     });
     data.pawn = data.playerSteamID; // deprecated? never used in code

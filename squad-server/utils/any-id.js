@@ -1,13 +1,17 @@
-// `anyIDs` is [id1, id2, ...], players is [player1, player2, ...]
-// Purely brute force approach, `6*NUM_PLAYERS` attribubes to compare
-// against `anyIDs` in worst case scenario given there are steam and
-// EOS ids. ID mapping could be cached to speed up if needed.
+import { playerIdNames } from 'core/id-parser';
+
+/**
+ * Filter out players matching given IDs.
+ * Note: uses linear search, not the most efficent approach.
+ * @arg {Array.<string>} anyIDs - IDs to match against.
+ * @arg {Array.<Object>} players
+ * @returns {Array.<Object>}
+ */
 export function anyIDsToPlayers(anyIDs, players) {
   const result = [];
   for (const player of players) {
-    for (const idName in player) {
-      if (!idName.endsWith('ID')) continue;
-      if (player[idName] in anyIDs) {
+    for (const idName of playerIdNames) {
+      if (anyIDs.includes(player[idName]) && !result.includes(player)) {
         result.push(player);
         break;
       }
@@ -16,11 +20,15 @@ export function anyIDsToPlayers(anyIDs, players) {
   return result;
 }
 
-// Same issue with brute force approach
+/**
+ * Find player by any of it's IDs.
+ * @arg {string} anyID - ID to match against.
+ * @arg {Array.<Object>} players
+ * @returns {(Object|undefined)}
+ */
 export function anyIDToPlayer(anyID, players) {
   for (const player of players) {
-    for (const idName in player) {
-      if (!idName.endsWith('ID')) continue;
+    for (const idName of playerIdNames) {
       if (player[idName] === anyID) return player;
     }
   }

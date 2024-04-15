@@ -14,6 +14,7 @@ import { SQUADJS_VERSION } from './utils/constants.js';
 
 import fetchAdminLists from './utils/admin-lists.js';
 import { anyIDToPlayer, anyIDsToPlayers } from './utils/any-id.js';
+import { playerIdNames } from 'core/id-parser';
 
 export default class SquadServer extends EventEmitter {
   constructor(options = {}) {
@@ -218,7 +219,7 @@ export default class SquadServer extends EventEmitter {
       data.player = await this.getPlayerByEOSID(data.eosID);
       if (data.player) data.player.suffix = data.playerSuffix;
 
-      for (const k in data) if (k.endsWith('ID')) delete data[k];
+      for (const k in data) if (playerIdNames.includes(k)) delete data[k];
       delete data.playerSuffix;
 
       this.emit('PLAYER_CONNECTED', data);
@@ -227,7 +228,7 @@ export default class SquadServer extends EventEmitter {
     this.logParser.on('PLAYER_DISCONNECTED', async (data) => {
       data.player = await this.getPlayerByEOSID(data.eosID);
 
-      for (const k in data) if (k.endsWith('ID')) delete data[k];
+      for (const k in data) if (playerIdNames.includes(k)) delete data[k];
 
       this.emit('PLAYER_DISCONNECTED', data);
     });
@@ -336,7 +337,9 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.watch();
   }
 
-  // DEPRECATED FUNCTION
+  /**
+   * @deprecated Kept for backwards compatibility with custom plugins.
+   */
   getAdminPermsBySteamID(steamID) {
     return this.getAdminPermsByAnyID(steamID);
   }
@@ -345,9 +348,9 @@ export default class SquadServer extends EventEmitter {
     // using this.players directly to keep the function sync
     const player = anyIDToPlayer(anyID, this.players);
     if (player === undefined) return;
-    for (const parm in player)
-      if (parm.endsWith("ID") && player[parm] in this.admins)
-        return this.admins[player[parm]];
+    for (const idName of playerIdNames)
+      if (player[idName] in this.admins)
+        return this.admins[player[idName]];
   }
 
   getAdminsWithPermission(perm) {
@@ -585,7 +588,9 @@ export default class SquadServer extends EventEmitter {
     );
   }
 
-  // DEPRECATED
+  /**
+   * @deprecated Kept for backwards compatibility with custom plugins.
+   */
   async getPlayerBySteamID(steamID, forceUpdate) {
     return this.getPlayerByCondition((player) => player.steamID === steamID, forceUpdate);
   }

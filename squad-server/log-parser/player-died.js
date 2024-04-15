@@ -1,4 +1,4 @@
-import { iterate, capitalID } from 'core/id-parser';
+import { iterateIDs, capitalID } from 'core/id-parser';
 
 export default {
   regex:
@@ -17,7 +17,7 @@ export default {
     };
 
     logParser.eventStore.session[args[3]] = data;
-    iterate(args[6]).forEach((platform, id) => {
+    iterateIDs(args[6]).forEach((platform, id) => {
       data['attacker' + capitalID(platform)] = id;
     });
 

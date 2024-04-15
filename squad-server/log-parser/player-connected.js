@@ -1,11 +1,11 @@
-import { iterate, lowerID } from 'core/id-parser';
+import { iterateIDs, lowerID } from 'core/id-parser';
 
 export default {
   regex:
     /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: PostLogin: NewPlayer: BP_PlayerController_C .+PersistentLevel\.([^\s]+) \(IP: ([\d.]+) \| Online IDs:([^)|]+)\)/,
   onMatch: (args, logParser) => {
     const IDs = {};
-    iterate(args[5]).forEach((platform, id) => {
+    iterateIDs(args[5]).forEach((platform, id) => {
       IDs[lowerID(platform)] = id;
     });
 

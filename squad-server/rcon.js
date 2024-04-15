@@ -1,6 +1,6 @@
 import Logger from 'core/logger';
 import Rcon from 'core/rcon';
-import { iterate, capitalID, lowerID } from 'core/id-parser';
+import { iterateIDs, capitalID, lowerID } from 'core/id-parser';
 
 export default class SquadRcon extends Rcon {
   processChatPacket(decodedPacket) {
@@ -17,7 +17,7 @@ export default class SquadRcon extends Rcon {
         message: matchChat[4],
         time: new Date()
       };
-      iterate(matchChat[2]).forEach((platform, id) => {
+      iterateIDs(matchChat[2]).forEach((platform, id) => {
         result[lowerID(platform)] = id;
       });
       this.emit('CHAT_MESSAGE', result);
@@ -34,7 +34,7 @@ export default class SquadRcon extends Rcon {
         name: matchPossessedAdminCam[2],
         time: new Date()
       };
-      iterate(matchPossessedAdminCam[1]).forEach((platform, id) => {
+      iterateIDs(matchPossessedAdminCam[1]).forEach((platform, id) => {
         result[lowerID(platform)] = id;
       });
       this.emit('POSSESSED_ADMIN_CAMERA', result);
@@ -51,7 +51,7 @@ export default class SquadRcon extends Rcon {
         name: matchUnpossessedAdminCam[2],
         time: new Date()
       };
-      iterate(matchUnpossessedAdminCam[1]).forEach((platform, id) => {
+      iterateIDs(matchUnpossessedAdminCam[1]).forEach((platform, id) => {
         result[lowerID(platform)] = id;
       });
       this.emit('UNPOSSESSED_ADMIN_CAMERA', result);
@@ -86,7 +86,7 @@ export default class SquadRcon extends Rcon {
         name: matchKick[3],
         time: new Date()
       };
-      iterate(matchKick[2]).forEach((platform, id) => {
+      iterateIDs(matchKick[2]).forEach((platform, id) => {
         result[lowerID(platform)] = id;
       });
       this.emit('PLAYER_KICKED', result);
@@ -102,7 +102,7 @@ export default class SquadRcon extends Rcon {
         time: new Date(),
         ...matchSqCreated.groups
       };
-      iterate(matchSqCreated[2]).forEach((platform, id) => {
+      iterateIDs(matchSqCreated[2]).forEach((platform, id) => {
         result['player' + capitalID(platform)] = id;
       });
       this.emit('SQUAD_CREATED', result);
@@ -122,7 +122,7 @@ export default class SquadRcon extends Rcon {
         interval: matchBan[4],
         time: new Date()
       };
-      iterate(matchBan[2]).forEach((platform, id) => {
+      iterateIDs(matchBan[2]).forEach((platform, id) => {
         result[lowerID(platform)] = id;
       });
       this.emit('PLAYER_BANNED', result);
@@ -162,7 +162,7 @@ export default class SquadRcon extends Rcon {
       data.isLeader = data.isLeader === 'True';
       data.teamID = data.teamID !== 'N/A' ? +data.teamID : null;
       data.squadID = data.squadID !== 'N/A' ? +data.squadID : null;
-      iterate(match[2]).forEach((platform, id) => {
+      iterateIDs(match[2]).forEach((platform, id) => {
         data[lowerID(platform)] = id;
       });
       players.push(data);
@@ -195,7 +195,7 @@ export default class SquadRcon extends Rcon {
         teamID: teamID,
         teamName: teamName
       };
-      iterate(match[6]).forEach((platform, id) => {
+      iterateIDs(match[6]).forEach((platform, id) => {
         squad['creator' + capitalID(platform)] = id;
       });
       squads.push(squad);

@@ -1,4 +1,4 @@
-import { iterate, capitalID } from 'core/id-parser';
+import { iterateIDs, capitalID } from 'core/id-parser';
 
 export default {
   // the names are currently the wrong way around in these logs
@@ -13,10 +13,10 @@ export default {
       reviverName: args[3],
       victimName: args[5]
     };
-    iterate(args[4]).forEach((platform, id) => {
+    iterateIDs(args[4]).forEach((platform, id) => {
       data['reviver' + capitalID(platform)] = id;
     });
-    iterate(args[6]).forEach((platform, id) => {
+    iterateIDs(args[6]).forEach((platform, id) => {
       data['victim' + capitalID(platform)] = id;
     });
 

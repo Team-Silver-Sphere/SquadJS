@@ -1,4 +1,4 @@
-import { iterate, capitalID } from 'core/id-parser';
+import { iterateIDs, capitalID } from 'core/id-parser';
 
 export default {
   regex:
@@ -10,7 +10,7 @@ export default {
       chainID: args[2],
       playerSuffix: args[3]
     };
-    iterate(args[4]).forEach((platform, id) => {
+    iterateIDs(args[4]).forEach((platform, id) => {
       data['player' + capitalID(platform)] = id;
     });
     const eosID = data.playerEOSID;

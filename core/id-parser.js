@@ -1,10 +1,22 @@
-const ID_MATCHER = /\s*(?<name>[^:]+): (?<id>[^\s]+)/g;
+const ID_MATCHER = /\s*(?<name>[^\s:]+)\s*:\s*(?<id>[^\s]+)/g;
+
+// COMMON CONSTANTS
+
+/** All possible IDs that a player can have. */
+export const playerIdNames = ["steamID", "eosID"];
 
 // PARSING AND ITERATION
 
-// main function intended for parsing `Online IDs:` body. Returns an
-// iterator that yields `{platform: id}` pairs.
-export const iterate = (idsStr) => {
+/**
+ * Main function intended for parsing `Online IDs:` body.
+ * @arg {string} idsStr - String with ids. Extra whitespace is allowed,
+ *   Number of {platform: ID} pairs can be arbitrary. String example:
+     " platform1:id1 platform2: id2    platform3  :  id3   "
+     Keys and values are not allowed contain colons or whitespace
+     characters.
+ * @returns {IdsIterator} An iterator that yields {platform: ID} pairs.
+ */
+export const iterateIDs = (idsStr) => {
   return new IdsIterator(idsStr.matchAll(ID_MATCHER));
 };
 
@@ -30,12 +42,20 @@ class IdsIterator {
 
 // FORMATTING
 
-// `steam => SteamID`
+/**
+ * Generates capitalized ID names. Examples:
+ *   steam -> SteamID
+ *   EOSID -> EOSID
+ */
 export const capitalID = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1) + 'ID';
 };
 
-// `EOS => eosID`
+/**
+ * Generates lowercase ID names. Examples:
+ *   steam -> steamID
+ *   EOSID -> eosID
+ */
 export const lowerID = (str) => {
   return str.toLowerCase() + 'ID';
 };
