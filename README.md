@@ -20,35 +20,20 @@
 </div>
 
 ## **About**
-
 SquadJS is a scripting framework, designed for Squad servers, that aims to handle all communication and data collection to and from the servers. Using SquadJS as the base to any of your scripting projects allows you to easily write complex plugins without having to worry about the hassle of RCON or log parsing. However, for your convenience SquadJS comes shipped with multiple plugins already built for you allowing you to experience the power of SquadJS right away.
 
 <br>
 
 ## **Using SquadJS**
-
 SquadJS relies on being able to access the Squad server log directory in order to parse logs live to collect information. Thus, SquadJS must be hosted on the same server box as your Squad server or be connected to your Squad server via FTP.
 
 #### Prerequisites
-
 * Git
-* [Node.js](https://nodejs.org/en/) (18.16.1+) - [Download](https://nodejs.org/en/)
-* [Yarn](https://yarnpkg.com/) (Version 3.6.1+) - [Download](https://yarnpkg.com/getting-started/install)
+* [Node.js](https://nodejs.org/en/) (14.x) - [Download](https://nodejs.org/en/)
+* [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
 * Some plugins may have additional requirements.
 
-#### Upgrading SquadJS from v3 => v4
-
-* [Node.js](https://nodejs.org/en/) (18.16.1+) - [Download](https://nodejs.org/en/)
-* [Yarn](https://yarnpkg.com/) (Version 3.6.1+) - [Migration guide](https://yarnpkg.com/getting-started/migration#step-by-step)
-
-1. Update [Node.js](https://nodejs.org/en/) to v18.16.1 or higher.
-2. Run `npm install -g yarn` to update the global yarn version to latest v1.
-3. Run `yarn set version berry` to enable v2
-4. Run `yarn config set nodeLinker node-modules`.
-5. Run `yarn install` to migrate the lockfile.
-
 #### Installation
-
 1. [Download SquadJS](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) and unzip the download.
 2. Open the unzipped folder in your terminal.
 3. Install the dependencies by running `yarn install` in your terminal. Due to the use of Yarn Workspaces it is important to use `yarn install` and **not** `npm install` as this will not work and will break stuff.
@@ -60,7 +45,6 @@ SquadJS relies on being able to access the Squad server log directory in order t
 <br>
 
 ## **Configuring SquadJS**
-
 SquadJS can be configured via a JSON configuration file which, by default, is located in the SquadJS and is named [config.json](./config.json).
 
 The config file needs to be valid JSON syntax. If an error is thrown saying the config cannot be parsed then try putting the config into a JSON syntax checker (there's plenty to choose from that can be found via Google).
@@ -99,7 +83,6 @@ The following section of the configuration contains information about your Squad
     ]
   },
   ```
-
 * `id` - An integer ID to uniquely identify the server.
 * `host` - The IP of the server.
 * `queryPort` - The query port of the server.
@@ -122,14 +105,9 @@ The following section of the configuration contains information about your Squad
 ## Connector Configuration
 
 Connectors allow SquadJS to communicate with external resources.
-
   ```json
   "connectors": {
-    "discord": {
-      "clientID": "Discord Application ID",
-      "guidID": "Discord Server ID",
-      "token": "Discord Login Token"
-    },
+    "discord": "Discord Login Token",
   },
   ```
 Connectors should be named, for example the above is named `discord`, and should have the associated config against it. Configs can be specified by name in plugin options. Should a connector not be needed by any plugin then the default values can be left or you can remove it from your config file.
@@ -137,33 +115,24 @@ Connectors should be named, for example the above is named `discord`, and should
 See below for more details on connectors and their associated config.
 
 ##### Discord
-
 Connects to Discord via `discord.js`.
-
   ```json
-  "discord": {
-    "clientID": "Discord Application ID",
-    "guidID": "Discord Server ID",
-    "token": "Discord Login Token"
-  }
+  "discord": "Discord Login Token",
   ```
 Requires a Discord bot login token.
 
 
 ##### Databases
-
 SquadJS uses [Sequelize](https://sequelize.org/) to connect and use a wide range of SQL databases.
 
 The connector should be configured using any of Sequelize's single argument configuration options.
 
 For example:
-
   ```json
   "mysql": "mysql://user:pass@example.com:5432/dbname"
   ```
 
 or:
-
   ```json
   "sqlite": {
       "dialect": "sqlite",
@@ -182,8 +151,7 @@ See [Sequelize's documentation](https://sequelize.org/master/manual/getting-star
 ## Plugin Configuration
 
 The `plugins` section in your config file lists all plugins built into SquadJS
-
-```json
+  ```json
     "plugins": [
       {
         "plugin": "auto-tk-warn",
@@ -191,7 +159,7 @@ The `plugins` section in your config file lists all plugins built into SquadJS
         "message": "Please apologise for ALL TKs in ALL chat!"
       }
     ]
-```
+  ```
 
 The `disabled` field can be toggled between `true`/ `false` to enabled/disable the plugin.
 
@@ -206,8 +174,7 @@ Plugin options are also specified. A full list of plugin options can be seen bel
 ## Console Output Configuration
 
 The `logger` section configures how verbose a module of SquadJS will be as well as the displayed color.
-
-```json
+  ```json
     "logger": {
       "verboseness": {
         "SquadServer": 1,
@@ -215,16 +182,13 @@ The `logger` section configures how verbose a module of SquadJS will be as well 
         "RCON": 1
       },
       "colors": {
-        "DiscordJS": "cyanBright",
-        "Err": "redBright",
         "SquadServer": "yellowBright",
         "SquadServerFactory": "yellowBright",
         "LogParser": "blueBright",
         "RCON": "redBright"
       }
     }
-```
-
+  ```
 The larger the number set in the `verboseness` section for a specified module the more it will print to the console.
 
   ---
@@ -233,7 +197,6 @@ The larger the number set in the `verboseness` section for a specified module th
 <br>
 
 ## **Plugins**
-
 The following is a list of plugins built into SquadJS, you can click their title for more information:
 
 Interested in creating your own plugin? [See more here](./squad-server/plugins/readme.md)
@@ -247,7 +210,7 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
            <h6>Description</h6>
            <p>Message SquadJS will send to players warning them they will be kicked</p>
            <h6>Default</h6>
-           <pre><code>Join a squad, you are are unassigned and will be kicked</code></pre></li>
+           <pre><code>Join a squad, you are unassigned and will be kicked</code></pre></li>
 <li><h4>kickMessage</h4>
            <h6>Description</h6>
            <p>Message to send to players when they are kicked</p>
@@ -312,26 +275,12 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to alert admins through.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "CBLInfo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
-<li><h4>embedInfo</h4>
-           <h6>Description</h6>
-           <p>Server info for embed messages.</p>
-           <h6>Default</h6>
-           <pre><code>{
-  "clan": "",
-  "iconURL": "https://communitybanlist.com/static/media/cbl-logo.caf6584e.png",
-  "url": "https://communitybanlist.com/"
-}</code></pre></li>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>threshold</h4>
            <h6>Description</h6>
            <p>Admins will be alerted when a player has this or more reputation points. For more information on reputation points, see the <a href="https://communitybanlist.com/faq">Community Ban List's FAQ</a></p>
@@ -392,17 +341,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log admin broadcasts to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "Foo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embed.</p>
@@ -420,39 +364,17 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
-           <p>The ID of the channel to log admin camera usage to. Specify one channel ID will send all usage to that channel.</p>
+           <p>The ID of the channel to log admin camera usage to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "admin-camera-entry",
-    "channelID": "667741905228136459"
-  },
-  {
-    "label": "admin-camera-exit",
-    "channelID": "667741905228131111"
-  }
-]</code></pre>
-<li><h4>colors</h4>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>color</h4>
            <h6>Description</h6>
-           <p>Colors for embed messages.</p>
+           <p>The color of the embed.</p>
            <h6>Default</h6>
-           <pre><code>{
-  "entry": 2202966,
-  "exit": 15416641
-}</code></pre></li>
-<li><h4>embedInfo</h4>
-           <h6>Description</h6>
-           <p>Server info for embed messages.</p>
-           <h6>Default</h6>
-           <pre><code>{
-  "clan": "SquadJS ",
-  "name": "Admin Camera",
-  "iconURL": null,
-  "url": null
-}</code></pre></li></ul>
+           <pre><code>16761867</code></pre></li></ul>
         </details>
 
 <details>
@@ -465,17 +387,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log admin broadcasts to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "Foo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>ignoreChats</h4>
            <h6>Description</h6>
            <p>A list of chat names to ignore.</p>
@@ -505,6 +422,11 @@ Grafana:
            <pre><code>[
   "500455137626554379"
 ]</code></pre>
+<li><h4>pingHere</h4>
+           <h6>Description</h6>
+           <p>Ping @here. Great if Admin Requests are posted to a Squad Admin ONLY channel, allows pinging only Online Admins.</p>
+           <h6>Default</h6>
+           <pre><code>false</code></pre></li>
 <li><h4>pingDelay</h4>
            <h6>Description</h6>
            <p>Cooldown for pings in milliseconds.</p>
@@ -537,17 +459,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log admin broadcasts to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "Foo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>chatColors</h4>
            <h6>Description</h6>
            <p>The color of the embed for each chat.</p>
@@ -580,17 +497,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log events to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "Foo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>events (Required)</h4>
            <h6>Description</h6>
            <p>A list of events to dump.</p>
@@ -611,17 +523,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log FOB/HAB explosion damage to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "Foo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embeds.</p>
@@ -639,17 +546,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log teamkills to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "Foo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embeds.</p>
@@ -677,14 +579,11 @@ Grafana:
            <p>Command to create Discord placeholder.</p>
            <h6>Default</h6>
            <pre><code>!placeholder</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
-           <p>The bot will only answer with a placeholder in these channels</p>
+           <p>The bot will only answer with a placeholder on this channel</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  "667741905228136459"
-]</code></pre></ul>
+           <pre><code></code></pre></li></ul>
         </details>
 
 <details>
@@ -697,14 +596,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
-           <p>Channel IDs to turn into RCON console.</p>
+           <p>ID of channel to turn into RCON console.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  "667741905228136459"
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>permissions</h4>
            <h6>Description</h6>
            <p><ul><li>Dictionary of roles and a list of the permissions they are allowed to use.<li>If dictionary is empty (<code>{}</code>) permissions will be disabled</li><li>A list of available RCON commands can be found here <a>https://squad.gamepedia.com/Server_Administration#Admin_Console_Commands</a>.</ul></p>
@@ -734,17 +631,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log admin broadcasts to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "Foo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embed.</p>
@@ -762,17 +654,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log round end events to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "Foo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embed.</p>
@@ -827,17 +714,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log Squad Creation events to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "Foo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embed.</p>
@@ -878,17 +760,12 @@ Grafana:
            <p>Discord connector name.</p>
            <h6>Default</h6>
            <pre><code>discord</code></pre></li>
-<li><h4>channelIDs (Required)</h4>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
            <p>The ID of the channel to log teamkills to.</p>
            <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  {
-    "label": "Foo",
-    "channelID": "667741905228136459"
-  }
-]</code></pre>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
            <p>The color of the embeds.</p>
@@ -1025,7 +902,6 @@ Grafana:
 <br>
 
 ## Statement on Accuracy
-
 Some information SquadJS collects from Squad servers was never intended or designed to be collected. As a result, it is impossible for any framework to collect the same information with 100% accuracy. SquadJS aims to get as close as possible to that figure, however, it acknowledges that this is not possible in some specific scenarios.
 
 Below is a list of scenarios we know may cause some information to be inaccurate:
@@ -1036,7 +912,6 @@ Below is a list of scenarios we know may cause some information to be inaccurate
 * Duplicated Player Names - If two or more players have the same name or suffix name (see above) then SquadJS will be unable to identify them in the logs. When this occurs event logs will show the player as `null`. Be on the watch for groups of players who try to abuse this in order to TK or complete other malicious actions without being detected by SquadJS plugins.
 
 ## SquadJS API
-
 SquadJS pings the following data to the [SquadJS API](https://github.com/Team-Silver-Sphere/SquadJS-API/) at regular intervals to assist with its development:
 * Squad server IP, query port, name & player count (including queue size).
 * SquadJS version.
@@ -1048,7 +923,6 @@ At this time, this cannot be disabled.
 Please note, plugin configurations do **not** and should **not** contain any sensitive information which allows us to collect this information. Any sensitive information, e.g. Discord login tokens, should be included in the `connectors` section of the config which is not sent to our API. It is important that developers of custom plugins maintain this approach to avoid submitting confidential information to our API.
 
 ## Versions and Releases
-
 Whilst installing SquadJS you may do the following to obtain slightly different versions:
 * Download the [latest release](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) - To get the latest **stable** version of SquadJS.
 * Download/clone the [`master` branch](https://github.com/Team-Silver-Sphere/SquadJS/) - To get the most up to date version of SquadJS.
@@ -1067,7 +941,6 @@ Release version numbers and changelogs are managed by [Release Drafter](https://
 The above policy was written and put into effect after the release of SquadJS v2.0.5. A major version bump to SquadJS v3.0.0 was made to signify this policy taking affect and to draw a line under the previous poor management of releases and version numbers.
 
 ## Credits
-
 SquadJS would not be possible without the support of so many individuals and organisations. Our thanks goes out to:
 * [SquadJS's contributors](https://github.com/Team-Silver-Sphere/SquadJS/graphs/contributors).
 * [Thomas Smyth's GitHub sponsors](https://github.com/sponsors/Thomas-Smyth).
@@ -1078,7 +951,6 @@ SquadJS would not be possible without the support of so many individuals and org
 * Everyone in the [Squad RCON Discord](https://discord.gg/9F2Ng5C) and others who have submitted bug reports, suggestions, feedback and provided logs.
 
 ## License
-
 ```
 Boost Software License - Version 1.0 - August 17th, 2003
 

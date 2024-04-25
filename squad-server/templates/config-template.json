@@ -21,7 +21,7 @@
     ]
   },
   "connectors": {
-    "discord": {"clientID": "Discord Application ID", "guidID": "Discord Server ID", "intents": ["Guilds", "GuildMessages", "MessageContent"], "token": "Discord Login Token"},
+    "discord": "Discord Login Token",
     "awnAPI": {"orgID":"YourOrgID", "creds": {"username":"AwnUsername", "password":"AwnPassword"}},
     "mysql": {
       "host": "host",
@@ -41,8 +41,6 @@
       "RCON": 1
     },
     "colors": {
-			"DiscordJS": "cyanBright",
-      "Err": "redBright",
       "SquadServer": "yellowBright",
       "SquadServerFactory": "yellowBright",
       "LogParser": "blueBright",

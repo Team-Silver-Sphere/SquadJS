@@ -25,11 +25,10 @@ export default class DiscordPlaceholder extends BasePlugin {
         description: 'Command to create Discord placeholder.',
         default: '!placeholder'
       },
-      channelIDs: {
+      channelID: {
         required: true,
-        description: 'The bot will only answer with a placeholder in these channels',
-        default: [],
-        example: ['667741905228136459']
+        description: 'The bot will only answer with a placeholder on this channel',
+        default: ''
       }
     };
   }
@@ -43,17 +42,16 @@ export default class DiscordPlaceholder extends BasePlugin {
   }
 
   async mount() {
-    this.options.discordClient.on('messageCreate', this.onMessage);
+    this.options.discordClient.on('message', this.onMessage);
   }
 
   async unmount() {
-    this.options.discordClient.removeEventListener('messageCreate', this.onMessage);
+    this.options.discordClient.removeEventListener('message', this.onMessage);
   }
 
   async onMessage(message) {
     if (message.author.bot) return;
-    const hasIDs = this.options.channelIDs.filter((id) => message.channel.id === id);
-    if (this.isBlank(hasIDs)) return;
+    if (message.channel.id !== this.options.channelID) return;
     const prefixRegex = new RegExp(`^(${this.escapeRegex(this.options.command)})\\s*`);
     if (!prefixRegex.test(message.content)) return;
     await message.channel.send('Placeholder.');

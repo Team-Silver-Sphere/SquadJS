@@ -1,4 +1,4 @@
-import { ActivityType, EmbedBuilder } from 'discord.js';
+import Discord from 'discord.js';
 import tinygradient from 'tinygradient';
 
 import { COPYRIGHT_MESSAGE } from '../utils/constants.js';
@@ -55,6 +55,11 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
   }
 
   async generateMessage() {
+    const embed = new Discord.MessageEmbed();
+
+    // Set embed title.
+    embed.setTitle(this.server.serverName);
+
     // Set player embed field.
     let players = '';
 
@@ -65,76 +70,64 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
     players += ` / ${this.server.publicSlots}`;
     if (this.server.reserveSlots > 0) players += ` (+${this.server.reserveSlots})`;
 
-    const embed = new EmbedBuilder()
-      // Set embed title.
-      .setTitle(this.server.serverName)
-      .addFields(
-        {
-          name: 'Players',
-          value: players
-        },
-        // Set layer embed fields.
-        {
-          name: 'Current Layer',
-          value: `\`\`\`${this.server.currentLayer?.name || 'Unknown'}\`\`\``,
-          inline: true
-        },
-        {
-          name: 'Next Layer',
-          value: `\`\`\`${
-            this.server.nextLayer?.name ||
-            (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
-          }\`\`\``,
-          inline: true
-        }
-      )
-      // Set layer image.
-      .setImage(
-        this.server.currentLayer
-          ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg`
-          : undefined
-      )
-      // Set timestamp.
-      .setTimestamp(new Date())
-      // Set footer.
-      .setFooter({
-        text: COPYRIGHT_MESSAGE,
-        iconURL: null
-      })
-      // Set gradient embed color.
-      .setColor(
-        parseInt(
-          tinygradient([
-            { color: '#ff0000', pos: 0 },
-            { color: '#ffff00', pos: 0.5 },
-            { color: '#00ff00', pos: 1 }
-          ])
-            .rgbAt(
-              this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots)
-            )
-            .toHex(),
-          16
-        )
-      );
+    embed.addField('Players', players);
 
-    return {
-      embeds: [embed]
-    };
+    // Set layer embed fields.
+    embed.addField(
+      'Current Layer',
+      `\`\`\`${this.server.currentLayer?.name || 'Unknown'}\`\`\``,
+      true
+    );
+    embed.addField(
+      'Next Layer',
+      `\`\`\`${
+        this.server.nextLayer?.name || (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
+      }\`\`\``,
+      true
+    );
+
+    // Set layer image.
+    embed.setImage(
+      this.server.currentLayer
+        ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg`
+        : undefined
+    );
+
+    // Set timestamp.
+    embed.setTimestamp(new Date());
+
+    // Set footer.
+    embed.setFooter(COPYRIGHT_MESSAGE);
+
+    // Clamp the ratio between 0 and 1 to avoid tinygradient errors.
+    const ratio = this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots);
+    const clampedRatio = Math.min(1, Math.max(0, ratio));
+
+    // Set gradient embed color.
+    embed.setColor(
+      parseInt(
+        tinygradient([
+          { color: '#ff0000', pos: 0 },
+          { color: '#ffff00', pos: 0.5 },
+          { color: '#00ff00', pos: 1 }
+        ])
+          .rgbAt(clampedRatio)
+          .toHex(),
+        16
+      )
+    );
+
+    return embed;
   }
 
   async updateStatus() {
     if (!this.options.setBotStatus) return;
 
-    await this.options.discordClient.user.setPresence({
-      activities: [
-        {
-          name: `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
-            this.server.currentLayer?.name || 'Unknown'
-          }`,
-          type: ActivityType.Watching
-        }
-      ],
-      status: 'online'
-    });
+    await this.options.discordClient.user.setActivity(
+      `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
+        this.server.currentLayer?.name || 'Unknown'
+      }`,
+      { type: 'WATCHING' }
+    );
   }
 }

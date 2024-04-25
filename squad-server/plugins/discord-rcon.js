@@ -20,11 +20,11 @@ export default class DiscordRcon extends BasePlugin {
         connector: 'discord',
         default: 'discord'
       },
-      channelIDs: {
+      channelID: {
         required: true,
-        description: 'Channel IDs to turn into RCON console.',
-        default: [],
-        example: ['667741905228136459']
+        description: 'ID of channel to turn into RCON console.',
+        default: '',
+        example: '667741905228136459'
       },
       permissions: {
         required: false,
@@ -54,17 +54,16 @@ export default class DiscordRcon extends BasePlugin {
   }
 
   async mount() {
-    this.options.discordClient.on('messageCreate', this.onMessage);
+    this.options.discordClient.on('message', this.onMessage);
   }
 
   async unmount() {
-    this.options.discordClient.removeEventListener('messageCreate', this.onMessage);
+    this.options.discordClient.removeEventListener('message', this.onMessage);
   }
 
   async onMessage(message) {
     // check the author of the message is not a bot and that the channel is the RCON console channel
-    const hasIDs = this.options.channelIDs.filter((id) => message.channel.id === id);
-    if (message.author.bot || this.isBlank(hasIDs)) return;
+    if (message.author.bot || message.channel.id !== this.options.channelID) return;
 
     let command = message.content;
 

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import DiscordBot from 'discord-bot';
+import Discord from 'discord.js';
 import sequelize from 'sequelize';
 import AwnAPI from './utils/awn-api.js';
 
@@ -103,19 +103,8 @@ export default class SquadServerFactory {
     Logger.verbose('SquadServerFactory', 1, `Starting ${type} connector ${connectorName}...`);
 
     if (type === 'discord') {
-      const obj = { server };
-      if (!(typeof connectorConfig === 'string' || typeof connectorConfig === 'object')) {
-        throw new Error('{ Discord Config } is invalid / must be a type of String or Object');
-      }
-      if (typeof connectorConfig === 'string') {
-        Object.assign(obj, {
-          token: connectorConfig
-        });
-      } else {
-        Object.assign(obj, connectorConfig);
-      }
-      const bot = new DiscordBot(obj);
-      const connector = await bot.auth();
+      const connector = new Discord.Client();
+      await connector.login(connectorConfig);
       return connector;
     }
 

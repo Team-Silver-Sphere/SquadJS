@@ -15,16 +15,11 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
   static get optionsSpecification() {
     return {
       ...DiscordBasePlugin.optionsSpecification,
-      channelIDs: {
+      channelID: {
         required: true,
         description: 'The ID of the channel to log admin broadcasts to.',
-        default: [],
-        example: [
-          {
-            label: 'Foo',
-            channelID: '667741905228136459'
-          }
-        ]
+        default: '',
+        example: '667741905228136459'
       },
       ignoreChats: {
         required: false,
@@ -48,6 +43,12 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
         description: 'A list of Discord role IDs to ping.',
         default: [],
         example: ['500455137626554379']
+      },
+      pingHere: {
+        required: false,
+        description:
+          'Ping @here. Great if Admin Requests are posted to a Squad Admin ONLY channel, allows pinging only Online Admins.',
+        default: false
       },
       pingDelay: {
         required: false,
@@ -146,7 +147,19 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
     };
 
     if (this.options.pingGroups.length > 0 && Date.now() - this.options.pingDelay > this.lastPing) {
-      message.content = this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ');
+      if (this.options.pingHere === true && this.options.pingGroups.length === 0) {
+        message.content = `@here - Admin Requested in ${this.server.serverName}`;
+      } else if (this.options.pingHere === true && this.options.pingGroups.length > 0) {
+        message.content = `@here - Admin Requested in ${
+          this.server.serverName
+        } - ${this.options.pingGroups.map((groupID) => `<@&${groupID}>`).join(' ')}`;
+      } else if (this.options.pingHere === false && this.options.pingGroups.length === 0) {
+        message.content = `Admin Requested in ${this.server.serverName}`;
+      } else if (this.options.pingHere === false && this.options.pingGroups.length > 0) {
+        message.content = `Admin Requested in ${this.server.serverName} - ${this.options.pingGroups
+          .map((groupID) => `<@&${groupID}>`)
+          .join(' ')}`;
+      }
       this.lastPing = Date.now();
     }
 

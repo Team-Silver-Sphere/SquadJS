@@ -21,16 +21,7 @@
     ]
   },
   "connectors": {
-    "discord": {
-      "clientID": "Discord Application ID",
-      "guidID": "Discord Server ID",
-      "intents": [
-        "Guilds",
-        "GuildMessages",
-        "MessageContent"
-      ],
-      "token": "Discord Login Token"
-    },
+    "discord": "Discord Login Token",
     "awnAPI": {
       "orgID": "YourOrgID",
       "creds": {
@@ -52,7 +43,7 @@
     {
       "plugin": "AutoKickUnassigned",
       "enabled": true,
-      "warningMessage": "Join a squad, you are are unassigned and will be kicked",
+      "warningMessage": "Join a squad, you are unassigned and will be kicked",
       "kickMessage": "Unassigned - automatically removed",
       "frequencyOfWarnings": 30,
       "unassignedTimer": 360,
@@ -71,12 +62,7 @@
       "plugin": "CBLInfo",
       "enabled": true,
       "discordClient": "discord",
-      "channelIDs": [],
-      "embedInfo": {
-        "clan": "",
-        "iconURL": "https://communitybanlist.com/static/media/cbl-logo.caf6584e.png",
-        "url": "https://communitybanlist.com/"
-      },
+      "channelID": "",
       "threshold": 6
     },
     {
@@ -101,34 +87,26 @@
       "plugin": "DiscordAdminBroadcast",
       "enabled": false,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "color": 16761867
     },
     {
       "plugin": "DiscordAdminCamLogs",
       "enabled": false,
       "discordClient": "discord",
-      "channelIDs": [],
-      "colors": {
-        "entry": 2202966,
-        "exit": 15416641
-      },
-      "embedInfo": {
-        "clan": "SquadJS ",
-        "name": "Admin Camera",
-        "iconURL": null,
-        "url": null
-      }
+      "channelID": "",
+      "color": 16761867
     },
     {
       "plugin": "DiscordAdminRequest",
       "enabled": true,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "ignoreChats": [],
       "ignorePhrases": [],
       "command": "admin",
       "pingGroups": [],
+      "pingHere": false,
       "pingDelay": 60000,
       "color": 16761867,
       "warnInGameAdmins": false,
@@ -138,7 +116,7 @@
       "plugin": "DiscordChat",
       "enabled": true,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "chatColors": {},
       "color": 16761867,
       "ignoreChats": [
@@ -149,21 +127,21 @@
       "plugin": "DiscordDebug",
       "enabled": false,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "events": []
     },
     {
       "plugin": "DiscordFOBHABExplosionDamage",
       "enabled": true,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "color": 16761867
     },
     {
       "plugin": "DiscordKillFeed",
       "enabled": false,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "color": 16761867,
       "disableCBL": false
     },
@@ -172,13 +150,13 @@
       "enabled": true,
       "discordClient": "discord",
       "command": "!placeholder",
-      "channelIDs": []
+      "channelID": ""
     },
     {
       "plugin": "DiscordRcon",
       "enabled": false,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "permissions": {},
       "prependAdminNameInBroadcast": false
     },
@@ -186,14 +164,14 @@
       "plugin": "DiscordRoundWinner",
       "enabled": true,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "color": 16761867
     },
     {
       "plugin": "DiscordRoundEnded",
       "enabled": true,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "color": 16761867
     },
     {
@@ -210,7 +188,7 @@
       "plugin": "DiscordSquadCreated",
       "enabled": false,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "color": 16761867,
       "useEmbed": true
     },
@@ -224,7 +202,7 @@
       "plugin": "DiscordTeamkill",
       "enabled": true,
       "discordClient": "discord",
-      "channelIDs": [],
+      "channelID": "",
       "color": 16761867,
       "disableCBL": false
     },
@@ -271,8 +249,6 @@
       "RCON": 1
     },
     "colors": {
-      "DiscordJS": "cyanBright",
-      "Err": "redBright",
       "SquadServer": "yellowBright",
       "SquadServerFactory": "yellowBright",
       "LogParser": "blueBright",

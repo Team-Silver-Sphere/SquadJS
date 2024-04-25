@@ -19,25 +19,11 @@ export default class CBLInfo extends DiscordBasePlugin {
   static get optionsSpecification() {
     return {
       ...DiscordBasePlugin.optionsSpecification,
-      channelIDs: {
+      channelID: {
         required: true,
         description: 'The ID of the channel to alert admins through.',
-        default: [],
-        example: [
-          {
-            label: 'CBLInfo',
-            channelID: '667741905228136459'
-          }
-        ]
-      },
-      embedInfo: {
-        required: false,
-        description: 'Server info for embed messages.',
-        default: {
-          clan: '',
-          iconURL: 'https://communitybanlist.com/static/media/cbl-logo.caf6584e.png',
-          url: 'https://communitybanlist.com/'
-        }
+        default: '',
+        example: '667741905228136459'
       },
       threshold: {
         required: false,
@@ -66,11 +52,6 @@ export default class CBLInfo extends DiscordBasePlugin {
 
   async onPlayerConnected(info) {
     try {
-      const steamID = this.isValid(info, '<steamID>');
-      if (!steamID) {
-        this.err('Invalid SteamID', info);
-        return;
-      }
       const data = await request(
         'https://communitybanlist.com/graphql',
         gql`
@@ -104,13 +85,13 @@ export default class CBLInfo extends DiscordBasePlugin {
             }
           }
         `,
-        { id: steamID }
+        { id: info.player.steamID }
       );
 
       if (!data.steamUser) {
         this.verbose(
           2,
-          `Player ${info.player.name} (Steam ID: ${steamID}) is not listed in the Community Ban List.`
+          `Player ${info.player.name} (Steam ID: ${info.player.steamID}) is not listed in the Community Ban List.`
         );
         return;
       }
@@ -118,53 +99,59 @@ export default class CBLInfo extends DiscordBasePlugin {
       if (data.steamUser.reputationPoints < this.options.threshold) {
         this.verbose(
           2,
-          `Player ${info.player.name} (Steam ID: ${steamID}) has a reputation below the threshold.`
+          `Player ${info.player.name} (Steam ID: ${info.player.steamID}) has a reputation below the threshold.`
         );
         return;
       }
 
-      const embed = this.buildEmbed('#ffc40b', null, 'Community Ban List')
-        .setTitle(`${info.player.name} is a potentially harmful player!`)
-        .setDescription(
-          `[${info.player.name}](https://communitybanlist.com/search/${steamID}) has ${data.steamUser.reputationPoints} reputation points on the Community Ban List and is therefore a potentially harmful player.`
-        )
-        .setThumbnail(data.steamUser.avatarFull)
-        .addFields(
-          {
-            name: 'Reputation Points',
-            value: `${data.steamUser.reputationPoints} (${
-              data.steamUser.reputationPointsMonthChange || 0
-            } from this month)`,
-            inline: true
+      await this.sendDiscordMessage({
+        embed: {
+          title: `${info.player.name} is a potentially harmful player!`,
+          author: {
+            name: 'Community Ban List',
+            url: 'https://communitybanlist.com/',
+            icon_url: 'https://communitybanlist.com/static/media/cbl-logo.caf6584e.png'
           },
-          {
-            name: 'Risk Rating',
-            value: `${data.steamUser.riskRating} / 10`,
-            inline: true
+          thumbnail: {
+            url: data.steamUser.avatarFull
           },
-          {
-            name: 'Reputation Rank',
-            value: `#${data.steamUser.reputationRank}`,
-            inline: true
-          },
-          {
-            name: 'Active Bans',
-            value: `${data.steamUser.activeBans.edges.length}`,
-            inline: true
-          },
-          {
-            name: 'Expired Bans',
-            value: `${data.steamUser.expiredBans.edges.length}`,
-            inline: true
+          description: `[${info.player.name}](https://communitybanlist.com/search/${info.player.steamID}) has ${data.steamUser.reputationPoints} reputation points on the Community Ban List and is therefore a potentially harmful player.`,
+          fields: [
+            {
+              name: 'Reputation Points',
+              value: `${data.steamUser.reputationPoints} (${
+                data.steamUser.reputationPointsMonthChange || 0
+              } from this month)`,
+              inline: true
+            },
+            {
+              name: 'Risk Rating',
+              value: `${data.steamUser.riskRating} / 10`,
+              inline: true
+            },
+            {
+              name: 'Reputation Rank',
+              value: `#${data.steamUser.reputationRank}`,
+              inline: true
+            },
+            {
+              name: 'Active Bans',
+              value: `${data.steamUser.activeBans.edges.length}`,
+              inline: true
+            },
+            {
+              name: 'Expired Bans',
+              value: `${data.steamUser.expiredBans.edges.length}`,
+              inline: true
+            }
+          ],
+          color: '#ffc40b',
+          timestamp: info.time.toISOString(),
+          footer: {
+            text: 'Powered by SquadJS and the Community Ban List'
           }
-        )
-        .setFooter({ text: 'Powered by SquadJS and the Community Ban List', iconURL: null });
-      if (this.channels.size === 1) {
-        await this.sendDiscordMessage(this.objEmbed(embed));
-      } else {
-        const labels = this.options.channelIDs.map((channel) => channel.label);
-        await this.sendDiscordMessage(this.objEmbed(embed), labels);
-      }
+        }
+      });
     } catch (err) {
       this.verbose(
         1,

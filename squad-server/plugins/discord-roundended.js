@@ -12,16 +12,11 @@ export default class DiscordRoundEnded extends DiscordBasePlugin {
   static get optionsSpecification() {
     return {
       ...DiscordBasePlugin.optionsSpecification,
-      channelIDs: {
+      channelID: {
         required: true,
         description: 'The ID of the channel to log round end events to.',
-        default: [],
-        example: [
-          {
-            label: 'Foo',
-            channelID: '667741905228136459'
-          }
-        ]
+        default: '',
+        example: '667741905228136459'
       },
       color: {
         required: false,
