@@ -7,7 +7,7 @@ import { SQUADJS_API_DOMAIN } from 'core/constants';
 
 import { Layers } from './layers/index.js';
 
-import LogParser from './log-parser/index.js';
+import LogParser from 'core/log-parser';
 import Rcon from './rcon.js';
 
 import { SQUADJS_VERSION } from './utils/constants.js';
