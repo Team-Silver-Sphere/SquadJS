@@ -13,7 +13,7 @@ import Rcon from './rcon.js';
 import { SQUADJS_VERSION } from './utils/constants.js';
 
 import fetchAdminLists from './utils/admin-lists.js';
-import { anyIDToPlayer, anyIDsToPlayers } from './utils/any-id.js';
+import { isPlayerID, anyIDToPlayer, anyIDsToPlayers } from './utils/any-id.js';
 import { playerIdNames } from 'core/id-parser';
 
 export default class SquadServer extends EventEmitter {
@@ -349,16 +349,67 @@ export default class SquadServer extends EventEmitter {
     const player = anyIDToPlayer(anyID, this.players);
     if (player === undefined) return;
     for (const idName of playerIdNames)
-      if (player[idName] in this.admins)
-        return this.admins[player[idName]];
+      if (player[idName] in this.admins) return this.admins[player[idName]];
   }
 
-  getAdminsWithPermission(perm) {
+  /**
+   * Get ids of every admin that has the permission.
+   * @overload
+   * @arg {string} perm - permission to filter with.
+   * @arg {('steamID'|'eosID'|'anyID')} type - return IDs of selected
+   *   type. For <code>'steamID'</code> returns all matching steam IDs
+   *   from admins lists plus maps online admins from eosIDs to steamIDs
+   *   if both IDs are provided (and vice versa for
+   *   <code>'eosID'</code>). For <code>'anyID'</code> returns both
+   *   steam and eos IDs as is, no remapping applied.
+   * @returns {string[]}
+   *//**
+   * Get every admin that has the permission.
+   * @overload
+   * @arg {string} perm - permission to filter with.
+   * @arg {'player'} type - return players instead of just IDs. Returns
+   *   only admins that are online.
+   * @returns {Player[]}
+   *//**
+   * Get steamIDs of every admin that has the permission. This overload
+   * exists for compatibility with pre-EOS API and is equivalent to
+   * <code>getAdminsWithPermisson(perm, type='steamID')</code>.
+   * @overload
+   * @arg {string} perm - permission to filter with.
+   * @returns {string[]}
+   */
+  getAdminsWithPermission(perm, type = 'steamID') {
+    const steamRgx = /^\d{17}$/;
     const ret = [];
     for (const [anyID, perms] of Object.entries(this.admins)) {
       if (perm in perms) ret.push(anyID);
     }
-    return anyIDsToPlayers(ret, this.players).map(player => player.eosID);
+    let filter = (ID) => ID.match(steamRgx) !== null; // true if steamID
+    switch (type) {
+      // 1) if admin is registered with steamID and is online then swap to eosID
+      // 2) deduplicate output in case same admin was in 2 lists with different IDs
+      case 'anyID' : return [
+        ...new Set(ret.map((ID) => {
+          for (const adm of this.players) {
+            if(isPlayerID(ID, adm)) return adm.eosID;
+          }
+          return ID;
+        }))
+      ];
+      case 'player' : return anyIDsToPlayers(ret, this.players);
+      case 'eosID'  : {filter = (ID) => ID.match(steamRgx) === null; break;}
+      case 'steamID': break;
+      default: throw new Error(`Expected type == 'steamID'|'eosID'|'anyID'|'player', got '${type}'.`);
+    }
+    const matches = [];
+    const fails = [];
+    ret.forEach((ID) => (filter(ID) ? matches : fails).push(ID));
+    if (fails.length) {
+      const remappedIDs = anyIDsToPlayers(fails, this.players).map((player) => player[type]);
+      // deduplicate output after remapping
+      return [...new Set(matches.concat(remappedIDs))];
+    }
+    return matches;
   }
 
   async updateAdmins() {

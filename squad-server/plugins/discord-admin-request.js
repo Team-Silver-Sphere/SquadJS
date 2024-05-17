@@ -105,7 +105,7 @@ export default class DiscordAdminRequest extends DiscordBasePlugin {
       return;
     }
 
-    const admins = await this.server.getAdminsWithPermission('canseeadminchat');
+    const admins = this.server.getAdminsWithPermission('canseeadminchat', 'eosID');
     let amountAdmins = 0;
     for (const player of this.server.players) {
       if (!admins.includes(player.eosID)) continue;

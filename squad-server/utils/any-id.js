@@ -1,11 +1,24 @@
 import { playerIdNames } from 'core/id-parser';
 
 /**
+ * Check if given ID belongs to a player.
+ * @arg {string} anyID - an ID to match against.
+ * @arg {Player} player - a player to check.
+ * returns {boolean}
+ */
+export function isPlayerID(anyID, player) {
+    for (const idName of playerIdNames) {
+      if (player[idName] === anyID) return true;
+    }
+    return false;
+}
+
+/**
  * Filter out players matching given IDs.
  * Note: uses linear search, not the most efficent approach.
- * @arg {Array.<string>} anyIDs - IDs to match against.
- * @arg {Array.<Object>} players
- * @returns {Array.<Object>}
+ * @arg {string[]} anyIDs - IDs to match against.
+ * @arg {Player[]} players
+ * @returns {Player[]}
  */
 export function anyIDsToPlayers(anyIDs, players) {
   const result = [];
@@ -23,13 +36,11 @@ export function anyIDsToPlayers(anyIDs, players) {
 /**
  * Find player by any of it's IDs.
  * @arg {string} anyID - ID to match against.
- * @arg {Array.<Object>} players
- * @returns {(Object|undefined)}
+ * @arg {Player[]} players
+ * @returns {(Player|undefined)}
  */
 export function anyIDToPlayer(anyID, players) {
   for (const player of players) {
-    for (const idName of playerIdNames) {
-      if (player[idName] === anyID) return player;
-    }
+    if (isPlayerID(anyID, player)) return player;
   }
 }
