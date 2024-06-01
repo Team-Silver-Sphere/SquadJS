@@ -236,5 +236,9 @@ export default class SquadRcon extends Rcon {
   async SM_AdminRemovePlayerFromSquadById(playerid) {
     await this.execute(`AdminRemovePlayerFromSquadById ${playerid}`);
   }
-  
+
+  // 重置小队队名
+  async SM_AdminRenameSquad(teamid, squadid) {
+    await this.execute(`AdminRenameSquad ${teamid} ${squadid}`);
+  }
 }
