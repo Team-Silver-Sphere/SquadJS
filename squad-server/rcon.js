@@ -221,4 +221,20 @@ export default class SquadRcon extends Rcon {
   async SM_AdminSetNextLayer(map) {
     await this.execute(`AdminSetNextLayer "${map}"`);
   }
+
+  // 结束对局
+  async SM_AdminEndMatch() {
+    await this.execute(`AdminEndMatch`);
+  }
+
+  // 解散小队
+  async SM_AdminDisbandSquad(teamid, squadid) {
+    await this.execute(`AdminDisbandSquad ${teamid} ${squadid}`);
+  }
+
+  // 将玩家移出小队
+  async SM_AdminRemovePlayerFromSquadById(playerid) {
+    await this.execute(`AdminRemovePlayerFromSquadById ${playerid}`);
+  }
+  
 }
