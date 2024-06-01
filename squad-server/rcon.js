@@ -206,4 +206,19 @@ export default class SquadRcon extends Rcon {
   async switchTeam(steamID) {
     await this.execute(`AdminForceTeamChange "${steamID}"`);
   }
+
+  // 踢出玩家
+  async SM_KickPlayer(steamID,message) {
+    await this.execute(`AdminKick "${steamID}" ${message}`);
+  }
+
+  // 更换地图
+  async SM_AdminChangeLayer(map) {
+    await this.execute(`AdminChangeLayer "${map}"`);
+  }
+
+  // 预设地图
+  async SM_AdminSetNextLayer(map) {
+    await this.execute(`AdminSetNextLayer "${map}"`);
+  }
 }
