@@ -126,8 +126,8 @@ export default class SquadRcon extends Rcon {
     const response = await this.execute('ShowNextMap');
     const match = response.match(/^Next level is (.*), layer is (.*)/);
     return {
-      level: match[1] !== '' ? match[1] : null,
-      layer: match[2] !== 'To be voted' ? match[2] : null
+      level: match ? (match[1] !== '' ? match[1] : null) : null,
+      layer: match ? (match[2] !== 'To be voted' ? match[2] : null) : null
     };
   }
 
