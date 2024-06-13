@@ -220,6 +220,27 @@
       "interval": 300000
     },
     {
+      "plugin": "MapVote",
+      "enabled": false,
+      "voteDurationSeconds": 300,
+      "minimumVotes": 1,
+      "autoStartMapVoteSeconds": 0,
+      "autoRepeatVoteBroadcastSeconds": 60,
+      "layersHistorySize": 3,
+      "layers": [
+        "Albasrah_AAS_v1",
+        "Albasrah_AAS_v2",
+        "Albasrah_AAS_v3",
+        "Albasrah_RAAS_v1",
+        "Albasrah_Invasion_v1",
+        "Albasrah_Invasion_v2",
+        "Albasrah_Invasion_v3",
+        "Albasrah_Invasion_v4",
+        "Albasrah_Invasion_v5",
+        "Albasrah_Invasion_v6"
+      ]
+    },
+    {
       "plugin": "SeedingMode",
       "enabled": true,
       "interval": 150000,
