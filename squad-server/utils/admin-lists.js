@@ -1,10 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
+import crypto from 'crypto';
 import axios from 'axios';
 import Logger from 'core/logger';
-
+import SftpClient from 'ssh2-sftp-client';
 const __dirname = fileURLToPath(import.meta.url);
 
 export default async function fetchAdminLists(adminLists) {
@@ -29,6 +29,27 @@ export default async function fetchAdminLists(adminLists) {
           const listPath = path.resolve(__dirname, '../../../', list.source);
           if (!fs.existsSync(listPath)) throw new Error(`Could not find Admin List at ${listPath}`);
           data = fs.readFileSync(listPath, 'utf8');
+          break;
+        }
+        case 'sftp': {
+          const client = new SftpClient();
+          await client.connect({
+            host: list.host,
+            port: list.port || 22,
+            user: list.user,
+            password: list.password
+          });
+          const tmpFilePath = path.join(
+            process.cwd(),
+            crypto
+              .createHash('md5')
+              .update(`${list.host}:${list.port}:${list.source}`)
+              .digest('hex') + '.tmp'
+          );
+          await client.fastGet(list.source, tmpFilePath);
+          if (!fs.existsSync(tmpFilePath))
+            throw new Error(`Could not find Admin List at ${tmpFilePath}`);
+          data = fs.readFileSync(tmpFilePath, 'utf8');
           break;
         }
         default:
