@@ -131,8 +131,8 @@ export default class AutoKickUnassigned extends BasePlugin {
   }
 
   async onPlayerSquadChange(player) {
-    if (player.steamID in this.trackedPlayers && player.squadID !== null)
-      this.untrackPlayer(player.steamID);
+    if (player.eosID in this.trackedPlayers && player.squadID !== null)
+      this.untrackPlayer(player.eosID);
   }
 
   async updateTrackingList(forceUpdate = false) {
@@ -146,24 +146,24 @@ export default class AutoKickUnassigned extends BasePlugin {
     );
 
     if (!run) {
-      for (const steamID of Object.keys(this.trackedPlayers)) this.untrackPlayer(steamID);
+      for (const eosID of Object.keys(this.trackedPlayers)) this.untrackPlayer(eosID);
       return;
     }
 
     if (forceUpdate) await this.server.updatePlayerList();
 
-    const admins = this.server.getAdminsWithPermission(this.adminPermission);
-    const whitelist = this.server.getAdminsWithPermission(this.whitelistPermission);
+    const admins = this.server.getAdminsWithPermission(this.adminPermission, 'eosID');
+    const whitelist = this.server.getAdminsWithPermission(this.whitelistPermission, 'eosID');
 
     // loop through players on server and start tracking players not in a squad
     for (const player of this.server.players) {
-      const isTracked = player.steamID in this.trackedPlayers;
+      const isTracked = player.eosID in this.trackedPlayers;
       const isUnassigned = player.squadID === null;
-      const isAdmin = admins.includes(player.steamID);
-      const isWhitelist = whitelist.includes(player.steamID);
+      const isAdmin = admins.includes(player.eosID);
+      const isWhitelist = whitelist.includes(player.eosID);
 
       // tracked player joined a squad remove them (redundant afer adding PLAYER_SQUAD_CHANGE, keeping for now)
-      if (!isUnassigned && isTracked) this.untrackPlayer(player.steamID);
+      if (!isUnassigned && isTracked) this.untrackPlayer(player.eosID);
 
       if (!isUnassigned) continue;
 
@@ -174,13 +174,13 @@ export default class AutoKickUnassigned extends BasePlugin {
       if (isWhitelist && this.options.ignoreWhitelist) continue;
 
       // start tracking player
-      if (!isTracked) this.trackedPlayers[player.steamID] = this.trackPlayer({ player });
+      if (!isTracked) this.trackedPlayers[player.eosID] = this.trackPlayer({ player });
     }
   }
 
   async clearDisconnectedPlayers() {
-    for (const steamID of Object.keys(this.trackedPlayers))
-      if (!(steamID in this.server.players.map((p) => p.steamID))) this.untrackPlayer(steamID);
+    for (const eosID of Object.keys(this.trackedPlayers)) // TRACK
+      if (!(eosID in this.server.players.map((p) => p.eosID))) this.untrackPlayer(eosID);
   }
 
   msFormat(ms) {
@@ -209,7 +209,7 @@ export default class AutoKickUnassigned extends BasePlugin {
       if (msLeft < this.warningInterval + 1) clearInterval(tracker.warnTimerID);
 
       const timeLeft = this.msFormat(msLeft);
-      this.server.rcon.warn(tracker.player.steamID, `${this.options.warningMessage} - ${timeLeft}`);
+      this.server.rcon.warn(tracker.player.eosID, `${this.options.warningMessage} - ${timeLeft}`);
       this.verbose(2, `Warning: ${tracker.player.name} (${timeLeft})`);
       tracker.warnings++;
     }, this.warningInterval);
@@ -220,26 +220,26 @@ export default class AutoKickUnassigned extends BasePlugin {
       await this.updateTrackingList(true);
 
       // return if player in tracker was removed from list
-      if (!(tracker.player.steamID in this.trackedPlayers)) return;
+      if (!(tracker.player.eosID in this.trackedPlayers)) return;
 
-      this.server.rcon.kick(info.player.steamID, this.options.kickMessage);
+      this.server.rcon.kick(info.player.eosID, this.options.kickMessage);
       this.server.emit('PLAYER_AUTO_KICKED', {
         player: tracker.player,
         warnings: tracker.warnings,
         startTime: tracker.startTime
       });
       this.verbose(1, `Kicked: ${tracker.player.name}`);
-      this.untrackPlayer(tracker.player.steamID);
+      this.untrackPlayer(tracker.player.eosID);
     }, this.kickTimeout);
 
     return tracker;
   }
 
-  untrackPlayer(steamID) {
-    const tracker = this.trackedPlayers[steamID];
+  untrackPlayer(eosID) {
+    const tracker = this.trackedPlayers[eosID];
     clearInterval(tracker.warnTimerID);
     clearTimeout(tracker.kickTimerID);
-    delete this.trackedPlayers[steamID];
+    delete this.trackedPlayers[eosID];
     this.verbose(2, `unTrack: ${tracker.player.name}`);
   }
 }

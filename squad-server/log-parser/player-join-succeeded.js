@@ -1,27 +1,21 @@
 export default {
   regex: /^\[([0-9.:-]+)]\[([ 0-9]*)]LogNet: Join succeeded: (.+)/,
   onMatch: (args, logParser) => {
+    const chainID = +args[2];
+
+    // Fetch Player by It's chainID
+    const player = logParser.eventStore.joinRequests[chainID];
+    delete logParser.eventStore.joinRequests[chainID]; // auth done, no longer needed
+
     const data = {
       raw: args[0],
       time: args[1],
-      chainID: +args[2],
-      playerSuffix: args[3]
+      chainID: chainID,
+      playerSuffix: args[3],
+      ...player
     };
 
-    const joinRequestsData = { ...logParser.eventStore.joinRequests[data.chainID] };
-
-    data.eosID = joinRequestsData.eosID;
-    data.controller = joinRequestsData.controller;
-    data.steamID = `${logParser.eventStore.connectionIdToSteamID.get(joinRequestsData.connection)}`;
-
-    logParser.eventStore.connectionIdToSteamID.delete(joinRequestsData.connection);
-
-    delete logParser.eventStore.joinRequests[+data.chainID];
-
-    // Handle Reconnecting players
-    if (logParser.eventStore.disconnected[data.steamID]) {
-      delete logParser.eventStore.disconnected[data.steamID];
-    }
+    player.playerSuffix = data.playerSuffix;
 
     logParser.emit('JOIN_SUCCEEDED', data);
   }

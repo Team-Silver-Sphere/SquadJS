@@ -44,7 +44,7 @@ export default class ChatCommands extends BasePlugin {
         if (command.type === 'broadcast') {
           await this.server.rcon.broadcast(command.response);
         } else if (command.type === 'warn') {
-          await this.server.rcon.warn(data.player.steamID, command.response);
+          await this.server.rcon.warn(data.player.eosID, command.response);
         }
       });
     }

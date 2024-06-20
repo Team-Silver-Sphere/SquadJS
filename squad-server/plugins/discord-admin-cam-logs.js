@@ -60,6 +60,11 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
             name: "Admin's SteamID",
             value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
             inline: true
+          },
+          {
+            name: "Admin's EosID",
+            value: info.player.eosID,
+            inline: true
           }
         ],
         timestamp: info.time.toISOString()
@@ -81,6 +86,11 @@ export default class DiscordAdminCamLogs extends DiscordBasePlugin {
           {
             name: "Admin's SteamID",
             value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+            inline: true
+          },
+          {
+            name: "Admin's EosID",
+            value: info.player.eosID,
             inline: true
           },
           {

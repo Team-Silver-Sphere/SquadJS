@@ -57,7 +57,7 @@ export default class TeamRandomizer extends BasePlugin {
     let team = '1';
 
     for (const player of players) {
-      if (player.teamID !== team) await this.server.rcon.switchTeam(player.steamID);
+      if (player.teamID !== team) await this.server.rcon.switchTeam(player.eosID);
 
       team = team === '1' ? '2' : '1';
     }

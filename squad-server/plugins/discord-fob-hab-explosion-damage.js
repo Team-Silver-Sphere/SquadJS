@@ -60,6 +60,11 @@ export default class DiscordFOBHABExplosionDamage extends DiscordBasePlugin {
         inline: true
       },
       {
+        name: "Player's EosID",
+        value: info.player.eosID,
+        inline: true
+      },
+      {
         name: 'Deployable',
         value: info.deployable
       },
