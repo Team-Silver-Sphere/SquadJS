@@ -63,6 +63,11 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
         inline: true
       },
       {
+        name: "Attacker's EosID",
+        value: info.attacker.eosID,
+        inline: true
+      },
+      {
         name: 'Weapon',
         value: info.weapon
       },
@@ -74,6 +79,11 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
       {
         name: "Victim's SteamID",
         value: `[${info.victim.steamID}](https://steamcommunity.com/profiles/${info.victim.steamID})`,
+        inline: true
+      },
+      {
+        name: "Victim's EosID",
+        value: info.victim.eosID,
         inline: true
       }
     ];

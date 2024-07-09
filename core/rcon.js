@@ -414,15 +414,15 @@ export default class Rcon extends EventEmitter {
     return util.inspect(decodedPacket, { breakLength: Infinity });
   }
 
-  async warn(steamID, message) {
-    await this.execute(`AdminWarn "${steamID}" ${message}`);
+  async warn(anyID, message) {
+    await this.execute(`AdminWarn "${anyID}" ${message}`);
   }
 
-  async kick(steamID, reason) {
-    await this.execute(`AdminKick "${steamID}" ${reason}`);
+  async kick(anyID, reason) {
+    await this.execute(`AdminKick "${anyID}" ${reason}`);
   }
 
-  async forceTeamChange(steamID) {
-    await this.execute(`AdminForceTeamChange "${steamID}"`);
+  async forceTeamChange(anyID) {
+    await this.execute(`AdminForceTeamChange "${anyID}"`);
   }
 }

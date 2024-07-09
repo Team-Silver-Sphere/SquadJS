@@ -63,6 +63,11 @@ export default class DiscordKillFeed extends DiscordBasePlugin {
         inline: true
       },
       {
+        name: "Attacker's EosID",
+        value: info.attacker.eosID,
+        inline: true
+      },
+      {
         name: 'Weapon',
         value: info.weapon
       },
@@ -76,6 +81,11 @@ export default class DiscordKillFeed extends DiscordBasePlugin {
         value: info.victim
           ? `[${info.victim.steamID}](https://steamcommunity.com/profiles/${info.victim.steamID})`
           : 'Unknown',
+        inline: true
+      },
+      {
+        name: "Victim's Name",
+        value: info.victim.name,
         inline: true
       }
     ];
