@@ -66,6 +66,7 @@ The following section of the configuration contains information about your Squad
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
     "ftp":{
+      "host": "xxx.xxx.xxx.xxx",
       "port": 21,
       "user": "FTP Username",
       "password": "FTP Password",
@@ -282,3 +283,4 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
+

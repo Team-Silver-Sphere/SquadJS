@@ -194,7 +194,7 @@ export default class SquadServerFactory {
     const configPath = path.resolve(__dirname, '../config.json');
     const config = await SquadServerFactory.buildConfig();
 
-    const configString = JSON.stringify(config, null, 2);
+    const configString = JSON.stringify(config, null, 2) + "\n";
     fs.writeFileSync(configPath, configString);
   }
 
