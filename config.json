@@ -255,5 +255,6 @@
       "LogParser": "blueBright",
       "RCON": "redBright"
     }
-  }
+  },
+  "timestamps": false
 }

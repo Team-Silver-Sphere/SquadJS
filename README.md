@@ -187,7 +187,8 @@ The `logger` section configures how verbose a module of SquadJS will be as well 
         "SquadServerFactory": "yellowBright",
         "LogParser": "blueBright",
         "RCON": "redBright"
-      }
+      },
+      "timestamps": false
     }
   ```
 The larger the number set in the `verboseness` section for a specified module the more it will print to the console.
@@ -979,4 +980,3 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ```
-
