@@ -84,8 +84,8 @@ export default class DiscordKillFeed extends DiscordBasePlugin {
         inline: true
       },
       {
-        name: "Victim's Name",
-        value: info.victim.name,
+        name: "Victim's EosID",
+        value: info.victim ? info.victim.eosID : 'Unknown',
         inline: true
       }
     ];
