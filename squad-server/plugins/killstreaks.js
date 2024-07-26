@@ -17,6 +17,11 @@ export default class Killstreak extends BasePlugin {
         description: 'The number of kills required to be on a killstreak.',
         default: 10
       },
+      allowChatCommand: {
+        required: false,
+        description: 'Allow players to check their current killstreak with a chat command.',
+        default: false
+      },
       chatCommand: {
         required: false,
         description: 'Chat Command for Players to see their Current Killstreak.',
@@ -63,7 +68,9 @@ export default class Killstreak extends BasePlugin {
     super(server, options, connectors);
 
     this.trackedKillstreaks = {};
-    this.onChatCommand = this.onChatCommand.bind(this);
+    if (this.options.allowChatCommand) {
+      this.onChatCommand = this.onChatCommand.bind(this);
+    }
     this.onWound = this.onWound.bind(this);
     this.onNewGame = this.onNewGame.bind(this);
     this.onPlayerDisconnected = this.onPlayerDisconnected.bind(this);
@@ -75,7 +82,9 @@ export default class Killstreak extends BasePlugin {
     this.server.on('PLAYER_WOUNDED', this.onWound);
     this.server.on('PLAYER_DIED', this.onPlayerDied);
     this.server.on('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
-    this.server.on(`CHAT_COMMAND:${this.options.chatCommand}`, this.onChatCommand);
+    if (this.options.allowChatCommand) {
+      this.server.on(`CHAT_COMMAND:${this.options.chatCommand}`, this.onChatCommand);
+    }
     this.verbose(1, 'Killstreaks Plugin was Mounted.');
   }
 
@@ -84,7 +93,9 @@ export default class Killstreak extends BasePlugin {
     this.server.removeEventListener('PLAYER_WOUNDED', this.onWound);
     this.server.removeEventListener('PLAYER_DIED', this.onPlayerDied);
     this.server.removeEventListener('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
-    this.server.removeEventListener(`CHAT_COMMAND:${this.options.chatCommand}`, this.onChatCommand);
+    if (this.options.allowChatCommand) {
+      this.server.removeEventListener(`CHAT_COMMAND:${this.options.chatCommand}`, this.onChatCommand);
+    }
     this.verbose(1, 'Killstreaks Plugin was Unmounted.');
   }
 
