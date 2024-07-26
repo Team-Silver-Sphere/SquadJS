@@ -1,3 +1,4 @@
+//Plugin by PSG - Ignis
 import BasePlugin from './base-plugin.js';
 
 export default class AssetClaims extends BasePlugin {
