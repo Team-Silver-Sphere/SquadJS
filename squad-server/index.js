@@ -178,13 +178,12 @@ export default class SquadServer extends EventEmitter {
   }
 
   setupLogParser() {
-    this.logParser = new LogParser(
-      Object.assign(this.options.ftp, {
-        mode: this.options.logReaderMode,
-        logDir: this.options.logDir,
-        host: this.options.ftp.host || this.options.host
-      })
-    );
+    this.logParser = new LogParser({
+      mode: this.options.logReaderMode,
+      logDir: this.options.logDir,
+      sftp: this.options.sftp,
+      ftp: this.options.ftp
+    });
 
     this.logParser.on('ADMIN_BROADCAST', (data) => {
       this.emit('ADMIN_BROADCAST', data);
@@ -242,8 +241,7 @@ export default class SquadServer extends EventEmitter {
 
       if (data.victim && data.attacker) {
         data.teamkill =
-          data.victim.teamID === data.attacker.teamID &&
-          data.victim.eosID !== data.attacker.eosID;
+          data.victim.teamID === data.attacker.teamID && data.victim.eosID !== data.attacker.eosID;
       }
 
       delete data.victimName;
@@ -260,8 +258,7 @@ export default class SquadServer extends EventEmitter {
 
       if (data.victim && data.attacker)
         data.teamkill =
-          data.victim.teamID === data.attacker.teamID &&
-          data.victim.eosID !== data.attacker.eosID;
+          data.victim.teamID === data.attacker.teamID && data.victim.eosID !== data.attacker.eosID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -278,8 +275,7 @@ export default class SquadServer extends EventEmitter {
 
       if (data.victim && data.attacker)
         data.teamkill =
-          data.victim.teamID === data.attacker.teamID &&
-          data.victim.eosID !== data.attacker.eosID;
+          data.victim.teamID === data.attacker.teamID && data.victim.eosID !== data.attacker.eosID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -363,14 +359,14 @@ export default class SquadServer extends EventEmitter {
    *   <code>'eosID'</code>). For <code>'anyID'</code> returns both
    *   steam and eos IDs as is, no remapping applied.
    * @returns {string[]}
-   *//**
+   */ /**
    * Get every admin that has the permission.
    * @overload
    * @arg {string} perm - permission to filter with.
    * @arg {'player'} type - return players instead of just IDs. Returns
    *   only admins that are online.
    * @returns {Player[]}
-   *//**
+   */ /**
    * Get steamIDs of every admin that has the permission. This overload
    * exists for compatibility with pre-EOS API and is equivalent to
    * <code>getAdminsWithPermisson(perm, type='steamID')</code>.
@@ -388,18 +384,27 @@ export default class SquadServer extends EventEmitter {
     switch (type) {
       // 1) if admin is registered with steamID and is online then swap to eosID
       // 2) deduplicate output in case same admin was in 2 lists with different IDs
-      case 'anyID' : return [
-        ...new Set(ret.map((ID) => {
-          for (const adm of this.players) {
-            if(isPlayerID(ID, adm)) return adm.eosID;
-          }
-          return ID;
-        }))
-      ];
-      case 'player' : return anyIDsToPlayers(ret, this.players);
-      case 'eosID'  : {filter = (ID) => ID.match(steamRgx) === null; break;}
-      case 'steamID': break;
-      default: throw new Error(`Expected type == 'steamID'|'eosID'|'anyID'|'player', got '${type}'.`);
+      case 'anyID':
+        return [
+          ...new Set(
+            ret.map((ID) => {
+              for (const adm of this.players) {
+                if (isPlayerID(ID, adm)) return adm.eosID;
+              }
+              return ID;
+            })
+          )
+        ];
+      case 'player':
+        return anyIDsToPlayers(ret, this.players);
+      case 'eosID': {
+        filter = (ID) => ID.match(steamRgx) === null;
+        break;
+      }
+      case 'steamID':
+        break;
+      default:
+        throw new Error(`Expected type == 'steamID'|'eosID'|'anyID'|'player', got '${type}'.`);
     }
     const matches = [];
     const fails = [];
@@ -594,6 +599,8 @@ export default class SquadServer extends EventEmitter {
       this.updateA2SInformation,
       this.updateA2SInformationInterval
     );
+
+    console.log(this.serverName);
   }
 
   async getPlayerByCondition(condition, forceUpdate = false, retry = true) {

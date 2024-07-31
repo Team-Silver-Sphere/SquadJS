@@ -1,15 +1,15 @@
 import path from 'path';
-import { FTPTail } from 'ftp-tail';
+import { SFTPTail } from 'ftp-tail';
 
 export default class TailLogReader {
   constructor(queueLine, options = {}) {
-    for (const option of ['ftp', 'logDir'])
+    for (const option of ['sftp', 'logDir'])
       if (!(option in options)) throw new Error(`${option} must be specified.`);
 
     this.options = options;
 
-    this.reader = new FTPTail({
-      ftp: options.ftp,
+    this.reader = new SFTPTail({
+      sftp: options.sftp,
       fetchInterval: options.fetchInterval || 0,
       maxTempFileSize: options.maxTempFileSize || 5 * 1000 * 1000 // 5 MB
     });
