@@ -599,8 +599,6 @@ export default class SquadServer extends EventEmitter {
       this.updateA2SInformation,
       this.updateA2SInformationInterval
     );
-
-    console.log(this.serverName);
   }
 
   async getPlayerByCondition(condition, forceUpdate = false, retry = true) {
