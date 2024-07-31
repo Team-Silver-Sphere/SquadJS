@@ -65,12 +65,16 @@ The following section of the configuration contains information about your Squad
     "rconPassword": "password",
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
-    "ftp":{
-      "host": "xxx.xxx.xxx.xxx",
+    "ftp": {
       "port": 21,
       "user": "FTP Username",
-      "password": "FTP Password",
-      "useListForSize": false
+      "password": "FTP Password"
+    },
+    "sftp": {
+      "host": "xxx.xxx.xxx.xxx",
+      "port": 21,
+      "username": "SFTP Username",
+      "password": "SFTP Password"
     },
     "adminLists": [
       {
