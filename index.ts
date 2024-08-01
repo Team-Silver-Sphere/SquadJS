@@ -1,5 +1,6 @@
-import SquadServerFactory from 'squad-server/factory';
 import printLogo from 'squad-server/logo';
+
+import { ConfigSystem } from './src/config-system';
 
 async function main() {
   // Print the SquadJS logo.
@@ -16,8 +17,8 @@ async function main() {
 
   // Create a SquadServer instance.
   const server = config
-    ? await SquadServerFactory.buildFromConfigString(config)
-    : await SquadServerFactory.buildFromConfigFile(configPath || './config.json');
+    ? await ConfigSystem.buildFromConfigString(config)
+    : await ConfigSystem.buildFromConfigFile(configPath || './config.json');
 
   // Watch the server.
   await server.watch();
