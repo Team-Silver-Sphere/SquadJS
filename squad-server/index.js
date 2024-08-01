@@ -1,14 +1,9 @@
-import axios from 'axios';
-
 import Logger from 'core/logger';
-import { SQUADJS_API_DOMAIN } from 'core/constants';
 
 import { Layers } from './layers/index.js';
 
 import LogParser from './log-parser/index.js';
 import Rcon from './rcon.js';
-
-import { SQUADJS_VERSION } from './utils/constants.js';
 
 import fetchAdminLists from './utils/admin-lists.js';
 import { isPlayerID, anyIDToPlayer, anyIDsToPlayers } from './utils/any-id.js';
@@ -51,10 +46,6 @@ export default class SquadServer {
     this.updateA2SInformationInterval = 30 * 1000;
     this.updateA2SInformationTimeout = null;
 
-    this.pingSquadJSAPI = this.pingSquadJSAPI.bind(this);
-    this.pingSquadJSAPIInterval = 5 * 60 * 1000;
-    this.pingSquadJSAPITimeout = null;
-
     this.plugins = [];
   }
 
@@ -78,8 +69,6 @@ export default class SquadServer {
     await this.logParser.watch();
 
     Logger.verbose('SquadServer', 1, `Watching ${this.serverName}...`);
-
-    await this.pingSquadJSAPI();
   }
 
   async unwatch() {
@@ -788,50 +777,6 @@ export default class SquadServer {
       (player) => player.playercontroller === controller,
       forceUpdate
     );
-  }
-
-  async pingSquadJSAPI() {
-    if (this.pingSquadJSAPITimeout) clearTimeout(this.pingSquadJSAPITimeout);
-
-    Logger.verbose('SquadServer', 1, 'Pinging SquadJS API...');
-
-    const payload = {
-      // Send information about the server.
-      server: {
-        host: this.options.host,
-        queryPort: this.options.queryPort,
-
-        name: this.serverName,
-        playerCount: this.a2sPlayerCount + this.publicQueue + this.reserveQueue
-      },
-
-      // Send information about SquadJS.
-      squadjs: {
-        version: SQUADJS_VERSION,
-        logReaderMode: this.options.logReaderMode
-      }
-    };
-
-    try {
-      const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', payload);
-
-      if (data.error)
-        Logger.verbose(
-          'SquadServer',
-          1,
-          `Successfully pinged the SquadJS API. Got back error: ${data.error}`
-        );
-      else
-        Logger.verbose(
-          'SquadServer',
-          1,
-          `Successfully pinged the SquadJS API. Got back message: ${data.message}`
-        );
-    } catch (err) {
-      Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err.message);
-    }
-
-    this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
   }
 
   getMatchStartTimeByPlaytime(playtime) {
