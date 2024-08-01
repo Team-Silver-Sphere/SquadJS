@@ -3,7 +3,7 @@ const ID_MATCHER = /\s*(?<name>[^\s:]+)\s*:\s*(?<id>[^\s]+)/g;
 // COMMON CONSTANTS
 
 /** All possible IDs that a player can have. */
-export const playerIdNames = ["steamID", "eosID"];
+export const playerIdNames = ['steamID', 'eosID'];
 
 // PARSING AND ITERATION
 
