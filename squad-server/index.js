@@ -695,13 +695,7 @@ export default class SquadServer extends EventEmitter {
       // Send information about SquadJS.
       squadjs: {
         version: SQUADJS_VERSION,
-        logReaderMode: this.options.logReaderMode,
-
-        // Send the plugin config so we can see what plugins they're using (none of the config is sensitive).
-        plugins: this.plugins.map((plugin) => ({
-          ...plugin.rawOptions,
-          plugin: plugin.constructor.name
-        }))
+        logReaderMode: this.options.logReaderMode
       }
     };
 
