@@ -36,8 +36,6 @@ export default class SquadServer extends EventEmitter {
     this.admins = {};
     this.adminsInAdminCam = {};
 
-    this.plugins = [];
-
     this.setupRCON();
     this.setupLogParser();
 

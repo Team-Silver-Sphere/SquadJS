@@ -14,13 +14,12 @@
     "prepare": "husky install",
     "lint": "eslint --fix . && prettier --write \"./**/*.js\"",
     "lint-staged": "lint-staged",
-    "build-config": "node squad-server/scripts/build-config-file.js",
-    "build-readme": "node squad-server/scripts/build-readme.js",
-    "build-all": "node squad-server/scripts/build-config-file.js && node squad-server/scripts/build-readme.js"
+    "run": "tsx index.ts"
   },
   "type": "module",
   "dependencies": {
-    "squad-server": "1.0.0"
+    "squad-server": "1.0.0",
+    "tsx": "^4.16.5"
   },
   "devDependencies": {
     "eslint": "^7.17.0",

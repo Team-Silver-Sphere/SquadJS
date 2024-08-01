@@ -2,22 +2,25 @@ import SquadServerFactory from 'squad-server/factory';
 import printLogo from 'squad-server/logo';
 
 async function main() {
+  // Print the SquadJS logo.
   await printLogo();
 
-  const config = process.env.config;
-  const configPath = process.argv[2];
+  // Get the config from the environment variables (if applicable).
+  const config: string = process.env.config;
+
+  // Get the config path from the arguments (if applicable.
+  const configPath: string = process.argv[2];
+
+  // Throw an error if a config is specified through both environmental variables and arguments.
   if (config && configPath) throw new Error('Cannot accept both a config and config path.');
 
-  // create a SquadServer instance
+  // Create a SquadServer instance.
   const server = config
     ? await SquadServerFactory.buildFromConfigString(config)
     : await SquadServerFactory.buildFromConfigFile(configPath || './config.json');
 
-  // watch the server
+  // Watch the server.
   await server.watch();
-
-  // now mount the plugins
-  await Promise.all(server.plugins.map(async (plugin) => await plugin.mount()));
 }
 
 main();
