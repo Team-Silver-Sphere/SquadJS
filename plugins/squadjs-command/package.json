@@ -1,0 +1,9 @@
+{
+  "name": "squadjs-command",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "winston": "^3.13.1"
+  }
+}
