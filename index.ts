@@ -1,6 +1,7 @@
 import printLogo from 'squad-server/logo';
 
 import { ConfigSystem } from './src/config-system';
+import { PluginSystem } from './src/plugin-system';
 
 async function main() {
   // Print the SquadJS logo.
@@ -19,6 +20,9 @@ async function main() {
   const server = config
     ? await ConfigSystem.buildFromConfigString(config)
     : await ConfigSystem.buildFromConfigFile(configPath || './config.json');
+
+  // Load the installed plugins.
+  await PluginSystem.loadPlugins(server);
 
   // Watch the server.
   await server.watch();

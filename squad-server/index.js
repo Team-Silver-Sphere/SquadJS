@@ -58,6 +58,8 @@ export default class SquadServer extends EventEmitter {
     this.pingSquadJSAPI = this.pingSquadJSAPI.bind(this);
     this.pingSquadJSAPIInterval = 5 * 60 * 1000;
     this.pingSquadJSAPITimeout = null;
+
+    this.plugins = [];
   }
 
   async watch() {
@@ -97,16 +99,15 @@ export default class SquadServer extends EventEmitter {
       autoReconnectInterval: this.options.rconAutoReconnectInterval
     });
 
+    // Handle chat messages.
     this.rcon.on('CHAT_MESSAGE', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByEOSID(data.eosID);
-      this.emit('CHAT_MESSAGE', data);
 
-      const command = data.message.match(/!([^ ]+) ?(.*)/);
-      if (command)
-        this.emit(`CHAT_COMMAND:${command[1].toLowerCase()}`, {
-          ...data,
-          message: command[2].trim()
-        });
+      // Inform plugins of event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onChatMessage(data))
+      );
     });
 
     this.rcon.on('POSSESSED_ADMIN_CAMERA', async (data) => {
@@ -728,5 +729,13 @@ export default class SquadServer extends EventEmitter {
 
   getMatchStartTimeByPlaytime(playtime) {
     return new Date(Date.now() - +playtime * 1000);
+  }
+
+  async mountPlugin(plugin) {
+    // Tell the plugin it is being mounted.
+    await plugin.mount();
+
+    // Add the plugin to the list of mounted plugins.
+    this.plugins.push(plugin);
   }
 }
