@@ -22,6 +22,7 @@ export class ConfigSystem {
     let config: Config;
     try {
       config = JSON.parse(configString);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       throw new Error('Unable to parse config file.');
     }

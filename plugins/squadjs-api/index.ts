@@ -8,7 +8,7 @@ const SQUADJS_API_DOMAIN: string = 'https://squadjs.thomas-smyth.uk';
 
 // Define the plugin.
 export default class SquadJSCommand extends Plugin {
-  private instance: number;
+  private instance: ReturnType<typeof setInterval>;
   private readonly interval: number = 5 * 60 * 1000;
 
   public constructor(server: SquadServer) {
@@ -19,7 +19,6 @@ export default class SquadJSCommand extends Plugin {
   }
 
   async mount(): Promise<void> {
-    // @ts-ignore
     this.instance = setInterval(this.ping, this.interval);
   }
 
