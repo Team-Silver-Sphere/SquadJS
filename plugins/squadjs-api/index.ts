@@ -7,7 +7,7 @@ import { Plugin } from '../../src/plugin-system';
 const SQUADJS_API_DOMAIN: string = 'https://squadjs.thomas-smyth.uk';
 
 // Define the plugin.
-export default class SquadJSCommand extends Plugin {
+export default class SquadJSAPIPlugin extends Plugin {
   private instance: ReturnType<typeof setInterval>;
   private readonly interval: number = 5 * 60 * 1000;
 

@@ -2,7 +2,7 @@ import { SQUADJS_VERSION } from '../../squad-server/utils/constants.js';
 import { Plugin } from '../../src/plugin-system';
 
 // Define the plugin.
-export default class SquadJSCommand extends Plugin {
+export default class SquadJSCommandPlugin extends Plugin {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async onChatMessage(data: any): Promise<void> {
     // Check whether the message contained the SquadJS command.

@@ -25,7 +25,7 @@ SquadJS is a scripting framework, designed for Squad servers, that aims to handl
 <br>
 
 ## **Using SquadJS**
-SquadJS relies on being able to access the Squad server log directory in order to parse logs live to collect information. Thus, SquadJS must be hosted on the same server box as your Squad server or be connected to your Squad server via FTP.
+SquadJS relies on being able to access the Squad server log directory in order to parse logs live to collect information. Thus, SquadJS must be hosted on the same server box as your Squad server or be connected to your Squad server via FTP or SFTP.
 
 #### Prerequisites
 * Git
@@ -132,11 +132,14 @@ The larger the number set in the `verboseness` section for a specified module th
 <br>
 
 ## **Plugins**
-The following is a list of plugins built into SquadJS, you can click their title for more information:
+SquadJS plugins unlock the framework's full potential by giving you access to its extensive data.  These powerful tools can automate a wide range of tasks, from warmly welcoming new players to meticulously collecting player statistics.
 
-Placeholder.
+A thriving community of developers creates and shares a wealth of open-source plugins, like the ones listed below. Remember, these third-party plugins may vary in quality and compatibility.
 
-Interested in creating your own plugin? [See more here](./squad-server/plugins/readme.md)
+SquadJS API Plugin (./plugins/squadjs-api)
+SquadJS Command Plugin (./plugins/squadjs-api)
+
+Want to join the fun and build your own plugin? Check out the comprehensive guide [here](./plugin-development.md).
 
 ## Statement on Accuracy
 Some information SquadJS collects from Squad servers was never intended or designed to be collected. As a result, it is impossible for any framework to collect the same information with 100% accuracy. SquadJS aims to get as close as possible to that figure, however, it acknowledges that this is not possible in some specific scenarios.
