@@ -172,7 +172,6 @@ The above policy was written and put into effect after the release of SquadJS v2
 ## Credits
 SquadJS would not be possible without the support of so many individuals and organisations. Our thanks goes out to:
 * [SquadJS's contributors](https://github.com/Team-Silver-Sphere/SquadJS/graphs/contributors).
-* [Thomas Smyth's GitHub sponsors](https://github.com/sponsors/Thomas-Smyth).
 * subtlerod for proposing the initial log parsing idea, helping to design the log parsing process and for providing multiple servers to test with.
 * Shanomac99 and the rest of the Squad Wiki team for providing us with [layer information](https://github.com/Squad-Wiki-Editorial/squad-wiki-pipeline-map-data).
 * Fourleaf, Mex, various members of ToG / ToG-L and others that helped to stage logs and participate in small scale tests.
