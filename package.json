@@ -1,6 +1,7 @@
 {
   "name": "SquadJS",
   "version": "4.1.0",
+  "type": "module",
   "repository": "https://github.com/Team-Silver-Sphere/SquadJS.git",
   "author": "Thomas Smyth <https://github.com/Thomas-Smyth>",
   "license": "BSL-1.0",
@@ -16,7 +17,6 @@
     "lint-staged": "lint-staged",
     "run": "tsx index.ts"
   },
-  "type": "module",
   "dependencies": {
     "squad-server": "1.0.0",
     "tsx": "^4.16.5"

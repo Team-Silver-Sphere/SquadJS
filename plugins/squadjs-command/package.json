@@ -1,9 +1,9 @@
 {
-  "name": "squadjs-command",
+  "name": "squadjs-api-plugin",
   "version": "1.0.0",
   "type": "module",
-  "private": true,
-  "dependencies": {
-    "winston": "^3.13.1"
-  }
+  "repository": "https://github.com/Team-Silver-Sphere/SquadJS.git",
+  "author": "Thomas Smyth <https://github.com/Thomas-Smyth>",
+  "license": "BSL-1.0",
+  "private": true
 }

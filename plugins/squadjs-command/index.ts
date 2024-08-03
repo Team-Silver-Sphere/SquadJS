@@ -1,10 +1,5 @@
-import winston from 'winston';
+import { SQUADJS_VERSION } from '../../squad-server/utils/constants.js';
 import { Plugin } from '../../src/plugin-system';
-
-// Create an instance of winston.
-const logger: winston.Logger = winston.createLogger({
-  transports: [new winston.transports.Console()]
-});
 
 // Define the plugin.
 export default class SquadJSCommand extends Plugin {
@@ -15,11 +10,11 @@ export default class SquadJSCommand extends Plugin {
 
     // Handle uses of the command.
     if (command) {
-      // Log that the command was used.
-      logger.info(`${data.player.name} called the !squadjs command.`);
-
       // Send the response to the command.
-      await this.server.rcon.warn(data.player.eosID, 'This server is running SquadJS!');
+      await this.server.rcon.warn(
+        data.player.eosID,
+        `This server is running SquadJS (v${SQUADJS_VERSION})!`
+      );
     }
   }
 }
