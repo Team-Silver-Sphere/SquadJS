@@ -32,7 +32,7 @@ Follow the steps below to get started.
    * We will use this folder to store your plugin's resources.
    * We recommend that use Git (and GitHub) to manage versions of your plugin. This will also allow you to back you work up and/or share it with others.
 
-2. Copy the contents of the `./plugins/squadjs-command` folder into your new folder.
+2. Copy the contents of the `./plugins/squadjs-command-plugin` folder into your new folder.
    * We will use this plugin as a template.
    * Do not forget to rename things and update the documentation appropriately.
 
