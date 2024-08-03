@@ -136,8 +136,8 @@ SquadJS plugins unlock the framework's full potential by giving you access to it
 
 A thriving community of developers creates and shares a wealth of open-source plugins, like the ones listed below. Remember, these third-party plugins may vary in quality and compatibility.
 
- * [SquadJS API Plugin](./plugins/squadjs-api-plugin)
- * [SquadJS Command Plugin](./plugins/squadjs-command-plugin)
+ * [SquadJS API Plugin](./plugins/squadjs-api-plugin) (Installed by Default)
+ * [SquadJS Command Plugin](./plugins/squadjs-command-plugin) (Installed by Default)
 
 Want to join the fun and build your own plugin? Check out the comprehensive guide [here](./plugin-development.md).
 
