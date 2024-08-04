@@ -4,7 +4,7 @@ export default {
   regex:
     /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQPlayerController::)?OnUnPossess\(\): PC=(.+) \(Online IDs:([^)]+)\)/,
   onMatch: (args, logParser) => {
-    if (args[4].includes("INVALID")) return;  // bail in case of bad IDs.
+    if (args[4].includes('INVALID')) return; // bail in case of bad IDs.
     const data = {
       raw: args[0],
       time: args[1],

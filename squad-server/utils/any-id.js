@@ -7,10 +7,10 @@ import { playerIdNames } from 'core/id-parser';
  * returns {boolean}
  */
 export function isPlayerID(anyID, player) {
-    for (const idName of playerIdNames) {
-      if (player[idName] === anyID) return true;
-    }
-    return false;
+  for (const idName of playerIdNames) {
+    if (player[idName] === anyID) return true;
+  }
+  return false;
 }
 
 /**

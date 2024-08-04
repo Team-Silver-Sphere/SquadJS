@@ -6,6 +6,7 @@ import moment from 'moment';
 import Logger from '../logger.js';
 
 import TailLogReader from './log-readers/tail.js';
+import SFTPLogReader from './log-readers/sftp.js';
 import FTPLogReader from './log-readers/ftp.js';
 
 export default class LogParser extends EventEmitter {
@@ -34,6 +35,9 @@ export default class LogParser extends EventEmitter {
     switch (options.mode || 'tail') {
       case 'tail':
         this.logReader = new TailLogReader(this.queue.push, options);
+        break;
+      case 'sftp':
+        this.logReader = new SFTPLogReader(this.queue.push, options);
         break;
       case 'ftp':
         this.logReader = new FTPLogReader(this.queue.push, options);
