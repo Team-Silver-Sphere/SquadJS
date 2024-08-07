@@ -43,6 +43,37 @@ Follow the steps below to get started.
 
 4. To install dependencies, run `npm install ...` or `yarn add ...` in your new folder.
 
+## **Configuration**
+Many SquadJS plugins will have some level of configurability. This can be done by creating a `config.json` file within the plugin's folder and defining the options within.
+
+Plugins can implement this by defining their config in an interface and passing this as a generic type to the `Plugin` base class as seen below. Default values can be defined in the constructor. The config can then be accessed within the plugin's methods through `this.config`.
+
+```ts
+interface PluginConfig {
+   message: string;
+}
+
+// Define the plugin.
+export default class ConfigPlugin extends Plugin<PluginConfig> {
+  constructor(server: SquadServer, config?: PluginConfig) {
+    // Set default config.
+    config = {
+      message: 'Hello world!',
+      ...(config || {}),
+    };
+
+
+    // Initiate the parent class.
+    super(server, config);
+  }
+
+   async mount(): Promise<void> {
+      // Access the config.
+      console.log(this.config.message);
+   }
+}
+```
+
 ## **Plugin Constructor**
 Some SquadJS plugins may have some preliminary logic that must be executed before the plugin is enabled. For instance, the plugin may need to initialise a dependency. Plugins can complete this logic through the constructor.
 
@@ -52,8 +83,9 @@ import { Plugin } from '../../src/plugin-system';
 
 // Define the plugin.
 export default class ConstructorPlugin extends Plugin {
-   public constructor(server: SquadServer) {
-      super(server);
+   public constructor(server: SquadServer, config?: undefined) {
+      // Initiate the parent class.
+      super(server, config);
       
       // Do preliminary logic.
    }
@@ -99,14 +131,14 @@ Plugins can trigger their own methods at regular intervals using the `setInterva
 
 ```ts
 import SquadServer from '../../squad-server';
-import { Plugin } from '../../src/plugin-system';
+import { Plugin, PluginConfig } from '../../src/plugin-system';
 
 // Define the plugin.
 export default class IntervalCommand extends Plugin {
   private instance: ReturnType<typeof setInterval>;
   private readonly interval: number = 5 * 60 * 1000;
 
-  public constructor(server: SquadServer) {
+  public constructor(server: SquadServer, config?: PluginConfig) {
     super(server);
 
     // Bind the ping method so this is accessible.
@@ -128,14 +160,14 @@ Plugins can also trigger their own methods at after a delay using the `setTimeou
 
 ```ts
 import SquadServer from '../../squad-server';
-import { Plugin } from '../../src/plugin-system';
+import { Plugin, PluginConfig } from '../../src/plugin-system';
 
 // Define the plugin.
 export default class TimeoutCommand extends Plugin {
   private instance: ReturnType<typeof setInterval>;
   private readonly delay: number = 5 * 60 * 1000;
 
-  public constructor(server: SquadServer) {
+  public constructor(server: SquadServer, config?: PluginConfig) {
     super(server);
 
     // Bind the ping method so this is accessible.
@@ -154,7 +186,7 @@ export default class TimeoutCommand extends Plugin {
 ```
 
 ## **Communication with the Squad Server**
-Plugins have access to the Squad server through the `server` property. This allows them to access data, e.g. a list of players, and complete actions, e.g. kick players. A list of data and actions available will be documented soon.
+SquadJS plugins have access to the Squad server through the `server` property. This allows them to access data, e.g. a list of players, and complete actions, e.g. kick players. A list of data and actions available will be documented soon.
 
 ```ts
 import { Plugin } from '../../src/plugin-system';

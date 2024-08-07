@@ -28,6 +28,17 @@ The SquadJS Command Plugin allows players to see whether a server is using Squad
 1. Clone or download the plugin into the `/plugins` folder.
 2. Within the plugin's subfolder, run `npm install` or `yarn install`.
 
+## **Configuration**
+To configure this plugin, create a `config.json` file in this folder.
+
+
+The following options are available:
+
+| Option | Type | Optional | Default | Description |
+| --- | --- | --- | --- | --- |
+| `disabled` | `boolean` | Y | `false` | If set to `true` the plugin will not be imported, initialised or mounted. |
+| `mode` | `'broadcast'` or `'warn'` | Y | `warn` | If set to `broadcast`, the response to the command will be sent to all players via an admin broadcast. If set to `warn`, the response to the command will be sent to the requesting player via a warning. |
+
 ## License
 ```
 Boost Software License - Version 1.0 - August 17th, 2003

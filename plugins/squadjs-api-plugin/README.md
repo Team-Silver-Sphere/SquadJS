@@ -38,6 +38,15 @@ The SquadJS API Plugin is enabled by default.
 1. Clone or download the plugin into the `/plugins` folder.
 2. Within the plugin's subfolder, run `npm install` or `yarn install`.
 
+## **Configuration**
+To configure this plugin, create a `config.json` file in this folder. 
+
+
+The following options are available:
+| Option | Type | Optional | Default | Description |
+| --- | --- | --- | --- | --- |
+| `disabled` | `boolean` | Y | `false` | If set to `true`, the plugin will not be imported, initialised or mounted. |
+
 ## License
 ```
 Boost Software License - Version 1.0 - August 17th, 2003

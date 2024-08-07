@@ -1,5 +1,5 @@
-export interface PluginInterface {
-  mount?(data: object): Promise<void>;
+export interface Plugin {
+  mount(data: object): Promise<void>;
   onRoundStart?(data: object): Promise<void>;
   onRoundEnd?(data: object): Promise<void>;
   onServerInformationUpdate?(): Promise<void>;
