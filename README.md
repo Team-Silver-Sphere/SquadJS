@@ -20,7 +20,7 @@
 </div>
 
 ## **About**
-SquadJS is a scripting framework, designed for Squad servers, that aims to handle all communication and data collection to and from the servers. Using SquadJS as the base to any of your scripting projects allows you to easily write complex plugins without having to worry about the hassle of RCON or log parsing. However, for your convenience SquadJS comes shipped with multiple plugins already built for you allowing you to experience the power of SquadJS right away.
+SquadJS is a powerful scripting framework designed to streamline Squad server management. By handling all server communication and data collection, SquadJS eliminates the complexities of RCON and log parsing. This allows developers to focus on creating sophisticated plugins without the underlying infrastructure headaches. Build your next Squad scripting project on a solid foundation with SquadJS.
 
 <br>
 
