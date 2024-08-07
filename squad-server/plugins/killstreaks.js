@@ -152,7 +152,7 @@ export default class Killstreak extends BasePlugin {
     ];
 
     // If info.victim.squad.teamName is in gcDroidFactions
-    if (gcDroidFactions.includes(info.victim.squad.teamName)) {
+    if (info.victim.squad.teamName && gcDroidFactions.includes(info.victim.squad.teamName)) {
       this.verbose(2, `Droid Army Detected: ${info.victim.squad.teamName}`);
       // Call the onWound function with the info object
       this.onWound(info);
