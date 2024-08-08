@@ -32,7 +32,10 @@ class IdsIterator {
   next() {
     const match = this.inner.next();
     if (match.done) return { value: undefined, done: true };
-    return { value: { key: match.value[1], value: match.value[2] }, done: false };
+    return {
+      value: { key: match.value[1], value: match.value[2] },
+      done: false
+    };
   }
 
   forEach(callbackFn) {

@@ -1,0 +1,30 @@
+export interface Plugin {
+  mount(data: object): Promise<void>;
+  onRoundStart?(data: object): Promise<void>;
+  onRoundEnd?(data: object): Promise<void>;
+  onServerInformationUpdate?(): Promise<void>;
+  onPlayerInformationUpdate?(): Promise<void>;
+  onLayerInformationUpdate?(): Promise<void>;
+  onTickRateUpdate?(data: object): Promise<void>;
+  onChatMessage?(data: object): Promise<void>;
+  onAdminBroadcast?(data: object): Promise<void>;
+  onPlayerConnection?(data: object): Promise<void>;
+  onPlayerDisconnection?(data: object): Promise<void>;
+  onPlayerWarn?(data: object): Promise<void>;
+  onPlayerKick?(data: object): Promise<void>;
+  onPlayerBan?(data: object): Promise<void>;
+  onPlayerChangeTeam?(data: object): Promise<void>;
+  onPlayerChangeSquad?(data: object): Promise<void>;
+  onPlayerDamage?(data: object): Promise<void>;
+  onPlayerWound?(data: object): Promise<void>;
+  onPlayerDie?(data: object): Promise<void>;
+  onPlayerTeamkill?(data: object): Promise<void>;
+  onPlayerRevive?(data: object): Promise<void>;
+  onPlayerPossess?(data: object): Promise<void>;
+  onPlayerUnPossess?(data: object): Promise<void>;
+  onPlayerPossessAdminCamera?(data: object): Promise<void>;
+  onPlayerUnPossessAdminCamera?(data: object): Promise<void>;
+  onSquadCreate?(data: object): Promise<void>;
+  onDeployableDamage?(data: object): Promise<void>;
+  onRconError?(data: object): Promise<void>;
+}

@@ -1,9 +1,0 @@
-{
-  "parserOptions": {
-    "ecmaVersion": 2020
-  },
-  "extends": [
-    "standard",
-    "prettier"
-  ]
-}
