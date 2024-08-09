@@ -60,7 +60,7 @@ export default class KnifeKills extends BasePlugin {
       'BP_SA80Bayonet',
       'BP_SKS_Bayonet',
       'BP_SKS_Optic_Bayonet',
-      'BP_SOCP_Knife_AUS'
+      'BP_SOCP_Knife_ADF'
     ];
 
     if (knives.includes(info.weapon)) {
