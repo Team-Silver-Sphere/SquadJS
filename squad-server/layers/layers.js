@@ -45,8 +45,8 @@ class Layers {
     return null;
   }
 
-  getLayerByName(name) {
-    return this.getLayerByCondition((layer) => layer.name === name);
+  getLayerById(layerId) {
+    return this.getLayerByCondition((layer) => layer.layerid === layerId);
   }
 
   getLayerByClassname(classname) {
