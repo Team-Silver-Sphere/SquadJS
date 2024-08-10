@@ -676,7 +676,7 @@ export default class DBLog extends BasePlugin {
   async onPlayerConnected(info) {
     await this.models.Player.upsert(
       {
-        eosID: info.eosID,
+        eosID: info.player.eosID,
         steamID: info.player.steamID,
         lastName: info.player.name,
         lastIP: info.ip
