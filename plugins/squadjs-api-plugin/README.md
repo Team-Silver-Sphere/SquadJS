@@ -1,7 +1,7 @@
 <div align="center">
 
-<img src="../../assets/squadjs-logo-white.png#gh-dark-mode-only" alt="Logo" width="500"/>
-<img src="../../assets/squadjs-logo.png#gh-light-mode-only" alt="Logo" width="500"/>
+<img src="https://github.com/Team-Silver-Sphere/SquadJS/blob/master/assets/squadjs-logo-white.png?raw=true#gh-dark-mode-only" alt="Logo" width="500"/>
+<img src="https://github.com/Team-Silver-Sphere/SquadJS/blob/master/assets/squadjs-logo.png?raw=true#gh-light-mode-only" alt="Logo" width="500"/>
 
 #### SquadJS API Plugin
 
