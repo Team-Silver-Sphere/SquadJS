@@ -1,8 +1,8 @@
 import axios from 'axios';
 import Logger from 'core/logger';
-import SquadServer from '../../squad-server';
-import { SQUADJS_VERSION } from '../../squad-server/utils/constants.js';
-import { Plugin } from '../../src/plugin-system';
+import SquadServer from '../../../squad-server/index.js';
+import { SQUADJS_VERSION } from '../../../squad-server/utils/constants.js';
+import { Plugin } from '../../../src/plugin-system';
 
 // Define constants.
 const SQUADJS_API_DOMAIN: string = 'https://squadjs.thomas-smyth.uk';

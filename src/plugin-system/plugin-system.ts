@@ -16,7 +16,7 @@ export class PluginSystem {
 
       // Get the path to the plugin.
       const pluginFolderPath = path.resolve('./plugins', pluginFolder);
-      const pluginPath = path.resolve(pluginFolderPath, 'index.ts');
+      const pluginPath = path.resolve(pluginFolderPath, 'src/index.ts');
       const pluginConfigPath = path.resolve(pluginFolderPath, './config.json');
 
       // Initiate a variable to store the config in.

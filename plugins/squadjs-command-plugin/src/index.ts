@@ -1,8 +1,8 @@
 import SquadServer from 'squad-server/index';
-import { SQUADJS_VERSION } from '../../squad-server/utils/constants.js';
-import { Plugin } from '../../src/plugin-system';
-import { pluginConfigSchema } from './src/plugin-config/schema';
-import { PluginConfig } from './src/plugin-config/types';
+import { SQUADJS_VERSION } from '../../../squad-server/utils/constants.js';
+import { Plugin } from '../../../src/plugin-system';
+import { pluginConfigSchema } from './plugin-config/schema';
+import { PluginConfig } from './plugin-config/types';
 
 // Define the plugin.
 export default class SquadJSCommandPlugin extends Plugin<PluginConfig> {

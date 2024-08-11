@@ -36,7 +36,7 @@ Follow the steps below to get started.
    * We will use this plugin as a template.
    * Do not forget to rename things and update the documentation appropriately.
 
-3. Implement your plugin by modifying the `index.ts` file.
+3. Implement your plugin by modifying the `src/index.ts` file.
    * Plugins are structured as classes. As documented below, you can implement various methods to trigger your plugin's logic at relevant times.
    * Your plugin will be automatically imported from this file by SquadJS. Do not rename the file and keep your plugin as its default export.
    * Feel free to create additional `.js`/`.ts` files if you wish to organise your plugin's code across multiple files.
