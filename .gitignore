@@ -1,3 +1,8 @@
+# Plugin Folders
+plugins/
+!plugins/squadjs-api-plugin
+!plugins/squadjs-command-plugin
+
 # Project Files
 config-test*.json
 *.tmp
