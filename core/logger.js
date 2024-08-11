@@ -20,16 +20,19 @@ class Logger {
       );
   }
 
-  setVerboseness(module, verboseness) {
-    this.verboseness[module] = verboseness;
-  }
+  setConfig(config = {}) {
+    // Set verboseness levels for the different modules.
+    for (const [module, verboseness] of Object.entries(config.verboseness || {})) {
+      this.verboseness[module] = verboseness;
+    }
 
-  setColor(module, color) {
-    this.colors[module] = color;
-  }
+    // Set the colours for the different modules.
+    for (const [module, color] of Object.entries(config.colors || {})) {
+      this.colors[module] = color;
+    }
 
-  setTimeStamps(option) {
-    this.includeTimestamps = option;
+    // Set the timestamp option.
+    this.includeTimestamps = config.timestamps;
   }
 }
 

@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import axios from 'axios';
-import Logger from 'core/logger';
+import Logger from '../../core/logger';
 
 const __dirname = fileURLToPath(import.meta.url);
 

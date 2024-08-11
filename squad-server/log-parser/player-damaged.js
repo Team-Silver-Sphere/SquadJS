@@ -1,4 +1,4 @@
-import { iterateIDs, capitalID } from 'core/id-parser';
+import { iterateIDs, capitalID } from '../../core/id-parser';
 
 export default {
   regex:

@@ -3,27 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.7.3",
     "core": "1.0.0",
-    "didyoumean": "^1.2.1",
-    "discord.js": "^14.14.1",
-    "gamedig": "^2.0.20",
-    "graphql": "^15.4.0",
-    "graphql-request": "^3.4.0",
-    "mariadb": "^2.5.1",
-    "mysql2": "^2.2.5",
-    "pg": "^8.5.1",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.5",
-    "socket.io": "^4.5.4",
-    "sqlite3": "^5.0.0",
-    "tedious": "^15.1.2",
-    "tinygradient": "^1.1.2"
+    "gamedig": "^2.0.20"
   },
   "exports": {
     ".": "./index.js",
     "./factory": "./factory.js",
-    "./logo": "./utils/print-logo.js",
-    "./plugins": "./plugins/index.js"
+    "./logo": "./utils/print-logo.js"
   }
 }

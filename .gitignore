@@ -1,8 +1,11 @@
-# Project Files
-*.sqlite
-*.tmp
+# Plugin Folders
+plugins/
+!plugins/squadjs-api-plugin
+!plugins/squadjs-command-plugin
 
+# Project Files
 config-test*.json
+*.tmp
 
 # Dependencies
 node_modules/

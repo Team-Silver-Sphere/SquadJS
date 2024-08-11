@@ -178,6 +178,7 @@ export default class Rcon extends EventEmitter {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   processChatPacket(decodedPacket) {}
 
   onClose(hadError) {

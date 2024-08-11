@@ -1,4 +1,4 @@
-import LogParser from 'core/log-parser';
+import LogParser from '../../core/log-parser';
 
 import AdminBroadcast from './admin-broadcast.js';
 import DeployableDamaged from './deployable-damaged.js';

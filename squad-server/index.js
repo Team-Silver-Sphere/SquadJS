@@ -1,25 +1,16 @@
-import EventEmitter from 'events';
-
-import axios from 'axios';
-
-import Logger from 'core/logger';
-import { SQUADJS_API_DOMAIN } from 'core/constants';
+import Logger from '../core/logger';
 
 import { Layers } from './layers/index.js';
 
 import LogParser from './log-parser/index.js';
 import Rcon from './rcon.js';
 
-import { SQUADJS_VERSION } from './utils/constants.js';
-
 import fetchAdminLists from './utils/admin-lists.js';
 import { isPlayerID, anyIDToPlayer, anyIDsToPlayers } from './utils/any-id.js';
-import { playerIdNames } from 'core/id-parser';
+import { playerIdNames } from '../core/id-parser';
 
-export default class SquadServer extends EventEmitter {
+export default class SquadServer {
   constructor(options = {}) {
-    super();
-
     for (const option of ['host'])
       if (!(option in options)) throw new Error(`${option} must be specified.`);
 
@@ -35,8 +26,6 @@ export default class SquadServer extends EventEmitter {
 
     this.admins = {};
     this.adminsInAdminCam = {};
-
-    this.plugins = [];
 
     this.setupRCON();
     this.setupLogParser();
@@ -57,9 +46,7 @@ export default class SquadServer extends EventEmitter {
     this.updateA2SInformationInterval = 30 * 1000;
     this.updateA2SInformationTimeout = null;
 
-    this.pingSquadJSAPI = this.pingSquadJSAPI.bind(this);
-    this.pingSquadJSAPIInterval = 5 * 60 * 1000;
-    this.pingSquadJSAPITimeout = null;
+    this.plugins = [];
   }
 
   async watch() {
@@ -82,8 +69,6 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.watch();
 
     Logger.verbose('SquadServer', 1, `Watching ${this.serverName}...`);
-
-    await this.pingSquadJSAPI();
   }
 
   async unwatch() {
@@ -99,69 +84,93 @@ export default class SquadServer extends EventEmitter {
       autoReconnectInterval: this.options.rconAutoReconnectInterval
     });
 
+    // Handle chat messages.
     this.rcon.on('CHAT_MESSAGE', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByEOSID(data.eosID);
-      this.emit('CHAT_MESSAGE', data);
 
-      const command = data.message.match(/!([^ ]+) ?(.*)/);
-      if (command)
-        this.emit(`CHAT_COMMAND:${command[1].toLowerCase()}`, {
-          ...data,
-          message: command[2].trim()
-        });
+      // Inform plugins of event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onChatMessage(data))
+      );
     });
 
     this.rcon.on('POSSESSED_ADMIN_CAMERA', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByEOSID(data.eosID);
 
+      // Record what time the admin entered the admin camera.
       this.adminsInAdminCam[data.eosID] = data.time;
 
-      this.emit('POSSESSED_ADMIN_CAMERA', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onPlayerPossessAdminCamera(data))
+      );
     });
 
     this.rcon.on('UNPOSSESSED_ADMIN_CAMERA', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByEOSID(data.eosID);
+
       if (this.adminsInAdminCam[data.eosID]) {
         data.duration = data.time.getTime() - this.adminsInAdminCam[data.eosID].getTime();
       } else {
         data.duration = 0;
       }
 
+      // Remove the admin from the list of admins currently in the admin camera.
       delete this.adminsInAdminCam[data.eosID];
 
-      this.emit('UNPOSSESSED_ADMIN_CAMERA', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onPlayerUnPossessAdminCamera(data))
+      );
     });
 
-    this.rcon.on('RCON_ERROR', (data) => {
-      this.emit('RCON_ERROR', data);
+    this.rcon.on('RCON_ERROR', async (data) => {
+      // Inform the plugins of the event.
+      await Promise.allSettled(this.plugins.map(async (plugin) => await plugin.onRconError(data)));
     });
 
     this.rcon.on('PLAYER_WARNED', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByName(data.name);
 
-      this.emit('PLAYER_WARNED', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(this.plugins.map(async (plugin) => await plugin.onPlayerWarn(data)));
     });
 
     this.rcon.on('PLAYER_KICKED', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByEOSID(data.eosID);
 
-      this.emit('PLAYER_KICKED', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(this.plugins.map(async (plugin) => await plugin.onPlayerKick(data)));
     });
 
     this.rcon.on('PLAYER_BANNED', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByEOSID(data.eosID);
 
-      this.emit('PLAYER_BANNED', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(this.plugins.map(async (plugin) => await plugin.onPlayerBan(data)));
     });
 
     this.rcon.on('SQUAD_CREATED', async (data) => {
+      // Get additional player data.
       data.player = await this.getPlayerByEOSID(data.playerEOSID, true);
       data.player.squadID = data.squadID;
 
+      // Delete player's name from data.
       delete data.playerName;
+
+      // Delete player's ids from data?
       for (const k in data) if (k.startsWith('player') && k.endsWith('ID')) delete data[k];
 
-      this.emit('SQUAD_CREATED', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onSquadCreate(data))
+      );
     });
   }
 
@@ -185,54 +194,83 @@ export default class SquadServer extends EventEmitter {
       ftp: this.options.ftp
     });
 
-    this.logParser.on('ADMIN_BROADCAST', (data) => {
-      this.emit('ADMIN_BROADCAST', data);
+    this.logParser.on('ADMIN_BROADCAST', async (data) => {
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onAdminBroadcast(data))
+      );
     });
 
     this.logParser.on('DEPLOYABLE_DAMAGED', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByNameSuffix(data.playerSuffix);
 
+      // Delete player's suffix from data.
       delete data.playerSuffix;
 
-      this.emit('DEPLOYABLE_DAMAGED', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onDeployableDamage(data))
+      );
     });
 
     this.logParser.on('NEW_GAME', async (data) => {
+      // Get additional data.
       data.layer = await Layers.getLayerByClassname(data.layerClassname);
 
+      // Update layer history.
       this.layerHistory.unshift({ layer: data.layer, time: data.time });
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
 
+      // Update the current layer.
       this.currentLayer = data.layer;
+
+      // Update admin lists.
       await this.updateAdmins();
-      this.emit('NEW_GAME', data);
+
+      // Inform the plugins of the event.
+      await Promise.allSettled(this.plugins.map(async (plugin) => await plugin.onRoundStart(data)));
     });
 
     this.logParser.on('JOIN_SUCCEEDED', async (data) => {
+      // Log that a player connected.
       Logger.verbose(
         'SquadServer',
         1,
         `Player connected ${data.playerSuffix} - SteamID: ${data.steamID} - EOSID: ${data.eosID} - IP: ${data.ip}`
       );
 
+      // Get additional data.
       data.player = await this.getPlayerByEOSID(data.eosID);
       if (data.player) data.player.suffix = data.playerSuffix;
 
-      for (const k in data) if (playerIdNames.includes(k)) delete data[k];
+      // Delete the player's suffix from the data.
       delete data.playerSuffix;
 
-      this.emit('PLAYER_CONNECTED', data);
+      // Delete the player's ids from the data.
+      for (const k in data) if (playerIdNames.includes(k)) delete data[k];
+
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onPlayerConnection(data))
+      );
     });
 
     this.logParser.on('PLAYER_DISCONNECTED', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByEOSID(data.eosID);
 
+      // Delete player's ids from data.
       for (const k in data) if (playerIdNames.includes(k)) delete data[k];
 
-      this.emit('PLAYER_DISCONNECTED', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onPlayerDisconnection(data))
+      );
     });
 
     this.logParser.on('PLAYER_DAMAGED', async (data) => {
+      // Get additional data.
       data.victim = await this.getPlayerByName(data.victimName);
       data.attacker = await this.getPlayerByEOSID(data.attackerEOSID);
 
@@ -244,15 +282,21 @@ export default class SquadServer extends EventEmitter {
           data.victim.teamID === data.attacker.teamID && data.victim.eosID !== data.attacker.eosID;
       }
 
+      // Delete players' names from data.
       delete data.victimName;
       delete data.attackerName;
 
-      this.emit('PLAYER_DAMAGED', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onPlayerDamage(data))
+      );
     });
 
     this.logParser.on('PLAYER_WOUNDED', async (data) => {
+      // Get additional data.
       data.victim = await this.getPlayerByName(data.victimName);
       data.attacker = await this.getPlayerByEOSID(data.attackerEOSID);
+
       if (!data.attacker)
         data.attacker = await this.getPlayerByController(data.attackerPlayerController);
 
@@ -260,16 +304,28 @@ export default class SquadServer extends EventEmitter {
         data.teamkill =
           data.victim.teamID === data.attacker.teamID && data.victim.eosID !== data.attacker.eosID;
 
+      // Delete players' names from data.
       delete data.victimName;
       delete data.attackerName;
 
-      this.emit('PLAYER_WOUNDED', data);
-      if (data.teamkill) this.emit('TEAMKILL', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onPlayerWound(data))
+      );
+
+      if (data.teamkill) {
+        // Inform the plugins of the event.
+        await Promise.allSettled(
+          this.plugins.map(async (plugin) => await plugin.onPlayerTeamkill(data))
+        );
+      }
     });
 
     this.logParser.on('PLAYER_DIED', async (data) => {
+      // Get additional data.
       data.victim = await this.getPlayerByName(data.victimName);
       data.attacker = await this.getPlayerByEOSID(data.attackerEOSID);
+
       if (!data.attacker)
         data.attacker = await this.getPlayerByController(data.attackerPlayerController);
 
@@ -277,47 +333,68 @@ export default class SquadServer extends EventEmitter {
         data.teamkill =
           data.victim.teamID === data.attacker.teamID && data.victim.eosID !== data.attacker.eosID;
 
+      // Delete players' names from data.
       delete data.victimName;
       delete data.attackerName;
 
-      this.emit('PLAYER_DIED', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(this.plugins.map(async (plugin) => await plugin.onPlayerDie(data)));
     });
 
     this.logParser.on('PLAYER_REVIVED', async (data) => {
+      // Get additional data.
       data.victim = await this.getPlayerByEOSID(data.victimEOSID);
       data.attacker = await this.getPlayerByEOSID(data.attackerEOSID);
       data.reviver = await this.getPlayerByEOSID(data.reviverEOSID);
 
+      // Delete players' names from data.
       delete data.victimName;
       delete data.attackerName;
       delete data.reviverName;
 
-      this.emit('PLAYER_REVIVED', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onPlayerRevive(data))
+      );
     });
 
     this.logParser.on('PLAYER_POSSESS', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByEOSID(data.playerEOSID);
       if (data.player) data.player.possessClassname = data.possessClassname;
 
+      // Delete player's suffix from data.
       delete data.playerSuffix;
 
-      this.emit('PLAYER_POSSESS', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onPlayerPossess(data))
+      );
     });
 
     this.logParser.on('PLAYER_UNPOSSESS', async (data) => {
+      // Get additional data.
       data.player = await this.getPlayerByEOSID(data.playerEOSID);
 
+      // Delete player's suffix from data.
       delete data.playerSuffix;
 
-      this.emit('PLAYER_UNPOSSESS', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onPlayerUnPossess(data))
+      );
     });
 
     this.logParser.on('ROUND_ENDED', async (data) => {
-      this.emit('ROUND_ENDED', data);
+      // Inform the plugins of the event.
+      await Promise.allSettled(this.plugins.map(async (plugin) => await plugin.onRoundEnd(data)));
     });
 
-    this.logParser.on('TICK_RATE', (data) => {
-      this.emit('TICK_RATE', data);
+    this.logParser.on('TICK_RATE', async (data) => {
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onTickRateUpdate(data))
+      );
     });
   }
 
@@ -448,18 +525,34 @@ export default class SquadServer extends EventEmitter {
       for (const player of this.players) {
         const oldInfo = oldPlayerInfo[player.eosID];
         if (oldInfo === undefined) continue;
-        if (player.teamID !== oldInfo.teamID)
-          this.emit('PLAYER_TEAM_CHANGE', {
-            player: player,
-            oldTeamID: oldInfo.teamID,
-            newTeamID: player.teamID
-          });
-        if (player.squadID !== oldInfo.squadID)
-          this.emit('PLAYER_SQUAD_CHANGE', {
-            player: player,
-            oldSquadID: oldInfo.squadID,
-            newSquadID: player.squadID
-          });
+
+        if (player.teamID !== oldInfo.teamID) {
+          // Inform the plugins of the event.
+          await Promise.allSettled(
+            this.plugins.map(
+              async (plugin) =>
+                await plugin.onPlayerChangeTeam({
+                  player: player,
+                  oldTeamID: oldInfo.teamID,
+                  newTeamID: player.teamID
+                })
+            )
+          );
+        }
+
+        if (player.squadID !== oldInfo.squadID) {
+          // Inform the plugins of the event.
+          await Promise.allSettled(
+            this.plugins.map(
+              async (plugin) =>
+                await plugin.onPlayerChangeSquad({
+                  player: player,
+                  oldSquadID: oldInfo.squadID,
+                  newSquadID: player.squadID
+                })
+            )
+          );
+        }
       }
 
       if (this.a2sPlayerCount > 0 && players.length === 0)
@@ -469,7 +562,10 @@ export default class SquadServer extends EventEmitter {
           `Real Player Count: ${this.a2sPlayerCount} but loaded ${players.length}`
         );
 
-      this.emit('UPDATED_PLAYER_INFORMATION');
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onPlayerInformationUpdate())
+      );
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update player list.', err);
     }
@@ -517,7 +613,10 @@ export default class SquadServer extends EventEmitter {
       this.nextLayer = nextLayer;
       this.nextLayerToBeVoted = nextMapToBeVoted;
 
-      this.emit('UPDATED_LAYER_INFORMATION');
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onLayerInformationUpdate())
+      );
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update layer information.', err);
     }
@@ -587,8 +686,10 @@ export default class SquadServer extends EventEmitter {
       if (!this.currentLayer) this.currentLayer = Layers.getLayerByClassname(info.currentLayer);
       if (!this.nextLayer) this.nextLayer = Layers.getLayerByClassname(info.nextLayer);
 
-      this.emit('UPDATED_A2S_INFORMATION', info);
-      this.emit('UPDATED_SERVER_INFORMATION', info);
+      // Inform the plugins of the event.
+      await Promise.allSettled(
+        this.plugins.map(async (plugin) => await plugin.onServerInformationUpdate())
+      );
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update server information.', err);
     }
@@ -678,57 +779,15 @@ export default class SquadServer extends EventEmitter {
     );
   }
 
-  async pingSquadJSAPI() {
-    if (this.pingSquadJSAPITimeout) clearTimeout(this.pingSquadJSAPITimeout);
-
-    Logger.verbose('SquadServer', 1, 'Pinging SquadJS API...');
-
-    const payload = {
-      // Send information about the server.
-      server: {
-        host: this.options.host,
-        queryPort: this.options.queryPort,
-
-        name: this.serverName,
-        playerCount: this.a2sPlayerCount + this.publicQueue + this.reserveQueue
-      },
-
-      // Send information about SquadJS.
-      squadjs: {
-        version: SQUADJS_VERSION,
-        logReaderMode: this.options.logReaderMode,
-
-        // Send the plugin config so we can see what plugins they're using (none of the config is sensitive).
-        plugins: this.plugins.map((plugin) => ({
-          ...plugin.rawOptions,
-          plugin: plugin.constructor.name
-        }))
-      }
-    };
-
-    try {
-      const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', payload);
-
-      if (data.error)
-        Logger.verbose(
-          'SquadServer',
-          1,
-          `Successfully pinged the SquadJS API. Got back error: ${data.error}`
-        );
-      else
-        Logger.verbose(
-          'SquadServer',
-          1,
-          `Successfully pinged the SquadJS API. Got back message: ${data.message}`
-        );
-    } catch (err) {
-      Logger.verbose('SquadServer', 1, 'Failed to ping the SquadJS API: ', err.message);
-    }
-
-    this.pingSquadJSAPITimeout = setTimeout(this.pingSquadJSAPI, this.pingSquadJSAPIInterval);
-  }
-
   getMatchStartTimeByPlaytime(playtime) {
     return new Date(Date.now() - +playtime * 1000);
+  }
+
+  async mountPlugin(plugin) {
+    // Tell the plugin it is being mounted.
+    await plugin.mount();
+
+    // Add the plugin to the list of mounted plugins.
+    this.plugins.push(plugin);
   }
 }
