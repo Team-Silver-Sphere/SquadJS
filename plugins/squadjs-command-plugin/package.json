@@ -5,5 +5,16 @@
   "repository": "https://github.com/Team-Silver-Sphere/SquadJS.git",
   "author": "Thomas Smyth <https://github.com/Thomas-Smyth>",
   "license": "BSL-1.0",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "joi": "^17.13.3"
+  },
+  "devDependencies": {
+    "joi-to-typescript": "^4.14.0",
+    "tsx": "^4.17.0",
+    "typescript": "^5.5.4"
+  },
+  "scripts": {
+    "generate-config-type": "tsx scripts/generate-config-type.ts"
+  }
 }

@@ -4,6 +4,7 @@ import SquadServer from '../../squad-server';
 import { SQUADJS_VERSION } from '../../squad-server/utils/constants.js';
 import { Plugin } from '../../src/plugin-system';
 
+// Define constants.
 const SQUADJS_API_DOMAIN: string = 'https://squadjs.thomas-smyth.uk';
 
 // Define the plugin.
