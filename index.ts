@@ -1,4 +1,4 @@
-import printLogo from 'squad-server/logo';
+import printLogo from './squad-server/utils/print-logo';
 
 import { ConfigSystem } from './src/config-system';
 import { PluginSystem } from './src/plugin-system';
