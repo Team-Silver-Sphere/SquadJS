@@ -13,7 +13,7 @@ export default class SquadJSAPIPlugin extends Plugin {
   private readonly interval: number = 5 * 60 * 1000;
 
   public constructor(server: SquadServer) {
-    super(server);
+    super(server, undefined);
 
     // Bind the ping method so this is accessible.
     this.ping = this.ping.bind(this);
