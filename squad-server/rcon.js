@@ -1,6 +1,6 @@
-import Logger from 'core/logger';
-import Rcon from 'core/rcon';
-import { iterateIDs, capitalID, lowerID } from 'core/id-parser';
+import Logger from '../core/logger';
+import Rcon from '../core/rcon';
+import { iterateIDs, capitalID, lowerID } from '../core/id-parser';
 
 export default class SquadRcon extends Rcon {
   processChatPacket(decodedPacket) {

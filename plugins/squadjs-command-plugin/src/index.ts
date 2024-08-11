@@ -1,4 +1,4 @@
-import SquadServer from 'squad-server/index';
+import SquadServer from '../../../squad-server';
 import { SQUADJS_VERSION } from '../../../squad-server/utils/constants.js';
 import { Plugin } from '../../../src/plugin-system';
 import { pluginConfigSchema } from './plugin-config/schema';
@@ -15,11 +15,8 @@ export default class SquadJSCommandPlugin extends Plugin<PluginConfig> {
       throw result.error;
     }
 
-    // Define the plugin-config.
-    config = result.value;
-
     // Initiate the parent class.
-    super(server, config);
+    super(server, result.value);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import Logger from 'core/logger';
-import SquadServer from '../../../squad-server/index.js';
+import Logger from '../../../core/logger';
+import SquadServer from '../../../squad-server';
 import { SQUADJS_VERSION } from '../../../squad-server/utils/constants.js';
 import { Plugin } from '../../../src/plugin-system';
 
@@ -9,7 +9,7 @@ const SQUADJS_API_DOMAIN: string = 'https://squadjs.thomas-smyth.uk';
 
 // Define the plugin.
 export default class SquadJSAPIPlugin extends Plugin {
-  private instance: ReturnType<typeof setInterval>;
+  private instance?: ReturnType<typeof setInterval>;
   private readonly interval: number = 5 * 60 * 1000;
 
   public constructor(server: SquadServer) {

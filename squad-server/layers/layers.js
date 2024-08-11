@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import Logger from 'core/logger';
+import Logger from '../../core/logger';
 
 import Layer from './layer.js';
 

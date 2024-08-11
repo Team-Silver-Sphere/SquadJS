@@ -1,4 +1,4 @@
-import Logger from 'core/logger';
+import Logger from '../core/logger';
 
 import { Layers } from './layers/index.js';
 
@@ -7,7 +7,7 @@ import Rcon from './rcon.js';
 
 import fetchAdminLists from './utils/admin-lists.js';
 import { isPlayerID, anyIDToPlayer, anyIDsToPlayers } from './utils/any-id.js';
-import { playerIdNames } from 'core/id-parser';
+import { playerIdNames } from '../core/id-parser';
 
 export default class SquadServer {
   constructor(options = {}) {

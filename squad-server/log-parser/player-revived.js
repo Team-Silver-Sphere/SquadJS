@@ -1,4 +1,4 @@
-import { iterateIDs, capitalID } from 'core/id-parser';
+import { iterateIDs, capitalID } from '../../core/id-parser';
 
 export default {
   // the names are currently the wrong way around in these logs

@@ -1,4 +1,4 @@
-import { playerIdNames } from 'core/id-parser';
+import { playerIdNames } from '../../core/id-parser';
 
 /**
  * Check if given ID belongs to a player.

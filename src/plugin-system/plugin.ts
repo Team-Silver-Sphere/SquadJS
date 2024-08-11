@@ -1,4 +1,4 @@
-import SquadServer from 'squad-server';
+import SquadServer from '../../squad-server';
 import { Plugin as PluginInterface } from './plugin-interface';
 
 export class Plugin<PluginConfig = undefined> implements PluginInterface {

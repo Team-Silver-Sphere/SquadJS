@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import SquadServer from 'squad-server';
+import SquadServer from '../../squad-server';
 import { logger } from '../utils';
 import type { Plugin } from './plugin';
 

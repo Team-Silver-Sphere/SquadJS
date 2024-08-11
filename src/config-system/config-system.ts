@@ -1,4 +1,4 @@
-import Logger from 'core/logger';
+import Logger from '../../core/logger';
 import fs from 'fs';
 
 import SquadServer from '../../squad-server';
