@@ -29,7 +29,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 
 #### Prerequisites
 * Git
-* [Node.js](https://nodejs.org/en/) (14.x) - [Download](https://nodejs.org/en/)
+* [Node.js](https://nodejs.org/en/) (18.x) - [Download](https://nodejs.org/en/)
 * [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
 * Some plugins may have additional requirements.
 

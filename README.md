@@ -29,7 +29,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 
 #### Prerequisites
 * Git
-* [Node.js](https://nodejs.org/en/) (14.x) - [Download](https://nodejs.org/en/)
+* [Node.js](https://nodejs.org/en/) (18.x) - [Download](https://nodejs.org/en/)
 * [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
 * Some plugins may have additional requirements.
 
@@ -207,6 +207,253 @@ The following is a list of plugins built into SquadJS, you can click their title
 Interested in creating your own plugin? [See more here](./squad-server/plugins/readme.md)
 
 <details>
+          <summary>TeamRandomizer</summary>
+          <h2>TeamRandomizer</h2>
+          <p>The <code>TeamRandomizer</code> can be used to randomize teams. It's great for destroying clan stacks or for social events. It can be run by typing, by default, <code>!randomize</code> into in-game admin chat</p>
+          <h3>Options</h3>
+          <ul><li><h4>command</h4>
+           <h6>Description</h6>
+           <p>The command used to randomize the teams.</p>
+           <h6>Default</h6>
+           <pre><code>randomize</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>DiscordAdminBroadcast</summary>
+          <h2>DiscordAdminBroadcast</h2>
+          <p>The <code>DiscordAdminBroadcast</code> plugin will send a copy of admin broadcasts made in game to a Discord channel.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to log admin broadcasts to.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>color</h4>
+           <h6>Description</h6>
+           <p>The color of the embed.</p>
+           <h6>Default</h6>
+           <pre><code>16761867</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>DiscordFOBHABExplosionDamage</summary>
+          <h2>DiscordFOBHABExplosionDamage</h2>
+          <p>The <code>DiscordFOBHABExplosionDamage</code> plugin logs damage done to FOBs and HABs by explosions to help identify engineers blowing up friendly FOBs and HABs.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to log FOB/HAB explosion damage to.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>color</h4>
+           <h6>Description</h6>
+           <p>The color of the embeds.</p>
+           <h6>Default</h6>
+           <pre><code>16761867</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>DiscordRoundWinner</summary>
+          <h2>DiscordRoundWinner</h2>
+          <p>The <code>DiscordRoundWinner</code> plugin will send the round winner to a Discord channel.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to log admin broadcasts to.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>color</h4>
+           <h6>Description</h6>
+           <p>The color of the embed.</p>
+           <h6>Default</h6>
+           <pre><code>16761867</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>DiscordChat</summary>
+          <h2>DiscordChat</h2>
+          <p>The <code>DiscordChat</code> plugin will log in-game chat to a Discord channel.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to log admin broadcasts to.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>chatColors</h4>
+           <h6>Description</h6>
+           <p>The color of the embed for each chat.</p>
+           <h6>Default</h6>
+           <pre><code>{}</code></pre></li><h6>Example</h6>
+           <pre><code>{
+  "ChatAll": 16761867
+}</code></pre>
+<li><h4>color</h4>
+           <h6>Description</h6>
+           <p>The color of the embed.</p>
+           <h6>Default</h6>
+           <pre><code>16761867</code></pre></li>
+<li><h4>ignoreChats</h4>
+           <h6>Description</h6>
+           <p>A list of chat names to ignore.</p>
+           <h6>Default</h6>
+           <pre><code>[
+  "ChatSquad"
+]</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>DiscordRoundEnded</summary>
+          <h2>DiscordRoundEnded</h2>
+          <p>The <code>DiscordRoundEnded</code> plugin will send the round winner to a Discord channel.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to log round end events to.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>color</h4>
+           <h6>Description</h6>
+           <p>The color of the embed.</p>
+           <h6>Default</h6>
+           <pre><code>16761867</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>DiscordAdminCamLogs</summary>
+          <h2>DiscordAdminCamLogs</h2>
+          <p>The <code>DiscordAdminCamLogs</code> plugin will log in game admin camera usage to a Discord channel.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>The ID of the channel to log admin camera usage to.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>color</h4>
+           <h6>Description</h6>
+           <p>The color of the embed.</p>
+           <h6>Default</h6>
+           <pre><code>16761867</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>DiscordRcon</summary>
+          <h2>DiscordRcon</h2>
+          <p>The <code>DiscordRcon</code> plugin allows a specified Discord channel to be used as a RCON console to run RCON commands.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
+           <h6>Description</h6>
+           <p>ID of channel to turn into RCON console.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>permissions</h4>
+           <h6>Description</h6>
+           <p><ul><li>Dictionary of roles and a list of the permissions they are allowed to use.<li>If dictionary is empty (<code>{}</code>) permissions will be disabled</li><li>A list of available RCON commands can be found here <a>https://squad.gamepedia.com/Server_Administration#Admin_Console_Commands</a>.</ul></p>
+           <h6>Default</h6>
+           <pre><code>{}</code></pre></li><h6>Example</h6>
+           <pre><code>{
+  "123456789123456789": [
+    "AdminBroadcast",
+    "AdminForceTeamChange",
+    "AdminDemoteCommander"
+  ]
+}</code></pre>
+<li><h4>prependAdminNameInBroadcast</h4>
+           <h6>Description</h6>
+           <p>Prepend admin names when making announcements.</p>
+           <h6>Default</h6>
+           <pre><code>false</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>SeedingMode</summary>
+          <h2>SeedingMode</h2>
+          <p>The <code>SeedingMode</code> plugin broadcasts seeding rule messages to players at regular intervals when the server is below a specified player count. It can also be configured to display "Live" messages when the server goes live.</p>
+          <h3>Options</h3>
+          <ul><li><h4>interval</h4>
+           <h6>Description</h6>
+           <p>Frequency of seeding messages in milliseconds.</p>
+           <h6>Default</h6>
+           <pre><code>150000</code></pre></li>
+<li><h4>seedingThreshold</h4>
+           <h6>Description</h6>
+           <p>Player count required for server not to be in seeding mode.</p>
+           <h6>Default</h6>
+           <pre><code>50</code></pre></li>
+<li><h4>seedingMessage</h4>
+           <h6>Description</h6>
+           <p>Seeding message to display.</p>
+           <h6>Default</h6>
+           <pre><code>Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!</code></pre></li>
+<li><h4>liveEnabled</h4>
+           <h6>Description</h6>
+           <p>Enable "Live" messages for when the server goes live.</p>
+           <h6>Default</h6>
+           <pre><code>true</code></pre></li>
+<li><h4>liveThreshold</h4>
+           <h6>Description</h6>
+           <p>Player count required for "Live" messages to not bee displayed.</p>
+           <h6>Default</h6>
+           <pre><code>52</code></pre></li>
+<li><h4>liveMessage</h4>
+           <h6>Description</h6>
+           <p>"Live" message to display.</p>
+           <h6>Default</h6>
+           <pre><code>Live!</code></pre></li>
+<li><h4>waitOnNewGames</h4>
+           <h6>Description</h6>
+           <p>Should the plugin wait to be executed on NEW_GAME event.</p>
+           <h6>Default</h6>
+           <pre><code>true</code></pre></li>
+<li><h4>waitTimeOnNewGame</h4>
+           <h6>Description</h6>
+           <p>The time to wait before check player counts in seconds.</p>
+           <h6>Default</h6>
+           <pre><code>30</code></pre></li></ul>
+        </details>
+
+<details>
           <summary>AutoKickUnassigned</summary>
           <h2>AutoKickUnassigned</h2>
           <p>The <code>AutoKickUnassigned</code> plugin will automatically kick players that are not in a squad after a specified ammount of time.</p>
@@ -254,20 +501,29 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
         </details>
 
 <details>
-          <summary>AutoTKWarn</summary>
-          <h2>AutoTKWarn</h2>
-          <p>The <code>AutoTkWarn</code> plugin will automatically warn players with a message when they teamkill.</p>
+          <summary>DiscordDebug</summary>
+          <h2>DiscordDebug</h2>
+          <p>The <code>DiscordDebug</code> plugin can be used to help debug SquadJS by dumping SquadJS events to a Discord channel.</p>
           <h3>Options</h3>
-          <ul><li><h4>attackerMessage</h4>
+          <ul><li><h4>discordClient (Required)</h4>
            <h6>Description</h6>
-           <p>The message to warn attacking players with.</p>
+           <p>Discord connector name.</p>
            <h6>Default</h6>
-           <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre></li>
-<li><h4>victimMessage</h4>
+           <pre><code>discord</code></pre></li>
+<li><h4>channelID (Required)</h4>
            <h6>Description</h6>
-           <p>The message that will be sent to the victim.</p>
+           <p>The ID of the channel to log events to.</p>
            <h6>Default</h6>
-           <pre><code>null</code></pre></li></ul>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>667741905228136459</code></pre>
+<li><h4>events (Required)</h4>
+           <h6>Description</h6>
+           <p>A list of events to dump.</p>
+           <h6>Default</h6>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  "PLAYER_DIED"
+]</code></pre></ul>
         </details>
 
 <details>
@@ -294,22 +550,28 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
         </details>
 
 <details>
-          <summary>ChatCommands</summary>
-          <h2>ChatCommands</h2>
-          <p>The <code>ChatCommands</code> plugin can be configured to make chat commands that broadcast or warn the caller with present messages.</p>
+          <summary>SocketIOAPI</summary>
+          <h2>SocketIOAPI</h2>
+          <p>The <code>SocketIOAPI</code> plugin allows remote access to a SquadJS instance via Socket.IO<br />As a client example you can use this to connect to the socket.io server;<pre><code>
+      const socket = io.connect('ws://IP:PORT', {
+        auth: {
+          token: "MySecretPassword"
+        }
+      })
+    </code></pre>If you need more documentation about socket.io please go ahead and read the following;<br />General Socket.io documentation: <a href="https://socket.io/docs/v3" target="_blank">Socket.io Docs</a><br />Authentication and securing your websocket: <a href="https://socket.io/docs/v3/middlewares/#Sending-credentials" target="_blank">Sending-credentials</a><br />How to use, install and configure a socketIO-client: <a href="https://github.com/11TStudio/SocketIO-Examples-for-SquadJS" target="_blank">Usage Guide with Examples</a></p>
           <h3>Options</h3>
-          <ul><li><h4>commands</h4>
+          <ul><li><h4>websocketPort (Required)</h4>
            <h6>Description</h6>
-           <p>An array of objects containing the following properties: <ul><li><code>command</code> - The command that initiates the message.</li><li><code>type</code> - Either <code>warn</code> or <code>broadcast</code>.</li><li><code>response</code> - The message to respond with.</li><li><code>ignoreChats</code> - A list of chats to ignore the commands in. Use this to limit it to admins.</li></ul></p>
+           <p>The port for the websocket.</p>
            <h6>Default</h6>
-           <pre><code>[
-  {
-    "command": "squadjs",
-    "type": "warn",
-    "response": "This server is powered by SquadJS.",
-    "ignoreChats": []
-  }
-]</code></pre></li></ul>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>3000</code></pre>
+<li><h4>securityToken (Required)</h4>
+           <h6>Description</h6>
+           <p>Your secret token/password for connecting.</p>
+           <h6>Default</h6>
+           <pre><code></code></pre></li><h6>Example</h6>
+           <pre><code>MySecretPassword</code></pre></ul>
         </details>
 
 <details>
@@ -337,9 +599,9 @@ Grafana:
         </details>
 
 <details>
-          <summary>DiscordAdminBroadcast</summary>
-          <h2>DiscordAdminBroadcast</h2>
-          <p>The <code>DiscordAdminBroadcast</code> plugin will send a copy of admin broadcasts made in game to a Discord channel.</p>
+          <summary>DiscordSquadCreated</summary>
+          <h2>DiscordSquadCreated</h2>
+          <p>The <code>SquadCreated</code> plugin will log Squad Creation events to a Discord channel.</p>
           <h3>Options</h3>
           <ul><li><h4>discordClient (Required)</h4>
            <h6>Description</h6>
@@ -348,7 +610,7 @@ Grafana:
            <pre><code>discord</code></pre></li>
 <li><h4>channelID (Required)</h4>
            <h6>Description</h6>
-           <p>The ID of the channel to log admin broadcasts to.</p>
+           <p>The ID of the channel to log Squad Creation events to.</p>
            <h6>Default</h6>
            <pre><code></code></pre></li><h6>Example</h6>
            <pre><code>667741905228136459</code></pre>
@@ -356,13 +618,37 @@ Grafana:
            <h6>Description</h6>
            <p>The color of the embed.</p>
            <h6>Default</h6>
-           <pre><code>16761867</code></pre></li></ul>
+           <pre><code>16761867</code></pre></li>
+<li><h4>useEmbed</h4>
+           <h6>Description</h6>
+           <p>Send message as Embed</p>
+           <h6>Default</h6>
+           <pre><code>true</code></pre></li></ul>
         </details>
 
 <details>
-          <summary>DiscordAdminCamLogs</summary>
-          <h2>DiscordAdminCamLogs</h2>
-          <p>The <code>DiscordAdminCamLogs</code> plugin will log in game admin camera usage to a Discord channel.</p>
+          <summary>ChatCommands</summary>
+          <h2>ChatCommands</h2>
+          <p>The <code>ChatCommands</code> plugin can be configured to make chat commands that broadcast or warn the caller with present messages.</p>
+          <h3>Options</h3>
+          <ul><li><h4>commands</h4>
+           <h6>Description</h6>
+           <p>An array of objects containing the following properties: <ul><li><code>command</code> - The command that initiates the message.</li><li><code>type</code> - Either <code>warn</code> or <code>broadcast</code>.</li><li><code>response</code> - The message to respond with.</li><li><code>ignoreChats</code> - A list of chats to ignore the commands in. Use this to limit it to admins.</li></ul></p>
+           <h6>Default</h6>
+           <pre><code>[
+  {
+    "command": "squadjs",
+    "type": "warn",
+    "response": "This server is powered by SquadJS.",
+    "ignoreChats": []
+  }
+]</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>DiscordTeamkill</summary>
+          <h2>DiscordTeamkill</h2>
+          <p>The <code>DiscordTeamkill</code> plugin logs teamkills and related information to a Discord channel for admins to review.</p>
           <h3>Options</h3>
           <ul><li><h4>discordClient (Required)</h4>
            <h6>Description</h6>
@@ -371,15 +657,77 @@ Grafana:
            <pre><code>discord</code></pre></li>
 <li><h4>channelID (Required)</h4>
            <h6>Description</h6>
-           <p>The ID of the channel to log admin camera usage to.</p>
+           <p>The ID of the channel to log teamkills to.</p>
            <h6>Default</h6>
            <pre><code></code></pre></li><h6>Example</h6>
            <pre><code>667741905228136459</code></pre>
 <li><h4>color</h4>
            <h6>Description</h6>
-           <p>The color of the embed.</p>
+           <p>The color of the embeds.</p>
            <h6>Default</h6>
-           <pre><code>16761867</code></pre></li></ul>
+           <pre><code>16761867</code></pre></li>
+<li><h4>disableCBL</h4>
+           <h6>Description</h6>
+           <p>Disable Community Ban List information.</p>
+           <h6>Default</h6>
+           <pre><code>false</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>IntervalledBroadcasts</summary>
+          <h2>IntervalledBroadcasts</h2>
+          <p>The <code>IntervalledBroadcasts</code> plugin allows you to set broadcasts, which will be broadcasted at preset intervals</p>
+          <h3>Options</h3>
+          <ul><li><h4>broadcasts</h4>
+           <h6>Description</h6>
+           <p>Messages to broadcast.</p>
+           <h6>Default</h6>
+           <pre><code>[]</code></pre></li><h6>Example</h6>
+           <pre><code>[
+  "This server is powered by SquadJS."
+]</code></pre>
+<li><h4>interval</h4>
+           <h6>Description</h6>
+           <p>Frequency of the broadcasts in milliseconds.</p>
+           <h6>Default</h6>
+           <pre><code>300000</code></pre></li></ul>
+        </details>
+
+<details>
+          <summary>DiscordServerStatus</summary>
+          <h2>DiscordServerStatus</h2>
+          <p>The <code>DiscordServerStatus</code> plugin can be used to get the server status in Discord.</p>
+          <h3>Options</h3>
+          <ul><li><h4>discordClient (Required)</h4>
+           <h6>Description</h6>
+           <p>Discord connector name.</p>
+           <h6>Default</h6>
+           <pre><code>discord</code></pre></li>
+<li><h4>messageStore (Required)</h4>
+           <h6>Description</h6>
+           <p>Sequelize connector name.</p>
+           <h6>Default</h6>
+           <pre><code>sqlite</code></pre></li>
+<li><h4>command</h4>
+           <h6>Description</h6>
+           <p>Command name to get message.</p>
+           <h6>Default</h6>
+           <pre><code>!status</code></pre></li>
+<li><h4>disableSubscriptions</h4>
+           <h6>Description</h6>
+           <p>Whether to allow messages to be subscribed to automatic updates.</p>
+           <h6>Default</h6>
+           <pre><code>false</code></pre></li>
+<li><h4>updateInterval</h4>
+           <h6>Description</h6>
+           <p>How frequently to update the time in Discord.</p>
+           <h6>Default</h6>
+           <pre><code>60000</code></pre></li>
+<li><h4>setBotStatus</h4>
+           <h6>Description</h6>
+           <p>Whether to update the bot's status with server information.</p>
+           <h6>Default</h6>
+           <pre><code>true</code></pre></li></ul>
         </details>
 
 <details>
@@ -455,93 +803,6 @@ Grafana:
         </details>
 
 <details>
-          <summary>DiscordChat</summary>
-          <h2>DiscordChat</h2>
-          <p>The <code>DiscordChat</code> plugin will log in-game chat to a Discord channel.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to log admin broadcasts to.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>chatColors</h4>
-           <h6>Description</h6>
-           <p>The color of the embed for each chat.</p>
-           <h6>Default</h6>
-           <pre><code>{}</code></pre></li><h6>Example</h6>
-           <pre><code>{
-  "ChatAll": 16761867
-}</code></pre>
-<li><h4>color</h4>
-           <h6>Description</h6>
-           <p>The color of the embed.</p>
-           <h6>Default</h6>
-           <pre><code>16761867</code></pre></li>
-<li><h4>ignoreChats</h4>
-           <h6>Description</h6>
-           <p>A list of chat names to ignore.</p>
-           <h6>Default</h6>
-           <pre><code>[
-  "ChatSquad"
-]</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>DiscordDebug</summary>
-          <h2>DiscordDebug</h2>
-          <p>The <code>DiscordDebug</code> plugin can be used to help debug SquadJS by dumping SquadJS events to a Discord channel.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to log events to.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>events (Required)</h4>
-           <h6>Description</h6>
-           <p>A list of events to dump.</p>
-           <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  "PLAYER_DIED"
-]</code></pre></ul>
-        </details>
-
-<details>
-          <summary>DiscordFOBHABExplosionDamage</summary>
-          <h2>DiscordFOBHABExplosionDamage</h2>
-          <p>The <code>DiscordFOBHABExplosionDamage</code> plugin logs damage done to FOBs and HABs by explosions to help identify engineers blowing up friendly FOBs and HABs.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to log FOB/HAB explosion damage to.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>color</h4>
-           <h6>Description</h6>
-           <p>The color of the embeds.</p>
-           <h6>Default</h6>
-           <pre><code>16761867</code></pre></li></ul>
-        </details>
-
-<details>
           <summary>DiscordKillFeed</summary>
           <h2>DiscordKillFeed</h2>
           <p>The <code>DiscordKillFeed</code> plugin logs all wounds and related information to a Discord channel for admins to review.</p>
@@ -570,6 +831,23 @@ Grafana:
         </details>
 
 <details>
+          <summary>AutoTKWarn</summary>
+          <h2>AutoTKWarn</h2>
+          <p>The <code>AutoTkWarn</code> plugin will automatically warn players with a message when they teamkill.</p>
+          <h3>Options</h3>
+          <ul><li><h4>attackerMessage</h4>
+           <h6>Description</h6>
+           <p>The message to warn attacking players with.</p>
+           <h6>Default</h6>
+           <pre><code>Please apologise for ALL TKs in ALL chat!</code></pre></li>
+<li><h4>victimMessage</h4>
+           <h6>Description</h6>
+           <p>The message that will be sent to the victim.</p>
+           <h6>Default</h6>
+           <pre><code>null</code></pre></li></ul>
+        </details>
+
+<details>
           <summary>DiscordPlaceholder</summary>
           <h2>DiscordPlaceholder</h2>
           <p>The <code>DiscordPlaceholder</code> plugin allows you to make your bot create placeholder messages that can be used when configuring other plugins.</p>
@@ -592,149 +870,20 @@ Grafana:
         </details>
 
 <details>
-          <summary>DiscordRcon</summary>
-          <h2>DiscordRcon</h2>
-          <p>The <code>DiscordRcon</code> plugin allows a specified Discord channel to be used as a RCON console to run RCON commands.</p>
+          <summary>FogOfWar</summary>
+          <h2>FogOfWar</h2>
+          <p>The <code>FogOfWar</code> plugin can be used to automate setting fog of war mode.</p>
           <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
+          <ul><li><h4>mode</h4>
            <h6>Description</h6>
-           <p>Discord connector name.</p>
+           <p>Fog of war mode to set.</p>
            <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
+           <pre><code>1</code></pre></li>
+<li><h4>delay</h4>
            <h6>Description</h6>
-           <p>ID of channel to turn into RCON console.</p>
+           <p>Delay before setting fog of war mode.</p>
            <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>permissions</h4>
-           <h6>Description</h6>
-           <p><ul><li>Dictionary of roles and a list of the permissions they are allowed to use.<li>If dictionary is empty (<code>{}</code>) permissions will be disabled</li><li>A list of available RCON commands can be found here <a>https://squad.gamepedia.com/Server_Administration#Admin_Console_Commands</a>.</ul></p>
-           <h6>Default</h6>
-           <pre><code>{}</code></pre></li><h6>Example</h6>
-           <pre><code>{
-  "123456789123456789": [
-    "AdminBroadcast",
-    "AdminForceTeamChange",
-    "AdminDemoteCommander"
-  ]
-}</code></pre>
-<li><h4>prependAdminNameInBroadcast</h4>
-           <h6>Description</h6>
-           <p>Prepend admin names when making announcements.</p>
-           <h6>Default</h6>
-           <pre><code>false</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>DiscordRoundWinner</summary>
-          <h2>DiscordRoundWinner</h2>
-          <p>The <code>DiscordRoundWinner</code> plugin will send the round winner to a Discord channel.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to log admin broadcasts to.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>color</h4>
-           <h6>Description</h6>
-           <p>The color of the embed.</p>
-           <h6>Default</h6>
-           <pre><code>16761867</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>DiscordRoundEnded</summary>
-          <h2>DiscordRoundEnded</h2>
-          <p>The <code>DiscordRoundEnded</code> plugin will send the round winner to a Discord channel.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to log round end events to.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>color</h4>
-           <h6>Description</h6>
-           <p>The color of the embed.</p>
-           <h6>Default</h6>
-           <pre><code>16761867</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>DiscordServerStatus</summary>
-          <h2>DiscordServerStatus</h2>
-          <p>The <code>DiscordServerStatus</code> plugin can be used to get the server status in Discord.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>messageStore (Required)</h4>
-           <h6>Description</h6>
-           <p>Sequelize connector name.</p>
-           <h6>Default</h6>
-           <pre><code>sqlite</code></pre></li>
-<li><h4>command</h4>
-           <h6>Description</h6>
-           <p>Command name to get message.</p>
-           <h6>Default</h6>
-           <pre><code>!status</code></pre></li>
-<li><h4>disableSubscriptions</h4>
-           <h6>Description</h6>
-           <p>Whether to allow messages to be subscribed to automatic updates.</p>
-           <h6>Default</h6>
-           <pre><code>false</code></pre></li>
-<li><h4>updateInterval</h4>
-           <h6>Description</h6>
-           <p>How frequently to update the time in Discord.</p>
-           <h6>Default</h6>
-           <pre><code>60000</code></pre></li>
-<li><h4>setBotStatus</h4>
-           <h6>Description</h6>
-           <p>Whether to update the bot's status with server information.</p>
-           <h6>Default</h6>
-           <pre><code>true</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>DiscordSquadCreated</summary>
-          <h2>DiscordSquadCreated</h2>
-          <p>The <code>SquadCreated</code> plugin will log Squad Creation events to a Discord channel.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to log Squad Creation events to.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>color</h4>
-           <h6>Description</h6>
-           <p>The color of the embed.</p>
-           <h6>Default</h6>
-           <pre><code>16761867</code></pre></li>
-<li><h4>useEmbed</h4>
-           <h6>Description</h6>
-           <p>Send message as Embed</p>
-           <h6>Default</h6>
-           <pre><code>true</code></pre></li></ul>
+           <pre><code>10000</code></pre></li></ul>
         </details>
 
 <details>
@@ -753,155 +902,6 @@ Grafana:
            <h6>Default</h6>
            <pre><code></code></pre></li><h6>Example</h6>
            <pre><code>667741905228136459</code></pre></ul>
-        </details>
-
-<details>
-          <summary>DiscordTeamkill</summary>
-          <h2>DiscordTeamkill</h2>
-          <p>The <code>DiscordTeamkill</code> plugin logs teamkills and related information to a Discord channel for admins to review.</p>
-          <h3>Options</h3>
-          <ul><li><h4>discordClient (Required)</h4>
-           <h6>Description</h6>
-           <p>Discord connector name.</p>
-           <h6>Default</h6>
-           <pre><code>discord</code></pre></li>
-<li><h4>channelID (Required)</h4>
-           <h6>Description</h6>
-           <p>The ID of the channel to log teamkills to.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>667741905228136459</code></pre>
-<li><h4>color</h4>
-           <h6>Description</h6>
-           <p>The color of the embeds.</p>
-           <h6>Default</h6>
-           <pre><code>16761867</code></pre></li>
-<li><h4>disableCBL</h4>
-           <h6>Description</h6>
-           <p>Disable Community Ban List information.</p>
-           <h6>Default</h6>
-           <pre><code>false</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>FogOfWar</summary>
-          <h2>FogOfWar</h2>
-          <p>The <code>FogOfWar</code> plugin can be used to automate setting fog of war mode.</p>
-          <h3>Options</h3>
-          <ul><li><h4>mode</h4>
-           <h6>Description</h6>
-           <p>Fog of war mode to set.</p>
-           <h6>Default</h6>
-           <pre><code>1</code></pre></li>
-<li><h4>delay</h4>
-           <h6>Description</h6>
-           <p>Delay before setting fog of war mode.</p>
-           <h6>Default</h6>
-           <pre><code>10000</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>IntervalledBroadcasts</summary>
-          <h2>IntervalledBroadcasts</h2>
-          <p>The <code>IntervalledBroadcasts</code> plugin allows you to set broadcasts, which will be broadcasted at preset intervals</p>
-          <h3>Options</h3>
-          <ul><li><h4>broadcasts</h4>
-           <h6>Description</h6>
-           <p>Messages to broadcast.</p>
-           <h6>Default</h6>
-           <pre><code>[]</code></pre></li><h6>Example</h6>
-           <pre><code>[
-  "This server is powered by SquadJS."
-]</code></pre>
-<li><h4>interval</h4>
-           <h6>Description</h6>
-           <p>Frequency of the broadcasts in milliseconds.</p>
-           <h6>Default</h6>
-           <pre><code>300000</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>SeedingMode</summary>
-          <h2>SeedingMode</h2>
-          <p>The <code>SeedingMode</code> plugin broadcasts seeding rule messages to players at regular intervals when the server is below a specified player count. It can also be configured to display "Live" messages when the server goes live.</p>
-          <h3>Options</h3>
-          <ul><li><h4>interval</h4>
-           <h6>Description</h6>
-           <p>Frequency of seeding messages in milliseconds.</p>
-           <h6>Default</h6>
-           <pre><code>150000</code></pre></li>
-<li><h4>seedingThreshold</h4>
-           <h6>Description</h6>
-           <p>Player count required for server not to be in seeding mode.</p>
-           <h6>Default</h6>
-           <pre><code>50</code></pre></li>
-<li><h4>seedingMessage</h4>
-           <h6>Description</h6>
-           <p>Seeding message to display.</p>
-           <h6>Default</h6>
-           <pre><code>Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!</code></pre></li>
-<li><h4>liveEnabled</h4>
-           <h6>Description</h6>
-           <p>Enable "Live" messages for when the server goes live.</p>
-           <h6>Default</h6>
-           <pre><code>true</code></pre></li>
-<li><h4>liveThreshold</h4>
-           <h6>Description</h6>
-           <p>Player count required for "Live" messages to not bee displayed.</p>
-           <h6>Default</h6>
-           <pre><code>52</code></pre></li>
-<li><h4>liveMessage</h4>
-           <h6>Description</h6>
-           <p>"Live" message to display.</p>
-           <h6>Default</h6>
-           <pre><code>Live!</code></pre></li>
-<li><h4>waitOnNewGames</h4>
-           <h6>Description</h6>
-           <p>Should the plugin wait to be executed on NEW_GAME event.</p>
-           <h6>Default</h6>
-           <pre><code>true</code></pre></li>
-<li><h4>waitTimeOnNewGame</h4>
-           <h6>Description</h6>
-           <p>The time to wait before check player counts in seconds.</p>
-           <h6>Default</h6>
-           <pre><code>30</code></pre></li></ul>
-        </details>
-
-<details>
-          <summary>SocketIOAPI</summary>
-          <h2>SocketIOAPI</h2>
-          <p>The <code>SocketIOAPI</code> plugin allows remote access to a SquadJS instance via Socket.IO<br />As a client example you can use this to connect to the socket.io server;<pre><code>
-      const socket = io.connect('ws://IP:PORT', {
-        auth: {
-          token: "MySecretPassword"
-        }
-      })
-    </code></pre>If you need more documentation about socket.io please go ahead and read the following;<br />General Socket.io documentation: <a href="https://socket.io/docs/v3" target="_blank">Socket.io Docs</a><br />Authentication and securing your websocket: <a href="https://socket.io/docs/v3/middlewares/#Sending-credentials" target="_blank">Sending-credentials</a><br />How to use, install and configure a socketIO-client: <a href="https://github.com/11TStudio/SocketIO-Examples-for-SquadJS" target="_blank">Usage Guide with Examples</a></p>
-          <h3>Options</h3>
-          <ul><li><h4>websocketPort (Required)</h4>
-           <h6>Description</h6>
-           <p>The port for the websocket.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>3000</code></pre>
-<li><h4>securityToken (Required)</h4>
-           <h6>Description</h6>
-           <p>Your secret token/password for connecting.</p>
-           <h6>Default</h6>
-           <pre><code></code></pre></li><h6>Example</h6>
-           <pre><code>MySecretPassword</code></pre></ul>
-        </details>
-
-<details>
-          <summary>TeamRandomizer</summary>
-          <h2>TeamRandomizer</h2>
-          <p>The <code>TeamRandomizer</code> can be used to randomize teams. It's great for destroying clan stacks or for social events. It can be run by typing, by default, <code>!randomize</code> into in-game admin chat</p>
-          <h3>Options</h3>
-          <ul><li><h4>command</h4>
-           <h6>Description</h6>
-           <p>The command used to randomize the teams.</p>
-           <h6>Default</h6>
-           <pre><code>randomize</code></pre></li></ul>
         </details>
 
 <br>
