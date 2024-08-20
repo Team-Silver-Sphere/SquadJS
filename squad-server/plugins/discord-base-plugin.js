@@ -36,8 +36,8 @@ export default class DiscordBasePlugin extends BasePlugin {
     if (typeof message === 'object' && 'embed' in message) {
       message.embed.footer = message.embed.footer || { text: COPYRIGHT_MESSAGE };
       if (typeof message.embed.color === 'string')
-        message.embed.color = parseInt(message.embed.color,16);
-      message = {...message, embeds:[message.embed]};
+        message.embed.color = parseInt(message.embed.color, 16);
+      message = { ...message, embeds: [message.embed] };
     }
 
     await this.channel.send(message);

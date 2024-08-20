@@ -1,4 +1,4 @@
-import { Writable } from "stream";
+import { Writable } from 'stream';
 
 export class WritableBuffer extends Writable {
   constructor(options) {
@@ -15,8 +15,8 @@ export class WritableBuffer extends Writable {
     return Buffer.concat(this.data);
   }
 
-  toString(encoding = "utf8") {
+  toString(encoding = 'utf8') {
     return this.getBuffer().toString(encoding);
   }
 }
-export default WritableBuffer
+export default WritableBuffer;

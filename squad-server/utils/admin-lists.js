@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { Client as FTPClient } from 'basic-ftp'
-import WritableBuffer from "./writable-buffer.js"
+import { Client as FTPClient } from 'basic-ftp';
+import WritableBuffer from './writable-buffer.js';
 
 import axios from 'axios';
 import Logger from 'core/logger';
@@ -36,20 +36,25 @@ export default async function fetchAdminLists(adminLists) {
         case 'ftp': {
           // ex url: ftp//<user>:<password>@<host>:<port>/<url-path>
           if (!list.source.startsWith('ftp://')) {
-            throw new Error(`Invalid FTP URI format of ${list.source}. The source must be a FTP URI starting with the protocol. Ex: ftp://username:password@host:21/some/file.txt`)
+            throw new Error(
+              `Invalid FTP URI format of ${list.source}. The source must be a FTP URI starting with the protocol. Ex: ftp://username:password@host:21/some/file.txt`
+            );
           }
-          const [loginString, hostPathString] = list.source.substring('ftp://'.length).split("@")
-          const [user, password] = loginString.split(":").map(v => decodeURI(v))
-          const pathStartIndex = hostPathString.indexOf("/")
-          const remoteFilePath = pathStartIndex === -1 ? "/" : hostPathString.substring(pathStartIndex)
-          const [host, port = 21] = hostPathString.substring(0, pathStartIndex === -1 ? hostPathString.length : pathStartIndex).split(":")
+          const [loginString, hostPathString] = list.source.substring('ftp://'.length).split('@');
+          const [user, password] = loginString.split(':').map((v) => decodeURI(v));
+          const pathStartIndex = hostPathString.indexOf('/');
+          const remoteFilePath =
+            pathStartIndex === -1 ? '/' : hostPathString.substring(pathStartIndex);
+          const [host, port = 21] = hostPathString
+            .substring(0, pathStartIndex === -1 ? hostPathString.length : pathStartIndex)
+            .split(':');
 
-          const buffer = new WritableBuffer()
-          const ftpClient = new FTPClient()
-          await ftpClient.access({ host, port, user, password })
-          await ftpClient.downloadTo(buffer, remoteFilePath)
-          data = buffer.toString("utf8")
-          break
+          const buffer = new WritableBuffer();
+          const ftpClient = new FTPClient();
+          await ftpClient.access({ host, port, user, password });
+          await ftpClient.downloadTo(buffer, remoteFilePath);
+          data = buffer.toString('utf8');
+          break;
         }
         default:
           throw new Error(`Unsupported AdminList type:${list.type}`);
