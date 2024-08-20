@@ -84,6 +84,10 @@ The following section of the configuration contains information about your Squad
       {
         "type": "remote",
         "source": "http://yourWebsite.com/Server1/Admins.cfg",
+      },
+      {
+        "type": "ftp",
+        "source": "ftp://<user>:<password>@<host>:<port>/<url-path>",
       }
     ]
   },

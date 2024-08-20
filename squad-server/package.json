@@ -4,6 +4,7 @@
   "type": "module",
   "dependencies": {
     "axios": "^0.21.1",
+    "basic-ftp": "^4.6.6",
     "core": "1.0.0",
     "didyoumean": "^1.2.1",
     "discord.js": "^14.14.1",

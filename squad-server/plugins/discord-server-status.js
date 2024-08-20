@@ -54,7 +54,6 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
   }
 
   async generateMessage() {
-
     // Set player embed field.
     let players = '';
 
@@ -65,24 +64,25 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
     players += ` / ${this.server.publicSlots}`;
     if (this.server.reserveSlots > 0) players += ` (+${this.server.reserveSlots})`;
 
-    const layerName = this.server.currentLayer ? this.server.currentLayer.name : (await this.server.rcon.getCurrentMap()).layer;
+    const layerName = this.server.currentLayer
+      ? this.server.currentLayer.name
+      : (await this.server.rcon.getCurrentMap()).layer;
 
     // Clamp the ratio between 0 and 1 to avoid tinygradient errors.
     const ratio = this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots);
     const clampedRatio = Math.min(1, Math.max(0, ratio));
 
     // Set gradient embed color.
-    const color =
-      parseInt(
-        tinygradient([
-          { color: '#ff0000', pos: 0 },
-          { color: '#ffff00', pos: 0.5 },
-          { color: '#00ff00', pos: 1 }
-        ])
-          .rgbAt(clampedRatio)
-          .toHex(),
-        16
-      );
+    const color = parseInt(
+      tinygradient([
+        { color: '#ff0000', pos: 0 },
+        { color: '#ffff00', pos: 0.5 },
+        { color: '#00ff00', pos: 1 }
+      ])
+        .rgbAt(clampedRatio)
+        .toHex(),
+      16
+    );
 
     const embedobj = {
       title: this.server.serverName,
@@ -99,18 +99,21 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
         {
           name: 'Next Layer',
           value: `\`\`\`${
-            this.server.nextLayer?.name || (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
+            this.server.nextLayer?.name ||
+            (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
           }\`\`\``,
           inline: true
         }
       ],
       color: color,
-      footer: {text:COPYRIGHT_MESSAGE},
+      footer: { text: COPYRIGHT_MESSAGE },
       timestamp: new Date(),
       image: {
-        url: (this.server.currentLayer ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg` : undefined)
-      },
-    }
+        url: this.server.currentLayer
+          ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg`
+          : undefined
+      }
+    };
 
     return { embeds: [embedobj] };
   }

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import {Client, Events, GatewayIntentBits} from 'discord.js';
+import { Client, Events, GatewayIntentBits } from 'discord.js';
 import sequelize from 'sequelize';
 import AwnAPI from './utils/awn-api.js';
 
@@ -103,16 +103,20 @@ export default class SquadServerFactory {
     Logger.verbose('SquadServerFactory', 1, `Starting ${type} connector ${connectorName}...`);
 
     if (type === 'discord') {
-      const connector = new Client({intents:[
+      const connector = new Client({
+        intents: [
           GatewayIntentBits.Guilds,
           GatewayIntentBits.GuildMessages,
           GatewayIntentBits.MessageContent,
-          GatewayIntentBits.GuildMembers,
-        ]});
-      connector.once(Events.ClientReady, readyClient => {console.log(`Ready! Logged in as ${readyClient.user.tag}`);});
+          GatewayIntentBits.GuildMembers
+        ]
+      });
+      connector.once(Events.ClientReady, (readyClient) => {
+        console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+      });
       await connector.login(connectorConfig);
       // setup compatability with older plugins for message create event.
-      connector.on('messageCreate', message=>{
+      connector.on('messageCreate', (message) => {
         connector.emit('message', message);
       });
       return connector;
