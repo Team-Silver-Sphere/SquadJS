@@ -34,7 +34,7 @@ export default async function fetchAdminLists(adminLists) {
           break;
         }
         case 'ftp': {
-          // ex uri:  ftp://username:password@host:21/some/file.txt
+          // ex url: ftp//<user>:<password>@<host>:<port>/<url-path>
           if (!list.source.startsWith('ftp://')) {
             throw new Error(`Invalid FTP URI format of ${list.source}. The source must be a FTP URI starting with the protocol. Ex: ftp://username:password@host:21/some/file.txt`)
           }
@@ -44,27 +44,11 @@ export default async function fetchAdminLists(adminLists) {
           const remoteFilePath = pathStartIndex === -1 ? "/" : hostPathString.substring(pathStartIndex)
           const [host, port = 21] = hostPathString.substring(0, pathStartIndex === -1 ? hostPathString.length : pathStartIndex).split(":")
 
-          console.log("ftp debug loginString", loginString)
-          console.log("ftp debug hostPathString", hostPathString)
-          console.log("ftp debug user", user)
-          console.log("ftp debug password", password)
-          console.log("ftp debug pathStartIndex", pathStartIndex)
-          console.log("ftp debug remoteFilePath", remoteFilePath)
-          console.log("ftp debug host", host)
-          console.log("ftp debug port", port)
-
           const buffer = new WritableBuffer()
           const ftpClient = new FTPClient()
-          await ftpClient.access({
-            host,
-            port,
-            user,
-            password
-          })
+          await ftpClient.access({ host, port, user, password })
           await ftpClient.downloadTo(buffer, remoteFilePath)
-          const bufData = buffer.toString("utf8")
-          console.log("ftp debug buffer", bufData)
-          data = bufData
+          data = buffer.toString("utf8")
           break
         }
         default:
