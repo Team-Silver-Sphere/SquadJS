@@ -108,9 +108,11 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
       color: color,
       footer: { text: COPYRIGHT_MESSAGE },
       timestamp: new Date(),
+      // Dont use CDN for images, use raw.githubusercontent.com.
+      // Also not updated for 8.x properly.
       image: {
         url: this.server.currentLayer
-          ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg`
+          ? `https://raw.githubusercontent.com/Squad-Wiki/squad-wiki-pipeline-map-data/master/completed_output/_Current%20Version/images/${this.server.currentLayer.layerid}.jpg`
           : undefined
       }
     };

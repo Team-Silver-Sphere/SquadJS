@@ -46,11 +46,47 @@
   },
   "plugins": [
     {
-      "plugin": "DiscordAdminCamLogs",
-      "enabled": false,
+      "plugin": "AutoKickUnassigned",
+      "enabled": true,
+      "warningMessage": "Join a squad, you are unassigned and will be kicked",
+      "kickMessage": "Unassigned - automatically removed",
+      "frequencyOfWarnings": 30,
+      "unassignedTimer": 360,
+      "playerThreshold": 93,
+      "roundStartDelay": 900,
+      "ignoreAdmins": false,
+      "ignoreWhitelist": false
+    },
+    {
+      "plugin": "AutoTKWarn",
+      "enabled": true,
+      "attackerMessage": "Please apologise for ALL TKs in ALL chat!",
+      "victimMessage": null
+    },
+    {
+      "plugin": "CBLInfo",
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "",
-      "color": 16761867
+      "threshold": 6
+    },
+    {
+      "plugin": "ChatCommands",
+      "enabled": true,
+      "commands": [
+        {
+          "command": "squadjs",
+          "type": "warn",
+          "response": "This server is powered by SquadJS.",
+          "ignoreChats": []
+        }
+      ]
+    },
+    {
+      "plugin": "DBLog",
+      "enabled": false,
+      "database": "mysql",
+      "overrideServerID": null
     },
     {
       "plugin": "DiscordAdminBroadcast",
@@ -60,15 +96,47 @@
       "color": 16761867
     },
     {
-      "plugin": "DiscordRcon",
+      "plugin": "DiscordAdminCamLogs",
       "enabled": false,
       "discordClient": "discord",
       "channelID": "",
-      "permissions": {},
-      "prependAdminNameInBroadcast": false
+      "color": 16761867
     },
     {
-      "plugin": "DiscordRoundWinner",
+      "plugin": "DiscordAdminRequest",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "ignoreChats": [],
+      "ignorePhrases": [],
+      "command": "admin",
+      "pingGroups": [],
+      "pingHere": false,
+      "pingDelay": 60000,
+      "color": 16761867,
+      "warnInGameAdmins": false,
+      "showInGameAdmins": true
+    },
+    {
+      "plugin": "DiscordChat",
+      "enabled": true,
+      "discordClient": "discord",
+      "channelID": "",
+      "chatColors": {},
+      "color": 16761867,
+      "ignoreChats": [
+        "ChatSquad"
+      ]
+    },
+    {
+      "plugin": "DiscordDebug",
+      "enabled": false,
+      "discordClient": "discord",
+      "channelID": "",
+      "events": []
+    },
+    {
+      "plugin": "DiscordFOBHABExplosionDamage",
       "enabled": true,
       "discordClient": "discord",
       "channelID": "",
@@ -90,17 +158,19 @@
       "channelID": ""
     },
     {
-      "plugin": "DBLog",
+      "plugin": "DiscordRcon",
       "enabled": false,
-      "database": "mysql",
-      "overrideServerID": null
+      "discordClient": "discord",
+      "channelID": "",
+      "permissions": {},
+      "prependAdminNameInBroadcast": false
     },
     {
-      "plugin": "CBLInfo",
+      "plugin": "DiscordRoundWinner",
       "enabled": true,
       "discordClient": "discord",
       "channelID": "",
-      "threshold": 6
+      "color": 16761867
     },
     {
       "plugin": "DiscordRoundEnded",
@@ -108,18 +178,6 @@
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867
-    },
-    {
-      "plugin": "ChatCommands",
-      "enabled": true,
-      "commands": [
-        {
-          "command": "squadjs",
-          "type": "warn",
-          "response": "This server is powered by SquadJS.",
-          "ignoreChats": []
-        }
-      ]
     },
     {
       "plugin": "DiscordServerStatus",
@@ -132,39 +190,12 @@
       "setBotStatus": true
     },
     {
-      "plugin": "TeamRandomizer",
-      "enabled": true,
-      "command": "randomize"
-    },
-    {
-      "plugin": "DiscordChat",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "chatColors": {},
-      "color": 16761867,
-      "ignoreChats": [
-        "ChatSquad"
-      ]
-    },
-    {
-      "plugin": "SeedingMode",
-      "enabled": true,
-      "interval": 150000,
-      "seedingThreshold": 50,
-      "seedingMessage": "Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!",
-      "liveEnabled": true,
-      "liveThreshold": 52,
-      "liveMessage": "Live!",
-      "waitOnNewGames": true,
-      "waitTimeOnNewGame": 30
-    },
-    {
-      "plugin": "DiscordDebug",
+      "plugin": "DiscordSquadCreated",
       "enabled": false,
       "discordClient": "discord",
       "channelID": "",
-      "events": []
+      "color": 16761867,
+      "useEmbed": true
     },
     {
       "plugin": "DiscordSubsystemRestarter",
@@ -173,12 +204,12 @@
       "role": ""
     },
     {
-      "plugin": "DiscordSquadCreated",
-      "enabled": false,
+      "plugin": "DiscordTeamkill",
+      "enabled": true,
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867,
-      "useEmbed": true
+      "disableCBL": false
     },
     {
       "plugin": "FogOfWar",
@@ -193,58 +224,27 @@
       "interval": 300000
     },
     {
+      "plugin": "SeedingMode",
+      "enabled": true,
+      "interval": 150000,
+      "seedingThreshold": 50,
+      "seedingMessage": "Seeding Rules Active! Fight only over the middle flags! No FOB Hunting!",
+      "liveEnabled": true,
+      "liveThreshold": 52,
+      "liveMessage": "Live!",
+      "waitOnNewGames": true,
+      "waitTimeOnNewGame": 30
+    },
+    {
       "plugin": "SocketIOAPI",
       "enabled": false,
       "websocketPort": "",
       "securityToken": ""
     },
     {
-      "plugin": "AutoTKWarn",
+      "plugin": "TeamRandomizer",
       "enabled": true,
-      "attackerMessage": "Please apologise for ALL TKs in ALL chat!",
-      "victimMessage": null
-    },
-    {
-      "plugin": "AutoKickUnassigned",
-      "enabled": true,
-      "warningMessage": "Join a squad, you are unassigned and will be kicked",
-      "kickMessage": "Unassigned - automatically removed",
-      "frequencyOfWarnings": 30,
-      "unassignedTimer": 360,
-      "playerThreshold": 93,
-      "roundStartDelay": 900,
-      "ignoreAdmins": false,
-      "ignoreWhitelist": false
-    },
-    {
-      "plugin": "DiscordTeamkill",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "color": 16761867,
-      "disableCBL": false
-    },
-    {
-      "plugin": "DiscordAdminRequest",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "ignoreChats": [],
-      "ignorePhrases": [],
-      "command": "admin",
-      "pingGroups": [],
-      "pingHere": false,
-      "pingDelay": 60000,
-      "color": 16761867,
-      "warnInGameAdmins": false,
-      "showInGameAdmins": true
-    },
-    {
-      "plugin": "DiscordFOBHABExplosionDamage",
-      "enabled": true,
-      "discordClient": "discord",
-      "channelID": "",
-      "color": 16761867
+      "command": "randomize"
     }
   ],
   "logger": {
