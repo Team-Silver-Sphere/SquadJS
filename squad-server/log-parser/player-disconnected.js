@@ -11,7 +11,7 @@ export default {
       eosID: args[5]
     };
 
-    logParser.eventStore.disconnected[data.steamID] = true;
+    logParser.eventStore.disconnected[data.eosID] = true;
 
     logParser.emit('PLAYER_DISCONNECTED', data);
   }

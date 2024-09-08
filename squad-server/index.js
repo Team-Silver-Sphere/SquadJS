@@ -13,6 +13,8 @@ import Rcon from './rcon.js';
 import { SQUADJS_VERSION } from './utils/constants.js';
 
 import fetchAdminLists from './utils/admin-lists.js';
+import { isPlayerID, anyIDToPlayer, anyIDsToPlayers } from './utils/any-id.js';
+import { playerIdNames } from 'core/id-parser';
 
 export default class SquadServer extends EventEmitter {
   constructor(options = {}) {
@@ -98,7 +100,7 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.rcon.on('CHAT_MESSAGE', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.player = await this.getPlayerByEOSID(data.eosID);
       this.emit('CHAT_MESSAGE', data);
 
       const command = data.message.match(/!([^ ]+) ?(.*)/);
@@ -110,22 +112,22 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.rcon.on('POSSESSED_ADMIN_CAMERA', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.player = await this.getPlayerByEOSID(data.eosID);
 
-      this.adminsInAdminCam[data.steamID] = data.time;
+      this.adminsInAdminCam[data.eosID] = data.time;
 
       this.emit('POSSESSED_ADMIN_CAMERA', data);
     });
 
     this.rcon.on('UNPOSSESSED_ADMIN_CAMERA', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
-      if (this.adminsInAdminCam[data.steamID]) {
-        data.duration = data.time.getTime() - this.adminsInAdminCam[data.steamID].getTime();
+      data.player = await this.getPlayerByEOSID(data.eosID);
+      if (this.adminsInAdminCam[data.eosID]) {
+        data.duration = data.time.getTime() - this.adminsInAdminCam[data.eosID].getTime();
       } else {
         data.duration = 0;
       }
 
-      delete this.adminsInAdminCam[data.steamID];
+      delete this.adminsInAdminCam[data.eosID];
 
       this.emit('UNPOSSESSED_ADMIN_CAMERA', data);
     });
@@ -141,13 +143,13 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.rcon.on('PLAYER_KICKED', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.player = await this.getPlayerByEOSID(data.eosID);
 
       this.emit('PLAYER_KICKED', data);
     });
 
     this.rcon.on('PLAYER_BANNED', async (data) => {
-      data.player = await this.getPlayerBySteamID(data.steamID);
+      data.player = await this.getPlayerByEOSID(data.eosID);
 
       this.emit('PLAYER_BANNED', data);
     });
@@ -157,8 +159,7 @@ export default class SquadServer extends EventEmitter {
       data.player.squadID = data.squadID;
 
       delete data.playerName;
-      delete data.playerSteamID;
-      delete data.playerEOSID;
+      for (const k in data) if (k.startsWith('player') && k.endsWith('ID')) delete data[k];
 
       this.emit('SQUAD_CREATED', data);
     });
@@ -177,13 +178,12 @@ export default class SquadServer extends EventEmitter {
   }
 
   setupLogParser() {
-    this.logParser = new LogParser(
-      Object.assign(this.options.ftp, {
-        mode: this.options.logReaderMode,
-        logDir: this.options.logDir,
-        host: this.options.ftp.host || this.options.host
-      })
-    );
+    this.logParser = new LogParser({
+      mode: this.options.logReaderMode,
+      logDir: this.options.logDir,
+      sftp: this.options.sftp,
+      ftp: this.options.ftp
+    });
 
     this.logParser.on('ADMIN_BROADCAST', (data) => {
       this.emit('ADMIN_BROADCAST', data);
@@ -208,7 +208,7 @@ export default class SquadServer extends EventEmitter {
       this.emit('NEW_GAME', data);
     });
 
-    this.logParser.on('PLAYER_CONNECTED', async (data) => {
+    this.logParser.on('JOIN_SUCCEEDED', async (data) => {
       Logger.verbose(
         'SquadServer',
         1,
@@ -218,7 +218,7 @@ export default class SquadServer extends EventEmitter {
       data.player = await this.getPlayerByEOSID(data.eosID);
       if (data.player) data.player.suffix = data.playerSuffix;
 
-      delete data.steamID;
+      for (const k in data) if (playerIdNames.includes(k)) delete data[k];
       delete data.playerSuffix;
 
       this.emit('PLAYER_CONNECTED', data);
@@ -227,7 +227,7 @@ export default class SquadServer extends EventEmitter {
     this.logParser.on('PLAYER_DISCONNECTED', async (data) => {
       data.player = await this.getPlayerByEOSID(data.eosID);
 
-      delete data.steamID;
+      for (const k in data) if (playerIdNames.includes(k)) delete data[k];
 
       this.emit('PLAYER_DISCONNECTED', data);
     });
@@ -241,8 +241,7 @@ export default class SquadServer extends EventEmitter {
 
       if (data.victim && data.attacker) {
         data.teamkill =
-          data.victim.teamID === data.attacker.teamID &&
-          data.victim.steamID !== data.attacker.steamID;
+          data.victim.teamID === data.attacker.teamID && data.victim.eosID !== data.attacker.eosID;
       }
 
       delete data.victimName;
@@ -259,8 +258,7 @@ export default class SquadServer extends EventEmitter {
 
       if (data.victim && data.attacker)
         data.teamkill =
-          data.victim.teamID === data.attacker.teamID &&
-          data.victim.steamID !== data.attacker.steamID;
+          data.victim.teamID === data.attacker.teamID && data.victim.eosID !== data.attacker.eosID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -277,8 +275,7 @@ export default class SquadServer extends EventEmitter {
 
       if (data.victim && data.attacker)
         data.teamkill =
-          data.victim.teamID === data.attacker.teamID &&
-          data.victim.steamID !== data.attacker.steamID;
+          data.victim.teamID === data.attacker.teamID && data.victim.eosID !== data.attacker.eosID;
 
       delete data.victimName;
       delete data.attackerName;
@@ -322,23 +319,6 @@ export default class SquadServer extends EventEmitter {
     this.logParser.on('TICK_RATE', (data) => {
       this.emit('TICK_RATE', data);
     });
-
-    this.logParser.on('CLIENT_EXTERNAL_ACCOUNT_INFO', (data) => {
-      this.rcon.addIds(data.steamID, data.eosID);
-    });
-    // this.logParser.on('CLIENT_CONNECTED', (data) => {
-    //   Logger.verbose("SquadServer", 1, `Client connected. Connection: ${data.connection} - SteamID: ${data.steamID}`)
-    // })
-    // this.logParser.on('CLIENT_LOGIN_REQUEST', (data) => {
-    //   Logger.verbose("SquadServer", 1, `Login request. ChainID: ${data.chainID} - Suffix: ${data.suffix} - EOSID: ${data.eosID}`)
-
-    // })
-    // this.logParser.on('RESOLVED_EOS_ID', (data) => {
-    //   Logger.verbose("SquadServer", 1, `Resolved EOSID. ChainID: ${data.chainID} - Suffix: ${data.suffix} - EOSID: ${data.eosID}`)
-    // })
-    // this.logParser.on('ADDING_CLIENT_CONNECTION', (data) => {
-    //   Logger.verbose("SquadServer", 1, `Adding client connection`, data)
-    // })
   }
 
   async restartLogParser() {
@@ -353,16 +333,88 @@ export default class SquadServer extends EventEmitter {
     await this.logParser.watch();
   }
 
+  /**
+   * @deprecated Kept for backwards compatibility with custom plugins.
+   */
   getAdminPermsBySteamID(steamID) {
-    return this.admins[steamID];
+    return this.getAdminPermsByAnyID(steamID);
   }
 
-  getAdminsWithPermission(perm) {
+  getAdminPermsByAnyID(anyID) {
+    // using this.players directly to keep the function sync
+    const player = anyIDToPlayer(anyID, this.players);
+    if (player === undefined) return;
+    for (const idName of playerIdNames)
+      if (player[idName] in this.admins) return this.admins[player[idName]];
+  }
+
+  /**
+   * Get ids of every admin that has the permission.
+   * @overload
+   * @arg {string} perm - permission to filter with.
+   * @arg {('steamID'|'eosID'|'anyID')} type - return IDs of selected
+   *   type. For <code>'steamID'</code> returns all matching steam IDs
+   *   from admins lists plus maps online admins from eosIDs to steamIDs
+   *   if both IDs are provided (and vice versa for
+   *   <code>'eosID'</code>). For <code>'anyID'</code> returns both
+   *   steam and eos IDs as is, no remapping applied.
+   * @returns {string[]}
+   */ /**
+   * Get every admin that has the permission.
+   * @overload
+   * @arg {string} perm - permission to filter with.
+   * @arg {'player'} type - return players instead of just IDs. Returns
+   *   only admins that are online.
+   * @returns {Player[]}
+   */ /**
+   * Get steamIDs of every admin that has the permission. This overload
+   * exists for compatibility with pre-EOS API and is equivalent to
+   * <code>getAdminsWithPermisson(perm, type='steamID')</code>.
+   * @overload
+   * @arg {string} perm - permission to filter with.
+   * @returns {string[]}
+   */
+  getAdminsWithPermission(perm, type = 'steamID') {
+    const steamRgx = /^\d{17}$/;
     const ret = [];
-    for (const [steamID, perms] of Object.entries(this.admins)) {
-      if (perm in perms) ret.push(steamID);
+    for (const [anyID, perms] of Object.entries(this.admins)) {
+      if (perm in perms) ret.push(anyID);
     }
-    return ret;
+    let filter = (ID) => ID.match(steamRgx) !== null; // true if steamID
+    switch (type) {
+      // 1) if admin is registered with steamID and is online then swap to eosID
+      // 2) deduplicate output in case same admin was in 2 lists with different IDs
+      case 'anyID':
+        return [
+          ...new Set(
+            ret.map((ID) => {
+              for (const adm of this.players) {
+                if (isPlayerID(ID, adm)) return adm.eosID;
+              }
+              return ID;
+            })
+          )
+        ];
+      case 'player':
+        return anyIDsToPlayers(ret, this.players);
+      case 'eosID': {
+        filter = (ID) => ID.match(steamRgx) === null;
+        break;
+      }
+      case 'steamID':
+        break;
+      default:
+        throw new Error(`Expected type == 'steamID'|'eosID'|'anyID'|'player', got '${type}'.`);
+    }
+    const matches = [];
+    const fails = [];
+    ret.forEach((ID) => (filter(ID) ? matches : fails).push(ID));
+    if (fails.length) {
+      const remappedIDs = anyIDsToPlayers(fails, this.players).map((player) => player[type]);
+      // deduplicate output after remapping
+      return [...new Set(matches.concat(remappedIDs))];
+    }
+    return matches;
   }
 
   async updateAdmins() {
@@ -377,16 +429,16 @@ export default class SquadServer extends EventEmitter {
     try {
       const oldPlayerInfo = {};
       for (const player of this.players) {
-        oldPlayerInfo[player.steamID] = player;
+        oldPlayerInfo[player.eosID] = player;
       }
 
       const players = [];
       for (const player of await this.rcon.getListPlayers(this))
         players.push({
-          ...oldPlayerInfo[player.steamID],
+          ...oldPlayerInfo[player.eosID],
           ...player,
-          playercontroller: this.logParser.eventStore.players[player.steamID]
-            ? this.logParser.eventStore.players[player.steamID].controller
+          playercontroller: this.logParser.eventStore.players[player.eosID]
+            ? this.logParser.eventStore.players[player.eosID].controller
             : null,
           squad: await this.getSquadByID(player.teamID, player.squadID)
         });
@@ -394,17 +446,18 @@ export default class SquadServer extends EventEmitter {
       this.players = players;
 
       for (const player of this.players) {
-        if (typeof oldPlayerInfo[player.steamID] === 'undefined') continue;
-        if (player.teamID !== oldPlayerInfo[player.steamID].teamID)
+        const oldInfo = oldPlayerInfo[player.eosID];
+        if (oldInfo === undefined) continue;
+        if (player.teamID !== oldInfo.teamID)
           this.emit('PLAYER_TEAM_CHANGE', {
             player: player,
-            oldTeamID: oldPlayerInfo[player.steamID].teamID,
+            oldTeamID: oldInfo.teamID,
             newTeamID: player.teamID
           });
-        if (player.squadID !== oldPlayerInfo[player.steamID].squadID)
+        if (player.squadID !== oldInfo.squadID)
           this.emit('PLAYER_SQUAD_CHANGE', {
             player: player,
-            oldSquadID: oldPlayerInfo[player.steamID].squadID,
+            oldSquadID: oldInfo.squadID,
             newSquadID: player.squadID
           });
       }
@@ -452,8 +505,8 @@ export default class SquadServer extends EventEmitter {
       const nextMap = await this.rcon.getNextMap();
       const nextMapToBeVoted = nextMap.layer === 'To be voted';
 
-      const currentLayer = await Layers.getLayerByName(currentMap.layer);
-      const nextLayer = nextMapToBeVoted ? null : await Layers.getLayerByName(nextMap.layer);
+      const currentLayer = await Layers.getLayerById(currentMap.layer);
+      const nextLayer = nextMapToBeVoted ? null : await Layers.getLayerById(nextMap.layer);
 
       if (this.layerHistory.length === 0) {
         this.layerHistory.unshift({ layer: currentLayer, time: Date.now() });
@@ -591,12 +644,23 @@ export default class SquadServer extends EventEmitter {
     );
   }
 
+  /**
+   * @deprecated Kept for backwards compatibility with custom plugins.
+   */
   async getPlayerBySteamID(steamID, forceUpdate) {
     return this.getPlayerByCondition((player) => player.steamID === steamID, forceUpdate);
   }
 
   async getPlayerByEOSID(eosID, forceUpdate) {
     return this.getPlayerByCondition((player) => player.eosID === eosID, forceUpdate);
+  }
+
+  async getPlayerByAnyID(anyID, forceUpdate) {
+    return this.getPlayerByCondition(
+      (player) =>
+        Object.entries(player).filter(([parm, val]) => parm.endsWith('ID') && val === anyID).length,
+      forceUpdate
+    );
   }
 
   async getPlayerByName(name, forceUpdate) {

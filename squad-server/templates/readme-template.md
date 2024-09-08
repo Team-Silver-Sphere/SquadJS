@@ -29,7 +29,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 
 #### Prerequisites
 * Git
-* [Node.js](https://nodejs.org/en/) (14.x) - [Download](https://nodejs.org/en/)
+* [Node.js](https://nodejs.org/en/) (18.x) - [Download](https://nodejs.org/en/)
 * [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
 * Some plugins may have additional requirements.
 
@@ -65,11 +65,16 @@ The following section of the configuration contains information about your Squad
     "rconPassword": "password",
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
-    "ftp":{
+    "ftp": {
       "port": 21,
       "user": "FTP Username",
-      "password": "FTP Password",
-      "useListForSize": false
+      "password": "FTP Password"
+    },
+    "sftp": {
+      "host": "xxx.xxx.xxx.xxx",
+      "port": 21,
+      "username": "SFTP Username",
+      "password": "SFTP Password"
     },
     "adminLists": [
       {
@@ -79,6 +84,10 @@ The following section of the configuration contains information about your Squad
       {
         "type": "remote",
         "source": "http://yourWebsite.com/Server1/Admins.cfg",
+      },
+      {
+        "type": "ftp",
+        "source": "ftp://<user>:<password>@<host>:<port>/<url-path>",
       }
     ]
   },

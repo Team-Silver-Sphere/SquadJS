@@ -1,4 +1,3 @@
-import Discord from 'discord.js';
 import tinygradient from 'tinygradient';
 
 import { COPYRIGHT_MESSAGE } from '../utils/constants.js';
@@ -55,11 +54,6 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
   }
 
   async generateMessage() {
-    const embed = new Discord.MessageEmbed();
-
-    // Set embed title.
-    embed.setTitle(this.server.serverName);
-
     // Set player embed field.
     let players = '';
 
@@ -70,54 +64,60 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
     players += ` / ${this.server.publicSlots}`;
     if (this.server.reserveSlots > 0) players += ` (+${this.server.reserveSlots})`;
 
-    embed.addField('Players', players);
-
-    // Set layer embed fields.
-    embed.addField(
-      'Current Layer',
-      `\`\`\`${this.server.currentLayer?.name || 'Unknown'}\`\`\``,
-      true
-    );
-    embed.addField(
-      'Next Layer',
-      `\`\`\`${
-        this.server.nextLayer?.name || (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
-      }\`\`\``,
-      true
-    );
-
-    // Set layer image.
-    embed.setImage(
-      this.server.currentLayer
-        ? `https://squad-data.nyc3.cdn.digitaloceanspaces.com/main/${this.server.currentLayer.layerid}.jpg`
-        : undefined
-    );
-
-    // Set timestamp.
-    embed.setTimestamp(new Date());
-
-    // Set footer.
-    embed.setFooter(COPYRIGHT_MESSAGE);
+    const layerName = this.server.currentLayer
+      ? this.server.currentLayer.name
+      : (await this.server.rcon.getCurrentMap()).layer;
 
     // Clamp the ratio between 0 and 1 to avoid tinygradient errors.
     const ratio = this.server.a2sPlayerCount / (this.server.publicSlots + this.server.reserveSlots);
     const clampedRatio = Math.min(1, Math.max(0, ratio));
 
     // Set gradient embed color.
-    embed.setColor(
-      parseInt(
-        tinygradient([
-          { color: '#ff0000', pos: 0 },
-          { color: '#ffff00', pos: 0.5 },
-          { color: '#00ff00', pos: 1 }
-        ])
-          .rgbAt(clampedRatio)
-          .toHex(),
-        16
-      )
+    const color = parseInt(
+      tinygradient([
+        { color: '#ff0000', pos: 0 },
+        { color: '#ffff00', pos: 0.5 },
+        { color: '#00ff00', pos: 1 }
+      ])
+        .rgbAt(clampedRatio)
+        .toHex(),
+      16
     );
 
-    return embed;
+    const embedobj = {
+      title: this.server.serverName,
+      fields: [
+        {
+          name: 'Players',
+          value: players
+        },
+        {
+          name: 'Current Layer',
+          value: `\`\`\`${layerName || 'Unknown'}\`\`\``,
+          inline: true
+        },
+        {
+          name: 'Next Layer',
+          value: `\`\`\`${
+            this.server.nextLayer?.name ||
+            (this.server.nextLayerToBeVoted ? 'To be voted' : 'Unknown')
+          }\`\`\``,
+          inline: true
+        }
+      ],
+      color: color,
+      footer: { text: COPYRIGHT_MESSAGE },
+      timestamp: new Date(),
+      // Dont use CDN for images, use raw.githubusercontent.com.
+      // Also not updated for 8.x properly.
+      image: {
+        url: this.server.currentLayer
+          ? `https://raw.githubusercontent.com/Squad-Wiki/squad-wiki-pipeline-map-data/master/completed_output/_Current%20Version/images/${this.server.currentLayer.layerid}.jpg`
+          : undefined
+      }
+    };
+
+    return { embeds: [embedobj] };
   }
 
   async updateStatus() {
@@ -127,7 +127,7 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
       `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
         this.server.currentLayer?.name || 'Unknown'
       }`,
-      { type: 'WATCHING' }
+      { type: 4 }
     );
   }
 }

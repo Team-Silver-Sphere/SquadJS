@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { Client as FTPClient } from 'basic-ftp';
+import WritableBuffer from './writable-buffer.js';
 
 import axios from 'axios';
 import Logger from 'core/logger';
@@ -31,6 +33,29 @@ export default async function fetchAdminLists(adminLists) {
           data = fs.readFileSync(listPath, 'utf8');
           break;
         }
+        case 'ftp': {
+          // ex url: ftp//<user>:<password>@<host>:<port>/<url-path>
+          if (!list.source.startsWith('ftp://')) {
+            throw new Error(
+              `Invalid FTP URI format of ${list.source}. The source must be a FTP URI starting with the protocol. Ex: ftp://username:password@host:21/some/file.txt`
+            );
+          }
+          const [loginString, hostPathString] = list.source.substring('ftp://'.length).split('@');
+          const [user, password] = loginString.split(':').map((v) => decodeURI(v));
+          const pathStartIndex = hostPathString.indexOf('/');
+          const remoteFilePath =
+            pathStartIndex === -1 ? '/' : hostPathString.substring(pathStartIndex);
+          const [host, port = 21] = hostPathString
+            .substring(0, pathStartIndex === -1 ? hostPathString.length : pathStartIndex)
+            .split(':');
+
+          const buffer = new WritableBuffer();
+          const ftpClient = new FTPClient();
+          await ftpClient.access({ host, port, user, password });
+          await ftpClient.downloadTo(buffer, remoteFilePath);
+          data = buffer.toString('utf8');
+          break;
+        }
         default:
           throw new Error(`Unsupported AdminList type:${list.type}`);
       }
@@ -44,7 +69,7 @@ export default async function fetchAdminLists(adminLists) {
     }
 
     const groupRgx = /(?<=^Group=)(?<groupID>.*?):(?<groupPerms>.*?)(?=(?:\r\n|\r|\n|\s+\/\/))/gm;
-    const adminRgx = /(?<=^Admin=)(?<steamID>\d+):(?<groupID>\S+)/gm;
+    const adminRgx = /(?<=^Admin=)(?<adminID>\d{17}|[a-f0-9]{32}):(?<groupID>\S+)/gm;
 
     for (const m of data.matchAll(groupRgx)) {
       groups[`${idx}-${m.groups.groupID}`] = m.groups.groupPerms.split(',');
@@ -55,20 +80,20 @@ export default async function fetchAdminLists(adminLists) {
         const perms = {};
         for (const groupPerm of group) perms[groupPerm.toLowerCase()] = true;
 
-        const steamID = m.groups.steamID;
-        if (steamID in admins) {
-          admins[steamID] = Object.assign(admins[steamID], perms);
+        const adminID = m.groups.adminID;
+        if (adminID in admins) {
+          admins[adminID] = Object.assign(admins[adminID], perms);
           Logger.verbose(
             'SquadServer',
             3,
-            `Merged duplicate Admin ${steamID} to ${Object.keys(admins[steamID])}`
+            `Merged duplicate Admin ${adminID} to ${Object.keys(admins[adminID])}`
           );
         } else {
-          admins[steamID] = Object.assign(perms);
+          admins[adminID] = Object.assign(perms);
           Logger.verbose(
             'SquadServer',
             3,
-            `Added Admin ${steamID} with ${Object.keys(admins[steamID])}`
+            `Added Admin ${adminID} with ${Object.keys(admins[adminID])}`
           );
         }
       } catch (error) {

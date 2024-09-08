@@ -5,13 +5,14 @@
   "exports": {
     "./log-parser": "./log-parser/index.js",
     "./constants": "./constants.js",
+    "./id-parser": "./id-parser.js",
     "./logger": "./logger.js",
     "./rcon": "./rcon.js"
   },
   "dependencies": {
     "async": "^3.2.0",
     "chalk": "^4.1.0",
-    "ftp-tail": "^1.1.1",
+    "ftp-tail": "^2.1.1",
     "moment": "^2.29.1",
     "tail": "^2.0.4"
   }

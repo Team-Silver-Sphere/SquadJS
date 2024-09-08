@@ -70,6 +70,11 @@ export default class DiscordChat extends DiscordBasePlugin {
             inline: true
           },
           {
+            name: 'EosID',
+            value: info.player.eosID,
+            inline: true
+          },
+          {
             name: 'Team & Squad',
             value: `Team: ${info.player.teamID}, Squad: ${info.player.squadID || 'Unassigned'}`
           },

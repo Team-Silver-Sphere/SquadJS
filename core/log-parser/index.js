@@ -6,6 +6,7 @@ import moment from 'moment';
 import Logger from '../logger.js';
 
 import TailLogReader from './log-readers/tail.js';
+import SFTPLogReader from './log-readers/sftp.js';
 import FTPLogReader from './log-readers/ftp.js';
 
 export default class LogParser extends EventEmitter {
@@ -16,12 +17,8 @@ export default class LogParser extends EventEmitter {
 
     this.eventStore = {
       disconnected: {}, // holding area, cleared on map change.
-      players: [], // persistent data, steamid, controller, suffix.
-      playersEOS: [], // proxies from EOSID to persistent data, steamid, controller, suffix.
-      connectionIdToSteamID: new Map(),
+      players: {}, // persistent data, steamid, controller, suffix.
       session: {}, // old eventstore, nonpersistent data
-      clients: {}, // used in the connection chain before we resolve a player.
-      lastConnection: {}, // used to store the last client connection data to then associate a steamid
       joinRequests: []
     };
 
@@ -38,6 +35,9 @@ export default class LogParser extends EventEmitter {
     switch (options.mode || 'tail') {
       case 'tail':
         this.logReader = new TailLogReader(this.queue.push, options);
+        break;
+      case 'sftp':
+        this.logReader = new SFTPLogReader(this.queue.push, options);
         break;
       case 'ftp':
         this.logReader = new FTPLogReader(this.queue.push, options);
@@ -74,10 +74,10 @@ export default class LogParser extends EventEmitter {
   clearEventStore() {
     Logger.verbose('LogParser', 2, 'Cleaning Eventstore');
     for (const player of Object.values(this.eventStore.players)) {
-      if (this.eventStore.disconnected[player.steamID] === true) {
-        Logger.verbose('LogParser', 2, `Removing ${player.steamID} from eventStore`);
-        delete this.eventStore.players[player.steamID];
-        delete this.eventStore.disconnected[player.steamID];
+      if (this.eventStore.disconnected[player.eosID] === true) {
+        Logger.verbose('LogParser', 2, `Removing ${player.eosID} from eventStore`);
+        delete this.eventStore.players[player.eosID];
+        delete this.eventStore.disconnected[player.eosID];
       }
     }
     this.eventStore.session = {};
