@@ -1,5 +1,3 @@
-/* eslint-disable no-duplicate-case */
-/* eslint-disable no-dupe-class-members */
 import BasePlugin from './base-plugin.js';
 
 import Sequelize from 'sequelize';
