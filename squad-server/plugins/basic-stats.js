@@ -362,7 +362,7 @@ export default class DiscordStats extends BasePlugin {
         if (!message.content.startsWith(prefix)) return;
         if (message.author.bot) return;
         const cmd = message.content.split(" ")[0].slice(prefix.length);
-        if (message.channel.id != this.options.channelID) return;
+        if (message.channel.id !== this.options.channelID) return;
         switch (cmd) {
             case "link":
                 {
@@ -377,7 +377,7 @@ export default class DiscordStats extends BasePlugin {
                         message.reply("No user found with that steamID");
                         break;
                     }
-                    if (this.linkedAccounts.find((x) => x.steamID == steamID || message.author.id == x.discordID)) return message.reply("Account already linked");
+                    if (this.linkedAccounts.find((x) => x.steamID === steamID || message.author.id === x.discordID)) return message.reply("Account already linked");
                     this.linkedAccounts.push({
                         discordID: message.author.id,
                         steamID: steamID
@@ -648,13 +648,6 @@ export default class DiscordStats extends BasePlugin {
             }
         });
 
-        const tks = await this.models.Death.count({
-            where: {
-                attacker: user.steamID,
-                teamkill: 1
-            }
-        });
-
         const matcheCount = await this.models.Death.findOne({
             where: {
                 attacker: user.steamID
@@ -704,8 +697,6 @@ export default class DiscordStats extends BasePlugin {
         });
 
         const kdr = deaths === 0 ? kills : kills / deaths;
-        const rpd = revives === 0 ? 0 : revives / deaths;
-        const hpr = hits === 0 ? 0 : hits / revives;
 
         const content = new Discord.MessageEmbed()
             .setTitle(`${user.lastName} - ${user.steamID} STATS`)
