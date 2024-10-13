@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, URL } from 'url';
 import { Client as FTPClient } from 'basic-ftp';
+import SFTPClient from 'ssh2-sftp-client';
 import WritableBuffer from './writable-buffer.js';
 
 import axios from 'axios';
@@ -40,20 +41,41 @@ export default async function fetchAdminLists(adminLists) {
               `Invalid FTP URI format of ${list.source}. The source must be a FTP URI starting with the protocol. Ex: ftp://username:password@host:21/some/file.txt`
             );
           }
-          const [loginString, hostPathString] = list.source.substring('ftp://'.length).split('@');
-          const [user, password] = loginString.split(':').map((v) => decodeURI(v));
-          const pathStartIndex = hostPathString.indexOf('/');
-          const remoteFilePath =
-            pathStartIndex === -1 ? '/' : hostPathString.substring(pathStartIndex);
-          const [host, port = 21] = hostPathString
-            .substring(0, pathStartIndex === -1 ? hostPathString.length : pathStartIndex)
-            .split(':');
-
-          const buffer = new WritableBuffer();
+          const url = new URL(list.source);
           const ftpClient = new FTPClient();
-          await ftpClient.access({ host, port, user, password });
-          await ftpClient.downloadTo(buffer, remoteFilePath);
+          await ftpClient.access({
+            host: url.hostname,
+            port: url.port || '21',
+            user: url.username,
+            password: url.password
+          });
+          const buffer = new WritableBuffer();
+          await ftpClient.downloadTo(buffer, url.pathname);
           data = buffer.toString('utf8');
+          break;
+        }
+        case 'sftp': {
+          // ex url: sftp//<user>:<password>@<host>:<port>/<url-path>
+          if (!list.source.startsWith('sftp://')) {
+            throw new Error(
+              `Invalid SFTP URI format of ${list.source}. The source must be a SFTP URI starting with the protocol. Ex: sftp://username:password@host:22/some/file.txt`
+            );
+          }
+          const url = new URL(list.source);
+          const sftpClient = new SFTPClient();
+          await sftpClient.connect({
+            host: url.hostname,
+            port: url.port || '22',
+            username: url.username,
+            password: url.password
+          });
+          try {
+            const buffer = new WritableBuffer();
+            await sftpClient.get(url.pathname, buffer);
+            data = buffer.toString('utf8');
+          } finally {
+            sftpClient.end();
+          }
           break;
         }
         default:
