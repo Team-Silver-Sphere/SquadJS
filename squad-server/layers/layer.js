@@ -18,24 +18,13 @@ export default class Layer {
     };
     this.teams = [];
     for (const t of ['team1', 'team2']) {
+      let team = data[t] || data.teamConfigs[t];
       this.teams.push({
-        faction: data[t].faction,
-        name: data[t].teamSetupName,
-        tickets: data[t].tickets,
-        commander: data[t].commander,
-        vehicles: (data[t].vehicles || []).map((vehicle) => ({
-          name: vehicle.type,
-          classname: vehicle.rawType,
-          count: vehicle.count,
-          spawnDelay: vehicle.delay,
-          respawnDelay: vehicle.respawnTime
-        })),
-        numberOfTanks: (data[t].vehicles || []).filter((v) => {
-          return v.icon.match(/_tank/);
-        }).length,
-        numberOfHelicopters: (data[t].vehicles || []).filter((v) => {
-          return v.icon.match(/helo/);
-        }).length
+        faction: team.defaultFactionUnit, 
+        name: team.defaultFactionUnit, // There is no other name presented in the data so in order to keep the same structure to support the old formatted codes, used the same name
+        tickets: team.tickets,
+        allowedFactionsUnitTypes: team.allowedFactionsUnitTypes,
+        allowedAlliances: team.allowedAlliances,
       });
     }
   }
