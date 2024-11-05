@@ -223,4 +223,8 @@ export default class SquadRcon extends Rcon {
   async switchTeam(anyID) {
     await this.execute(`AdminForceTeamChange "${anyID}"`);
   }
+
+  async executeCommand(command) {
+    return await this.execute(command);
+  }
 }
