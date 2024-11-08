@@ -495,22 +495,41 @@ export default class DBLog extends BasePlugin {
   }
 
   async onTickRate(info) {
-    await this.models.TickRate.create({
+    const tickRate = {
       server: this.options.overrideServerID || this.server.id,
       match: this.match ? this.match.id : null,
-      time: info.time,
       tickRate: info.tickRate
-    });
+    };
+
+    if (
+      this.server.lastTickRate &&
+      JSON.stringify(this.server.lastTickRate) === JSON.stringify(tickRate)
+    )
+      return;
+
+    this.server.lastTickRate = { ...tickRate };
+
+    tickRate.time = info.time;
+
+    await this.models.TickRate.create(tickRate);
   }
 
   async onUpdatedA2SInformation(info) {
-    await this.models.PlayerCount.create({
+    const serverInfo = {
       server: this.options.overrideServerID || this.server.id,
       match: this.match ? this.match.id : null,
       players: info.a2sPlayerCount,
       publicQueue: info.publicQueue,
       reserveQueue: info.reserveQueue
-    });
+    };
+    if (
+      this.server.lastServerInfo &&
+      JSON.stringify(this.server.lastServerInfo) === JSON.stringify(serverInfo)
+    )
+      return;
+
+    this.server.lastServerInfo = serverInfo;
+    await this.models.PlayerCount.create(serverInfo);
   }
 
   async onNewGame(info) {
