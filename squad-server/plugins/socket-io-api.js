@@ -30,7 +30,9 @@ const eventsToBroadcast = [
   'PLAYER_WARNED',
   'PLAYER_KICKED',
   'PLAYER_BANNED',
-  'SQUAD_CREATED'
+  'SQUAD_CREATED',
+  'VEHICLE_DAMAGED',
+  'PLAYER_POSSESS_SOLDIER'
 ];
 
 export default class SocketIOAPI extends BasePlugin {
