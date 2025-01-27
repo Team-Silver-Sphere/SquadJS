@@ -17,7 +17,6 @@ import RoundWinner from './round-winner.js';
 import ServerTickRate from './server-tick-rate.js';
 import PlayerJoinSucceeded from './player-join-succeeded.js';
 import VehicleDamaged from './vehicle-damaged.js';
-import PlayerPossessSoldier from './player-possess-soldier.js';
 export default class SquadLogParser extends LogParser {
   constructor(options) {
     super('SquadGame.log', options);
@@ -41,8 +40,7 @@ export default class SquadLogParser extends LogParser {
       RoundWinner,
       ServerTickRate,
       PlayerJoinSucceeded,
-	  VehicleDamaged,
-	  PlayerPossessSoldier
+	  VehicleDamaged
     ];
   }
 }

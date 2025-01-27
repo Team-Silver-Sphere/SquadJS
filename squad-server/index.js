@@ -10,6 +10,8 @@ import { Layers } from './layers/index.js';
 import LogParser from './log-parser/index.js';
 import Rcon from './rcon.js';
 
+import SoldierLookup from './lookup/soldier-lookup.js';
+
 import { SQUADJS_VERSION } from './utils/constants.js';
 
 import fetchAdminLists from './utils/admin-lists.js';
@@ -302,6 +304,12 @@ export default class SquadServer extends EventEmitter {
       delete data.playerSuffix;
 
       this.emit('PLAYER_POSSESS', data);
+	  
+	  let match = data.possessClassname.match(/(?:BP_Soldier_|Default__BP_Soldier_)([a-zA-Z]+)_[a-zA-Z0-9]+/);
+	  if (match) {
+		  if (data.player) data.player.teamName = SoldierLookup[match[1]];
+		  this.emit('PLAYER_SOLDIER_POSSESS', data);
+	  }
     });
 
     this.logParser.on('PLAYER_UNPOSSESS', async (data) => {
@@ -322,10 +330,6 @@ export default class SquadServer extends EventEmitter {
 	
 	this.logParser.on('VEHICLE_DAMAGED', (data) => {
       this.emit('VEHICLE_DAMAGED', data);
-    });
-	
-	this.logParser.on('PLAYER_POSSESS_SOLDIER', (data) => {
-      this.emit('PLAYER_POSSESS_SOLDIER', data);
     });
   }
 

@@ -1,5 +1,4 @@
 import VehiclesLookup from './lookup/vehicles-lookup.js';
-import FactionSides from './lookup/factions-lookup.js';
 
 export default {
   regex:
@@ -16,26 +15,8 @@ export default {
 		attackerEOSID: args[7],
 		attackerSteamID: args[8],
 		healthRemaining: parseFloat(args[9]),
-		vehicleTeams: VehiclesLookup[args[3]],
-		teamkill: null
+		vehicleTeams: VehiclesLookup[args[3]]
 	};
-	
-	const isTeamkill = (() => {
-		const vehicleTeamsCheck = data.vehicleTeams;
-		const player = logParser.eventStore.players[data.attackerEOSID];
-		if (!(player && player.teamName && vehicleTeamsCheck?.length)) return null;
-		const playerSide = FactionSides[player.teamName];
-		if (!playerSide) return null;
-		const vehicleSide = [];
-		for (const vehTeam of vehicleTeamsCheck) {
-			const vehSide = FactionSides[vehTeam];
-			if (vehSide && !vehicleSide.includes(vehSide)) vehicleSide.push(vehSide);
-		}
-		if (vehicleSide.includes(playerSide)) return 1.0 / vehicleSide.length > 0.5; // teamkill confidence
-		else return false; // not in team list
-	})();
-	
-	data.teamkill = isTeamkill;
     
     logParser.emit('VEHICLE_DAMAGED', data);
   }
