@@ -1,4 +1,4 @@
-export default { //BP_Soldier_PLA_Rifleman1.uasset || Default__BP_Soldier_PLA_Rifleman1.uasset
+export default {
 	"ADF": "ADF",
 	"CAF": "CAF",
 	"BAF": "BAF",
@@ -8,7 +8,7 @@ export default { //BP_Soldier_PLA_Rifleman1.uasset || Default__BP_Soldier_PLA_Ri
 	"PLA": "PLA",
 	"PLANMC": "PLANMC",
 	"RU": "RGF",
-	"TestTeam": null,
+	"TestTeam": "TestTeam",
 	"TLF": "TLF",
 	"USA": "USA",
 	"USMC": "USMC",
