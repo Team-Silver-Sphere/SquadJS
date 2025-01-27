@@ -344,7 +344,7 @@ export default {
 	"BP_RHIB_QJZ89": ["PLA", "PLANMC"],
 	"BP_RHIB_TLF_M2HB": ["TLF"],
 	"BP_RHIB_PKM": ["INS", "IMF"],
-	"BP_RHIB_DSHK": ["INS" "IMF"],
+	"BP_RHIB_DSHK": ["INS", "IMF"],
 	"BP_RHIB_Transport": ["ADF", "BAF", "CAF", "USA", "USMC", "RGF", "PLA", "PLANMC", "IMF", "INS", "MEA"],
 	"BP_RHIB_Logistics": ["ADF", "BAF", "CAF", "USA", "USMC", "RGF", "PLA", "PLANMC", "IMF", "INS", "MEA"],
 	"BP_minsk": ["IMF", "INS"],
