@@ -746,8 +746,8 @@ export default class DBLog extends BasePlugin {
 				const vehSide = FactionSides[vehTeam];
 				if (vehSide && !vehicleSide.includes(vehSide)) vehicleSide.push(vehSide);
 			  }
-			  if (vehicleSide.includes(playerSide)) isTeamkill = 1.0 / vehicleSide.length > 0.5; // teamkill confidence
-			  else isTeamkill = false; // not in team list
+			  if (vehicleSide.includes(playerSide)) return 1.0 / vehicleSide.length > 0.5; // teamkill confidence
+			  else return false; // not in team list
 		})();
 		if (player) await this.models.Player.upsert(
 		{
@@ -767,7 +767,7 @@ export default class DBLog extends BasePlugin {
 			vehicleTeams: Array.isArray(vehicleTeamsCheck) && vehicleTeamsCheck.length > 0 ? JSON.stringify(vehicleTeamsCheck) : null,
 			attacker: player ? player.steamID : null,
 			attackerName: player ? player.name : null,
-			attackerTeams: player ? player.teamID : null,
+			attackerTeams: player ? player.teamName : null,
 			teamkill: isTeamkill
 		});
 	}
