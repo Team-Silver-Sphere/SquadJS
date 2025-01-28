@@ -55,19 +55,20 @@ export default class PluginTest extends BasePlugin {
 				const vehSide = FactionSides[vehTeam];
 				if (vehSide && !vehicleSide.includes(vehSide)) vehicleSide.push(vehSide);
 			  }
-			  if (vehicleSide.includes(playerSide)) isTeamkill = 1.0 / vehicleSide.length > 0.5; // teamkill confidence
-			  else isTeamkill = false; // not in team list
+			  if (vehicleSide.includes(playerSide)) return 1.0 / vehicleSide.length > 0.5; // teamkill confidence
+			  else return false; // not in team list
 		})();
 		const parsedData = {
 			vehicleName: info.vehicle ? info.vehicle : null,
 			vehicleTeams: Array.isArray(vehicleTeamsCheck) && vehicleTeamsCheck.length > 0 ? JSON.stringify(vehicleTeamsCheck) : null,
 			attacker: player ? player.steamID : null,
 			attackerName: player ? player.name : null,
-			attackerTeams: player ? player.teamID : null,
+			attackerTeams: player ? player.teamName : null,
 			healthRemaining: info.healthRemaining ? info.healthRemaining : null,
 			teamkill: isTeamkill
 		}
-	   await this.server.rcon.broadcast('Vehicle Damaged. '.concat('Name:', parsedData.vehicleName, ', HP:', parsedData.healthRemaining, ', TK:', parsedData.teamkill, ', AttTeam:', parsedData.attackerTeams, ', VehTeams:', parsedData.vehicleTeams));
+		const stringDamDest = info.healthRemaining >= 0.0 ? 'Vehicle Damaged. ' : 'Vehicle Destroyed. ';
+	   await this.server.rcon.broadcast(stringDamDest.concat('Name:', parsedData.vehicleName, ', HP:', parsedData.healthRemaining, ', TK:', parsedData.teamkill, ', AttTeam:', parsedData.attackerTeams, ', VehTeams:', parsedData.vehicleTeams));
    }
   
   async pluginTestTwo(info) {
