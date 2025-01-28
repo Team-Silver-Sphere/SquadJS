@@ -539,7 +539,7 @@ export default class DBLog extends BasePlugin {
     this.server.on('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.on('PLAYER_DIED', this.onPlayerDied);
     this.server.on('PLAYER_REVIVED', this.onPlayerRevived);
-	this.server.on('VEHICLE_DAMAGED', this.onVehicleDestroy);
+	this.server.on('VEHICLE_DESTROYED', this.onVehicleDestroy);
   }
 
   async unmount() {
@@ -550,7 +550,7 @@ export default class DBLog extends BasePlugin {
     this.server.removeEventListener('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.removeEventListener('PLAYER_DIED', this.onPlayerDied);
     this.server.removeEventListener('PLAYER_REVIVED', this.onPlayerRevived);
-	this.server.removeEventListener('VEHICLE_DAMAGED', this.onVehicleDestroy);
+	this.server.removeEventListener('VEHICLE_DESTROYED', this.onVehicleDestroy);
   }
 
   async onTickRate(info) {
@@ -733,7 +733,9 @@ export default class DBLog extends BasePlugin {
   }
   
 	async onVehicleDestroy(info) {
-		if (!info.healthRemaining || info.healthRemaining >= 0.0) return;
+		if (!info.healthRemaining 
+		//|| info.healthRemaining >= 0.0
+		) return;
 		const player = this.server.players[this.server.players.findIndex(entry => entry.eosID === info.attackerEOSID)];
 		const vehicleTeamsCheck = info.vehicleTeams;
 		const isTeamkill = (() => {
