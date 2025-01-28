@@ -30,19 +30,16 @@ export default class PluginTest extends BasePlugin {
   }
 
   async mount() {
-    this.server.on('VEHICLE_DAMAGED', this.pluginTest);
-	//this.server.on('PLAYER_SOLDIER_POSSESS', this.pluginTestTwo);
+    this.server.on('VEHICLE_DESTROYED', this.pluginTest);
+	//this.server.on('VEHICLE_DAMAGED', this.pluginTestTwo);
   }
 
   async unmount() {
-    this.server.removeEventListener('VEHICLE_DAMAGED', this.pluginTest);
-	//this.server.removeEventListener('PLAYER_SOLDIER_POSSESS', this.pluginTestTwo);
+    this.server.removeEventListener('VEHICLE_DESTROYED', this.pluginTest);
+	//this.server.removeEventListener('VEHICLE_DAMAGED', this.pluginTestTwo);
   }
   
    async pluginTest(info) {
-		if (!info.healthRemaining 
-		//|| info.healthRemaining >= 0.0
-		) return;
 		const player = this.server.players[this.server.players.findIndex(entry => entry.eosID === info.attackerEOSID)];
 		const vehicleTeamsCheck = info.vehicleTeams;
 		const isTeamkill = (() => {
@@ -72,11 +69,7 @@ export default class PluginTest extends BasePlugin {
    }
   
   async pluginTestTwo(info) {
-	  //await this.server.rcon.broadcast('PLAYER_SOLDIER_POSSESS: '.concat(SoldierLookup[info.playerRawTeam]));//.concat(info.playerName, ', ', info.playerSoldier));
-	  //for (const key of this.server.players.keys()) {this.server.rcon.broadcast(key);}
-	  //let index = this.server.players.findIndex(entry => entry.eosID === info.player.eosID);
-	  //this.server.players[index]["teamName"] = SoldierLookup[info.playerRawTeam];
-	  //await this.server.rcon.broadcast('playerpossesssoldier '.concat(info.player.teamName));
+	  await this.server.rcon.broadcast('DAMAGED!');
   }
 
 }
