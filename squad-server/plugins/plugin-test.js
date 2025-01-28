@@ -64,7 +64,7 @@ export default class PluginTest extends BasePlugin {
 			attacker: player ? player.steamID : null,
 			attackerName: player ? player.name : null,
 			attackerTeams: player ? player.teamID : null,
-			healthRemaining: healthRemaining ? healthRemaining : null,
+			healthRemaining: info.healthRemaining ? info.healthRemaining : null,
 			teamkill: isTeamkill
 		}
 	   await this.server.rcon.broadcast('Vehicle Damaged. '.concat('Name:', parsedData.vehicleName, ', HP:', parsedData.healthRemaining, ', TK:', parsedData.teamkill, ', AttTeam:', parsedData.attackerTeams, ', VehTeams:', parsedData.vehicleTeams));
