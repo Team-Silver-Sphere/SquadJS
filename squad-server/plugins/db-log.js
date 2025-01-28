@@ -733,9 +733,7 @@ export default class DBLog extends BasePlugin {
   }
   
 	async onVehicleDestroy(info) {
-		if (!info.healthRemaining 
-		//|| info.healthRemaining >= 0.0
-		) return;
+		if (!info) return;
 		const player = this.server.players[this.server.players.findIndex(entry => entry.eosID === info.attackerEOSID)];
 		const vehicleTeamsCheck = info.vehicleTeams;
 		const isTeamkill = (() => {
