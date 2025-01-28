@@ -303,6 +303,7 @@ export default {
 	"BP_T72B3": ["RGF", "RAF"],
 	"BP_T72AV_MEA": ["MEA"],
 	"BP_T90A": ["RGF"],
+	"BP_T90A_Desert": ["RGF"],
 	"BP_ZTZ99": ["PLA", "PLANMC"],
 	"BP_ZTZ99_wCage": ["PLA", "PLANMC"],
 	"BP_ZTZ99_Desert": ["PLA", "PLANMC"],
