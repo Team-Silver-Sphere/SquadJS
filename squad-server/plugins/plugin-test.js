@@ -1,5 +1,4 @@
 import BasePlugin from './base-plugin.js';
-import SoldierLookup from './lookup/soldier-lookup.js';
 import FactionSides from './lookup/factions-lookup.js';
 
 
@@ -27,42 +26,48 @@ export default class PluginTest extends BasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
     this.pluginTest = this.pluginTest.bind(this);
-	this.pluginTestTwo = this.pluginTestTwo.bind(this);
+	//this.pluginTestTwo = this.pluginTestTwo.bind(this);
   }
 
   async mount() {
     this.server.on('VEHICLE_DAMAGED', this.pluginTest);
-	this.server.on('PLAYER_SOLDIER_POSSESS', this.pluginTestTwo);
+	//this.server.on('PLAYER_SOLDIER_POSSESS', this.pluginTestTwo);
   }
 
   async unmount() {
     this.server.removeEventListener('VEHICLE_DAMAGED', this.pluginTest);
-	this.server.removeEventListener('PLAYER_SOLDIER_POSSESS', this.pluginTestTwo);
+	//this.server.removeEventListener('PLAYER_SOLDIER_POSSESS', this.pluginTestTwo);
   }
   
    async pluginTest(info) {
-	   let vehicleFactions = '|';
-	   let isTeamkill = null;
-	const vehicleTeamsCheck = info.vehicleTeams;
-	const player = this.server.players[this.server.players.findIndex(entry => entry.eosID === info.attackerEOSID)];
-	if (!(player && player.teamName && vehicleTeamsCheck?.length)) isTeamkill = null;
-	const playerSide = FactionSides[player.teamName];
-	if (!playerSide) isTeamkill = null;
-	const vehicleSide = [];
-	for (const vehTeam of vehicleTeamsCheck) {
-		const vehSide = FactionSides[vehTeam];
-		if (vehSide && !vehicleSide.includes(vehSide)) vehicleSide.push(vehSide);
-	}
-	if (vehicleSide.includes(playerSide)) isTeamkill = 1.0 / vehicleSide.length > 0.5; // teamkill confidence
-	else isTeamkill = false; // not in team list
-	   if (info.vehicleTeams) {
-		   for (const faction of info.vehicleTeams) {
-			   vehicleFactions = vehicleFactions.concat(faction, '|');
-			   }
-		   }
-	   await this.server.rcon.broadcast('INFO: healthRemaining:'.concat(info.healthRemaining, ', target:', info.vehicle, ', attacker:', info.attackerName, 
-	   ', attackerTeam:', player.teamName, 
-	   ', vehicleTeams:', vehicleFactions, ', teamkill:', isTeamkill));
+		if (!info.healthRemaining 
+		//|| info.healthRemaining >= 0.0
+		) return;
+		const player = this.server.players[this.server.players.findIndex(entry => entry.eosID === info.attackerEOSID)];
+		const vehicleTeamsCheck = info.vehicleTeams;
+		const isTeamkill = (() => {
+			  if (!(player && player.teamName && vehicleTeamsCheck?.length)) return null;
+			  const playerSide = FactionSides[player.teamName];
+			  if (!playerSide || !vehicleTeamsCheck) return null;
+			  const vehicleSide = [];
+			  if (!typeof vehicleTeamsCheck[Symbol.iterator] === 'function') return null;
+			  for (const vehTeam of vehicleTeamsCheck) {
+				const vehSide = FactionSides[vehTeam];
+				if (vehSide && !vehicleSide.includes(vehSide)) vehicleSide.push(vehSide);
+			  }
+			  if (vehicleSide.includes(playerSide)) isTeamkill = 1.0 / vehicleSide.length > 0.5; // teamkill confidence
+			  else isTeamkill = false; // not in team list
+		})();
+		const parsedData = {
+			vehicleName: info.vehicle ? info.vehicle : null,
+			vehicleTeams: Array.isArray(vehicleTeamsCheck) && vehicleTeamsCheck.length > 0 ? JSON.stringify(vehicleTeamsCheck) : null,
+			attacker: player ? player.steamID : null,
+			attackerName: player ? player.name : null,
+			attackerTeams: player ? player.teamID : null,
+			healthRemaining: healthRemaining ? healthRemaining : null,
+			teamkill: isTeamkill
+		}
+	   await this.server.rcon.broadcast('Vehicle Damaged. '.concat('Name:', parsedData.vehicleName, ', HP:', parsedData.healthRemaining, ', TK:', parsedData.teamkill, ', AttTeam:', parsedData.attackerTeams, ', VehTeams:', parsedData.vehicleTeams));
    }
   
   async pluginTestTwo(info) {
@@ -70,7 +75,7 @@ export default class PluginTest extends BasePlugin {
 	  //for (const key of this.server.players.keys()) {this.server.rcon.broadcast(key);}
 	  //let index = this.server.players.findIndex(entry => entry.eosID === info.player.eosID);
 	  //this.server.players[index]["teamName"] = SoldierLookup[info.playerRawTeam];
-	  await this.server.rcon.broadcast('playerpossesssoldier '.concat(info.player.teamName));
+	  //await this.server.rcon.broadcast('playerpossesssoldier '.concat(info.player.teamName));
   }
 
 }
