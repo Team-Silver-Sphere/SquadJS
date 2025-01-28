@@ -32,6 +32,7 @@ const eventsToBroadcast = [
   'PLAYER_BANNED',
   'SQUAD_CREATED',
   'VEHICLE_DAMAGED',
+  'VEHICLE_DESTROYED',
   'PLAYER_POSSESS_SOLDIER'
 ];
 
