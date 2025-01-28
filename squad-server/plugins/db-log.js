@@ -2,6 +2,8 @@ import Sequelize from 'sequelize';
 
 import BasePlugin from './base-plugin.js';
 
+import FactionSides from './lookup/factions-lookup.js';
+
 const { DataTypes, QueryTypes } = Sequelize;
 
 export default class DBLog extends BasePlugin {
@@ -336,6 +338,43 @@ export default class DBLog extends BasePlugin {
         collate: 'utf8mb4_unicode_ci'
       }
     );
+	
+	this.createModel(
+      'VehicleDestroy',
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+        },
+        time: {
+          type: DataTypes.DATE,
+          notNull: true
+        },
+        damageTime: {
+          type: DataTypes.DATE
+        },
+        vehicleName: {
+          type: DataTypes.STRING
+        },
+		vehicleTeams: {
+          type: DataTypes.STRING
+		},
+        attackerName: {
+          type: DataTypes.STRING
+        },
+        attackerTeams: {
+          type: DataTypes.STRING
+        },
+        teamkill: {
+          type: DataTypes.BOOLEAN
+        }
+      },
+      {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci'
+      }
+    );
 
     this.models.Server.hasMany(this.models.TickRate, {
       foreignKey: { name: 'server', allowNull: false },
@@ -363,6 +402,11 @@ export default class DBLog extends BasePlugin {
     });
 
     this.models.Server.hasMany(this.models.Revive, {
+      foreignKey: { name: 'server', allowNull: false },
+      onDelete: 'CASCADE'
+    });
+	
+	this.models.Server.hasMany(this.models.VehicleDestroy, {
       foreignKey: { name: 'server', allowNull: false },
       onDelete: 'CASCADE'
     });
@@ -409,6 +453,12 @@ export default class DBLog extends BasePlugin {
       onDelete: 'CASCADE'
     });
 
+	this.models.Player.hasMany(this.models.VehicleDestroy, {
+      sourceKey: 'steamID',
+      foreignKey: { name: 'attacker' },
+      onDelete: 'CASCADE'
+    });
+
     this.models.Match.hasMany(this.models.TickRate, {
       foreignKey: { name: 'match' },
       onDelete: 'CASCADE'
@@ -433,6 +483,11 @@ export default class DBLog extends BasePlugin {
       foreignKey: { name: 'match' },
       onDelete: 'CASCADE'
     });
+	
+	this.models.Match.hasMany(this.models.VehicleDestroy, {
+      foreignKey: { name: 'match' },
+      onDelete: 'CASCADE'
+    });
 
     this.onTickRate = this.onTickRate.bind(this);
     this.onUpdatedA2SInformation = this.onUpdatedA2SInformation.bind(this);
@@ -443,6 +498,7 @@ export default class DBLog extends BasePlugin {
     this.onPlayerRevived = this.onPlayerRevived.bind(this);
     this.migrateSteamUsersIntoPlayers = this.migrateSteamUsersIntoPlayers.bind(this);
     this.dropAllForeignKeys = this.dropAllForeignKeys.bind(this);
+	this.onVehicleDestroy = this.onVehicleDestroy.bind(this);
   }
 
   createModel(name, schema) {
@@ -461,6 +517,7 @@ export default class DBLog extends BasePlugin {
     await this.models.Wound.sync();
     await this.models.Death.sync();
     await this.models.Revive.sync();
+	await this.models.VehicleDestroy.sync();
   }
 
   async mount() {
@@ -482,6 +539,7 @@ export default class DBLog extends BasePlugin {
     this.server.on('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.on('PLAYER_DIED', this.onPlayerDied);
     this.server.on('PLAYER_REVIVED', this.onPlayerRevived);
+	this.server.on('VEHICLE_DAMAGED', this.onVehicleDestroy);
   }
 
   async unmount() {
@@ -492,6 +550,7 @@ export default class DBLog extends BasePlugin {
     this.server.removeEventListener('PLAYER_WOUNDED', this.onPlayerWounded);
     this.server.removeEventListener('PLAYER_DIED', this.onPlayerDied);
     this.server.removeEventListener('PLAYER_REVIVED', this.onPlayerRevived);
+	this.server.removeEventListener('VEHICLE_DAMAGED', this.onVehicleDestroy);
   }
 
   async onTickRate(info) {
@@ -672,6 +731,46 @@ export default class DBLog extends BasePlugin {
       reviverSquadID: info.reviver ? info.reviver.squadID : null
     });
   }
+  
+	async onVehicleDestroy(info) {
+		if (!info.healthRemaining || info.healthRemaining >= 0.0) return;
+		const player = this.server.players[this.server.players.findIndex(entry => entry.eosID === info.attackerEOSID)];
+		const vehicleTeamsCheck = info.vehicleTeams;
+		const isTeamkill = (() => {
+			  if (!(player && player.teamName && vehicleTeamsCheck?.length)) return null;
+			  const playerSide = FactionSides[player.teamName];
+			  if (!playerSide || !vehicleTeamsCheck) return null;
+			  const vehicleSide = [];
+			  if (!typeof vehicleTeamsCheck[Symbol.iterator] === 'function') return null;
+			  for (const vehTeam of vehicleTeamsCheck) {
+				const vehSide = FactionSides[vehTeam];
+				if (vehSide && !vehicleSide.includes(vehSide)) vehicleSide.push(vehSide);
+			  }
+			  if (vehicleSide.includes(playerSide)) isTeamkill = 1.0 / vehicleSide.length > 0.5; // teamkill confidence
+			  else isTeamkill = false; // not in team list
+		})();
+		if (player) await this.models.Player.upsert(
+		{
+			eosID: player.eosID,
+			steamID: player.steamID,
+			lastName: player.name
+		},
+		{
+			conflictFields: ['steamID']
+		});
+		await this.models.VehicleDestroy.create({
+			server: this.options.overrideServerID || this.server.id,
+			match: this.match ? this.match.id : null,
+			time: info.time,
+			damageTime: info.time,
+			vehicleName: info.vehicle ? info.vehicle : null,
+			vehicleTeams: Array.isArray(vehicleTeamsCheck) && vehicleTeamsCheck.length > 0 ? JSON.stringify(vehicleTeamsCheck) : null,
+			attacker: player ? player.steamID : null,
+			attackerName: player ? player.name : null,
+			attackerTeams: player ? player.teamID : null,
+			teamkill: isTeamkill
+		});
+	}
 
   async onPlayerConnected(info) {
     await this.models.Player.upsert(
