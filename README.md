@@ -786,7 +786,55 @@ Grafana:
            <h6>Default</h6>
            <pre><code>false</code></pre></li></ul>
         </details>
+<details>
+  <summary>EnforceSquadLeaderKit</summary>
+  <h2>EnforceSquadLeaderKit</h2>
+  <p>The <code>EnforceSquadLeaderKit</code> plugin ensures that squad leaders select the correct Squad Leader kit. It will warn players who do not comply and disband their squad if they fail to switch after multiple warnings.</p>
 
+  <h3>Options</h3>
+  <ul>
+    <li>
+      <h4>warningMessage</h4>
+      <h6>Description</h6>
+      <p>Message displayed to squad leaders warning them to take the correct kit.</p>
+      <h6>Default</h6>
+      <pre><code>You must take the Squad Leader kit, or your squad will be disbanded!</code></pre>
+    </li>
+
+    <li>
+      <h4>checkInterval</h4>
+      <h6>Description</h6>
+      <p>Interval (in seconds) to check all squad leaders for the correct kit.</p>
+      <h6>Default</h6>
+      <pre><code>30</code></pre>
+    </li>
+
+    <li>
+      <h4>maxWarnings</h4>
+      <h6>Description</h6>
+      <p>Number of warnings a squad leader receives before their squad is disbanded.</p>
+      <h6>Default</h6>
+      <pre><code>3</code></pre>
+    </li>
+  </ul>
+
+  <h3>Behavior</h3>
+  <ul>
+    <li>Automatically monitors squad leaders at the specified interval.</li>
+    <li>Warns squad leaders if they do not have the correct kit.</li>
+    <li>Disbands a squad after a configurable number of warnings.</li>
+    <li>Resets warnings if the player takes the correct kit.</li>
+  </ul>
+
+  <h3>Example Configuration</h3>
+  <pre><code>{
+  "plugin": "EnforceSquadLeaderKit",
+  "enabled": true,
+  "warningMessage": "You must take the Squad Leader kit, or your squad will be disbanded!",
+  "checkInterval": 30,
+  "maxWarnings": 3
+}</code></pre>
+</details>
 <details>
           <summary>FogOfWar</summary>
           <h2>FogOfWar</h2>
