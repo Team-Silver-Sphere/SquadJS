@@ -146,7 +146,7 @@ export default class Rcon extends EventEmitter {
     } else this.#badPacket();
   }
   #badPacket() {
-    Logger.verbose("RCON", 1, `Bad packet, clearing: ${this.bufToHexString(this.stream)} Pending string: ${this.responseString}`);
+    Logger.verbose("RCON", 1, `Bad packet, clearing: ${this.#bufToHexString(this.stream)} Pending string: ${this.responseString}`);
     this.stream = Buffer.alloc(0);
     this.responseString = "";
     return null;
