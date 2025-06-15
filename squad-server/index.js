@@ -204,6 +204,7 @@ export default class SquadServer extends EventEmitter {
       this.layerHistory = this.layerHistory.slice(0, this.layerHistoryMaxLength);
 
       this.currentLayer = data.layer;
+      await this.updateServerInformation();
       await this.updateAdmins();
       this.emit('NEW_GAME', data);
     });
@@ -534,6 +535,19 @@ export default class SquadServer extends EventEmitter {
     return this.updateServerInformation();
   }
 
+  setupTeams() {
+    for (const t in [0, 1]) {
+      const unit = Layers.units[this.unitNames[t]];
+      this.currentLayer.teams[t] = {
+        faction: unit.factionID,
+        name: unit.displayName,
+        tickets: this.currentLayer.tickets[t],
+        commander: this.currentLayer.commander,
+        vehicles: unit.vehicles,
+      };
+    }
+  }
+
   async updateServerInformation() {
     if (this.updateA2SInformationTimeout) clearTimeout(this.updateA2SInformationTimeout);
 
@@ -543,7 +557,7 @@ export default class SquadServer extends EventEmitter {
       const rawData = await this.rcon.execute(`ShowServerInfo`);
       Logger.verbose('SquadServer', 3, `Server information raw data`, rawData);
       const data = JSON.parse(rawData);
-      Logger.verbose('SquadServer', 2, `Server information data`, JSON.data);
+      Logger.verbose('SquadServer', 2, `Server information data`, data);
 
       const info = {
         raw: data,
@@ -561,8 +575,8 @@ export default class SquadServer extends EventEmitter {
         currentLayer: data.MapName_s,
         nextLayer: data.NextLayer_s,
 
-        teamOne: data.TeamOne_s?.replace(new RegExp(data.MapName_s, 'i'), '') || '',
-        teamTwo: data.TeamTwo_s?.replace(new RegExp(data.MapName_s, 'i'), '') || '',
+        teamOne: data.TeamOne_s,
+        teamTwo: data.TeamTwo_s,
 
         matchTimeout: parseFloat(data.MatchTimeout_d),
         matchStartTime: this.getMatchStartTimeByPlaytime(data.PLAYTIME_I),
@@ -579,6 +593,7 @@ export default class SquadServer extends EventEmitter {
       this.playerCount = info.playerCount;
       this.publicQueue = info.publicQueue;
       this.reserveQueue = info.reserveQueue;
+      this.unitNames = [data.TeamOne_s, data.TeamTwo_s];
 
       this.matchTimeout = info.matchTimeout;
       this.matchStartTime = info.matchStartTime;
@@ -586,6 +601,7 @@ export default class SquadServer extends EventEmitter {
 
       if (!this.currentLayer) this.currentLayer = Layers.getLayerByClassname(info.currentLayer);
       if (!this.nextLayer) this.nextLayer = Layers.getLayerByClassname(info.nextLayer);
+      if (!this.currentLayer.teams.length) this.setupTeams();
 
       this.emit('UPDATED_A2S_INFORMATION', info);
       this.emit('UPDATED_SERVER_INFORMATION', info);

@@ -13,30 +13,12 @@ export default class Layer {
     this.sizeType = data.mapSizeType;
     this.numberOfCapturePoints = parseInt(data.capturePoints);
     this.lighting = {
-      name: data.lighting,
+      type: data.persistentLightingType,
       classname: data.lightingLevel
     };
     this.teams = [];
-    for (const t of ['team1', 'team2']) {
-      this.teams.push({
-        faction: data[t].faction,
-        name: data[t].teamSetupName,
-        tickets: data[t].tickets,
-        commander: data[t].commander,
-        vehicles: (data[t].vehicles || []).map((vehicle) => ({
-          name: vehicle.type,
-          classname: vehicle.rawType,
-          count: vehicle.count,
-          spawnDelay: vehicle.delay,
-          respawnDelay: vehicle.respawnTime
-        })),
-        numberOfTanks: (data[t].vehicles || []).filter((v) => {
-          return v.icon.match(/_tank/);
-        }).length,
-        numberOfHelicopters: (data[t].vehicles || []).filter((v) => {
-          return v.icon.match(/helo/);
-        }).length
-      });
-    }
+    this.commander = data.commander;
+    this.tickets = [data.teamConfigs.team1.tickets,
+                    data.teamConfigs.team2.tickets];
   }
 }
