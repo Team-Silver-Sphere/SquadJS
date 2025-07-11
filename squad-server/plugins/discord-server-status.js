@@ -123,8 +123,15 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
   async updateStatus() {
     if (!this.options.setBotStatus) return;
 
+    let players = this.server.a2sPlayerCount;
+    if (this.server.publicQueue || this.server.reserveQueue)
+      players += `+${this.server.publicQueue + this.server.reserveQueue}`;
+
+    let slots = this.server.publicSlots;
+    if (this.server.reserveSlots) slots += `+${this.server.reserveSlots}`;
+
     await this.options.discordClient.user.setActivity(
-      `(${this.server.a2sPlayerCount}/${this.server.publicSlots}) ${
+      `(${players}/${slots}) ${
         this.server.currentLayer?.name || 'Unknown'
       }`,
       { type: 4 }
