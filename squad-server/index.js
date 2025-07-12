@@ -601,7 +601,7 @@ export default class SquadServer extends EventEmitter {
 
       if (!this.currentLayer) this.currentLayer = Layers.getLayerByClassname(info.currentLayer);
       if (!this.nextLayer) this.nextLayer = Layers.getLayerByClassname(info.nextLayer);
-      if (!this.currentLayer.teams.length) this.setupTeams();
+      if (data.TeamOne_s && data.TeamTwo_s) this.setupTeams();
 
       this.emit('UPDATED_A2S_INFORMATION', info);
       this.emit('UPDATED_SERVER_INFORMATION', info);
