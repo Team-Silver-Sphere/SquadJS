@@ -26,7 +26,6 @@ export default class SquadLogParser extends LogParser {
     }
   }
 
-  // This should use a Loader in Vanilla SquadJS
   getRules() {
     return this._rules;
   }
