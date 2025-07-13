@@ -1,44 +1,33 @@
-import LogParser from 'core/log-parser';
+import fs from 'fs';
+import path from 'path';
 
-import AdminBroadcast from './admin-broadcast.js';
-import DeployableDamaged from './deployable-damaged.js';
-import NewGame from './new-game.js';
-import PlayerConnected from './player-connected.js';
-import PlayerDisconnected from './player-disconnected.js';
-import PlayerDamaged from './player-damaged.js';
-import PlayerDied from './player-died.js';
-import PlayerPossess from './player-possess.js';
-import PlayerRevived from './player-revived.js';
-import PlayerUnPossess from './player-un-possess.js';
-import PlayerWounded from './player-wounded.js';
-import RoundEnded from './round-ended.js';
-import RoundTickets from './round-tickets.js';
-import RoundWinner from './round-winner.js';
-import ServerTickRate from './server-tick-rate.js';
-import PlayerJoinSucceeded from './player-join-succeeded.js';
+import LogParser from 'core/log-parser';
+import Logger from '../../core/logger.js';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 export default class SquadLogParser extends LogParser {
   constructor(options) {
     super('SquadGame.log', options);
+    this._rules = [];
+    this.setupRules();
   }
 
+  async setupRules() {
+    const files = await fs.promises.opendir(path.join(__dirname, './'));
+    for await (const file of files) {
+      if (!file.isFile() || !file.name.endsWith('.js')) continue;
+      Logger.verbose('SquadLogParser', 1, `Loading parser file ${file.name}...`);
+      const module = await import(path.join(__dirname, file.name));
+      if ('default' in module && 'regex' in module.default && 'onMatch' in module.default) {
+        this._rules.push(module.default);
+      }
+    }
+  }
+
+  // This should use a Loader in Vanilla SquadJS
   getRules() {
-    return [
-      AdminBroadcast,
-      DeployableDamaged,
-      NewGame,
-      PlayerConnected,
-      PlayerDisconnected,
-      PlayerDamaged,
-      PlayerDied,
-      PlayerPossess,
-      PlayerRevived,
-      PlayerUnPossess,
-      PlayerWounded,
-      RoundEnded,
-      RoundTickets,
-      RoundWinner,
-      ServerTickRate,
-      PlayerJoinSucceeded
-    ];
+    return this._rules;
   }
 }
