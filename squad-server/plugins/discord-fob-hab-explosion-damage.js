@@ -2,10 +2,7 @@ import DiscordBasePlugin from './discord-base-plugin.js';
 
 export default class DiscordFOBHABExplosionDamage extends DiscordBasePlugin {
   static get description() {
-    return (
-      'The <code>DiscordFOBHABExplosionDamage</code> plugin logs damage done to FOBs and HABs by ' +
-      'explosions to help identify engineers blowing up friendly FOBs and HABs.'
-    );
+    return 'Logs all damage taken or attempted against FOBs/HABs and sends raw line to Discord.';
   }
 
   static get defaultEnabled() {
@@ -17,70 +14,52 @@ export default class DiscordFOBHABExplosionDamage extends DiscordBasePlugin {
       ...DiscordBasePlugin.optionsSpecification,
       channelID: {
         required: true,
-        description: 'The ID of the channel to log FOB/HAB explosion damage to.',
-        default: '',
-        example: '667741905228136459'
+        description: 'Discord channel ID to send messages to.',
+        default: ''
       },
       color: {
         required: false,
-        description: 'The color of the embeds.',
-        default: 16761867
+        description: 'Embed color.',
+        default: 15844367
       }
     };
   }
 
-  constructor(server, options, connectors) {
-    super(server, options, connectors);
-
-    this.onDeployableDamaged = this.onDeployableDamaged.bind(this);
-  }
-
   async mount() {
-    this.server.on('DEPLOYABLE_DAMAGED', this.onDeployableDamaged);
+    this._onDeployableDamaged = this.onDeployableDamaged.bind(this);
+    this.server.on('DEPLOYABLE_DAMAGED', this._onDeployableDamaged);
+    console.log('✅ DiscordFOBHABExplosionDamage plugin mounted.');
   }
 
   async unmount() {
-    this.server.removeEventListener('DEPLOYABLE_DAMAGED', this.onDeployableDamaged);
+    if (this._onDeployableDamaged) {
+      this.server.removeEventListener('DEPLOYABLE_DAMAGED', this._onDeployableDamaged);
+      console.log('🛑 DiscordFOBHABExplosionDamage plugin unmounted.');
+    }
   }
 
   async onDeployableDamaged(info) {
-    if (!info.deployable.match(/(?:FOBRadio|Hab)_/i)) return;
-    if (!info.weapon.match(/_Deployable_/i)) return;
-    if (!info.player) return;
+    const { raw, deployable } = info;
 
-    const fields = [
-      {
-        name: "Player's Name",
-        value: info.player.name,
-        inline: true
-      },
-      {
-        name: "Player's SteamID",
-        value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
-        inline: true
-      },
-      {
-        name: "Player's EosID",
-        value: info.player.eosID,
-        inline: true
-      },
-      {
-        name: 'Deployable',
-        value: info.deployable
-      },
-      {
-        name: 'Weapon',
-        value: info.weapon
-      }
-    ];
+    if (!/(FOB|Hab|FobRadio|Radio)/i.test(deployable)) {
+      console.log('[DEBUG] Ignored non-FOB/HAB damage line.');
+      return;
+    }
 
-    await this.sendDiscordMessage({
-      embed: {
-        title: `FOB/HAB Explosion Damage: ${info.player.name}`,
-        color: this.options.color,
-        fields: fields,
-        timestamp: info.time.toISOString()
-      }
-    });
+    console.log('[DEBUG] ✅ Sending FOB/HAB damage log to Discord.');
+    console.log(raw);
+
+    const embed = {
+      title: '💥 FOB/HAB Damage Log',
+      description: `\u0060\u0060\u0060\n${raw}\n\u0060\u0060\u0060`,
+      color: this.options.color,
+      timestamp: new Date().toISOString()
+    };
+
+    try {
+      await this.sendDiscordMessage({ embed });
+    } catch (err) {
+      console.error('[ERROR] Failed to send message to Discord:', err);
+    }
   }
 }
