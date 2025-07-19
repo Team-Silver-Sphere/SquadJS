@@ -179,7 +179,7 @@
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867
-    },
+    ,
     {
       "plugin": "DiscordServerStatus",
       "enabled": true,
@@ -187,8 +187,11 @@
       "messageStore": "sqlite",
       "command": "!status",
       "disableSubscriptions": false,
-      "updateInterval": 60000,
-      "setBotStatus": true
+      "updateInterval": 6000,
+      "setBotStatus": true,
+      "channelId": "",
+      "layerTagId": "SERVER2",
+      "resendIntervalMinutes": 10,
     },
     {
       "plugin": "DiscordSquadCreated",
