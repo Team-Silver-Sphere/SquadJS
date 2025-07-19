@@ -1,5 +1,4 @@
 import GraphQLRequest from 'graphql-request';
-
 import DiscordBasePlugin from './discord-base-plugin.js';
 
 const { request, gql } = GraphQLRequest;
@@ -38,7 +37,6 @@ export default class CBLInfo extends DiscordBasePlugin {
 
   constructor(server, options, connectors) {
     super(server, options, connectors);
-
     this.onPlayerConnected = this.onPlayerConnected.bind(this);
   }
 
@@ -68,7 +66,6 @@ export default class CBLInfo extends DiscordBasePlugin {
               lastRefreshedReputationRank
               activeBans: bans(orderBy: "created", orderDirection: DESC, expired: false) {
                 edges {
-                  cursor
                   node {
                     id
                   }
@@ -76,7 +73,6 @@ export default class CBLInfo extends DiscordBasePlugin {
               }
               expiredBans: bans(orderBy: "created", orderDirection: DESC, expired: true) {
                 edges {
-                  cursor
                   node {
                     id
                   }
@@ -118,10 +114,18 @@ export default class CBLInfo extends DiscordBasePlugin {
           description: `[${info.player.name}](https://communitybanlist.com/search/${info.player.steamID}) has ${data.steamUser.reputationPoints} reputation points on the Community Ban List and is therefore a potentially harmful player.`,
           fields: [
             {
+              name: 'Steam ID',
+              value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+              inline: true
+            },
+            {
+              name: 'EOS ID',
+              value: info.player.eosID || 'Unknown',
+              inline: true
+            },
+            {
               name: 'Reputation Points',
-              value: `${data.steamUser.reputationPoints} (${
-                data.steamUser.reputationPointsMonthChange || 0
-              } from this month)`,
+              value: `${data.steamUser.reputationPoints}`,
               inline: true
             },
             {
@@ -155,7 +159,7 @@ export default class CBLInfo extends DiscordBasePlugin {
     } catch (err) {
       this.verbose(
         1,
-        `Failed to fetch Community Ban List data for player ${info.name} (Steam ID: ${info.steamID}): `,
+        `Failed to fetch Community Ban List data for player ${info.player?.name} (Steam ID: ${info.player?.steamID}):`,
         err
       );
     }
