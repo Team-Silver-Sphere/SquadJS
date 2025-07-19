@@ -141,7 +141,7 @@
       "enabled": true,
       "discordClient": "discord",
       "channelID": "",
-      "color": 16761867
+      "color": 16761867,
     },
     {
       "plugin": "DiscordKillFeed",
