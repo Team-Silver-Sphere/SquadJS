@@ -126,7 +126,7 @@ export default class CBLInfo extends DiscordBasePlugin {
             },
             {
               name: 'Reputation Points',
-              value: `${data.steamUser.reputationPoints}`,
+              value: `${data.steamUser.reputationPoints} (${data.steamUser.reputationPointsMonthChange || 0} from this month)`,
               inline: true
             },
             {
