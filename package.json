@@ -20,7 +20,8 @@
   },
   "type": "module",
   "dependencies": {
-    "squad-server": "1.0.0"
+    "squad-server": "1.0.0",
+    "ssh2-sftp-client": "^11.0.0"
   },
   "devDependencies": {
     "eslint": "^7.17.0",
