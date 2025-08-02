@@ -46,12 +46,50 @@ class Layers {
     return null;
   }
 
-  getLayerById(layerId) {
-    return this.getLayerByCondition((layer) => layer.layerid === layerId);
+  convertFactionToUnit(layer, factionName, teamIndex) {
+    // From factionName, in format "ADF+Mechanized", return the correct
+    // "ADF_XX_Mechanized" for current layer.
+    const factionParts = factionName.split("+");
+    const matches = layer.factions.filter((f) =>
+      f.factionId === factionParts[0] &&
+        f.availableOnTeams.includes(teamIndex + 1)
+    );
+    if (matches.length === 1) {
+      const faction = matches[0];
+      if (factionParts.length === 1) {
+        return faction.defaultUnit;
+      }
+      else {
+        const unitParts = faction.defaultUnit.split('_', 2);
+        if (faction.types.includes(factionParts[1]))
+          return `${unitParts[0]}_${unitParts[1]}_${factionParts[1]}`;
+        else
+          return faction.defaultUnit;
+      }
+    }
   }
 
-  getLayerByClassname(classname) {
-    return this.getLayerByCondition((layer) => layer.classname === classname);
+  async getLayerById(layerId, factionOne, factionTwo) {
+    const layer = await this.getLayerByCondition((layer) => layer.layerid === layerId);
+    if (layer) {
+      const factions = [factionOne, factionTwo];
+      let teams = [];
+      for (const teamIdx of [0, 1]) {
+        const faction = factions[teamIdx];
+        const unitName = this.convertFactionToUnit(layer, faction, teamIdx);
+        const unit = this.units[unitName];
+        teams[teamIdx] = {
+          faction: unit.factionID,
+          name: unit.displayName,
+          unitID: unitName,
+          unit: unit,
+          tickets: layer.tickets[teamIdx],
+          commander: layer.commander,
+          vehicles: unit.vehicles,
+        };
+      }
+      return [layer, teams]
+    }
   }
 }
 

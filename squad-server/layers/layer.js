@@ -16,7 +16,7 @@ export default class Layer {
       type: data.persistentLightingType,
       classname: data.lightingLevel
     };
-    this.teams = [];
+    this.factions = data.factions;
     this.commander = data.commander;
     this.tickets = [data.teamConfigs.team1.tickets,
                     data.teamConfigs.team2.tickets];
