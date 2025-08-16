@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import LogParser from 'core/log-parser';
-import Logger from '../../core/logger.js';
+import Logger from 'core/logger.js';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -10,8 +10,14 @@ export default class SquadLogParser extends LogParser {
   constructor(options) {
     super('SquadGame.log', options);
     this._rules = [];
-    this.setupRules();
   }
+
+  async watch() {
+    //? Wait for rules to be configured before hooking the log file
+    await this.setupRules();
+    return super.watch();
+  }
+
 
   async setupRules() {
     const files = await fs.promises.opendir(path.resolve(path.join(__dirname, './')));
