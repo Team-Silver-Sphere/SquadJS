@@ -183,7 +183,7 @@ export default class SquadRcon extends Rcon {
       const match = line.match(
         /ID: (?<squadID>\d+) \| Name: (?<squadName>.+) \| Size: (?<size>\d+) \| Locked: (?<locked>True|False) \| Creator Name: (?<creatorName>.+) \| Creator Online IDs:([^|]+)/
       );
-      const matchSide = line.match(/Team ID: (\d) \((.+)\)/);
+      const matchSide = line.match(/Team ID: (\d) \((.*)\)/);
       if (matchSide) {
         teamID = +matchSide[1];
         teamName = matchSide[2];
