@@ -131,16 +131,23 @@ export default class SquadRcon extends Rcon {
 
   async getCurrentMap() {
     const response = await this.execute('ShowCurrentMap');
-    const match = response.match(/^Current level is ([^,]*), layer is ([^,]*)/);
-    return { level: match[1], layer: match[2] };
+    const match = response.match(/^Current level is ([^,]*), layer is ([^,]*), factions ([\w+]+) ([\w+]+)/);
+    return {
+      level: match[1],
+      layer: match[2],
+      factionOne: match[3],
+      factionTwo: match[4]
+    };
   }
 
   async getNextMap() {
     const response = await this.execute('ShowNextMap');
-    const match = response.match(/^Next level is ([^,]*), layer is ([^,]*)/);
+    const match = response.match(/^Next level is ([^,]*), layer is ([^,]*), factions ([\w+]+) ([\w+]+)/);
     return {
       level: match ? (match[1] !== '' ? match[1] : null) : null,
-      layer: match ? (match[2] !== 'To be voted' ? match[2] : null) : null
+      layer: match ? (match[2] !== 'To be voted' ? match[2] : null) : null,
+      factionOne: match[3],
+      factionTwo: match[4]
     };
   }
 
