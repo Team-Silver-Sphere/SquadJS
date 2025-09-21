@@ -413,16 +413,4 @@ export default class Rcon extends EventEmitter {
   decodedPacketToString(decodedPacket) {
     return util.inspect(decodedPacket, { breakLength: Infinity });
   }
-
-  async warn(anyID, message) {
-    await this.execute(`AdminWarn "${anyID}" ${message}`);
-  }
-
-  async kick(anyID, reason) {
-    await this.execute(`AdminKick "${anyID}" ${reason}`);
-  }
-
-  async forceTeamChange(anyID) {
-    await this.execute(`AdminForceTeamChange "${anyID}"`);
-  }
 }
