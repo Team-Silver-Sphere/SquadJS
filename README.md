@@ -305,14 +305,15 @@ Interested in creating your own plugin? [See more here](./squad-server/plugins/r
           <h3>Options</h3>
           <ul><li><h4>commands</h4>
            <h6>Description</h6>
-           <p>An array of objects containing the following properties: <ul><li><code>command</code> - The command that initiates the message.</li><li><code>type</code> - Either <code>warn</code> or <code>broadcast</code>.</li><li><code>response</code> - The message to respond with.</li><li><code>ignoreChats</code> - A list of chats to ignore the commands in. Use this to limit it to admins.</li></ul></p>
+           <p>An array of objects containing the following properties: <ul><li><code>command</code> - The command that initiates the message.</li><li><code>type</code> - Either <code>warn</code> or <code>broadcast</code>.</li><li><code>response</code> - The message to respond with.</li><li><code>ignoreChats/includeChats</code> - Either one can be used to limit to specific in-game chats, being <code>ChatAll</code>, <code>ChatTeam</code>, <code>ChatSquad</code> and <code>ChatAdmin</code></li></ul></p>
            <h6>Default</h6>
            <pre><code>[
   {
     "command": "squadjs",
     "type": "warn",
     "response": "This server is powered by SquadJS.",
-    "ignoreChats": []
+    "ignoreChats": [],
+    "includeChats": []
   }
 ]</code></pre></li></ul>
         </details>

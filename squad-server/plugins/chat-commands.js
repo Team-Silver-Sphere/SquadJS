@@ -23,13 +23,15 @@ export default class ChatCommands extends BasePlugin {
           '<li><code>type</code> - Either <code>warn</code> or <code>broadcast</code>.</li>' +
           '<li><code>response</code> - The message to respond with.</li>' +
           '<li><code>ignoreChats</code> - A list of chats to ignore the commands in. Use this to limit it to admins.</li>' +
+          '<li><code>includeChats</code> - A list of chats to include the commands in. Use this to limit it to admins.</li>' +
           '</ul>',
         default: [
           {
             command: 'squadjs',
             type: 'warn',
             response: 'This server is powered by SquadJS.',
-            ignoreChats: []
+            ignoreChats: [],
+            includeChats: []
           }
         ]
       }
@@ -39,7 +41,11 @@ export default class ChatCommands extends BasePlugin {
   async mount() {
     for (const command of this.options.commands) {
       this.server.on(`CHAT_COMMAND:${command.command.toLowerCase()}`, async (data) => {
-        if (command.ignoreChats.includes(data.chat)) return;
+        let ignoreChats = command.ignoreChats ?? [];
+        let includeChats = command.includeChats ?? [];
+
+        if (ignoreChats.includes(data.chat)) return;
+        if (includeChats.length > 0 && !includeChats.includes(data.chat)) return;
 
         if (command.type === 'broadcast') {
           await this.server.rcon.broadcast(command.response);
