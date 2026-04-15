@@ -9,7 +9,7 @@ export default class TeamRandomizer extends BasePlugin {
   }
 
   static get defaultEnabled() {
-    return true;
+    return false;
   }
 
   static get optionsSpecification() {
@@ -38,28 +38,43 @@ export default class TeamRandomizer extends BasePlugin {
 
   async onChatCommand(info) {
     if (info.chat !== 'ChatAdmin') return;
-
-    const players = this.server.players.slice(0);
-
-    let currentIndex = players.length;
-    let temporaryValue;
-    let randomIndex;
-
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-
-      temporaryValue = players[currentIndex];
-      players[currentIndex] = players[randomIndex];
-      players[randomIndex] = temporaryValue;
+    if (this.randomizing) {
+      await this.server.rcon.warn(info.player.eosID, 'Randomization already in progress.');
+      return;
     }
+    this.randomizing = true;
 
-    let team = '1';
+    try {
+      const players = this.server.players.slice(0);
 
-    for (const player of players) {
-      if (player.teamID !== team) await this.server.rcon.switchTeam(player.eosID);
+      let currentIndex = players.length;
 
-      team = team === '1' ? '2' : '1';
+      while (currentIndex !== 0) {
+        const randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        [players[currentIndex], players[randomIndex]] = [players[randomIndex], players[currentIndex]];
+      }
+
+      await this.server.rcon.broadcast('Teams are being randomized, please wait.');
+
+      let team = '1';
+      let switched = 0;
+
+      for (const player of players) {
+        if (player.teamID !== team) {
+          try {
+            await this.server.rcon.switchTeam(player.eosID);
+            switched++;
+          } catch (error) {
+            this.verbose(1, `Failed to switch ${player.name}: ${error.message}`);
+          }
+        }
+        team = team === '1' ? '2' : '1';
+      }
+
+      await this.server.rcon.warn(info.player.eosID, `Randomization complete. ${switched} player(s) switched.`);
+    } finally {
+      this.randomizing = false;
     }
   }
 }
