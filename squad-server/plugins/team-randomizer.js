@@ -52,7 +52,10 @@ export default class TeamRandomizer extends BasePlugin {
       while (currentIndex !== 0) {
         const randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
-        [players[currentIndex], players[randomIndex]] = [players[randomIndex], players[currentIndex]];
+        [players[currentIndex], players[randomIndex]] = [
+          players[randomIndex],
+          players[currentIndex]
+        ];
       }
 
       await this.server.rcon.broadcast('Teams are being randomized, please wait.');
@@ -72,7 +75,10 @@ export default class TeamRandomizer extends BasePlugin {
         team = team === '1' ? '2' : '1';
       }
 
-      await this.server.rcon.warn(info.player.eosID, `Randomization complete. ${switched} player(s) switched.`);
+      await this.server.rcon.warn(
+        info.player.eosID,
+        `Randomization complete. ${switched} player(s) switched.`
+      );
     } finally {
       this.randomizing = false;
     }
