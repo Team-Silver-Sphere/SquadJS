@@ -167,14 +167,14 @@
       "prependAdminNameInBroadcast": false
     },
     {
-      "plugin": "DiscordRoundWinner",
+      "plugin": "DiscordRoundEnded",
       "enabled": true,
       "discordClient": "discord",
       "channelID": "",
       "color": 16761867
     },
     {
-      "plugin": "DiscordRoundEnded",
+      "plugin": "DiscordRoundWinner",
       "enabled": true,
       "discordClient": "discord",
       "channelID": "",

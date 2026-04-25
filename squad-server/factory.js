@@ -187,7 +187,7 @@ export default class SquadServerFactory {
     const template = SquadServerFactory.parseConfig(templateString);
 
     const pluginKeys = Object.keys(plugins).sort((a, b) =>
-      a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+      a < b ? -1 : a > b ? 1 : 0
     );
 
     for (const pluginKey of pluginKeys) {
@@ -216,7 +216,7 @@ export default class SquadServerFactory {
     const plugins = await Plugins.getPlugins();
 
     const pluginKeys = Object.keys(plugins).sort((a, b) =>
-      a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+      a < b ? -1 : a > b ? 1 : 0
     );
 
     const pluginInfo = [];
