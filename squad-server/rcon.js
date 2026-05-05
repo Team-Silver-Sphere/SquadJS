@@ -204,23 +204,31 @@ export default class SquadRcon extends Rcon {
   }
 
   async broadcast(message) {
-    await this.execute(`AdminBroadcast ${message}`);
+    return await this.execute(`AdminBroadcast ${message}`);
   }
 
   async setFogOfWar(mode) {
-    await this.execute(`AdminSetFogOfWar ${mode}`);
+    return await this.execute(`AdminSetFogOfWar ${mode}`);
   }
 
   async warn(anyID, message) {
-    await this.execute(`AdminWarn "${anyID}" ${message}`);
+    return await this.execute(`AdminWarn "${anyID}" ${message}`);
+  }
+
+  async kick(anyID, reason) {
+    return await this.execute(`AdminKick "${anyID}" ${reason}`);
   }
 
   // 0 = Perm | 1m = 1 minute | 1d = 1 Day | 1M = 1 Month | etc...
   async ban(anyID, banLength, message) {
-    await this.execute(`AdminBan "${anyID}" ${banLength} ${message}`);
+    return await this.execute(`AdminBan "${anyID}" ${banLength} ${message}`);
   }
 
   async switchTeam(anyID) {
-    await this.execute(`AdminForceTeamChange "${anyID}"`);
+    return await this.execute(`AdminForceTeamChange "${anyID}"`);
+  }
+
+  async executeCommand(command) {
+    return await this.execute(command);
   }
 }
