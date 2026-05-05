@@ -32,6 +32,7 @@ SquadJS relies on being able to access the Squad server log directory in order t
 * [Node.js](https://nodejs.org/en/) (18.x) - [Download](https://nodejs.org/en/)
 * [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
 * Some plugins may have additional requirements.
+* Make sure the option "Message Content Intent" is enabled/active on the discord bot via your Discord Developer Portal. Otherwise the discord bot will be unable to answer back with the server status request.
 
 #### Installation
 1. [Download SquadJS](https://github.com/Team-Silver-Sphere/SquadJS/releases/latest) and unzip the download.
