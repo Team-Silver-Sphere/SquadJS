@@ -144,29 +144,29 @@ export default class SquadRcon extends Rcon {
     };
   }
 
-async getListPlayers() {
+  async getListPlayers() {
     const response = await this.execute('ListPlayers');
 
     const players = [];
 
     if (!response || response.length < 1) return players;
 
-    for (const line of response.split("\n")) {
+    for (const line of response.split('\n')) {
       const match = line.match(
-        /^ID: (?<playerID>\d+) \| Online IDs:([^|]+)\| Name: (?<name>.+) \| Team ID: (?<teamID>\d+|N\/A)(?: \| Party ID: #?(?<partyID>\d+|N\/A))? \| Squad ID: (?<squadID>\d+|N\/A) \| Is Leader: (?<isLeader>True|False) \| Role: (?<role>[^|\r\n]+)(?: \| Vehicle: (?<vehicle>[^\r\n]+))?\r?$/,
+        /^ID: (?<playerID>\d+) \| Online IDs:([^|]+)\| Name: (?<name>.+) \| Team ID: (?<teamID>\d+|N\/A)(?: \| Party ID: #?(?<partyID>\d+|N\/A))? \| Squad ID: (?<squadID>\d+|N\/A) \| Is Leader: (?<isLeader>True|False) \| Role: (?<role>[^|\r\n]+)(?: \| Vehicle: (?<vehicle>[^\r\n]+))?\r?$/
       );
       if (!match) continue;
 
       const data = match.groups;
       data.playerID = +data.playerID;
-      data.isLeader = data.isLeader === "True";
-      data.teamID = data.teamID !== "N/A" ? +data.teamID : null;
-      data.squadID = data.squadID !== "N/A" ? +data.squadID : null;
+      data.isLeader = data.isLeader === 'True';
+      data.teamID = data.teamID !== 'N/A' ? +data.teamID : null;
+      data.squadID = data.squadID !== 'N/A' ? +data.squadID : null;
       if (data.partyID !== undefined)
-        data.partyID = data.partyID !== "N/A" ? +data.partyID : null;
+        data.partyID = data.partyID !== 'N/A' ? +data.partyID : null;
       else delete data.partyID;
       if (data.vehicle !== undefined)
-        data.vehicle = data.vehicle !== "N/A" ? data.vehicle : null;
+        data.vehicle = data.vehicle !== 'N/A' ? data.vehicle : null;
       else delete data.vehicle;
       iterateIDs(match[2]).forEach((platform, id) => {
         data[lowerID(platform)] = id;
