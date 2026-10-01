@@ -151,9 +151,9 @@ export default class SquadRcon extends Rcon {
 
     if (!response || response.length < 1) return players;
 
-    for (const line of response.split('\n')) {
+    for (const line of response.split(/\r?\n/)) {
       const match = line.match(
-        /^ID: (?<playerID>\d+) \| Online IDs:([^|]+)\| Name: (?<name>.+) \| Team ID: (?<teamID>\d|N\/A) \| Squad ID: (?<squadID>\d+|N\/A) \| Is Leader: (?<isLeader>True|False) \| Role: (?<role>.+)$/
+        /^ID: (?<playerID>\d+) \| Online IDs:([^|]+)\| Name: (?<name>.+) \| Team ID: (?<teamID>\d+|N\/A)(?: \| Party ID: (?<partyID>#?\d+|N\/A))? \| Squad ID: (?<squadID>\d+|N\/A) \| Is Leader: (?<isLeader>True|False) \| Role: (?<role>.+?)(?: \| Vehicle: (?<vehicle>.+))?$/
       );
       if (!match) continue;
 
@@ -161,7 +161,9 @@ export default class SquadRcon extends Rcon {
       data.playerID = +data.playerID;
       data.isLeader = data.isLeader === 'True';
       data.teamID = data.teamID !== 'N/A' ? +data.teamID : null;
+      data.partyID = data.partyID && data.partyID !== 'N/A' ? +data.partyID.replace('#', '') : null;
       data.squadID = data.squadID !== 'N/A' ? +data.squadID : null;
+      data.vehicle = data.vehicle && data.vehicle !== 'N/A' ? data.vehicle : null;
       iterateIDs(match[2]).forEach((platform, id) => {
         data[lowerID(platform)] = id;
       });
