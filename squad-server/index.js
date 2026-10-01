@@ -197,6 +197,13 @@ export default class SquadServer extends EventEmitter {
       this.emit('DEPLOYABLE_DAMAGED', data);
     });
 
+    this.logParser.on('DEPLOYABLE_SPAWNED', async (data) => {
+      if (data.playerEOSID) data.player = await this.getPlayerByEOSID(data.playerEOSID);
+      if (!data.player) data.player = await this.getPlayerByName(data.playerName);
+
+      this.emit('DEPLOYABLE_SPAWNED', data);
+    });
+
     this.logParser.on('NEW_GAME', async (data) => {
       data.layer = await Layers.getLayerByClassname(data.layerClassname);
 
