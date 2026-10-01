@@ -145,7 +145,7 @@ export default class SquadRcon extends Rcon {
   }
 
 async getListPlayers() {
-    const response = await this.execute("ListPlayers");
+    const response = await this.execute('ListPlayers');
 
     const players = [];
 
