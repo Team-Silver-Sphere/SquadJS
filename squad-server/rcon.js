@@ -174,12 +174,19 @@ export default class SquadRcon extends Rcon {
     const responseSquad = await this.execute('ListSquads');
 
     const squads = [];
+    const tickets = [0, 0];
     let teamName;
     let teamID;
 
     if (!responseSquad || responseSquad.length < 1) return squads;
 
     for (const line of responseSquad.split('\n')) {
+      const tmatch = line.match(/Team ID: (?<teamID>\d) \((?<unitName>.+)\) - Tickets: (?<tickets>\d+)/);
+      if (tmatch) {
+        tickets[+tmatch.groups.teamID - 1] = +tmatch.groups.tickets;
+        continue;
+      }
+
       const match = line.match(
         /ID: (?<squadID>\d+) \| Name: (?<squadName>.+) \| Size: (?<size>\d+) \| Locked: (?<locked>True|False) \| Creator Name: (?<creatorName>.+) \| Creator Online IDs:([^|]+)/
       );
@@ -200,7 +207,7 @@ export default class SquadRcon extends Rcon {
       });
       squads.push(squad);
     }
-    return squads;
+    return [squads, tickets];
   }
 
   async broadcast(message) {
