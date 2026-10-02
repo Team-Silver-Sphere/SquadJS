@@ -586,7 +586,8 @@ export default class SquadServer extends EventEmitter {
 
       // NextLayer_s is not used as a fallback: after a map change it keeps the previous next
       // layer as a display name, even when ShowNextMap reports that no next map is defined.
-      if (!this.currentLayer) this.currentLayer = Layers.getLayerByClassname(info.currentLayer);
+      // MapName_s is a layer ID (rawName), so it is looked up the same way as in updateLayerInformation.
+      if (!this.currentLayer) this.currentLayer = await Layers.getLayerById(info.currentLayer);
 
       this.emit('UPDATED_A2S_INFORMATION', info);
       this.emit('UPDATED_SERVER_INFORMATION', info);
