@@ -54,7 +54,7 @@ export default class SquadServer extends EventEmitter {
     this.updateLayerInformationTimeout = null;
 
     this.updateA2SInformation = this.updateA2SInformation.bind(this);
-    this.updateA2SInformationInterval = 30 * 1000;
+    this.updateA2SInformationInterval = 10 * 1000;
     this.updateA2SInformationTimeout = null;
 
     this.pingSquadJSAPI = this.pingSquadJSAPI.bind(this);
@@ -195,6 +195,14 @@ export default class SquadServer extends EventEmitter {
       delete data.playerSuffix;
 
       this.emit('DEPLOYABLE_DAMAGED', data);
+    });
+
+    this.logParser.on('CAPTURE_ZONE_NEUTRALIZED', (data) => {
+      this.emit('CAPTURE_ZONE_NEUTRALIZED', data);
+    });
+
+    this.logParser.on('CAPTURE_ZONE_CAPTURED', (data) => {
+      this.emit('CAPTURE_ZONE_CAPTURED', data);
     });
 
     this.logParser.on('NEW_GAME', async (data) => {
