@@ -23,11 +23,11 @@ export default class Layer {
     this.factions = data.factions || [];
 
     this.teams = [];
-    for (const t of ['team1', 'team2']) {
+    for (const teamKey of ['team1', 'team2']) {
       this.teams.push(
         data.teamConfigs
-          ? teamFromUnit(data, data.teamConfigs[t], units)
-          : teamFromOldFormat(data[t])
+          ? teamFromUnit(data, data.teamConfigs[teamKey], units)
+          : teamFromOldFormat(data[teamKey])
       );
     }
     this.tickets = this.teams.map((team) => team.tickets);
