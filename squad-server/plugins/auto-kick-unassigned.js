@@ -179,8 +179,9 @@ export default class AutoKickUnassigned extends BasePlugin {
   }
 
   async clearDisconnectedPlayers() {
+    const onlineEosIDs = this.server.players.map((player) => player.eosID);
     for (const eosID of Object.keys(this.trackedPlayers)) // TRACK
-      if (!(eosID in this.server.players.map((p) => p.eosID))) this.untrackPlayer(eosID);
+      if (!onlineEosIDs.includes(eosID)) this.untrackPlayer(eosID);
   }
 
   msFormat(ms) {
