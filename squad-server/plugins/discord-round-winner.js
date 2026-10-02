@@ -41,6 +41,8 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
   }
 
   async onNewGame(info) {
+    const layerName = this.server.layerHistory[1].layer.name;
+
     await this.sendDiscordMessage({
       embed: {
         title: 'Round Winner',
@@ -48,7 +50,10 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
         fields: [
           {
             name: 'Message',
-            value: `${info.winner} won on ${this.server.layerHistory[1].layer.name}.`
+            // winner is null when the round was a draw, for example when an admin ended it.
+            value: info.winner
+              ? `${info.winner} won on ${layerName}.`
+              : `The round on ${layerName} was a draw.`
           }
         ],
         timestamp: info.time.toISOString()
