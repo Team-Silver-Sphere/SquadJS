@@ -54,7 +54,7 @@ export default class SquadServer extends EventEmitter {
     this.updateLayerInformationTimeout = null;
 
     this.updateA2SInformation = this.updateA2SInformation.bind(this);
-    this.updateA2SInformationInterval = 30 * 1000;
+    this.updateA2SInformationInterval = 10 * 1000;
     this.updateA2SInformationTimeout = null;
 
     this.pingSquadJSAPI = this.pingSquadJSAPI.bind(this);
@@ -195,6 +195,14 @@ export default class SquadServer extends EventEmitter {
       delete data.playerSuffix;
 
       this.emit('DEPLOYABLE_DAMAGED', data);
+    });
+
+    this.logParser.on('CAPTURE_ZONE_NEUTRALIZED', (data) => {
+      this.emit('CAPTURE_ZONE_NEUTRALIZED', data);
+    });
+
+    this.logParser.on('CAPTURE_ZONE_CAPTURED', (data) => {
+      this.emit('CAPTURE_ZONE_CAPTURED', data);
     });
 
     this.logParser.on('NEW_GAME', async (data) => {
@@ -584,8 +592,10 @@ export default class SquadServer extends EventEmitter {
       this.matchStartTime = info.matchStartTime;
       this.gameVersion = info.gameVersion;
 
-      if (!this.currentLayer) this.currentLayer = Layers.getLayerByClassname(info.currentLayer);
-      if (!this.nextLayer) this.nextLayer = Layers.getLayerByClassname(info.nextLayer);
+      // MapName_s is a layer ID (rawName), so it is looked up the same way as in updateLayerInformation.
+      if (!this.currentLayer) this.currentLayer = await Layers.getLayerById(info.currentLayer);
+      // NextLayer_s is not used as a fallback: after a map change it keeps the previous next
+      // layer as a display name, even when ShowNextMap reports that no next map is defined.
 
       this.emit('UPDATED_A2S_INFORMATION', info);
       this.emit('UPDATED_SERVER_INFORMATION', info);
