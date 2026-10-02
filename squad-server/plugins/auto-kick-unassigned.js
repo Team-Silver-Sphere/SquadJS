@@ -116,8 +116,8 @@ export default class AutoKickUnassigned extends BasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('NEW_GAME', this.onNewGame);
-    this.server.removeEventListener('PLAYER_SQUAD_CHANGE', this.onPlayerSquadChange);
+    this.server.removeListener('NEW_GAME', this.onNewGame);
+    this.server.removeListener('PLAYER_SQUAD_CHANGE', this.onPlayerSquadChange);
     clearInterval(this.updateTrackingListInterval);
     clearInterval(this.clearDisconnectedPlayersInterval);
   }

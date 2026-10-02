@@ -45,7 +45,7 @@ export default class DiscordKillFeed extends DiscordBasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('PLAYER_WOUNDED', this.onWound);
+    this.server.removeListener('PLAYER_WOUNDED', this.onWound);
   }
 
   async onWound(info) {

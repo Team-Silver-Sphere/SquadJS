@@ -45,7 +45,7 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('TEAMKILL', this.onTeamkill);
+    this.server.removeListener('TEAMKILL', this.onTeamkill);
   }
 
   async onTeamkill(info) {

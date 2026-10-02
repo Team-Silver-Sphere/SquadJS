@@ -37,7 +37,7 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('NEW_GAME', this.onNewGame);
+    this.server.removeListener('NEW_GAME', this.onNewGame);
   }
 
   async onNewGame(info) {

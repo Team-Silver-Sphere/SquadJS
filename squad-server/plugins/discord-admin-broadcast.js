@@ -40,7 +40,7 @@ export default class DiscordAdminBroadcast extends DiscordBasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('ADMIN_BROADCAST', this.onAdminBroadcast);
+    this.server.removeListener('ADMIN_BROADCAST', this.onAdminBroadcast);
   }
 
   async onAdminBroadcast(info) {
