@@ -203,6 +203,8 @@ export default class SquadServer extends EventEmitter {
       if (!data.player) data.player = await this.getPlayerByName(data.playerName);
 
       this.emit('DEPLOYABLE_SPAWNED', data);
+    });
+
     this.logParser.on('CAPTURE_ZONE_NEUTRALIZED', (data) => {
       this.emit('CAPTURE_ZONE_NEUTRALIZED', data);
     });
