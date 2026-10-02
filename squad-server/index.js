@@ -197,6 +197,14 @@ export default class SquadServer extends EventEmitter {
       this.emit('DEPLOYABLE_DAMAGED', data);
     });
 
+    this.logParser.on('CAPTURE_ZONE_NEUTRALIZED', (data) => {
+      this.emit('CAPTURE_ZONE_NEUTRALIZED', data);
+    });
+
+    this.logParser.on('CAPTURE_ZONE_CAPTURED', (data) => {
+      this.emit('CAPTURE_ZONE_CAPTURED', data);
+    });
+
     this.logParser.on('NEW_GAME', async (data) => {
       data.layer = await Layers.getLayerByClassname(data.layerClassname);
 
