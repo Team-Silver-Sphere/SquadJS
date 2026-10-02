@@ -45,10 +45,14 @@ export default class SquadServer extends EventEmitter {
     this.updatePlayerList = this.updatePlayerList.bind(this);
     this.updatePlayerListInterval = 30 * 1000;
     this.updatePlayerListTimeout = null;
+    this.updatePlayerListRunning = null;
+    this.updatePlayerListPending = null;
 
     this.updateSquadList = this.updateSquadList.bind(this);
     this.updateSquadListInterval = 30 * 1000;
     this.updateSquadListTimeout = null;
+    this.updateSquadListRunning = null;
+    this.updateSquadListPending = null;
 
     this.updateLayerInformation = this.updateLayerInformation.bind(this);
     this.updateLayerInformationInterval = 30 * 1000;
@@ -438,6 +442,24 @@ export default class SquadServer extends EventEmitter {
   }
 
   async updatePlayerList() {
+    // Calls that arrive while an update is running share one follow-up update. A shared update
+    // starts after the call, so the caller still gets a list that is newer than its call.
+    if (this.updatePlayerListRunning) {
+      if (!this.updatePlayerListPending)
+        this.updatePlayerListPending = this.updatePlayerListRunning.then(() => {
+          this.updatePlayerListPending = null;
+          return this.updatePlayerList();
+        });
+      return this.updatePlayerListPending;
+    }
+
+    this.updatePlayerListRunning = this.runUpdatePlayerList().finally(() => {
+      this.updatePlayerListRunning = null;
+    });
+    return this.updatePlayerListRunning;
+  }
+
+  async runUpdatePlayerList() {
     if (this.updatePlayerListTimeout) clearTimeout(this.updatePlayerListTimeout);
 
     Logger.verbose('SquadServer', 1, `Updating player list...`);
@@ -492,10 +514,28 @@ export default class SquadServer extends EventEmitter {
 
     Logger.verbose('SquadServer', 1, `Updated player list.`);
 
+    if (this.updatePlayerListTimeout) clearTimeout(this.updatePlayerListTimeout);
     this.updatePlayerListTimeout = setTimeout(this.updatePlayerList, this.updatePlayerListInterval);
   }
 
   async updateSquadList() {
+    // Same coalescing as updatePlayerList.
+    if (this.updateSquadListRunning) {
+      if (!this.updateSquadListPending)
+        this.updateSquadListPending = this.updateSquadListRunning.then(() => {
+          this.updateSquadListPending = null;
+          return this.updateSquadList();
+        });
+      return this.updateSquadListPending;
+    }
+
+    this.updateSquadListRunning = this.runUpdateSquadList().finally(() => {
+      this.updateSquadListRunning = null;
+    });
+    return this.updateSquadListRunning;
+  }
+
+  async runUpdateSquadList() {
     if (this.updateSquadListTimeout) clearTimeout(this.updateSquadListTimeout);
 
     Logger.verbose('SquadServer', 1, `Updating squad list...`);
@@ -508,6 +548,7 @@ export default class SquadServer extends EventEmitter {
 
     Logger.verbose('SquadServer', 1, `Updated squad list.`);
 
+    if (this.updateSquadListTimeout) clearTimeout(this.updateSquadListTimeout);
     this.updateSquadListTimeout = setTimeout(this.updateSquadList, this.updateSquadListInterval);
   }
 
