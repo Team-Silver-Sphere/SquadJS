@@ -32,6 +32,7 @@ export default class SquadServer extends EventEmitter {
     this.players = [];
 
     this.squads = [];
+    this.tickets = [];
 
     this.admins = {};
     this.adminsInAdminCam = {};
@@ -498,7 +499,7 @@ export default class SquadServer extends EventEmitter {
     Logger.verbose('SquadServer', 1, `Updating squad list...`);
 
     try {
-      this.squads = await this.rcon.getSquads();
+      [this.squads, this.tickets] = await this.rcon.getSquads();
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update squad list.', err);
     }
