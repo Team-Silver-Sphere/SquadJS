@@ -41,7 +41,10 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
   }
 
   async onNewGame(info) {
-    const layerName = this.server.layerHistory[1].layer.name;
+    // The layer is null when it is not in the layer list, and the history has no previous
+    // entry when the layer information was not loaded before the round ended.
+    const previousLayer = this.server.layerHistory[1]?.layer;
+    const layerName = previousLayer ? previousLayer.name : 'an unknown layer';
 
     await this.sendDiscordMessage({
       embed: {
