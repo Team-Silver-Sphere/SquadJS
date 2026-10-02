@@ -54,7 +54,7 @@ export default class SquadServer extends EventEmitter {
     this.updateLayerInformationTimeout = null;
 
     this.updateA2SInformation = this.updateA2SInformation.bind(this);
-    this.updateA2SInformationInterval = 30 * 1000;
+    this.updateA2SInformationInterval = 10 * 1000;
     this.updateA2SInformationTimeout = null;
 
     this.pingSquadJSAPI = this.pingSquadJSAPI.bind(this);
