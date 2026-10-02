@@ -32,6 +32,7 @@ export default class SquadServer extends EventEmitter {
     this.players = [];
 
     this.squads = [];
+    this.tickets = [];
 
     this.admins = {};
     this.adminsInAdminCam = {};
@@ -195,6 +196,13 @@ export default class SquadServer extends EventEmitter {
       delete data.playerSuffix;
 
       this.emit('DEPLOYABLE_DAMAGED', data);
+    });
+
+    this.logParser.on('DEPLOYABLE_SPAWNED', async (data) => {
+      if (data.playerEOSID) data.player = await this.getPlayerByEOSID(data.playerEOSID);
+      if (!data.player) data.player = await this.getPlayerByName(data.playerName);
+
+      this.emit('DEPLOYABLE_SPAWNED', data);
     });
 
     this.logParser.on('CAPTURE_ZONE_NEUTRALIZED', (data) => {
@@ -493,7 +501,7 @@ export default class SquadServer extends EventEmitter {
     Logger.verbose('SquadServer', 1, `Updating squad list...`);
 
     try {
-      this.squads = await this.rcon.getSquads();
+      [this.squads, this.tickets] = await this.rcon.getSquads();
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update squad list.', err);
     }
