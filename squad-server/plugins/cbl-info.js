@@ -1,4 +1,4 @@
-// improved CBL info to show SteamID and EOS ID 
+// improved CBL info to show SteamID and EOS ID
 import GraphQLRequest from 'graphql-request';
 import DiscordBasePlugin from './discord-base-plugin.js';
 
@@ -126,7 +126,9 @@ export default class CBLInfo extends DiscordBasePlugin {
             },
             {
               name: 'Reputation Points',
-              value: `${data.steamUser.reputationPoints} (${data.steamUser.reputationPointsMonthChange || 0} from this month)`,
+              value: `${data.steamUser.reputationPoints} (${
+                data.steamUser.reputationPointsMonthChange || 0
+              } from this month)`,
               inline: true
             },
             {

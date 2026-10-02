@@ -131,9 +131,7 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
     if (this.server.reserveSlots) slots += `+${this.server.reserveSlots}`;
 
     await this.options.discordClient.user.setActivity(
-      `(${players}/${slots}) ${
-        this.server.currentLayer?.name || 'Unknown'
-      }`,
+      `(${players}/${slots}) ${this.server.currentLayer?.name || 'Unknown'}`,
       { type: 4 }
     );
   }

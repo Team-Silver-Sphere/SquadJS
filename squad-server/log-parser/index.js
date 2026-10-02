@@ -13,11 +13,10 @@ export default class SquadLogParser extends LogParser {
   }
 
   async watch() {
-    //? Wait for rules to be configured before hooking the log file
+    // ? Wait for rules to be configured before hooking the log file
     await this.setupRules();
     return super.watch();
   }
-
 
   async setupRules() {
     const files = await fs.promises.opendir(path.resolve(path.join(__dirname, './')));
