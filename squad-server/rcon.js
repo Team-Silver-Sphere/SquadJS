@@ -179,12 +179,17 @@ export default class SquadRcon extends Rcon {
     let teamName;
     let teamID;
 
-    if (!responseSquad || responseSquad.length < 1) return squads;
+    if (!responseSquad || responseSquad.length < 1) return [squads, tickets];
 
     for (const line of responseSquad.split('\n')) {
-      const tmatch = line.match(/Team ID: (?<teamID>\d) \((?<unitName>.+)\) - Tickets: (?<tickets>\d+)/);
+      const tmatch = line.match(
+        /Team ID: (?<teamID>\d) \((?<unitName>.+)\) - Tickets: (?<tickets>\d+)/
+      );
       if (tmatch) {
-        tickets[+tmatch.groups.teamID - 1] = +tmatch.groups.tickets;
+        // Since Squad 10.6 every team line has a ticket count, so the team is set here as well.
+        teamID = +tmatch.groups.teamID;
+        teamName = tmatch.groups.unitName;
+        tickets[teamID - 1] = +tmatch.groups.tickets;
         continue;
       }
 
