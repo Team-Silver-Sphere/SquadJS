@@ -717,7 +717,9 @@ export default class SquadServer extends EventEmitter {
     };
 
     try {
-      const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', payload);
+      const { data } = await axios.post(SQUADJS_API_DOMAIN + '/api/v1/ping', payload, {
+        timeout: 10 * 1000
+      });
 
       if (data.error)
         Logger.verbose(
