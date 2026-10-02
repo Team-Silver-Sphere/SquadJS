@@ -503,7 +503,7 @@ export default class SquadServer extends EventEmitter {
     try {
       const currentMap = await this.rcon.getCurrentMap();
       const nextMap = await this.rcon.getNextMap();
-      const nextMapToBeVoted = nextMap.layer === 'To be voted';
+      const nextMapToBeVoted = nextMap.toBeVoted;
 
       const currentLayer = await Layers.getLayerById(currentMap.layer);
       const nextLayer = nextMapToBeVoted ? null : await Layers.getLayerById(nextMap.layer);
@@ -543,7 +543,7 @@ export default class SquadServer extends EventEmitter {
       const rawData = await this.rcon.execute(`ShowServerInfo`);
       Logger.verbose('SquadServer', 3, `Server information raw data`, rawData);
       const data = JSON.parse(rawData);
-      Logger.verbose('SquadServer', 2, `Server information data`, JSON.data);
+      Logger.verbose('SquadServer', 2, `Server information data`, data);
 
       const info = {
         raw: data,
@@ -584,8 +584,9 @@ export default class SquadServer extends EventEmitter {
       this.matchStartTime = info.matchStartTime;
       this.gameVersion = info.gameVersion;
 
+      // NextLayer_s is not used as a fallback: after a map change it keeps the previous next
+      // layer as a display name, even when ShowNextMap reports that no next map is defined.
       if (!this.currentLayer) this.currentLayer = Layers.getLayerByClassname(info.currentLayer);
-      if (!this.nextLayer) this.nextLayer = Layers.getLayerByClassname(info.nextLayer);
 
       this.emit('UPDATED_A2S_INFORMATION', info);
       this.emit('UPDATED_SERVER_INFORMATION', info);

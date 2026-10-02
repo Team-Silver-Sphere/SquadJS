@@ -140,7 +140,8 @@ export default class SquadRcon extends Rcon {
     const match = response.match(/^Next level is ([^,]*), layer is ([^,]*)/);
     return {
       level: match ? (match[1] !== '' ? match[1] : null) : null,
-      layer: match ? (match[2] !== 'To be voted' ? match[2] : null) : null
+      layer: match ? (match[2] !== 'To be voted' ? match[2] : null) : null,
+      toBeVoted: match ? match[2] === 'To be voted' : false
     };
   }
 
