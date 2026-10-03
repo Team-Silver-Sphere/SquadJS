@@ -1,10 +1,10 @@
-import BasePlugin from './base-plugin.js';
+import BasePlugin from "./base-plugin.js";
 
 export default class TeamRandomizer extends BasePlugin {
   static get description() {
     return (
       "The <code>TeamRandomizer</code> can be used to randomize teams. It's great for destroying clan stacks or for " +
-      'social events. It can be run by typing, by default, <code>!randomize</code> into in-game admin chat'
+      "social events. It can be run by typing, by default, <code>!randomize</code> into in-game admin chat"
     );
   }
 
@@ -16,9 +16,9 @@ export default class TeamRandomizer extends BasePlugin {
     return {
       command: {
         required: false,
-        description: 'The command used to randomize the teams.',
-        default: 'randomize'
-      }
+        description: "The command used to randomize the teams.",
+        default: "randomize",
+      },
     };
   }
 
@@ -33,11 +33,22 @@ export default class TeamRandomizer extends BasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener(`CHAT_COMMAND:${this.options.command}`, this.onChatCommand);
+    this.server.removeEventListener(
+      `CHAT_COMMAND:${this.options.command}`,
+      this.onChatCommand,
+    );
   }
 
   async onChatCommand(info) {
-    if (info.chat !== 'ChatAdmin') return;
+    if (info.chat !== "ChatAdmin") return;
+
+    // Prevent accidental command triggers from mid-sentence usage.
+    // 
+    // SquadJS fires CHAT_COMMAND:<word> for any word in a message, so admins typing
+    // "I'm going to randomize the teams" would accidentally trigger a full shuffle.
+    // This check ensures the message is ONLY the command (e.g., "!randomize") with
+    // optional trailing whitespace, preventing unintended team randomization.
+    if (info.message.trim().toLowerCase() !== `!${this.options.command}`.toLowerCase()) return;
 
     const players = this.server.players.slice(0);
 
@@ -54,12 +65,13 @@ export default class TeamRandomizer extends BasePlugin {
       players[randomIndex] = temporaryValue;
     }
 
-    let team = '1';
+    let team = "1";
 
     for (const player of players) {
-      if (player.teamID !== team) await this.server.rcon.switchTeam(player.eosID);
+      if (player.teamID !== team)
+        await this.server.rcon.switchTeam(player.eosID);
 
-      team = team === '1' ? '2' : '1';
+      team = team === "1" ? "2" : "1";
     }
   }
 }
