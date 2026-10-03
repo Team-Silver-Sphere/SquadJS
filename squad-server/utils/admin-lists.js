@@ -9,6 +9,21 @@ import Logger from 'core/logger';
 
 const __dirname = fileURLToPath(import.meta.url);
 
+// Replaces the password in a list address (ftp://user:password@host/...) with ***, so it is not logged.
+function withoutPassword(source) {
+  try {
+    const url = new URL(source);
+    if (url.password) {
+      url.password = '***';
+      return url.toString();
+    }
+  } catch {
+    // Not a valid URL; the pattern below still applies.
+  }
+  // An address without a parsed password, for example an FTP address without "ftp://".
+  return source.replace(/^([^:/@\s]+):[^@\s]+@/, '$1:***@');
+}
+
 export default async function fetchAdminLists(adminLists) {
   Logger.verbose('SquadServer', 1, `Fetching Admin Lists...`);
 
@@ -16,6 +31,7 @@ export default async function fetchAdminLists(adminLists) {
   const admins = {};
 
   for (const [idx, list] of adminLists.entries()) {
+    const shownSource = withoutPassword(list.source);
     let data = '';
     try {
       switch (list.type) {
@@ -60,11 +76,14 @@ export default async function fetchAdminLists(adminLists) {
           throw new Error(`Unsupported AdminList type:${list.type}`);
       }
     } catch (error) {
+      // Only the message is logged: request errors contain the full address, including a password.
+      const reason = String(error?.message ?? error)
+        .split(list.source)
+        .join(shownSource);
       Logger.verbose(
         'SquadServer',
         1,
-        `Error fetching ${list.type} admin list: ${list.source}`,
-        error
+        `Error fetching ${list.type} admin list: ${shownSource}: ${reason}`
       );
     }
 
@@ -100,7 +119,7 @@ export default async function fetchAdminLists(adminLists) {
         Logger.verbose(
           'SquadServer',
           1,
-          `Error parsing admin group ${m.groups.groupID} from admin list: ${list.source}`,
+          `Error parsing admin group ${m.groups.groupID} from admin list: ${shownSource}`,
           error
         );
       }
