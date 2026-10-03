@@ -98,6 +98,7 @@ export default class AutoKickUnassigned extends BasePlugin {
 
     this.onNewGame = this.onNewGame.bind(this);
     this.onPlayerSquadChange = this.onPlayerSquadChange.bind(this);
+    this.onPlayerDisconnected = this.onPlayerDisconnected.bind(this);
     this.updateTrackingList = this.updateTrackingList.bind(this);
     this.clearDisconnectedPlayers = this.clearDisconnectedPlayers.bind(this);
   }
@@ -105,6 +106,7 @@ export default class AutoKickUnassigned extends BasePlugin {
   async mount() {
     this.server.on('NEW_GAME', this.onNewGame);
     this.server.on('PLAYER_SQUAD_CHANGE', this.onPlayerSquadChange);
+    this.server.on('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
     this.updateTrackingListInterval = setInterval(
       this.updateTrackingList,
       this.trackingListUpdateFrequency
@@ -118,6 +120,7 @@ export default class AutoKickUnassigned extends BasePlugin {
   async unmount() {
     this.server.removeEventListener('NEW_GAME', this.onNewGame);
     this.server.removeEventListener('PLAYER_SQUAD_CHANGE', this.onPlayerSquadChange);
+    this.server.removeListener('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
     clearInterval(this.updateTrackingListInterval);
     clearInterval(this.clearDisconnectedPlayersInterval);
   }
@@ -135,7 +138,13 @@ export default class AutoKickUnassigned extends BasePlugin {
       this.untrackPlayer(player.eosID);
   }
 
-  async updateTrackingList(forceUpdate = false) {
+  async onPlayerDisconnected(info) {
+    // SquadServer removes the bare ID fields from this event; the ID is only on info.player.
+    const eosID = info.player?.eosID;
+    if (eosID && eosID in this.trackedPlayers) this.untrackPlayer(eosID);
+  }
+
+  async updateTrackingList() {
     const run = !(this.betweenRounds || this.server.players.length < this.options.playerThreshold);
 
     this.verbose(
@@ -150,7 +159,10 @@ export default class AutoKickUnassigned extends BasePlugin {
       return;
     }
 
-    if (forceUpdate) await this.server.updatePlayerList();
+    // The server player list refreshes every 30 s. Without a refresh here, a player who left a few seconds
+    // ago is still listed as unassigned and is tracked again after PLAYER_DISCONNECTED untracked them.
+    await this.server.updatePlayerList();
+    await this.clearDisconnectedPlayers();
 
     const admins = this.server.getAdminsWithPermission(this.adminPermission, 'eosID');
     const whitelist = this.server.getAdminsWithPermission(this.whitelistPermission, 'eosID');
@@ -218,7 +230,7 @@ export default class AutoKickUnassigned extends BasePlugin {
     // set timeout to kick player
     tracker.kickTimerID = setTimeout(async () => {
       // ensures player is still Unassigned
-      await this.updateTrackingList(true);
+      await this.updateTrackingList();
 
       // return if player in tracker was removed from list
       if (!(tracker.player.eosID in this.trackedPlayers)) return;
