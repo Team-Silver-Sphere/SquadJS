@@ -445,6 +445,11 @@ export default class DBLog extends BasePlugin {
     this.dropAllForeignKeys = this.dropAllForeignKeys.bind(this);
   }
 
+  sanitizeName(name) {
+    if (!name) return 'Unknown';
+    return name.replace(/[^\x00-\x7F]/g, "").trim();
+  }
+
   createModel(name, schema) {
     this.models[name] = this.options.database.define(`DBLog_${name}`, schema, {
       timestamps: false
@@ -464,6 +469,7 @@ export default class DBLog extends BasePlugin {
   }
 
   async mount() {
+    await this.prepareToMount();
     await this.migrateSteamUsersIntoPlayers();
 
     await this.models.Server.upsert({
@@ -531,41 +537,40 @@ export default class DBLog extends BasePlugin {
   }
 
   async onPlayerWounded(info) {
-    if (info.attacker)
+    const attackerName = this.sanitizeName(info.attackerName || (info.attacker ? info.attacker.name : ""));
+    const victimName = this.sanitizeName(info.victimName || (info.victim ? info.victim.name : ""));
+
+    const attacker = info.attacker || this.server.getPlayerByName(attackerName);
+    const victim = info.victim || this.server.getPlayerByName(victimName);
+
+    const attackerID = attacker ? (attacker.steamID || attacker.eosID) : null;
+    const victimID = victim ? (victim.steamID || victim.eosID) : null;
+
+    if (attacker && attacker.steamID) {
       await this.models.Player.upsert(
-        {
-          eosID: info.attacker.eosID,
-          steamID: info.attacker.steamID,
-          lastName: info.attacker.name
-        },
-        {
-          conflictFields: ['steamID']
-        }
+        { eosID: attacker.eosID, steamID: attacker.steamID, lastName: attackerName },
+        { conflictFields: ['steamID'] }
       );
-    if (info.victim)
+    }
+    if (victim && victim.steamID) {
       await this.models.Player.upsert(
-        {
-          eosID: info.victim.eosID,
-          steamID: info.victim.steamID,
-          lastName: info.victim.name
-        },
-        {
-          conflictFields: ['steamID']
-        }
+        { eosID: victim.eosID, steamID: victim.steamID, lastName: victimName },
+        { conflictFields: ['steamID'] }
       );
+    }
 
     await this.models.Wound.create({
       server: this.options.overrideServerID || this.server.id,
       match: this.match ? this.match.id : null,
       time: info.time,
-      victim: info.victim ? info.victim.steamID : null,
-      victimName: info.victim ? info.victim.name : null,
-      victimTeamID: info.victim ? info.victim.teamID : null,
-      victimSquadID: info.victim ? info.victim.squadID : null,
-      attacker: info.attacker ? info.attacker.steamID : null,
-      attackerName: info.attacker ? info.attacker.name : null,
-      attackerTeamID: info.attacker ? info.attacker.teamID : null,
-      attackerSquadID: info.attacker ? info.attacker.squadID : null,
+      victim: victimID,
+      victimName: victimName,
+      victimTeamID: victim ? victim.teamID : info.victimTeamID,
+      victimSquadID: victim ? victim.squadID : info.victimSquadID,
+      attacker: attackerID,
+      attackerName: attackerName,
+      attackerTeamID: attacker ? attacker.teamID : info.attackerTeamID,
+      attackerSquadID: attacker ? attacker.squadID : info.attackerSquadID,
       damage: info.damage,
       weapon: info.weapon,
       teamkill: info.teamkill
@@ -573,42 +578,41 @@ export default class DBLog extends BasePlugin {
   }
 
   async onPlayerDied(info) {
-    if (info.attacker)
+    const attackerName = this.sanitizeName(info.attackerName || (info.attacker ? info.attacker.name : ""));
+    const victimName = this.sanitizeName(info.victimName || (info.victim ? info.victim.name : ""));
+
+    const attacker = info.attacker || this.server.getPlayerByName(attackerName);
+    const victim = info.victim || this.server.getPlayerByName(victimName);
+
+    const attackerID = attacker ? (attacker.steamID || attacker.eosID) : null;
+    const victimID = victim ? (victim.steamID || victim.eosID) : null;
+
+    if (attacker && attacker.steamID) {
       await this.models.Player.upsert(
-        {
-          eosID: info.attacker.eosID,
-          steamID: info.attacker.steamID,
-          lastName: info.attacker.name
-        },
-        {
-          conflictFields: ['steamID']
-        }
+        { eosID: attacker.eosID, steamID: attacker.steamID, lastName: attackerName },
+        { conflictFields: ['steamID'] }
       );
-    if (info.victim)
+    }
+    if (victim && victim.steamID) {
       await this.models.Player.upsert(
-        {
-          eosID: info.victim.eosID,
-          steamID: info.victim.steamID,
-          lastName: info.victim.name
-        },
-        {
-          conflictFields: ['steamID']
-        }
+        { eosID: victim.eosID, steamID: victim.steamID, lastName: victimName },
+        { conflictFields: ['steamID'] }
       );
+    }
 
     await this.models.Death.create({
       server: this.options.overrideServerID || this.server.id,
       match: this.match ? this.match.id : null,
       time: info.time,
       woundTime: info.woundTime,
-      victim: info.victim ? info.victim.steamID : null,
-      victimName: info.victim ? info.victim.name : null,
-      victimTeamID: info.victim ? info.victim.teamID : null,
-      victimSquadID: info.victim ? info.victim.squadID : null,
-      attacker: info.attacker ? info.attacker.steamID : null,
-      attackerName: info.attacker ? info.attacker.name : null,
-      attackerTeamID: info.attacker ? info.attacker.teamID : null,
-      attackerSquadID: info.attacker ? info.attacker.squadID : null,
+      victim: victimID,
+      victimName: victimName,
+      victimTeamID: victim ? victim.teamID : info.victimTeamID,
+      victimSquadID: victim ? victim.squadID : info.victimSquadID,
+      attacker: attackerID,
+      attackerName: attackerName,
+      attackerTeamID: attacker ? attacker.teamID : info.attackerTeamID,
+      attackerSquadID: attacker ? attacker.squadID : info.attackerSquadID,
       damage: info.damage,
       weapon: info.weapon,
       teamkill: info.teamkill
@@ -616,60 +620,57 @@ export default class DBLog extends BasePlugin {
   }
 
   async onPlayerRevived(info) {
-    if (info.attacker)
+    const attackerName = this.sanitizeName(info.attackerName || (info.attacker ? info.attacker.name : ""));
+    const victimName = this.sanitizeName(info.victimName || (info.victim ? info.victim.name : ""));
+    const reviverName = this.sanitizeName(info.reviverName || (info.reviver ? info.reviver.name : ""));
+
+    const attacker = info.attacker || this.server.getPlayerByName(attackerName);
+    const victim = info.victim || this.server.getPlayerByName(victimName);
+    const reviver = info.reviver || this.server.getPlayerByName(reviverName);
+
+    const attackerID = attacker ? (attacker.steamID || attacker.eosID) : null;
+    const victimID = victim ? (victim.steamID || victim.eosID) : null;
+    const reviverID = reviver ? (reviver.steamID || reviver.eosID) : null;
+
+    if (attacker && attacker.steamID) {
       await this.models.Player.upsert(
-        {
-          eosID: info.attacker.eosID,
-          steamID: info.attacker.steamID,
-          lastName: info.attacker.name
-        },
-        {
-          conflictFields: ['steamID']
-        }
+        { eosID: attacker.eosID, steamID: attacker.steamID, lastName: attackerName },
+        { conflictFields: ['steamID'] }
       );
-    if (info.victim)
+    }
+    if (victim && victim.steamID) {
       await this.models.Player.upsert(
-        {
-          eosID: info.victim.eosID,
-          steamID: info.victim.steamID,
-          lastName: info.victim.name
-        },
-        {
-          conflictFields: ['steamID']
-        }
+        { eosID: victim.eosID, steamID: victim.steamID, lastName: victimName },
+        { conflictFields: ['steamID'] }
       );
-    if (info.reviver)
+    }
+    if (reviver && reviver.steamID) {
       await this.models.Player.upsert(
-        {
-          eosID: info.reviver.eosID,
-          steamID: info.reviver.steamID,
-          lastName: info.reviver.name
-        },
-        {
-          conflictFields: ['steamID']
-        }
+        { eosID: reviver.eosID, steamID: reviver.steamID, lastName: reviverName },
+        { conflictFields: ['steamID'] }
       );
+    }
 
     await this.models.Revive.create({
       server: this.options.overrideServerID || this.server.id,
       match: this.match ? this.match.id : null,
       time: info.time,
       woundTime: info.woundTime,
-      victim: info.victim ? info.victim.steamID : null,
-      victimName: info.victim ? info.victim.name : null,
-      victimTeamID: info.victim ? info.victim.teamID : null,
-      victimSquadID: info.victim ? info.victim.squadID : null,
-      attacker: info.attacker ? info.attacker.steamID : null,
-      attackerName: info.attacker ? info.attacker.name : null,
-      attackerTeamID: info.attacker ? info.attacker.teamID : null,
-      attackerSquadID: info.attacker ? info.attacker.squadID : null,
+      victim: victimID,
+      victimName: victimName,
+      victimTeamID: victim ? victim.teamID : info.victimTeamID,
+      victimSquadID: victim ? victim.squadID : info.victimSquadID,
+      attacker: attackerID,
+      attackerName: attackerName,
+      attackerTeamID: attacker ? attacker.teamID : info.attackerTeamID,
+      attackerSquadID: attacker ? attacker.squadID : info.attackerSquadID,
       damage: info.damage,
       weapon: info.weapon,
       teamkill: info.teamkill,
-      reviver: info.reviver ? info.reviver.steamID : null,
-      reviverName: info.reviver ? info.reviver.name : null,
-      reviverTeamID: info.reviver ? info.reviver.teamID : null,
-      reviverSquadID: info.reviver ? info.reviver.squadID : null
+      reviver: reviverID,
+      reviverName: reviverName,
+      reviverTeamID: reviver ? reviver.teamID : info.reviverTeamID,
+      reviverSquadID: reviver ? reviver.squadID : info.reviverSquadID
     });
   }
 
@@ -678,12 +679,10 @@ export default class DBLog extends BasePlugin {
       {
         eosID: info.player.eosID,
         steamID: info.player.steamID,
-        lastName: info.player.name,
+        lastName: this.sanitizeName(info.player.name),
         lastIP: info.ip
       },
-      {
-        conflictFields: ['steamID']
-      }
+      { conflictFields: ['steamID'] }
     );
   }
 
