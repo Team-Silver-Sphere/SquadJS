@@ -40,7 +40,7 @@ export default class DiscordFOBHABExplosionDamage extends DiscordBasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('DEPLOYABLE_DAMAGED', this.onDeployableDamaged);
+    this.server.removeListener('DEPLOYABLE_DAMAGED', this.onDeployableDamaged);
   }
 
   async onDeployableDamaged(info) {

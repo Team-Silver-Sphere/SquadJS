@@ -46,7 +46,7 @@ export default class DiscordPlaceholder extends BasePlugin {
   }
 
   async unmount() {
-    this.options.discordClient.removeEventListener('messageCreate', this.onMessage);
+    this.options.discordClient.removeListener('messageCreate', this.onMessage);
   }
 
   async onMessage(message) {

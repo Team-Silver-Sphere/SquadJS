@@ -37,7 +37,7 @@ export default class DiscordRoundEnded extends DiscordBasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('ROUND_ENDED', this.onRoundEnd);
+    this.server.removeListener('ROUND_ENDED', this.onRoundEnd);
   }
 
   async onRoundEnd(info) {
