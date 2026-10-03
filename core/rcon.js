@@ -14,8 +14,9 @@ const MID_PACKET_ID = 0x01;
 const END_PACKET_ID = 0x02;
 
 // Size field limits for received packets. An empty packet has size 10. Squad splits large responses at about 4096
-// characters, so packets with multibyte player names are larger than 4096 bytes (up to about 16 KB). A size field
-// read from bytes that are not a packet header is usually far larger, so it shows that the stream is out of step.
+// characters, so packets with multibyte player names are larger than 4096 bytes (4127 bytes seen; 4096 characters
+// of 4 bytes each would be about 16 KB). A size field read from bytes that are not a packet header is usually far
+// larger, so it shows that the stream is out of step.
 const MINIMUM_PACKET_SIZE = 10;
 const MAXIMUM_PACKET_SIZE = 65536;
 
