@@ -162,12 +162,15 @@ export default class SquadRcon extends Rcon {
       data.isLeader = data.isLeader === 'True';
       data.teamID = data.teamID !== 'N/A' ? +data.teamID : null;
       data.squadID = data.squadID !== 'N/A' ? +data.squadID : null;
-      if (data.partyID !== undefined)
-        data.partyID = data.partyID !== 'N/A' ? +data.partyID : null;
+      if (data.partyID !== undefined) data.partyID = data.partyID !== 'N/A' ? +data.partyID : null;
       else delete data.partyID;
-      if (data.vehicle !== undefined)
+      if (data.vehicle !== undefined) {
         data.vehicle = data.vehicle !== 'N/A' ? data.vehicle : null;
-      else delete data.vehicle;
+        data.vehicleRole = data.vehicleRole || null;
+      } else {
+        delete data.vehicle;
+        delete data.vehicleRole;
+      }
       iterateIDs(match[2]).forEach((platform, id) => {
         data[lowerID(platform)] = id;
       });
