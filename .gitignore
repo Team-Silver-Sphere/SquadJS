@@ -3,6 +3,7 @@
 *.tmp
 
 config-test*.json
+/configs
 
 # Dependencies
 node_modules/
