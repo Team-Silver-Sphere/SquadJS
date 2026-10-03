@@ -78,7 +78,7 @@ export default class Rcon extends EventEmitter {
             this.callbackIds = this.callbackIds.filter((p) => p.id !== decodedPacket.count);
 
             this.responseCallbackQueue.shift()(
-              this.incomingResponse.map((packet) => packet.body).join()
+              this.incomingResponse.map((packet) => packet.body).join('')
             );
             this.incomingResponse = [];
 
