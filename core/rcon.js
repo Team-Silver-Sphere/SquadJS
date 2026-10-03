@@ -327,12 +327,6 @@ export default class Rcon extends EventEmitter {
         return;
       }
 
-      const onError = (err) => {
-        Logger.verbose('RCON', 1, 'Error occurred. Wiping response action queue.', err);
-        this.responseCallbackQueue = [];
-        reject(err);
-      };
-
       // the auth packet also sends a normal response, so we add an extra empty action to ignore it
 
       if (type === SERVERDATA_AUTH) {
@@ -340,8 +334,10 @@ export default class Rcon extends EventEmitter {
 
         this.responseCallbackQueue.push(() => {});
         this.responseCallbackQueue.push((decodedPacket) => {
-          this.client.removeListener('error', onError);
-          if (decodedPacket.id === -1) {
+          if (decodedPacket instanceof Error) {
+            // Called from onClose()
+            reject(decodedPacket);
+          } else if (decodedPacket.id === -1) {
             Logger.verbose('RCON', 1, 'Authentication failed.');
             reject(new Error('Authentication failed.'));
           } else {
@@ -353,8 +349,6 @@ export default class Rcon extends EventEmitter {
       } else {
         this.callbackIds.push({ id: this.count, cmd: body });
         this.responseCallbackQueue.push((response) => {
-          this.client.removeListener('error', onError);
-
           if (response instanceof Error) {
             // Called from onClose()
             reject(response);
@@ -370,7 +364,9 @@ export default class Rcon extends EventEmitter {
         });
       }
 
-      this.client.once('error', onError);
+      // No error listener per packet: after a socket error, net.Socket always emits 'close', and onClose()
+      // rejects every pending callback. One listener per pending packet exceeded the default limit of 10
+      // listeners (MaxListenersExceededWarning) when 10 or more commands were pending.
 
       if (this.count + 1 > 65535) {
         this.count = 1;
