@@ -212,6 +212,14 @@
       "color": 16761867,
       "disableCBL": false
     },
+	{
+      "plugin": "EnforceSquadLeaderKit",
+      "enabled": true,
+      "warningMessage": "You must take the Squad Leader kit, or your squad will be disbanded!",
+      "warningTimeout": 30,
+      "checkInterval": 30,
+      "maxWarnings": 10
+    },
     {
       "plugin": "FogOfWar",
       "enabled": false,
