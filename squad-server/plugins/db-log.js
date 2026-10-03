@@ -692,6 +692,11 @@ export default class DBLog extends BasePlugin {
       const steamUsersCount = await this.models.SteamUser.count();
       const playersCount = await this.models.Player.count();
 
+      if (steamUsersCount === 0) {
+        this.verbose(1, `Skipping migration from SteamUsers to Players: there are no SteamUsers.`);
+        return;
+      }
+
       if (steamUsersCount < playersCount) {
         this.verbose(
           1,
