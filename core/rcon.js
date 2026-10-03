@@ -27,7 +27,8 @@ export default class Rcon extends EventEmitter {
     this.autoReconnectDelay = options.autoReconnectDelay || 5000;
 
     // bind methods
-    this.connect = this.connect.bind(this); // we bind this as we call it on the auto reconnect timeout
+    this.connect = this.connect.bind(this);
+    this.reconnect = this.reconnect.bind(this); // we bind this as we call it on the auto reconnect timeout
     this.onPacket = this.onPacket.bind(this);
     this.onClose = this.onClose.bind(this);
     this.onError = this.onError.bind(this);
@@ -213,7 +214,18 @@ export default class Rcon extends EventEmitter {
 
     if (this.autoReconnect) {
       Logger.verbose('RCON', 1, `Sleeping ${this.autoReconnectDelay}ms before reconnecting.`);
-      setTimeout(this.connect, this.autoReconnectDelay);
+      setTimeout(this.reconnect, this.autoReconnectDelay);
+    }
+  }
+
+  async reconnect() {
+    // A failed attempt (connection refused while the Squad server restarts, or a login the server closes) must
+    // not become an unhandled rejection, which ends the Node process. The failed attempt also closes the socket,
+    // so onClose() schedules the next attempt.
+    try {
+      await this.connect();
+    } catch (err) {
+      Logger.verbose('RCON', 1, `Reconnect to ${this.host}:${this.port} failed.`, err);
     }
   }
 
