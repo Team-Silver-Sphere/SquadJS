@@ -182,25 +182,16 @@ export default class SquadRcon extends Rcon {
     if (!responseSquad || responseSquad.length < 1) return [squads, tickets];
 
     for (const line of responseSquad.split('\n')) {
-      const tmatch = line.match(
-        /Team ID: (?<teamID>\d) \((?<unitName>.+)\) - Tickets: (?<tickets>\d+)/
-      );
-      if (tmatch) {
-        // Since Squad 10.6 every team line has a ticket count, so the team is set here as well.
-        teamID = +tmatch.groups.teamID;
-        teamName = tmatch.groups.unitName;
-        tickets[teamID - 1] = +tmatch.groups.tickets;
+      const matchSide = line.match(/^Team ID: (?<teamID>\d) \((?<unitName>.+)\) - Tickets: (?<tickets>\d+)/);
+      if (matchSide) {
+        teamID = +matchSide.groups.teamID;
+        teamName = matchSide.groups.unitName;
+        tickets[teamID - 1] = +matchSide.groups.tickets;
         continue;
       }
-
       const match = line.match(
-        /ID: (?<squadID>\d+) \| Name: (?<squadName>.+) \| Size: (?<size>\d+) \| Locked: (?<locked>True|False) \| Creator Name: (?<creatorName>.+) \| Creator Online IDs:([^|]+)/
+        /^ID: (?<squadID>\d+) \| Name: (?<squadName>.+) \| Size: (?<size>\d+) \| Locked: (?<locked>True|False) \| Creator Name: (?<creatorName>.+) \| Creator Online IDs:([^|]+)/
       );
-      const matchSide = line.match(/Team ID: (\d) \((.+)\)/);
-      if (matchSide) {
-        teamID = +matchSide[1];
-        teamName = matchSide[2];
-      }
       if (!match) continue;
       match.groups.squadID = +match.groups.squadID;
       const squad = {
