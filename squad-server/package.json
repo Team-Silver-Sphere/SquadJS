@@ -18,7 +18,7 @@
     "sequelize": "^6.3.5",
     "socket.io": "^4.8.2",
     "sqlite3": "^5.0.0",
-    "tedious": "^15.1.2",
+    "tedious": "^20.3.3",
     "tinygradient": "^1.1.2"
   },
   "exports": {
