@@ -10,10 +10,10 @@
     "./rcon": "./rcon.js"
   },
   "dependencies": {
+    "@logdna/tail-file": "^4.0.2",
     "async": "^3.2.0",
     "chalk": "^4.1.0",
     "ftp-tail": "^2.1.1",
-    "moment": "^2.29.1",
-    "tail": "^2.0.4"
+    "moment": "^2.29.1"
   }
 }
