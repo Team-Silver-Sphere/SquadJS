@@ -19,6 +19,7 @@ const eventsToBroadcast = [
   'PLAYER_DAMAGED',
   'PLAYER_WOUNDED',
   'PLAYER_DIED',
+  'PLAYER_SUICIDE',
   'PLAYER_REVIVED',
   'TEAMKILL',
   'PLAYER_POSSESS',
