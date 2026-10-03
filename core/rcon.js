@@ -386,11 +386,15 @@ export default class Rcon extends EventEmitter {
         this.responseCallbackQueue.push(() => {});
         this.responseCallbackQueue.push((decodedPacket) => {
           if (decodedPacket instanceof Error) {
-            // Called from onClose()
-            reject(decodedPacket);
-          } else if (decodedPacket.id === -1) {
+            // Called from onClose(): the connection closed before the login was answered. Squad answers a wrong
+            // password this way: it closes the connection about 250 ms after the auth packet, without a reply. It
+            // does not send an auth response with id -1.
             Logger.verbose('RCON', 1, 'Authentication failed.');
-            reject(new Error('Authentication failed.'));
+            reject(
+              new Error(
+                'Authentication failed: the connection closed before the login was answered (wrong password?)'
+              )
+            );
           } else {
             Logger.verbose('RCON', 1, 'Authentication succeeded.');
             this.loggedin = true;
