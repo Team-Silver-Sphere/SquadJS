@@ -9,6 +9,14 @@ import Logger from 'core/logger';
 
 const __dirname = fileURLToPath(import.meta.url);
 
+// SquadJS waits for the admin lists at startup and before it emits NEW_GAME, so a slow remote list
+// must not hold it for long.
+const REMOTE_LIST_TIMEOUT = 10 * 1000;
+
+// Last content that was fetched from each list. When a later fetch fails, this content is used, so
+// the admins of that list do not disappear until the next successful fetch.
+const lastFetchedLists = new Map();
+
 export default async function fetchAdminLists(adminLists) {
   Logger.verbose('SquadServer', 1, `Fetching Admin Lists...`);
 
@@ -16,13 +24,15 @@ export default async function fetchAdminLists(adminLists) {
   const admins = {};
 
   for (const [idx, list] of adminLists.entries()) {
+    const listKey = `${list.type}:${list.source}`;
     let data = '';
     try {
       switch (list.type) {
         case 'remote': {
           const resp = await axios({
             method: 'GET',
-            url: `${list.source}`
+            url: `${list.source}`,
+            timeout: REMOTE_LIST_TIMEOUT
           });
           data = resp.data;
           break;
@@ -59,6 +69,7 @@ export default async function fetchAdminLists(adminLists) {
         default:
           throw new Error(`Unsupported AdminList type:${list.type}`);
       }
+      lastFetchedLists.set(listKey, data);
     } catch (error) {
       Logger.verbose(
         'SquadServer',
@@ -66,6 +77,10 @@ export default async function fetchAdminLists(adminLists) {
         `Error fetching ${list.type} admin list: ${list.source}`,
         error
       );
+      if (lastFetchedLists.has(listKey)) {
+        data = lastFetchedLists.get(listKey);
+        Logger.verbose('SquadServer', 1, `Using the last fetched ${list.type} admin list instead.`);
+      }
     }
 
     const groupRgx = /(?<=^Group=)(?<groupID>.*?):(?<groupPerms>.*?)(?=(?:\r\n|\r|\n|\s+\/\/))/gm;
