@@ -182,7 +182,9 @@ export default class SquadRcon extends Rcon {
     if (!responseSquad || responseSquad.length < 1) return [squads, tickets];
 
     for (const line of responseSquad.split('\n')) {
-      const matchSide = line.match(/^Team ID: (?<teamID>\d) \((?<unitName>.+)\) - Tickets: (?<tickets>\d+)/);
+      const matchSide = line.match(
+        /^Team ID: (?<teamID>\d) \((?<unitName>.+)\) - Tickets: (?<tickets>\d+)/
+      );
       if (matchSide) {
         teamID = +matchSide.groups.teamID;
         teamName = matchSide.groups.unitName;
