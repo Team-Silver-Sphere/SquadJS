@@ -154,7 +154,7 @@ export default class SquadRcon extends Rcon {
 
     for (const line of response.split('\n')) {
       const match = line.match(
-        /^ID: (?<playerID>\d+) \| Online IDs:([^|]+)\| Name: (?<name>.+) \| Team ID: (?<teamID>\d|N\/A) \| Squad ID: (?<squadID>\d+|N\/A) \| Is Leader: (?<isLeader>True|False) \| Role: (?<role>.+)$/
+        /^ID: (?<playerID>\d+) \| Online IDs:([^|]+)\| Name: (?<name>.+) \| Team ID: (?<teamID>\d|N\/A)(?: \| Party ID: [^|]*?)? \| Squad ID: (?<squadID>\d+|N\/A) \| Is Leader: (?<isLeader>True|False) \| Role: (?<role>.+?)(?: \| Vehicle: .*)?$/
       );
       if (!match) continue;
 
@@ -182,25 +182,18 @@ export default class SquadRcon extends Rcon {
     if (!responseSquad || responseSquad.length < 1) return [squads, tickets];
 
     for (const line of responseSquad.split('\n')) {
-      const tmatch = line.match(
-        /Team ID: (?<teamID>\d) \((?<unitName>.+)\) - Tickets: (?<tickets>\d+)/
+      const matchSide = line.match(
+        /^Team ID: (?<teamID>\d) \((?<unitName>.+)\) - Tickets: (?<tickets>\d+)/
       );
-      if (tmatch) {
-        // Since Squad 10.6 every team line has a ticket count, so the team is set here as well.
-        teamID = +tmatch.groups.teamID;
-        teamName = tmatch.groups.unitName;
-        tickets[teamID - 1] = +tmatch.groups.tickets;
+      if (matchSide) {
+        teamID = +matchSide.groups.teamID;
+        teamName = matchSide.groups.unitName;
+        tickets[teamID - 1] = +matchSide.groups.tickets;
         continue;
       }
-
       const match = line.match(
-        /ID: (?<squadID>\d+) \| Name: (?<squadName>.+) \| Size: (?<size>\d+) \| Locked: (?<locked>True|False) \| Creator Name: (?<creatorName>.+) \| Creator Online IDs:([^|]+)/
+        /^ID: (?<squadID>\d+) \| Name: (?<squadName>.+) \| Size: (?<size>\d+) \| Locked: (?<locked>True|False) \| Creator Name: (?<creatorName>.+) \| Creator Online IDs:([^|]+)/
       );
-      const matchSide = line.match(/Team ID: (\d) \((.+)\)/);
-      if (matchSide) {
-        teamID = +matchSide[1];
-        teamName = matchSide[2];
-      }
       if (!match) continue;
       match.groups.squadID = +match.groups.squadID;
       const squad = {
@@ -216,24 +209,24 @@ export default class SquadRcon extends Rcon {
     return [squads, tickets];
   }
 
-  async broadcast(message) {
-    await this.execute(`AdminBroadcast ${message}`);
+  broadcast(message) {
+    return this.execute(`AdminBroadcast ${message}`);
   }
 
-  async setFogOfWar(mode) {
-    await this.execute(`AdminSetFogOfWar ${mode}`);
+  setFogOfWar(mode) {
+    return this.execute(`AdminSetFogOfWar ${mode}`);
   }
 
-  async warn(anyID, message) {
-    await this.execute(`AdminWarn "${anyID}" ${message}`);
+  warn(anyID, message) {
+    return this.execute(`AdminWarn "${anyID}" ${message}`);
   }
 
   // 0 = Perm | 1m = 1 minute | 1d = 1 Day | 1M = 1 Month | etc...
-  async ban(anyID, banLength, message) {
-    await this.execute(`AdminBan "${anyID}" ${banLength} ${message}`);
+  ban(anyID, banLength, message) {
+    return this.execute(`AdminBan "${anyID}" ${banLength} ${message}`);
   }
 
-  async switchTeam(anyID) {
-    await this.execute(`AdminForceTeamChange "${anyID}"`);
+  switchTeam(anyID) {
+    return this.execute(`AdminForceTeamChange "${anyID}"`);
   }
 }

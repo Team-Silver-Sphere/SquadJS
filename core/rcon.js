@@ -13,6 +13,13 @@ const SERVERDATA_CHAT_VALUE = 0x01;
 const MID_PACKET_ID = 0x01;
 const END_PACKET_ID = 0x02;
 
+// Size field limits for received packets. An empty packet has size 10. Squad splits large responses at about 4096
+// characters, so packets with multibyte player names are larger than 4096 bytes (4127 bytes seen; 4096 characters
+// of 4 bytes each would be about 16 KB). A size field read from bytes that are not a packet header is usually far
+// larger, so it shows that the stream is out of step.
+const MINIMUM_PACKET_SIZE = 10;
+const MAXIMUM_PACKET_SIZE = 65536;
+
 export default class Rcon extends EventEmitter {
   constructor(options = {}) {
     super();
@@ -25,9 +32,12 @@ export default class Rcon extends EventEmitter {
     this.port = options.port;
     this.password = options.password;
     this.autoReconnectDelay = options.autoReconnectDelay || 5000;
+    // Time without a response after which the connection is closed and opened again. 0 disables it.
+    this.commandTimeout = options.commandTimeout ?? 10000;
 
     // bind methods
-    this.connect = this.connect.bind(this); // we bind this as we call it on the auto reconnect timeout
+    this.connect = this.connect.bind(this);
+    this.reconnect = this.reconnect.bind(this); // we bind this as we call it on the auto reconnect timeout
     this.onPacket = this.onPacket.bind(this);
     this.onClose = this.onClose.bind(this);
     this.onError = this.onError.bind(this);
@@ -66,6 +76,20 @@ export default class Rcon extends EventEmitter {
       `Processing decoded packet: ${this.decodedPacketToString(decodedPacket)}`
     );
 
+    // Squad answers commands in the order it receives them, and the callbacks are called in the same order. A
+    // response for any other command than the oldest pending one would go to the wrong callback.
+    const oldestPending = this.callbackIds[0];
+    if (
+      decodedPacket.type === SERVERDATA_RESPONSE_VALUE &&
+      oldestPending &&
+      decodedPacket.count !== oldestPending.id
+    ) {
+      this.recycleConnection(
+        `Response for packet ${decodedPacket.count} arrived while packet ${oldestPending.id} has no response`
+      );
+      return;
+    }
+
     switch (decodedPacket.type) {
       case SERVERDATA_RESPONSE_VALUE:
       case SERVERDATA_AUTH_RESPONSE:
@@ -78,7 +102,7 @@ export default class Rcon extends EventEmitter {
             this.callbackIds = this.callbackIds.filter((p) => p.id !== decodedPacket.count);
 
             this.responseCallbackQueue.shift()(
-              this.incomingResponse.map((packet) => packet.body).join()
+              this.incomingResponse.map((packet) => packet.body).join('')
             );
             this.incomingResponse = [];
 
@@ -91,7 +115,7 @@ export default class Rcon extends EventEmitter {
                 decodedPacket
               )}`
             );
-            this.onClose('Unknown Packet');
+            this.recycleConnection('Unknown packet ID');
         }
         break;
 
@@ -107,7 +131,7 @@ export default class Rcon extends EventEmitter {
             decodedPacket
           )}`
         );
-        this.onClose('Unknown Packet');
+        this.recycleConnection('Unknown packet type');
     }
   }
 
@@ -119,6 +143,11 @@ export default class Rcon extends EventEmitter {
     while (this.incomingData.byteLength >= 4) {
       const size = this.incomingData.readInt32LE(0);
       const packetSize = size + 4;
+
+      if (size < MINIMUM_PACKET_SIZE || size > MAXIMUM_PACKET_SIZE) {
+        this.recycleConnection(`Packet size ${size} is not possible`);
+        return;
+      }
 
       if (this.incomingData.byteLength < packetSize) {
         Logger.verbose(
@@ -213,8 +242,30 @@ export default class Rcon extends EventEmitter {
 
     if (this.autoReconnect) {
       Logger.verbose('RCON', 1, `Sleeping ${this.autoReconnectDelay}ms before reconnecting.`);
-      setTimeout(this.connect, this.autoReconnectDelay);
+      setTimeout(this.reconnect, this.autoReconnectDelay);
     }
+  }
+
+  async reconnect() {
+    // A failed attempt (connection refused while the Squad server restarts, or a login the server closes) must
+    // not become an unhandled rejection, which ends the Node process. The failed attempt also closes the socket,
+    // so onClose() schedules the next attempt.
+    try {
+      await this.connect();
+    } catch (err) {
+      Logger.verbose('RCON', 1, `Reconnect to ${this.host}:${this.port} failed.`, err);
+    }
+  }
+
+  recycleConnection(reason) {
+    // The stream cannot be read any further. Closing the socket rejects every pending command in onClose(), and
+    // auto reconnect opens a new connection with a clean stream. Several pending commands can time out at the
+    // same moment; only the first one closes the socket.
+    if (this.client.destroyed) return;
+    Logger.verbose('RCON', 1, `${reason}. Closing the connection to ${this.host}:${this.port}.`);
+    this.incomingData = Buffer.from([]);
+    this.incomingResponse = [];
+    this.client.destroy();
   }
 
   onError(err) {
@@ -292,7 +343,14 @@ export default class Rcon extends EventEmitter {
   }
 
   execute(command) {
-    return this.write(SERVERDATA_EXECCOMMAND, command);
+    const promise = this.write(SERVERDATA_EXECCOMMAND, command);
+    // Many plugins send commands without waiting for the result. When such a command fails (for example because
+    // the connection closed), its rejection has no handler, and an unhandled rejection ends the Node process.
+    // This handler logs the failure and marks the promise as handled. Callers that await it still get the error.
+    promise.catch((err) =>
+      Logger.verbose('RCON', 1, `Command "${command}" failed: ${err.message}`)
+    );
+    return promise;
   }
 
   write(type, body) {
@@ -327,12 +385,6 @@ export default class Rcon extends EventEmitter {
         return;
       }
 
-      const onError = (err) => {
-        Logger.verbose('RCON', 1, 'Error occurred. Wiping response action queue.', err);
-        this.responseCallbackQueue = [];
-        reject(err);
-      };
-
       // the auth packet also sends a normal response, so we add an extra empty action to ignore it
 
       if (type === SERVERDATA_AUTH) {
@@ -340,10 +392,16 @@ export default class Rcon extends EventEmitter {
 
         this.responseCallbackQueue.push(() => {});
         this.responseCallbackQueue.push((decodedPacket) => {
-          this.client.removeListener('error', onError);
-          if (decodedPacket.id === -1) {
+          if (decodedPacket instanceof Error) {
+            // Called from onClose(): the connection closed before the login was answered. Squad answers a wrong
+            // password this way: it closes the connection about 250 ms after the auth packet, without a reply. It
+            // does not send an auth response with id -1.
             Logger.verbose('RCON', 1, 'Authentication failed.');
-            reject(new Error('Authentication failed.'));
+            reject(
+              new Error(
+                'Authentication failed: the connection closed before the login was answered (wrong password?)'
+              )
+            );
           } else {
             Logger.verbose('RCON', 1, 'Authentication succeeded.');
             this.loggedin = true;
@@ -353,8 +411,6 @@ export default class Rcon extends EventEmitter {
       } else {
         this.callbackIds.push({ id: this.count, cmd: body });
         this.responseCallbackQueue.push((response) => {
-          this.client.removeListener('error', onError);
-
           if (response instanceof Error) {
             // Called from onClose()
             reject(response);
@@ -370,7 +426,22 @@ export default class Rcon extends EventEmitter {
         });
       }
 
-      this.client.once('error', onError);
+      const pendingCommand = this.callbackIds[this.callbackIds.length - 1];
+      const commandLabel = type === SERVERDATA_AUTH ? 'login' : body;
+      if (this.commandTimeout > 0) {
+        setTimeout(() => {
+          // Squad answers commands in the order it receives them. While this command has no response, no later
+          // command can get one either, so the stream is stuck.
+          if (this.callbackIds.includes(pendingCommand))
+            this.recycleConnection(
+              `No response to "${commandLabel}" within ${this.commandTimeout} ms`
+            );
+        }, this.commandTimeout).unref();
+      }
+
+      // No error listener per packet: after a socket error, net.Socket always emits 'close', and onClose()
+      // rejects every pending callback. One listener per pending packet exceeded the default limit of 10
+      // listeners (MaxListenersExceededWarning) when 10 or more commands were pending.
 
       if (this.count + 1 > 65535) {
         this.count = 1;
@@ -414,15 +485,15 @@ export default class Rcon extends EventEmitter {
     return util.inspect(decodedPacket, { breakLength: Infinity });
   }
 
-  async warn(anyID, message) {
-    await this.execute(`AdminWarn "${anyID}" ${message}`);
+  warn(anyID, message) {
+    return this.execute(`AdminWarn "${anyID}" ${message}`);
   }
 
-  async kick(anyID, reason) {
-    await this.execute(`AdminKick "${anyID}" ${reason}`);
+  kick(anyID, reason) {
+    return this.execute(`AdminKick "${anyID}" ${reason}`);
   }
 
-  async forceTeamChange(anyID) {
-    await this.execute(`AdminForceTeamChange "${anyID}"`);
+  forceTeamChange(anyID) {
+    return this.execute(`AdminForceTeamChange "${anyID}"`);
   }
 }
