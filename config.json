@@ -56,7 +56,8 @@
       "playerThreshold": 93,
       "roundStartDelay": 900,
       "ignoreAdmins": false,
-      "ignoreWhitelist": false
+      "ignoreWhitelist": false,
+      "finalWarnings": []
     },
     {
       "plugin": "AutoTKWarn",
