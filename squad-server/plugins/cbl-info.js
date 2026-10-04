@@ -46,7 +46,7 @@ export default class CBLInfo extends DiscordBasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('PLAYER_CONNECTED', this.onPlayerConnected);
+    this.server.removeListener('PLAYER_CONNECTED', this.onPlayerConnected);
   }
 
   async onPlayerConnected(info) {
