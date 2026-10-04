@@ -9,6 +9,21 @@ import Logger from 'core/logger';
 
 const __dirname = fileURLToPath(import.meta.url);
 
+// Replaces the password in a list address (ftp://user:password@host/...) with ***, so it is not logged.
+function withoutPassword(source) {
+  try {
+    const url = new URL(source);
+    if (url.password) {
+      url.password = '***';
+      return url.toString();
+    }
+  } catch {
+    // Not a valid URL; the pattern below still applies.
+  }
+  // An address without a parsed password, for example an FTP address without "ftp://".
+  return source.replace(/^([^:/@\s]+):[^@\s]+@/, '$1:***@');
+}
+
 // SquadJS waits for the admin lists at startup and before it emits NEW_GAME, so a slow remote list
 // must not hold it for long.
 const REMOTE_LIST_TIMEOUT = 10 * 1000;
@@ -24,6 +39,7 @@ export default async function fetchAdminLists(adminLists) {
   const admins = {};
 
   for (const [idx, list] of adminLists.entries()) {
+    const shownSource = withoutPassword(list.source);
     const listKey = `${list.type}:${list.source}`;
     let data = '';
     try {
@@ -61,8 +77,13 @@ export default async function fetchAdminLists(adminLists) {
 
           const buffer = new WritableBuffer();
           const ftpClient = new FTPClient();
-          await ftpClient.access({ host, port, user, password });
-          await ftpClient.downloadTo(buffer, remoteFilePath);
+          try {
+            await ftpClient.access({ host, port, user, password });
+            await ftpClient.downloadTo(buffer, remoteFilePath);
+          } finally {
+            // Without close(), every fetch leaves one FTP connection open.
+            ftpClient.close();
+          }
           data = buffer.toString('utf8');
           break;
         }
@@ -71,11 +92,14 @@ export default async function fetchAdminLists(adminLists) {
       }
       lastFetchedLists.set(listKey, data);
     } catch (error) {
+      // Only the message is logged: request errors contain the full address, including a password.
+      const reason = String(error?.message ?? error)
+        .split(list.source)
+        .join(shownSource);
       Logger.verbose(
         'SquadServer',
         1,
-        `Error fetching ${list.type} admin list: ${list.source}`,
-        error
+        `Error fetching ${list.type} admin list: ${shownSource}: ${reason}`
       );
       if (lastFetchedLists.has(listKey)) {
         data = lastFetchedLists.get(listKey);
@@ -115,7 +139,7 @@ export default async function fetchAdminLists(adminLists) {
         Logger.verbose(
           'SquadServer',
           1,
-          `Error parsing admin group ${m.groups.groupID} from admin list: ${list.source}`,
+          `Error parsing admin group ${m.groups.groupID} from admin list: ${shownSource}`,
           error
         );
       }
