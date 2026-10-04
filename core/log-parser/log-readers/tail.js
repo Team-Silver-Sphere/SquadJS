@@ -14,6 +14,7 @@ export default class TailLogReader {
       throw new Error('queueLine argument must be specified and be a function.');
 
     this.filePath = path.join(options.logDir, options.filename);
+    this.pollInterval = options.pollInterval || 100;
 
     // Plugins can listen to this emitter for raw log lines.
     this.reader = new EventEmitter();
@@ -26,7 +27,7 @@ export default class TailLogReader {
     this.tail = new TailFile(this.filePath, {
       // Polling works on every file system, including network and container mounts where
       // fs.watch events can be missing. One check is one stat call.
-      pollFileIntervalMs: 100,
+      pollFileIntervalMs: this.pollInterval,
       // The default stops tailing after the file is missing for 10 checks (2 seconds).
       maxPollFailures: Infinity
     });
