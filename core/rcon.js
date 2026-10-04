@@ -343,7 +343,14 @@ export default class Rcon extends EventEmitter {
   }
 
   execute(command) {
-    return this.write(SERVERDATA_EXECCOMMAND, command);
+    const promise = this.write(SERVERDATA_EXECCOMMAND, command);
+    // Many plugins send commands without waiting for the result. When such a command fails (for example because
+    // the connection closed), its rejection has no handler, and an unhandled rejection ends the Node process.
+    // This handler logs the failure and marks the promise as handled. Callers that await it still get the error.
+    promise.catch((err) =>
+      Logger.verbose('RCON', 1, `Command "${command}" failed: ${err.message}`)
+    );
+    return promise;
   }
 
   write(type, body) {
@@ -478,15 +485,15 @@ export default class Rcon extends EventEmitter {
     return util.inspect(decodedPacket, { breakLength: Infinity });
   }
 
-  async warn(anyID, message) {
-    await this.execute(`AdminWarn "${anyID}" ${message}`);
+  warn(anyID, message) {
+    return this.execute(`AdminWarn "${anyID}" ${message}`);
   }
 
-  async kick(anyID, reason) {
-    await this.execute(`AdminKick "${anyID}" ${reason}`);
+  kick(anyID, reason) {
+    return this.execute(`AdminKick "${anyID}" ${reason}`);
   }
 
-  async forceTeamChange(anyID) {
-    await this.execute(`AdminForceTeamChange "${anyID}"`);
+  forceTeamChange(anyID) {
+    return this.execute(`AdminForceTeamChange "${anyID}"`);
   }
 }
