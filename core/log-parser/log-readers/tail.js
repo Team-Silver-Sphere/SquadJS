@@ -24,7 +24,9 @@ export default class TailLogReader {
     // TailFile follows the file by inode. When the game moves the log to a backup file on a
     // restart, it reads the rest of the old file and then the new file from its start.
     this.tail = new TailFile(this.filePath, {
-      pollFileIntervalMs: 500,
+      // Polling works on every file system, including network and container mounts where
+      // fs.watch events can be missing. One check is one stat call.
+      pollFileIntervalMs: 100,
       // The default stops tailing after the file is missing for 10 checks (2 seconds).
       maxPollFailures: Infinity
     });
