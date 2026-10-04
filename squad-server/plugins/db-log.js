@@ -226,7 +226,17 @@ export default class DBLog extends BasePlugin {
       },
       {
         charset: 'utf8mb4',
-        collate: 'utf8mb4_unicode_ci'
+        collate: 'utf8mb4_unicode_ci',
+        // The player columns reference DBLog_Players.steamID with ON UPDATE CASCADE. Without these
+        // indexes, every Player upsert scans this table once per foreign key on SQLite.
+        indexes: [
+          {
+            fields: ['attacker']
+          },
+          {
+            fields: ['victim']
+          }
+        ]
       }
     );
 
@@ -275,7 +285,15 @@ export default class DBLog extends BasePlugin {
       },
       {
         charset: 'utf8mb4',
-        collate: 'utf8mb4_unicode_ci'
+        collate: 'utf8mb4_unicode_ci',
+        indexes: [
+          {
+            fields: ['attacker']
+          },
+          {
+            fields: ['victim']
+          }
+        ]
       }
     );
 
@@ -333,7 +351,18 @@ export default class DBLog extends BasePlugin {
       },
       {
         charset: 'utf8mb4',
-        collate: 'utf8mb4_unicode_ci'
+        collate: 'utf8mb4_unicode_ci',
+        indexes: [
+          {
+            fields: ['attacker']
+          },
+          {
+            fields: ['victim']
+          },
+          {
+            fields: ['reviver']
+          }
+        ]
       }
     );
 
@@ -445,9 +474,10 @@ export default class DBLog extends BasePlugin {
     this.dropAllForeignKeys = this.dropAllForeignKeys.bind(this);
   }
 
-  createModel(name, schema) {
+  createModel(name, schema, options = {}) {
     this.models[name] = this.options.database.define(`DBLog_${name}`, schema, {
-      timestamps: false
+      timestamps: false,
+      ...options
     });
   }
 
