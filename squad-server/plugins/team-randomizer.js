@@ -25,6 +25,8 @@ export default class TeamRandomizer extends BasePlugin {
   constructor(server, options, connectors) {
     super(server, options, connectors);
 
+    this.randomizing = false;
+
     this.onChatCommand = this.onChatCommand.bind(this);
   }
 
