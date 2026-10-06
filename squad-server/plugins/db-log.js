@@ -4,6 +4,8 @@ import BasePlugin from './base-plugin.js';
 
 const { DataTypes, QueryTypes } = Sequelize;
 
+const MIGRATION_LOCK_WAIT_TIMEOUT = 10;
+
 export default class DBLog extends BasePlugin {
   static get description() {
     return (
@@ -199,6 +201,9 @@ export default class DBLog extends BasePlugin {
         victimName: {
           type: DataTypes.STRING
         },
+        victimEosID: {
+          type: DataTypes.STRING
+        },
         victimTeamID: {
           type: DataTypes.INTEGER
         },
@@ -206,6 +211,9 @@ export default class DBLog extends BasePlugin {
           type: DataTypes.INTEGER
         },
         attackerName: {
+          type: DataTypes.STRING
+        },
+        attackerEosID: {
           type: DataTypes.STRING
         },
         attackerTeamID: {
@@ -235,6 +243,12 @@ export default class DBLog extends BasePlugin {
           },
           {
             fields: ['victim']
+          },
+          {
+            fields: ['attackerEosID']
+          },
+          {
+            fields: ['victimEosID']
           }
         ]
       }
@@ -258,6 +272,9 @@ export default class DBLog extends BasePlugin {
         victimName: {
           type: DataTypes.STRING
         },
+        victimEosID: {
+          type: DataTypes.STRING
+        },
         victimTeamID: {
           type: DataTypes.INTEGER
         },
@@ -265,6 +282,9 @@ export default class DBLog extends BasePlugin {
           type: DataTypes.INTEGER
         },
         attackerName: {
+          type: DataTypes.STRING
+        },
+        attackerEosID: {
           type: DataTypes.STRING
         },
         attackerTeamID: {
@@ -292,6 +312,12 @@ export default class DBLog extends BasePlugin {
           },
           {
             fields: ['victim']
+          },
+          {
+            fields: ['attackerEosID']
+          },
+          {
+            fields: ['victimEosID']
           }
         ]
       }
@@ -315,6 +341,9 @@ export default class DBLog extends BasePlugin {
         victimName: {
           type: DataTypes.STRING
         },
+        victimEosID: {
+          type: DataTypes.STRING
+        },
         victimTeamID: {
           type: DataTypes.INTEGER
         },
@@ -322,6 +351,9 @@ export default class DBLog extends BasePlugin {
           type: DataTypes.INTEGER
         },
         attackerName: {
+          type: DataTypes.STRING
+        },
+        attackerEosID: {
           type: DataTypes.STRING
         },
         attackerTeamID: {
@@ -340,6 +372,9 @@ export default class DBLog extends BasePlugin {
           type: DataTypes.BOOLEAN
         },
         reviverName: {
+          type: DataTypes.STRING
+        },
+        reviverEosID: {
           type: DataTypes.STRING
         },
         reviverTeamID: {
@@ -361,6 +396,15 @@ export default class DBLog extends BasePlugin {
           },
           {
             fields: ['reviver']
+          },
+          {
+            fields: ['attackerEosID']
+          },
+          {
+            fields: ['victimEosID']
+          },
+          {
+            fields: ['reviverEosID']
           }
         ]
       }
@@ -494,6 +538,7 @@ export default class DBLog extends BasePlugin {
     await this.models.PlayerCount.sync();
     await this.models.SteamUser.sync();
     await this.models.Player.sync();
+    await this.addEosIDColumns();
     await this.models.Wound.sync();
     await this.models.Death.sync();
     await this.models.Revive.sync();
@@ -596,10 +641,12 @@ export default class DBLog extends BasePlugin {
       time: info.time,
       victim: info.victim ? info.victim.steamID : null,
       victimName: info.victim ? info.victim.name : null,
+      victimEosID: info.victim ? info.victim.eosID : null,
       victimTeamID: info.victim ? info.victim.teamID : null,
       victimSquadID: info.victim ? info.victim.squadID : null,
       attacker: info.attacker ? info.attacker.steamID : null,
       attackerName: info.attacker ? info.attacker.name : null,
+      attackerEosID: info.attacker ? info.attacker.eosID : null,
       attackerTeamID: info.attacker ? info.attacker.teamID : null,
       attackerSquadID: info.attacker ? info.attacker.squadID : null,
       damage: info.damage,
@@ -639,10 +686,12 @@ export default class DBLog extends BasePlugin {
       woundTime: info.woundTime,
       victim: info.victim ? info.victim.steamID : null,
       victimName: info.victim ? info.victim.name : null,
+      victimEosID: info.victim ? info.victim.eosID : null,
       victimTeamID: info.victim ? info.victim.teamID : null,
       victimSquadID: info.victim ? info.victim.squadID : null,
       attacker: info.attacker ? info.attacker.steamID : null,
       attackerName: info.attacker ? info.attacker.name : null,
+      attackerEosID: info.attacker ? info.attacker.eosID : null,
       attackerTeamID: info.attacker ? info.attacker.teamID : null,
       attackerSquadID: info.attacker ? info.attacker.squadID : null,
       damage: info.damage,
@@ -693,10 +742,12 @@ export default class DBLog extends BasePlugin {
       woundTime: info.woundTime,
       victim: info.victim ? info.victim.steamID : null,
       victimName: info.victim ? info.victim.name : null,
+      victimEosID: info.victim ? info.victim.eosID : null,
       victimTeamID: info.victim ? info.victim.teamID : null,
       victimSquadID: info.victim ? info.victim.squadID : null,
       attacker: info.attacker ? info.attacker.steamID : null,
       attackerName: info.attacker ? info.attacker.name : null,
+      attackerEosID: info.attacker ? info.attacker.eosID : null,
       attackerTeamID: info.attacker ? info.attacker.teamID : null,
       attackerSquadID: info.attacker ? info.attacker.squadID : null,
       damage: info.damage,
@@ -704,6 +755,7 @@ export default class DBLog extends BasePlugin {
       teamkill: info.teamkill,
       reviver: info.reviver ? info.reviver.steamID : null,
       reviverName: info.reviver ? info.reviver.name : null,
+      reviverEosID: info.reviver ? info.reviver.eosID : null,
       reviverTeamID: info.reviver ? info.reviver.teamID : null,
       reviverSquadID: info.reviver ? info.reviver.squadID : null
     });
@@ -721,6 +773,94 @@ export default class DBLog extends BasePlugin {
         conflictFields: this.getPlayerConflictFields(info.player)
       }
     );
+  }
+
+  async addEosIDColumns() {
+    // sync() adds missing indexes to an existing table but not missing columns, so tables created before the
+    // EOS ID columns existed get them here, before sync() tries to index them.
+    const queryInterface = this.options.database.getQueryInterface();
+
+    for (const modelName of ['Wound', 'Death', 'Revive']) {
+      const model = this.models[modelName];
+      const tableName = model.getTableName();
+      if (!(await queryInterface.tableExists(tableName))) continue;
+
+      const columns = Object.keys(model.rawAttributes).filter((column) => column.endsWith('EosID'));
+      const hasColumn = async (column, options) =>
+        column in (await queryInterface.describeTable(tableName, options));
+      const hasIndex = async (column, options) =>
+        (await queryInterface.showIndex(tableName, options)).some(
+          (index) => index.fields.length === 1 && index.fields[0].attribute === column
+        );
+
+      const missingColumns = [];
+      const missingIndexes = [];
+      for (const column of columns) {
+        if (!(await hasColumn(column))) missingColumns.push(column);
+        if (!(await hasIndex(column))) missingIndexes.push(column);
+      }
+      if (missingColumns.length === 0 && missingIndexes.length === 0) continue;
+
+      this.verbose(
+        1,
+        `Adding EOS ID columns to ${tableName}. Indexing existing rows can take a while on a large table.`
+      );
+
+      try {
+        await this.runMigration(async (options) => {
+          // Several SquadJS instances can share one database and start at the same time, so a step that fails
+          // because another instance already did it counts as done.
+          for (const column of missingColumns)
+            await this.runMigrationStep(
+              () =>
+                queryInterface.addColumn(tableName, column, { type: DataTypes.STRING }, options),
+              () => hasColumn(column, options)
+            );
+          for (const column of missingIndexes)
+            await this.runMigrationStep(
+              () => queryInterface.addIndex(tableName, { ...options, fields: [column] }),
+              () => hasIndex(column, options)
+            );
+        });
+      } catch (error) {
+        if (error.parent && error.parent.code === 'ER_LOCK_WAIT_TIMEOUT')
+          this.verbose(
+            1,
+            `Unable to add EOS ID columns to ${tableName}: another query held a lock on the table for more than ` +
+              `${MIGRATION_LOCK_WAIT_TIMEOUT} seconds. Restart SquadJS to try again.`
+          );
+        else this.verbose(1, `Unable to add EOS ID columns to ${tableName}: ${error.message}`);
+        throw error;
+      }
+
+      this.verbose(1, `Added EOS ID columns to ${tableName}.`);
+    }
+  }
+
+  async runMigration(steps) {
+    const database = this.options.database;
+    if (!['mysql', 'mariadb'].includes(database.getDialect())) return steps({});
+
+    // ALTER TABLE waits for a metadata lock that a long query on the table can hold, and the default wait is
+    // one year. lock_wait_timeout is a session variable, so the transaction keeps every step on one connection.
+    await database.transaction(async (transaction) => {
+      await database.query(`SET SESSION lock_wait_timeout = ${MIGRATION_LOCK_WAIT_TIMEOUT}`, {
+        transaction
+      });
+      try {
+        await steps({ transaction });
+      } finally {
+        await database.query('SET SESSION lock_wait_timeout = DEFAULT', { transaction });
+      }
+    });
+  }
+
+  async runMigrationStep(step, isDone) {
+    try {
+      await step();
+    } catch (error) {
+      if (!(await isDone())) throw error;
+    }
   }
 
   async migrateSteamUsersIntoPlayers() {
