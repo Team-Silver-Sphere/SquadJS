@@ -600,7 +600,7 @@ export default class SquadServer extends EventEmitter {
       const rawData = await this.rcon.execute(`ShowServerInfo`);
       Logger.verbose('SquadServer', 3, `Server information raw data`, rawData);
       const data = JSON.parse(rawData);
-      Logger.verbose('SquadServer', 2, `Server information data`, JSON.data);
+      Logger.verbose('SquadServer', 2, `Server information data`, data);
 
       const info = {
         raw: data,
