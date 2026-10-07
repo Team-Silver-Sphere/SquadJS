@@ -191,9 +191,7 @@ export default class SquadServerFactory {
     const templateString = fs.readFileSync(templatePath, 'utf8');
     const template = SquadServerFactory.parseConfig(templateString);
 
-    const pluginKeys = Object.keys(plugins).sort((a, b) =>
-      a.name < b.name ? -1 : a.name > b.name ? 1 : 0
-    );
+    const pluginKeys = Object.keys(plugins).sort();
 
     for (const pluginKey of pluginKeys) {
       const Plugin = plugins[pluginKey];
@@ -220,9 +218,7 @@ export default class SquadServerFactory {
   static async buildReadmeFile() {
     const plugins = await Plugins.getPlugins();
 
-    const pluginKeys = Object.keys(plugins).sort((a, b) =>
-      a.name < b.name ? -1 : a.name > b.name ? 1 : 0
-    );
+    const pluginKeys = Object.keys(plugins).sort();
 
     const pluginInfo = [];
 
