@@ -217,6 +217,12 @@ export default class SquadServer extends EventEmitter {
       this.emit('CAPTURE_ZONE_CAPTURED', data);
     });
 
+    this.logParser.on('MAP_MARKER_PLACED', async (data) => {
+      if (data.playerEOSID) data.player = await this.getPlayerByEOSID(data.playerEOSID);
+      if (!data.player) data.player = await this.getPlayerByName(data.playerName);
+      this.emit('MAP_MARKER_PLACED', data);
+    });
+
     this.logParser.on('NEW_GAME', async (data) => {
       data.layer = await Layers.getLayerByClassname(data.layerClassname);
 
