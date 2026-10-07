@@ -108,7 +108,8 @@ export default class SquadServer extends EventEmitter {
       data.player = await this.getPlayerByEOSID(data.eosID);
       this.emit('CHAT_MESSAGE', data);
 
-      const command = data.message.match(/!([^ ]+) ?(.*)/);
+      // A command counts only at the start of the message, so a command named in a sentence does not run it.
+      const command = data.message.match(/^\s*!([^ ]+) ?(.*)/);
       if (command)
         this.emit(`CHAT_COMMAND:${command[1].toLowerCase()}`, {
           ...data,
