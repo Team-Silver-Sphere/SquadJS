@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { Client as FTPClient } from 'basic-ftp';
+import SFTPClient from 'ssh2-sftp-client';
 import WritableBuffer from './writable-buffer.js';
 
 import axios from 'axios';
@@ -83,6 +84,31 @@ export default async function fetchAdminLists(adminLists) {
           } finally {
             // Without close(), every fetch leaves one FTP connection open.
             ftpClient.close();
+          }
+          data = buffer.toString('utf8');
+          break;
+        }
+        case 'sftp': {
+          // ex url: sftp://<user>:<password>@<host>:<port>/<url-path>
+          if (!list.source.startsWith('sftp://')) {
+            throw new Error(
+              `Invalid SFTP URI format of ${list.source}. The source must be a SFTP URI starting with the protocol. Ex: sftp://username:password@host:22/some/file.txt`
+            );
+          }
+          // URL keeps the user, password and path percent-encoded.
+          const url = new URL(list.source);
+          const buffer = new WritableBuffer();
+          const sftpClient = new SFTPClient();
+          try {
+            await sftpClient.connect({
+              host: url.hostname,
+              port: Number(url.port) || 22,
+              username: decodeURIComponent(url.username),
+              password: decodeURIComponent(url.password)
+            });
+            await sftpClient.get(decodeURIComponent(url.pathname), buffer);
+          } finally {
+            await sftpClient.end();
           }
           data = buffer.toString('utf8');
           break;

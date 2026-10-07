@@ -90,6 +90,10 @@ The following section of the configuration contains information about your Squad
       {
         "type": "ftp",
         "source": "ftp://<user>:<password>@<host>:<port>/<url-path>",
+      },
+      {
+        "type": "sftp",
+        "source": "sftp://<user>:<password>@<host>:<port>/<url-path>",
       }
     ]
   },
@@ -103,7 +107,7 @@ The following section of the configuration contains information about your Squad
 * `logDir` - The folder where your Squad logs are saved. Most likely will be `C:/servers/squad_server/SquadGame/Saved/Logs`.
 * `ftp` - FTP configuration for reading logs remotely.
 * `sftp` - SFTP configuration for reading logs remotely.
-* `adminLists` - Sources for identifying an admins on the server, either remote or local.
+* `adminLists` - Sources for identifying an admins on the server: a local file, a remote URL, or a file on an FTP or SFTP server.
 
   ---
 </details>
