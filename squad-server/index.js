@@ -186,6 +186,7 @@ export default class SquadServer extends EventEmitter {
     this.logParser = new LogParser({
       mode: this.options.logReaderMode,
       logDir: this.options.logDir,
+      pollInterval: this.options.logReaderPollInterval,
       sftp: this.options.sftp,
       ftp: this.options.ftp
     });

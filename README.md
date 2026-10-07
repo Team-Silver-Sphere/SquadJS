@@ -66,6 +66,7 @@ The following section of the configuration contains information about your Squad
     "rconPassword": "password",
     "logReaderMode": "tail",
     "logDir": "C:/path/to/squad/log/folder",
+    "logReaderPollInterval": 100,
     "ftp": {
       "host": "xxx.xxx.xxx.xxx",
       "port": 21,
@@ -101,6 +102,7 @@ The following section of the configuration contains information about your Squad
 * `rconPassword` - The RCON password of the server.
 * `logReaderMode` - `tail` will read from a local log file, `ftp` will read from a remote log file using the FTP protocol, `sftp` will read from a remote log file using the SFTP protocol.
 * `logDir` - The folder where your Squad logs are saved. Most likely will be `C:/servers/squad_server/SquadGame/Saved/Logs`.
+* `logReaderPollInterval` - How often, in milliseconds, the `tail` `logReaderMode` checks the log file for new lines. The default is `100`. A lower value delivers log events sooner but uses more CPU.
 * `ftp` - FTP configuration for reading logs remotely.
 * `sftp` - SFTP configuration for reading logs remotely.
 * `adminLists` - Sources for identifying an admins on the server, either remote or local.
