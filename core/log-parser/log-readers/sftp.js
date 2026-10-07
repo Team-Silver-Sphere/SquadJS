@@ -1,6 +1,8 @@
 import path from 'path';
 import { SFTPTail } from 'ftp-tail';
 
+import Logger from '../../logger.js';
+
 export default class TailLogReader {
   constructor(queueLine, options = {}) {
     for (const option of ['sftp', 'logDir'])
@@ -18,6 +20,11 @@ export default class TailLogReader {
       throw new Error('queueLine argument must be specified and be a function.');
 
     this.reader.on('line', queueLine);
+    // ftp-tail emits 'error' when a fetch fails and then tries again. Without a listener, the
+    // emit throws and the unhandled rejection ends the process.
+    this.reader.on('error', (err) => {
+      Logger.verbose('LogParser', 1, `SFTP log reader error: ${err.message}`);
+    });
   }
 
   async watch() {
