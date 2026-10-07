@@ -21,6 +21,17 @@ export default {
     };
     if (data.action === 'won') {
       logParser.eventStore.ROUND_WINNER = data;
+
+      // Invasion rounds have no DetermineMatchWinner line, so NEW_GAME takes the winner from this line.
+      if (!logParser.eventStore.WON) {
+        logParser.eventStore.WON = {
+          raw: data.raw,
+          time: data.time,
+          chainID: data.chainID,
+          winner: data.subfaction,
+          layer: data.level
+        };
+      }
     } else {
       logParser.eventStore.ROUND_LOSER = data;
     }

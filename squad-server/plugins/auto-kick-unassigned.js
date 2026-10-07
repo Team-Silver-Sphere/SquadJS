@@ -64,6 +64,14 @@ export default class AutoKickUnassigned extends BasePlugin {
           '<li><code>false</code>: Reserve slot players <b>WILL</b> be kicked</li>' +
           '</ul>',
         default: false
+      },
+      finalWarnings: {
+        required: false,
+        description:
+          'Extra warnings in the last seconds before the kick, as a list of seconds before the kick, ' +
+          'for example <code>[15, 10, 5]</code>. They are sent in addition to the regular warnings.',
+        default: [],
+        example: [15, 10, 5]
       }
     };
   }
@@ -77,6 +85,7 @@ export default class AutoKickUnassigned extends BasePlugin {
    *      startTime: <Epoch Date>
    *    warnTimerID: <intervalID>
    *    kickTimerID: <timeoutID>
+   *    finalWarningTimerIDs: [<timeoutID>]
    *  }
    */
   constructor(server, options, connectors) {
@@ -98,6 +107,7 @@ export default class AutoKickUnassigned extends BasePlugin {
 
     this.onNewGame = this.onNewGame.bind(this);
     this.onPlayerSquadChange = this.onPlayerSquadChange.bind(this);
+    this.onPlayerDisconnected = this.onPlayerDisconnected.bind(this);
     this.updateTrackingList = this.updateTrackingList.bind(this);
     this.clearDisconnectedPlayers = this.clearDisconnectedPlayers.bind(this);
   }
@@ -105,6 +115,7 @@ export default class AutoKickUnassigned extends BasePlugin {
   async mount() {
     this.server.on('NEW_GAME', this.onNewGame);
     this.server.on('PLAYER_SQUAD_CHANGE', this.onPlayerSquadChange);
+    this.server.on('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
     this.updateTrackingListInterval = setInterval(
       this.updateTrackingList,
       this.trackingListUpdateFrequency
@@ -116,8 +127,9 @@ export default class AutoKickUnassigned extends BasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('NEW_GAME', this.onNewGame);
-    this.server.removeEventListener('PLAYER_SQUAD_CHANGE', this.onPlayerSquadChange);
+    this.server.removeListener('NEW_GAME', this.onNewGame);
+    this.server.removeListener('PLAYER_SQUAD_CHANGE', this.onPlayerSquadChange);
+    this.server.removeListener('PLAYER_DISCONNECTED', this.onPlayerDisconnected);
     clearInterval(this.updateTrackingListInterval);
     clearInterval(this.clearDisconnectedPlayersInterval);
   }
@@ -135,7 +147,13 @@ export default class AutoKickUnassigned extends BasePlugin {
       this.untrackPlayer(player.eosID);
   }
 
-  async updateTrackingList(forceUpdate = false) {
+  async onPlayerDisconnected(info) {
+    // SquadServer removes the bare ID fields from this event; the ID is only on info.player.
+    const eosID = info.player?.eosID;
+    if (eosID && eosID in this.trackedPlayers) this.untrackPlayer(eosID);
+  }
+
+  async updateTrackingList() {
     const run = !(this.betweenRounds || this.server.players.length < this.options.playerThreshold);
 
     this.verbose(
@@ -150,7 +168,10 @@ export default class AutoKickUnassigned extends BasePlugin {
       return;
     }
 
-    if (forceUpdate) await this.server.updatePlayerList();
+    // The server player list refreshes every 30 s. Without a refresh here, a player who left a few seconds
+    // ago is still listed as unassigned and is tracked again after PLAYER_DISCONNECTED untracked them.
+    await this.server.updatePlayerList();
+    await this.clearDisconnectedPlayers();
 
     const admins = this.server.getAdminsWithPermission(this.adminPermission, 'eosID');
     const whitelist = this.server.getAdminsWithPermission(this.whitelistPermission, 'eosID');
@@ -179,8 +200,9 @@ export default class AutoKickUnassigned extends BasePlugin {
   }
 
   async clearDisconnectedPlayers() {
+    const onlineEosIDs = new Set(this.server.players.map((player) => player.eosID));
     for (const eosID of Object.keys(this.trackedPlayers)) // TRACK
-      if (!(eosID in this.server.players.map((p) => p.eosID))) this.untrackPlayer(eosID);
+      if (!onlineEosIDs.has(eosID)) this.untrackPlayer(eosID);
   }
 
   msFormat(ms) {
@@ -214,10 +236,29 @@ export default class AutoKickUnassigned extends BasePlugin {
       tracker.warnings++;
     }, this.warningInterval);
 
+    // extra warnings in the last seconds before the kick
+    tracker.finalWarningTimerIDs = [];
+    for (const secondsLeft of this.options.finalWarnings) {
+      const msLeft = secondsLeft * 1000;
+      if (msLeft <= 0 || msLeft >= this.kickTimeout) continue;
+
+      // Regular warnings are sent every warningInterval after tracking starts; skip those times.
+      const msAfterStart = this.kickTimeout - msLeft;
+      if (msAfterStart % this.warningInterval === 0) continue;
+
+      const timerID = setTimeout(() => {
+        const timeLeft = this.msFormat(msLeft);
+        this.server.rcon.warn(tracker.player.eosID, `${this.options.warningMessage} - ${timeLeft}`);
+        this.verbose(2, `Warning: ${tracker.player.name} (${timeLeft})`);
+        tracker.warnings++;
+      }, msAfterStart);
+      tracker.finalWarningTimerIDs.push(timerID);
+    }
+
     // set timeout to kick player
     tracker.kickTimerID = setTimeout(async () => {
       // ensures player is still Unassigned
-      await this.updateTrackingList(true);
+      await this.updateTrackingList();
 
       // return if player in tracker was removed from list
       if (!(tracker.player.eosID in this.trackedPlayers)) return;
@@ -239,6 +280,7 @@ export default class AutoKickUnassigned extends BasePlugin {
     const tracker = this.trackedPlayers[eosID];
     clearInterval(tracker.warnTimerID);
     clearTimeout(tracker.kickTimerID);
+    for (const timerID of tracker.finalWarningTimerIDs) clearTimeout(timerID);
     delete this.trackedPlayers[eosID];
     this.verbose(2, `unTrack: ${tracker.player.name}`);
   }

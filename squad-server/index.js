@@ -32,6 +32,7 @@ export default class SquadServer extends EventEmitter {
     this.players = [];
 
     this.squads = [];
+    this.tickets = [];
 
     this.admins = {};
     this.adminsInAdminCam = {};
@@ -44,17 +45,21 @@ export default class SquadServer extends EventEmitter {
     this.updatePlayerList = this.updatePlayerList.bind(this);
     this.updatePlayerListInterval = 30 * 1000;
     this.updatePlayerListTimeout = null;
+    this.updatePlayerListRunning = null;
+    this.updatePlayerListPending = null;
 
     this.updateSquadList = this.updateSquadList.bind(this);
     this.updateSquadListInterval = 30 * 1000;
     this.updateSquadListTimeout = null;
+    this.updateSquadListRunning = null;
+    this.updateSquadListPending = null;
 
     this.updateLayerInformation = this.updateLayerInformation.bind(this);
     this.updateLayerInformationInterval = 30 * 1000;
     this.updateLayerInformationTimeout = null;
 
     this.updateA2SInformation = this.updateA2SInformation.bind(this);
-    this.updateA2SInformationInterval = 30 * 1000;
+    this.updateA2SInformationInterval = 10 * 1000;
     this.updateA2SInformationTimeout = null;
 
     this.pingSquadJSAPI = this.pingSquadJSAPI.bind(this);
@@ -195,6 +200,21 @@ export default class SquadServer extends EventEmitter {
       delete data.playerSuffix;
 
       this.emit('DEPLOYABLE_DAMAGED', data);
+    });
+
+    this.logParser.on('DEPLOYABLE_SPAWNED', async (data) => {
+      if (data.playerEOSID) data.player = await this.getPlayerByEOSID(data.playerEOSID);
+      if (!data.player) data.player = await this.getPlayerByName(data.playerName);
+
+      this.emit('DEPLOYABLE_SPAWNED', data);
+    });
+
+    this.logParser.on('CAPTURE_ZONE_NEUTRALIZED', (data) => {
+      this.emit('CAPTURE_ZONE_NEUTRALIZED', data);
+    });
+
+    this.logParser.on('CAPTURE_ZONE_CAPTURED', (data) => {
+      this.emit('CAPTURE_ZONE_CAPTURED', data);
     });
 
     this.logParser.on('NEW_GAME', async (data) => {
@@ -422,6 +442,24 @@ export default class SquadServer extends EventEmitter {
   }
 
   async updatePlayerList() {
+    // Calls that arrive while an update is running share one follow-up update. A shared update
+    // starts after the call, so the caller still gets a list that is newer than its call.
+    if (this.updatePlayerListRunning) {
+      if (!this.updatePlayerListPending)
+        this.updatePlayerListPending = this.updatePlayerListRunning.then(() => {
+          this.updatePlayerListPending = null;
+          return this.updatePlayerList();
+        });
+      return this.updatePlayerListPending;
+    }
+
+    this.updatePlayerListRunning = this.runUpdatePlayerList().finally(() => {
+      this.updatePlayerListRunning = null;
+    });
+    return this.updatePlayerListRunning;
+  }
+
+  async runUpdatePlayerList() {
     if (this.updatePlayerListTimeout) clearTimeout(this.updatePlayerListTimeout);
 
     Logger.verbose('SquadServer', 1, `Updating player list...`);
@@ -476,22 +514,41 @@ export default class SquadServer extends EventEmitter {
 
     Logger.verbose('SquadServer', 1, `Updated player list.`);
 
+    if (this.updatePlayerListTimeout) clearTimeout(this.updatePlayerListTimeout);
     this.updatePlayerListTimeout = setTimeout(this.updatePlayerList, this.updatePlayerListInterval);
   }
 
   async updateSquadList() {
+    // Same coalescing as updatePlayerList.
+    if (this.updateSquadListRunning) {
+      if (!this.updateSquadListPending)
+        this.updateSquadListPending = this.updateSquadListRunning.then(() => {
+          this.updateSquadListPending = null;
+          return this.updateSquadList();
+        });
+      return this.updateSquadListPending;
+    }
+
+    this.updateSquadListRunning = this.runUpdateSquadList().finally(() => {
+      this.updateSquadListRunning = null;
+    });
+    return this.updateSquadListRunning;
+  }
+
+  async runUpdateSquadList() {
     if (this.updateSquadListTimeout) clearTimeout(this.updateSquadListTimeout);
 
     Logger.verbose('SquadServer', 1, `Updating squad list...`);
 
     try {
-      this.squads = await this.rcon.getSquads();
+      [this.squads, this.tickets] = await this.rcon.getSquads();
     } catch (err) {
       Logger.verbose('SquadServer', 1, 'Failed to update squad list.', err);
     }
 
     Logger.verbose('SquadServer', 1, `Updated squad list.`);
 
+    if (this.updateSquadListTimeout) clearTimeout(this.updateSquadListTimeout);
     this.updateSquadListTimeout = setTimeout(this.updateSquadList, this.updateSquadListInterval);
   }
 
@@ -503,7 +560,7 @@ export default class SquadServer extends EventEmitter {
     try {
       const currentMap = await this.rcon.getCurrentMap();
       const nextMap = await this.rcon.getNextMap();
-      const nextMapToBeVoted = nextMap.layer === 'To be voted';
+      const nextMapToBeVoted = nextMap.toBeVoted;
 
       const currentLayer = await Layers.getLayerById(currentMap.layer);
       const nextLayer = nextMapToBeVoted ? null : await Layers.getLayerById(nextMap.layer);
@@ -584,8 +641,10 @@ export default class SquadServer extends EventEmitter {
       this.matchStartTime = info.matchStartTime;
       this.gameVersion = info.gameVersion;
 
-      if (!this.currentLayer) this.currentLayer = Layers.getLayerByClassname(info.currentLayer);
-      if (!this.nextLayer) this.nextLayer = Layers.getLayerByClassname(info.nextLayer);
+      // MapName_s is a layer ID (rawName), so it is looked up the same way as in updateLayerInformation.
+      if (!this.currentLayer) this.currentLayer = await Layers.getLayerById(info.currentLayer);
+      // NextLayer_s is not used as a fallback: after a map change it keeps the previous next
+      // layer as a display name, even when ShowNextMap reports that no next map is defined.
 
       this.emit('UPDATED_A2S_INFORMATION', info);
       this.emit('UPDATED_SERVER_INFORMATION', info);

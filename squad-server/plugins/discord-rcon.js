@@ -58,7 +58,7 @@ export default class DiscordRcon extends BasePlugin {
   }
 
   async unmount() {
-    this.options.discordClient.removeEventListener('messageCreate', this.onMessage);
+    this.options.discordClient.removeListener('messageCreate', this.onMessage);
   }
 
   async onMessage(message) {
@@ -80,7 +80,7 @@ export default class DiscordRcon extends BasePlugin {
 
       let hasPermission = false;
       for (const [role, allowedCommands] of Object.entries(this.options.permissions)) {
-        if (!message.member._roles.includes(role)) continue;
+        if (!message.member.roles.cache.has(role)) continue;
 
         for (const allowedCommand of allowedCommands)
           if (commandPrefix[1].toLowerCase() === allowedCommand.toLowerCase()) hasPermission = true;

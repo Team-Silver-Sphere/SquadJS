@@ -35,7 +35,7 @@ export default class AutoTKWarn extends BasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('TEAMKILL', this.onTeamkill);
+    this.server.removeListener('TEAMKILL', this.onTeamkill);
   }
 
   async onTeamkill(info) {

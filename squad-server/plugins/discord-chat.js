@@ -48,7 +48,7 @@ export default class DiscordChat extends DiscordBasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('CHAT_MESSAGE', this.onChatMessage);
+    this.server.removeListener('CHAT_MESSAGE', this.onChatMessage);
   }
 
   async onChatMessage(info) {

@@ -44,7 +44,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
   }
 
   async unmount() {
-    this.options.discordClient.removeEventListener('messageCreate', this.onMessage);
+    this.options.discordClient.removeListener('messageCreate', this.onMessage);
   }
 
   async onMessage(message) {
@@ -52,7 +52,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
     if (message.author.bot) return;
 
     if (message.content.match(/!squadjs restartsubsystem rcon/i)) {
-      if (!message.member._roles.includes(this.options.role)) {
+      if (!message.member.roles.cache.has(this.options.role)) {
         message.reply('you do not have permission to do that.');
         return;
       }
@@ -62,7 +62,7 @@ export default class DiscordSubsystemRestarter extends BasePlugin {
     }
 
     if (message.content.match(/!squadjs restartsubsystem logparser/i)) {
-      if (!message.member._roles.includes(this.options.role)) {
+      if (!message.member.roles.cache.has(this.options.role)) {
         message.reply('you do not have permission to do that.');
         return;
       }

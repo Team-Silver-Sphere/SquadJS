@@ -35,7 +35,7 @@ export default class FogOfWar extends BasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('NEW_GAME', this.onNewGame);
+    this.server.removeListener('NEW_GAME', this.onNewGame);
   }
 
   async onNewGame() {

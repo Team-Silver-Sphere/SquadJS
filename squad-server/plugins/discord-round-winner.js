@@ -37,10 +37,15 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('NEW_GAME', this.onNewGame);
+    this.server.removeListener('NEW_GAME', this.onNewGame);
   }
 
   async onNewGame(info) {
+    // The layer is null when it is not in the layer list, and the history has no previous
+    // entry when the layer information was not loaded before the round ended.
+    const previousLayer = this.server.layerHistory[1]?.layer;
+    const layerName = previousLayer ? previousLayer.name : 'an unknown layer';
+
     await this.sendDiscordMessage({
       embed: {
         title: 'Round Winner',
@@ -48,7 +53,10 @@ export default class DiscordRoundWinner extends DiscordBasePlugin {
         fields: [
           {
             name: 'Message',
-            value: `${info.winner} won on ${this.server.layerHistory[1].layer.name}.`
+            // winner is null when the round was a draw, for example when an admin ended it.
+            value: info.winner
+              ? `${info.winner} won on ${layerName}.`
+              : `The round on ${layerName} was a draw.`
           }
         ],
         timestamp: info.time.toISOString()

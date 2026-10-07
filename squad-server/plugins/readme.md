@@ -42,4 +42,4 @@ function aPluginToLogTeamkills(server){
 ```
 Various actions can be completed in a plugin. Most of these will involve outside system, e.g. Discord.js to run a Discord bot, so they are not documented here. However, you may run RCON commands using `server.rcon.execute("Command");`.
 
-If you're struggling to create a plugin, the existing [`plugins`](https://github.com/Team-Silver-Sphere/SquadJS/tree/master/plugins) are a good place to go for examples or feel free to ask for help in the Squad RCON Discord. 
+If you're struggling to create a plugin, the existing [`plugins`](https://github.com/Team-Silver-Sphere/SquadJS/tree/master/squad-server/plugins) are a good place to go for examples or feel free to ask for help in the Squad RCON Discord. 

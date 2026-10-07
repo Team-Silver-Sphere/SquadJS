@@ -96,6 +96,11 @@ export default class SquadServerFactory {
       server.plugins.push(plugin);
     }
 
+    // Each plugin adds its own listeners to the server, so more than 10 plugins on one event (for example
+    // NEW_GAME) exceed the default limit and Node prints MaxListenersExceededWarning. The limit grows with the
+    // number of plugins, so a plugin that adds a listener again and again still triggers the warning.
+    server.setMaxListeners(10 + 2 * server.plugins.length);
+
     return server;
   }
 

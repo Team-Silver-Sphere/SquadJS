@@ -10,6 +10,9 @@ const eventsToBroadcast = [
   'RCON_ERROR',
   'ADMIN_BROADCAST',
   'DEPLOYABLE_DAMAGED',
+  'DEPLOYABLE_SPAWNED',
+  'CAPTURE_ZONE_NEUTRALIZED',
+  'CAPTURE_ZONE_CAPTURED',
   'NEW_GAME',
   'PLAYER_CONNECTED',
   'PLAYER_DISCONNECTED',
@@ -163,8 +166,13 @@ export default class SocketIOAPI extends BasePlugin {
         const args = rawArgs.slice(0, rawArgs.length - 1);
         const callback = rawArgs[rawArgs.length - 1];
         this.verbose(1, `Call to ${prefix}${key}(${args.join(', ')})`);
-        const reponse = await obj[key](...args);
-        callback(reponse);
+        // socket.io does not handle the promise this listener returns, so an error must be caught here.
+        try {
+          const reponse = await obj[key](...args);
+          callback(reponse);
+        } catch (err) {
+          this.verbose(1, `Call to ${prefix}${key} failed: ${err.message}`);
+        }
       });
     }
 

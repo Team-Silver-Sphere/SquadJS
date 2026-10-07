@@ -42,7 +42,7 @@ export default class DiscordSquadCreated extends DiscordBasePlugin {
   }
 
   async unmount() {
-    this.server.removeEventListener('SQUAD_CREATED', this.onSquadCreated);
+    this.server.removeListener('SQUAD_CREATED', this.onSquadCreated);
   }
 
   async onSquadCreated(info) {
