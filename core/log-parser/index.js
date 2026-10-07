@@ -104,7 +104,7 @@ export default class LogParser extends EventEmitter {
       } lines per minute | Matching lines per minute: ${
         this.matchingLinesPerMinute
       } matching lines per minute | Average matching latency: ${
-        this.matchingLatency / this.matchingLinesPerMinute
+        this.matchingLinesPerMinute > 0 ? this.matchingLatency / this.matchingLinesPerMinute : 0
       }ms`
     );
     this.linesPerMinute = 0;
