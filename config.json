@@ -245,7 +245,7 @@
     },
     {
       "plugin": "TeamRandomizer",
-      "enabled": true,
+      "enabled": false,
       "command": "randomize"
     }
   ],
