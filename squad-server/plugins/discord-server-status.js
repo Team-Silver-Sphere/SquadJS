@@ -130,8 +130,18 @@ export default class DiscordServerStatus extends DiscordBaseMessageUpdater {
     let slots = this.server.publicSlots;
     if (this.server.reserveSlots) slots += `+${this.server.reserveSlots}`;
 
+    let layerName = this.server.currentLayer?.name;
+    if (!layerName) {
+      try {
+        const currentMap = await this.server.rcon.getCurrentMap();
+        layerName = currentMap?.layer || currentMap?.level;
+      } catch (error) {
+        this.verbose(1, 'Failed to retrieve current map for Discord activity.', error);
+      }
+    }
+
     await this.options.discordClient.user.setActivity(
-      `(${players}/${slots}) ${this.server.currentLayer?.name || 'Unknown'}`,
+      `(${players}/${slots}) ${layerName || 'Unknown'}`,
       { type: 4 }
     );
   }

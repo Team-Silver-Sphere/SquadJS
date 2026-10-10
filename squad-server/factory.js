@@ -113,7 +113,8 @@ export default class SquadServerFactory {
           GatewayIntentBits.Guilds,
           GatewayIntentBits.GuildMessages,
           GatewayIntentBits.MessageContent,
-          GatewayIntentBits.GuildMembers
+          GatewayIntentBits.GuildMembers,
+          GatewayIntentBits.GuildPresences
         ]
       });
       connector.once(Events.ClientReady, (readyClient) => {
