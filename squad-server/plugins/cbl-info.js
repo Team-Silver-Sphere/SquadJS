@@ -51,6 +51,10 @@ export default class CBLInfo extends DiscordBasePlugin {
 
   async onPlayerConnected(info) {
     try {
+      // Players from the Epic Games Store have an EOS ID but no Steam ID.
+      const { steamID, eosID } = info.player;
+      const id = steamID || eosID;
+
       const data = await request(
         'https://communitybanlist.com/graphql',
         gql`
@@ -82,13 +86,13 @@ export default class CBLInfo extends DiscordBasePlugin {
             }
           }
         `,
-        { id: info.player.steamID }
+        { id }
       );
 
       if (!data.steamUser) {
         this.verbose(
           2,
-          `Player ${info.player.name} (Steam ID: ${info.player.steamID}) is not listed in the Community Ban List.`
+          `Player ${info.player.name} (ID: ${id}) is not listed in the Community Ban List.`
         );
         return;
       }
@@ -96,7 +100,7 @@ export default class CBLInfo extends DiscordBasePlugin {
       if (data.steamUser.reputationPoints < this.options.threshold) {
         this.verbose(
           2,
-          `Player ${info.player.name} (Steam ID: ${info.player.steamID}) has a reputation below the threshold.`
+          `Player ${info.player.name} (ID: ${id}) has a reputation below the threshold.`
         );
         return;
       }
@@ -109,19 +113,20 @@ export default class CBLInfo extends DiscordBasePlugin {
             url: 'https://communitybanlist.com/',
             icon_url: 'https://communitybanlist.com/static/media/cbl-logo.caf6584e.png'
           },
-          thumbnail: {
-            url: data.steamUser.avatarFull
-          },
-          description: `[${info.player.name}](https://communitybanlist.com/search/${info.player.steamID}) has ${data.steamUser.reputationPoints} reputation points on the Community Ban List and is therefore a potentially harmful player.`,
+          // A player may have no avatar, such as one with no Steam profile.
+          thumbnail: data.steamUser.avatarFull ? { url: data.steamUser.avatarFull } : undefined,
+          description: `[${info.player.name}](https://communitybanlist.com/search/${id}) has ${data.steamUser.reputationPoints} reputation points on the Community Ban List and is therefore a potentially harmful player.`,
           fields: [
             {
               name: 'Steam ID',
-              value: `[${info.player.steamID}](https://steamcommunity.com/profiles/${info.player.steamID})`,
+              value: steamID
+                ? `[${steamID}](https://steamcommunity.com/profiles/${steamID})`
+                : 'Unknown',
               inline: true
             },
             {
               name: 'EOS ID',
-              value: info.player.eosID || 'Unknown',
+              value: eosID || 'Unknown',
               inline: true
             },
             {
@@ -162,7 +167,9 @@ export default class CBLInfo extends DiscordBasePlugin {
     } catch (err) {
       this.verbose(
         1,
-        `Failed to fetch Community Ban List data for player ${info.player?.name} (Steam ID: ${info.player?.steamID}):`,
+        `Failed to fetch Community Ban List data for player ${info.player?.name} (ID: ${
+          info.player?.steamID || info.player?.eosID
+        }):`,
         err
       );
     }
