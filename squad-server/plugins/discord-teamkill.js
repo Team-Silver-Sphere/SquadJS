@@ -91,7 +91,9 @@ export default class DiscordTeamkill extends DiscordBasePlugin {
     if (!this.options.disableCBL)
       fields.push({
         name: 'Community Ban List',
-        value: `[Attacker's Bans](https://communitybanlist.com/search/${info.attacker.steamID})`
+        value: `[Attacker's Bans](https://communitybanlist.com/search/${
+          info.attacker.steamID || info.attacker.eosID
+        })`
       });
 
     await this.sendDiscordMessage({
