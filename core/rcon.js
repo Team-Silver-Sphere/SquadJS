@@ -242,7 +242,7 @@ export default class Rcon extends EventEmitter {
 
     if (this.autoReconnect) {
       Logger.verbose('RCON', 1, `Sleeping ${this.autoReconnectDelay}ms before reconnecting.`);
-      setTimeout(this.reconnect, this.autoReconnectDelay);
+      this.autoReconnectTimeout = setTimeout(this.reconnect, this.autoReconnectDelay);
     }
   }
 
@@ -314,6 +314,18 @@ export default class Rcon extends EventEmitter {
     return new Promise((resolve, reject) => {
       Logger.verbose('RCON', 1, `Disconnecting from: ${this.host}:${this.port}`);
 
+      // prevent any auto reconnection happening
+      this.autoReconnect = false;
+      // clear the timeout just in case the socket closed and then we DCed
+      clearTimeout(this.autoReconnectTimeout);
+
+      // A socket that is already closed (for example while a reconnect was pending) emits no further close event.
+      if (this.client.destroyed) {
+        Logger.verbose('RCON', 1, `Disconnected from: ${this.host}:${this.port}`);
+        resolve();
+        return;
+      }
+
       const onClose = () => {
         this.client.removeListener('error', onError);
 
@@ -332,11 +344,6 @@ export default class Rcon extends EventEmitter {
 
       this.client.once('close', onClose);
       this.client.once('error', onError);
-
-      // prevent any auto reconnection happening
-      this.autoReconnect = false;
-      // clear the timeout just in case the socket closed and then we DCed
-      clearTimeout(this.autoReconnectTimeout);
 
       this.client.end();
     });
