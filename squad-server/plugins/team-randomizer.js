@@ -54,12 +54,12 @@ export default class TeamRandomizer extends BasePlugin {
       players[randomIndex] = temporaryValue;
     }
 
-    let team = '1';
+    let team = 1;
 
     for (const player of players) {
       if (player.teamID !== team) await this.server.rcon.switchTeam(player.eosID);
 
-      team = team === '1' ? '2' : '1';
+      team = team === 1 ? 2 : 1;
     }
   }
 }
