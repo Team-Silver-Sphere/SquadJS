@@ -101,7 +101,7 @@ export default class SquadServer extends EventEmitter {
       host: this.options.rconHost || this.options.host,
       port: this.options.rconPort,
       password: this.options.rconPassword,
-      autoReconnectInterval: this.options.rconAutoReconnectInterval
+      autoReconnectDelay: this.options.rconAutoReconnectInterval
     });
 
     this.rcon.on('CHAT_MESSAGE', async (data) => {
