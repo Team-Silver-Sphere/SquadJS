@@ -19,7 +19,8 @@ export default class ChatCommands extends BasePlugin {
         description:
           'An array of objects containing the following properties: ' +
           '<ul>' +
-          '<li><code>command</code> - The command that initiates the message.</li>' +
+          '<li><code>command</code> - The command that initiates the message, or an array of commands that ' +
+          'all give the same message.</li>' +
           '<li><code>type</code> - Either <code>warn</code> or <code>broadcast</code>.</li>' +
           '<li><code>response</code> - The message to respond with.</li>' +
           '<li><code>ignoreChats</code> - A list of chats to ignore the commands in. Use this to limit it to admins.</li>' +
@@ -38,7 +39,8 @@ export default class ChatCommands extends BasePlugin {
 
   async mount() {
     for (const command of this.options.commands) {
-      this.server.on(`CHAT_COMMAND:${command.command.toLowerCase()}`, async (data) => {
+      const names = Array.isArray(command.command) ? command.command : [command.command];
+      const respond = async (data) => {
         if (command.ignoreChats.includes(data.chat)) return;
 
         if (command.type === 'broadcast') {
@@ -46,7 +48,11 @@ export default class ChatCommands extends BasePlugin {
         } else if (command.type === 'warn') {
           await this.server.rcon.warn(data.player.eosID, command.response);
         }
-      });
+      };
+
+      for (const name of names) {
+        this.server.on(`CHAT_COMMAND:${name.toLowerCase()}`, respond);
+      }
     }
   }
 }
