@@ -31,6 +31,11 @@ export default class SquadServer extends EventEmitter {
 
     this.players = [];
 
+    // Players that the last player list updates no longer contain, by EOS ID. The disconnect log
+    // line can be read after the player list was updated without the player.
+    this.recentlyLeftPlayers = new Map();
+    this.recentlyLeftPlayerRetention = 5 * 60 * 1000;
+
     this.squads = [];
     this.tickets = [];
 
@@ -245,7 +250,10 @@ export default class SquadServer extends EventEmitter {
     });
 
     this.logParser.on('PLAYER_DISCONNECTED', async (data) => {
-      data.player = await this.getPlayerByEOSID(data.eosID);
+      // A player in recentlyLeftPlayers is not in the player list, so a list update cannot find them.
+      data.player =
+        this.recentlyLeftPlayers.get(data.eosID)?.player ??
+        (await this.getPlayerByEOSID(data.eosID));
 
       for (const k in data) if (playerIdNames.includes(k)) delete data[k];
 
@@ -482,6 +490,14 @@ export default class SquadServer extends EventEmitter {
         });
 
       this.players = players;
+
+      const now = Date.now();
+      const currentEOSIDs = new Set(players.map((player) => player.eosID));
+      for (const eosID of currentEOSIDs) this.recentlyLeftPlayers.delete(eosID);
+      for (const [eosID, player] of Object.entries(oldPlayerInfo))
+        if (!currentEOSIDs.has(eosID)) this.recentlyLeftPlayers.set(eosID, { player, leftAt: now });
+      for (const [eosID, { leftAt }] of this.recentlyLeftPlayers)
+        if (now - leftAt > this.recentlyLeftPlayerRetention) this.recentlyLeftPlayers.delete(eosID);
 
       for (const player of this.players) {
         const oldInfo = oldPlayerInfo[player.eosID];
