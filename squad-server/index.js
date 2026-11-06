@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import { setTimeout as delay } from 'timers/promises';
 
 import axios from 'axios';
 
@@ -78,7 +79,7 @@ export default class SquadServer extends EventEmitter {
 
     this.admins = await fetchAdminLists(this.options.adminLists);
 
-    await this.rcon.connect();
+    await this.connectRCON();
     await this.updateSquadList();
     await this.updatePlayerList(this);
     await this.updateLayerInformation();
@@ -179,7 +180,26 @@ export default class SquadServer extends EventEmitter {
 
     Logger.verbose('SquadServer', 1, 'Setting up new RCON instance...');
     this.setupRCON();
-    await this.rcon.connect();
+    await this.connectRCON();
+  }
+
+  async connectRCON() {
+    // Auto reconnect starts only after the first successful login. When SquadJS starts while the Squad server is
+    // still starting (both restart together), the first attempt is refused and must be repeated here.
+    for (;;) {
+      try {
+        await this.rcon.connect();
+        return;
+      } catch (err) {
+        Logger.verbose(
+          'SquadServer',
+          1,
+          `Failed to connect to RCON. Retrying in ${this.rcon.autoReconnectDelay}ms.`,
+          err
+        );
+        await delay(this.rcon.autoReconnectDelay);
+      }
+    }
   }
 
   setupLogParser() {
