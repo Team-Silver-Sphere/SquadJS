@@ -11,7 +11,8 @@ export default {
       time: args[1],
       chainID: args[2],
       dlc: args[3],
-      mapClassname: args[4],
+      // Map plugins have no map folder (/Harju/Maps/Gameplay_Layers/Harju_AAS_v3), so the plugin folder is the map.
+      mapClassname: args[4] === 'Gameplay_Layers' ? args[3] : args[4],
       layerClassname: args[5]
     };
 
